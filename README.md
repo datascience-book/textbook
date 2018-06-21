@@ -4,4 +4,4 @@ _Jeff Chen, Dan Hammer, Ed Rubin_
 # Table of Contents
 
 ## Introduction
-## Chapter 1 - Introduction to R
+## Chapter 1 - The R Environment
