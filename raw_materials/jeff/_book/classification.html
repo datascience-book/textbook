@@ -1,0 +1,2570 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="continuous-problems-how-much-should-we-expect.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="classification" class="section level1">
+<h1><span class="header-section-number">Chapter 9</span> Classification</h1>
+<div id="healthcare-sans-the-politics" class="section level2">
+<h2><span class="header-section-number">9.1</span> Healthcare sans the politics</h2>
+<p>In many countries, universal healthcare has become a basic human right. In the United States, this is not currently a guarantee, shrouded in heated political debate and controvery whether its a matter of human rights or a matter in which an individual may choose his or her fate. Regardless of the politics, there is data on healthcare coverage.</p>
+<p>According to the American Community Survey <a href="https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_pums_csv_2009&amp;prodType=document">ACS</a>, an annual survey of approximately 3.5% of the US population as conducted by the US Census Bureau, over 22.4% of residents of the U.S. state of Georgia were without healthcare coverage in 2009. That is a fairly sizable proportion of the population – for every ten people, between two to three did not have coverage. To some degree, this is [un]surprising. If you read the news in 2010, the then President of the United States championed a new law to provide <a href="http://www.nytimes.com/2010/03/24/health/policy/24health.html?mcubz=1">affordable healthcare</a> to the uninsured.</p>
+<p>Leaving aside the operational logistics of coordinating and establishing the actual healthcare system, imagine that you are hypothetically tasked with getting the word out and drive recruitment in the state of Georgia. There is a hiccup, however. While commercial registries exist with people’s demographic and personal contact information, most statistics on coverage are based on surveys, thus we do not precisely know <em>who</em> does not have insurance. A brute force approach could be to reach out to everyone under the sun though we can easily infer a wasted effort as 776 of every 1000 people are already covered. Of the 224 people, they are likely to come from different walks of life, which means that the message will need to be cater to different target segments. How can we more efficiently target and identify audience profiles? For marketers, this is a classic targeting problem.</p>
+<p>Data needs to enable the prediction and classification of a population into two classes: covered and not covered. This _binary problem or membership problem is known as a classification problem. By correctly classifying a population as covered and not covered, decision makers and outreach staff can mobilize targeted outreach. From a data science perspective, the real objective is to be able to identify and replicate re-occurring patterns in the training data, then generalize the insights onto a sample or population that is not contained in the sample.</p>
+<p>In most environments, a data analyst will typically manually select population characteristics to use in cross tabulations to find statistical patterns; however, this tradtional approach can suffer from human bias that may yield misleading results. Some features may be more important than others, and humans usually do not systematically check all features. For example, the table below compares healthcare coverage and citizenship. Each of the cells are quite interpretable: 63.2% of non-citizens are without coverage, but non-citizens are only 7.2% of the population.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Coverage</th>
+<th>Without coverage</th>
+<th>% Without coverage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Citizen</td>
+<td>5,642,889</td>
+<td>1,341,211</td>
+<td>19.2%</td>
+</tr>
+<tr class="even">
+<td>Non-citizen</td>
+<td>199,039</td>
+<td>343,088</td>
+<td>63.2%</td>
+</tr>
+<tr class="odd">
+<td>All</td>
+<td>5,841,928</td>
+<td>1,684,299</td>
+<td>22.3%</td>
+</tr>
+<tr class="even">
+<td>% Non-citizen</td>
+<td>3.4%</td>
+<td>20.4%</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>A cross-tabulation does not provide sufficient predictive power and solely relying on it will place one at the biased end of the bias-variance trade off. Expanding the table to include more features such as age, gender, wages, etc. may not improve inference either – too much information will invariably lead to <em>analysis paralysis</em>.</p>
+<p><strong>Enter classifiers</strong></p>
+<p><em>Classifiers</em> or <em>classification algorithms</em> are a form of supervised learning that can efficiently and effectively identify patterns, surface important variables, and predict membership. Given the label <span class="math inline">\(Y(Coverage)\)</span>, we can use supervised learning techniques to find ways in which the following features can be used to make predictions:</p>
+<p><span class="math inline">\(Y(Coverage) = f(\text{Sex, Age, Education, Marital Status, Race, Citizenship})\)</span></p>
+<p>An algorithm can take on many forms, one of which known as a decision tree can essentially perform many cross-tabulations on steroids. The point of a cross-tabulation is to find patterns. <em>But what defines a pattern?</em> In some respects, a pattern is a sustained difference – a distinction that appears over and over again. For example, if we recall the citizenship vs. healthcare coverage example, we know that non-citizens are roughly 3.3-times more likely to not have coverage. Decision trees recursively split a population into smaller, more homogeneous cells. The result is a tree-like set of rules (below) that can not only be visualized, but interpreted as discrete cells of Georgians who have and do not have healthcare coverage. Green boxes indicate a majority of people have health insurance and blue boxes indicate a majority of people in the cell do not have insurance. For example, people who are not married, making less than $30,000 per year, are between the ages of 18 and 64 and are not citizens have a 73% chance of not having coverage. This subpopulation or <em>leaf</em> in decision tree parlance is roughly 1% of the population or roughly <span class="math inline">\(n = 75262\)</span> and focusing on that leaf would in theory provide a maximum of a 75% hit rate.</p>
+<pre><code>## acs_health has been loaded into memory.</code></pre>
+<pre><code>## Dimensions: n = 27382, k = 8</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-330"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-330-1.png" alt="Simple decision tree" width="672" />
+<p class="caption">
+Figure 9.1: Simple decision tree
+</p>
+</div>
+<p>Granted, the decision tree above is a simplistic biased instance. More complex, lower bias decision trees also can be trained (below), but may suffer from overfitting. Ultimately, the information provided by supervised models should be able to give outreach campaigns an economical advantage: <em>a well-trained classification algorithm can weigh many more variables than a human, make predictions that are magnitudes better than random, and inform decisions using hard quantitative evidence.</em></p>
+<div class="figure"><span id="fig:unnamed-chunk-331"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-331-1.png" alt="A &quot;deep&quot; decision tree." width="672" />
+<p class="caption">
+Figure 9.2: A “deep” decision tree.
+</p>
+</div>
+<p>Decision tree algorithms are just one of many <em>classifiers</em> or <em>classification algorithms</em>, and, in fact, decision trees form the basis of many other classifiers. Some use recursive partitioning to segment a population into many, smaller homogeneous subpopulations. Other algorithms estimate geometrically inspired formulae to fit a multi-dimensional plane between two or more classes. Others average the results of a series of models in order to get the best of many worlds. Each class of model is defined with a mathematical scenarios in mind.</p>
+
+</div>
+<div id="what-goes-into-a-classifier" class="section level2">
+<h2><span class="header-section-number">9.2</span> What goes into a classifier?</h2>
+<p>Classifiers predict discrete targets, otherwise known as classes. Using the health insurance example, the classes are <em>with insurance</em> and <em>without insurance</em>. Being part of Generations X, Y, and Z would be three classes. Being a Red Sox or Yankees fan would be two classes.</p>
+<p>For classifiers to work, classes need to <em>separable</em> – the input features used to describe the target can be used to distinguish one group from another with some degree of accuracy. A low separability scenario, for example, would be one where the distributions of two classes substantially overlap, whereas a high separability case would have little overlap. The output of a classification algorithm is a probability that indicates how likely a given record belongs to a target class given the input features.</p>
+<div class="figure"><span id="fig:unnamed-chunk-332"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-332-1.png" alt="Separability of two classes given a continuous feature." width="672" />
+<p class="caption">
+Figure 9.3: Separability of two classes given a continuous feature.
+</p>
+</div>
+<p>The output probability is the key to evaluating the accuracy of a model. Unlike regression, classifiers rely on entirely different measures of accuracy given the nature of the labeled data. All measures, however, rely on metrics that can be derived from a confusion matrix, or a <span class="math inline">\(2 \times 2\)</span> table where the rows typically represent actual classes and columns represent predicted classes.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Predicted (+)</th>
+<th>Predicted (-)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Actual (+)</td>
+<td>True Positive (TP)</td>
+<td>False Negative (FN)</td>
+</tr>
+<tr class="even">
+<td>Actual (-)</td>
+<td>False Positive (FP)</td>
+<td>True Negative (TN)</td>
+</tr>
+</tbody>
+</table>
+<p>Each of the cells contains the building blocks of accuracy measures:</p>
+<ul>
+<li>The True Positive (TP) is the count of all cases where the actual positive (<span class="math inline">\(Y = 1\)</span>) case is accurately predicted.</li>
+<li>The True Negative (TN) is the count of all cases where the actual positive (<span class="math inline">\(Y = 0\)</span>) case is accurately predicted.</li>
+<li>The False Positive (FP) is count of all cases where the actual label was <span class="math inline">\(Y = 0\)</span>, but the model classified a record as <span class="math inline">\(\hat{Y} = 1\)</span>. This is also known as Type I error.</li>
+<li>The False Negative (FN) is count of all cases where the actual label was <span class="math inline">\(Y = 1\)</span>, but the model classified a record as <span class="math inline">\(\hat{Y} = 0\)</span>. This is also known as Type II error.</li>
+</ul>
+<p><em>Accuracy</em>. Overall accuracy is measured as the sum of the main diagonal divided by the population (below).</p>
+<p><span class="math display">\[TPR = \frac{TP + TN}{TP + FN + FP + TN}\]</span></p>
+<p><em>True Negative Rate</em>. By combining TN and FP, we can calculate the True Negative Rate (TPR), which is proportion of <span class="math inline">\(Y=0\)</span> cases that are accurately predicted. TNR is also referred to as the “specificity”.</p>
+<p><span class="math display">\[TNR = \frac{TN}{TN + FP} = \frac{TN}{Actual (-)} \]</span></p>
+<p><em>True Positive Rate</em>. By combining TP and FN, we can calculate the True Positive Rate (TPR), which is proportion of <span class="math inline">\(Y=1\)</span> cases that are accurately predicted. TPR is also referred to as the “sensitivity” or “recall”.</p>
+<p><span class="math display">\[TPR = \frac{TP}{TP + FN} = \frac{TP}{Actual (+)} \]</span></p>
+<p><em>Positive Predicted Value</em>. By combining TP and FP, we can calculate the Positive Predicted Value (PPV), which is proportion of predicted <span class="math inline">\(Y=1\)</span> cases that actually are of tht class. PPV is also referred to as “precision”.</p>
+<p><span class="math display">\[PPV = \frac{TP}{TP + FP}\]</span></p>
+<p><em>What does accuracy look like?</em> To illustrate this, the next series of tables provides simulated results of a classifer. Let’s assume that a health insurance classifier was tested on a sample of <span class="math inline">\(n = 100\)</span> with actual labels perfectly split between <span class="math inline">\(Y = 1\)</span> and <span class="math inline">\(Y = 0\)</span>. A perfect performing model would resemble the following table, where TP = 50 and FP = 50. With perfect predictions with <span class="math inline">\(Accuracy = \frac{50+50}{100} = 100\)</span>, the <span class="math inline">\(TPR = \frac{50}{50 + 0} = 100\)</span> and <span class="math inline">\(PPV = \frac{50}{50 + 0} = 100\)</span> indicate that model is perfectly balanced and precise.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Predicted (+)</th>
+<th>Predicted (-)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Actual (+)</td>
+<td>50</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>Actual (-)</td>
+<td>0</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p>A model with little discriminant power or ability to distinguish between classes would look like the following. While the <span class="math inline">\(TPR = \frac{35}{35 + 5} = 87.5\)</span> is high, overall <span class="math inline">\(Accuracy = \frac{35+0}{100} = 45\)</span>, which is largely driven by low precision <span class="math inline">\(PPV = \frac{35}{35 + 60} = 36.8\)</span>.</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>Predicted (+)</th>
+<th>Predicted (-)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Actual (+)</td>
+<td>35</td>
+<td>5</td>
+</tr>
+<tr class="even">
+<td>Actual (-)</td>
+<td>60</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>While these calculations are simple and understandable, determining the predicted label is not as simple. In a simple case, given an outcome <span class="math inline">\(Y = 1\)</span>, a voting rule would classify a probability of greater than 50% as <span class="math inline">\(Y = 1\)</span>. However, it is fairly common that a trained classifier with strong performance may never produce a probability of more than 50%. In order to generalize accuracy, we can rely on one or a combination of the following measures.</p>
+<table style="width:100%;">
+<colgroup>
+<col width="21%" />
+<col width="41%" />
+<col width="37%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Description</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Receiving Operating Characteristic (ROC) Curve</td>
+<td>ROC curves plotpairs of TPRs and FPRs that correspond to varied discriminant thresholds between 0 and 1. By systematically testing thresholds. For example, TPRs and FPRs are calculated and plotted given probability thresholds <span class="math inline">\(p = 0.2\)</span>, <span class="math inline">\(p = 0.5\)</span>, and <span class="math inline">\(p=0.8\)</span>.</td>
+<td>Once plotting the curve with TPR as Y and FPR as X, the area under the curve (AUC) represents robustness of the model, ranging from 0.5 (model is as good as a coin toss) to 1.0 (perfectly robust model). In the social sciences, an acceptable AUC is over 0.8.The AUC statistic is sometimes referred to as the “concordance”.</td>
+</tr>
+<tr class="even">
+<td><br> <span class="math inline">\(F_1\)</span> Score</td>
+<td><br> The score is formulated as <span class="math inline">\(F_1 = 2 \times \frac{precision \times recall}{precision + recall}= 2 \times \frac{PPV \times TPR}{PPV + TPR}\)</span> where <span class="math inline">\(\text{precision or PPV} = \frac{TP}{TP + FP}\)</span> and <span class="math inline">\(\text{recall or TPR} = \frac{TP}{TP + FN}\)</span></td>
+<td><br> The measure is bound between 0 and 1, where 1 is the top score indicating a better model.</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+<div id="six-common-techniques" class="section level2">
+<h2><span class="header-section-number">9.3</span> Six Common Techniques</h2>
+<p>In the context of healthcare coverage, we will use KNNs to illustrate the process of training a classifier. With the practical aspects in mind, we will explore two types of tree-based learning, namely decision trees and random forests. Then wrap up with logistic regression and a comparison of the performance of each of the four classifiers.</p>
+<p>To start, we will need to import data from the healthcare coverage example. The data was obtained from the 2015 American Community Survey (ACS), which is available from <a href="https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pga.zip">US Census Bureau website</a>. So that this chapter can focus more on classification methods, data has been pre-processed, and any data wrangling that is shown herein is specific to each method. Note that the sample has been balanced such that people who have and do not have health insurance are represented in equal proportions.</p>
+<p>The file can be imported using the <code>digIt</code> library. Upon loading the data set, five string variables will be converted into factors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Import</span>
+  <span class="kw">library</span>(digIt)
+  health &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;acs_health&quot;</span>)
+  
+<span class="co">#Factors</span>
+  factor_vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;cit&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;schl&quot;</span>, <span class="st">&quot;esr&quot;</span>)
+  for(i in factor_vars){
+    health[,i] &lt;-<span class="st"> </span><span class="kw">as.factor</span>(health[,i])
+  }
+  <span class="kw">str</span>(health)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    27382 obs. of  8 variables:
+##  $ id      : int  1 2 3 4 5 6 7 8 9 10 ...
+##  $ coverage: chr  &quot;No Coverage&quot; &quot;No Coverage&quot; &quot;No Coverage&quot; &quot;No Coverage&quot; ...
+##  $ agep    : int  58 52 40 18 56 52 62 26 41 23 ...
+##  $ wage    : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ cit     : Factor w/ 2 levels &quot;Citizen&quot;,&quot;Non-citizen&quot;: 1 1 2 2 1 1 1 1 1 1 ...
+##  $ mar     : Factor w/ 5 levels &quot;Divorced&quot;,&quot;Married&quot;,..: 1 3 2 2 1 1 2 3 2 3 ...
+##  $ schl    : Factor w/ 4 levels &quot;Graduate Degree&quot;,..: 2 2 2 2 2 3 2 3 2 2 ...
+##  $ esr     : Factor w/ 4 levels &quot;Armed Forced&quot;,..: 2 2 2 3 3 3 3 4 3 2 ...</code></pre>
+
+<div id="knn" class="section level3">
+<h3><span class="header-section-number">9.3.1</span> KNN</h3>
+<p>As covered in Lecture 6, KNNs are a weak learning algorithm that treats input features as coordinate sets. Given a class label <span class="math inline">\(y\)</span> associated with input features <span class="math inline">\(x\)</span>, a given record <span class="math inline">\(i\)</span> in a dataset can be related to all other records using Euclidean distances in terms of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[ \text{distance} = \sqrt{\sum(x_{ij} - x_{0j})^{2} }\]</span></p>
+<p>where <span class="math inline">\(j\)</span> is an index of features in <span class="math inline">\(x\)</span> and <span class="math inline">\(i\)</span> is an index of records (observations). For each <span class="math inline">\(i\)</span>, a neighborhood of taking the <span class="math inline">\(k\)</span> records with the shortest distance to that point <span class="math inline">\(i\)</span>. From that neighborhood, the value of <span class="math inline">\(y\)</span> can be approximated. Given a discrete target variables, <span class="math inline">\(y_i\)</span> is determined using a procedure called <em>majority voting</em> where the most prevalent value in the neighborhood around <span class="math inline">\(i\)</span> is assigned.</p>
+<p>Recall that in the case of KNNs, all variables should be in the same scale such that each input feature has equal weight. A review of the data indicates that the health data is not in the appropriate form to be used.</p>
+<div id="data-preparation-mixed-variable-formats" class="section level4">
+<h4><span class="header-section-number">9.3.1.1</span> Data preparation: Mixed variable formats</h4>
+<p>Continuous variables can be discretized by binning records into equal intervals, then converting the bins into dummy matrices For simplicity, we’ll bin the age and wage varaibles in the following manner:</p>
+<ul>
+<li><code>age</code>: 10 year intervals.</li>
+<li><code>wage</code>: $20,000 intervals, topcoded at $200,000.</li>
+</ul>
+<p>Upon binning, each variable needs to be set as a factor.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Age</span>
+  health$age.bin &lt;-<span class="st"> </span><span class="kw">round</span>(health$agep /<span class="st"> </span><span class="dv">10</span>) *<span class="st"> </span><span class="dv">10</span>
+  health$age.bin &lt;-<span class="st"> </span><span class="kw">factor</span>(health$age.bin)
+
+<span class="co">#Wage</span>
+  health$wage.bin &lt;-<span class="st"> </span><span class="kw">round</span>(health$wage /<span class="st"> </span><span class="dv">20000</span>) *<span class="st"> </span><span class="dv">20000</span>
+  health$wage.bin[health$wage.bin &gt;<span class="st"> </span><span class="dv">200000</span>] &lt;-<span class="st"> </span><span class="dv">200000</span>
+  health$wage.bin &lt;-<span class="st"> </span><span class="kw">factor</span>(health$wage.bin)</code></pre></div>
+<p>For all discrete features including the newly added <code>age</code> and <code>wage</code> variables, we can convert them into dummy matrices (e.g. all except one level in a discrete feature is converted into a binary variable). The former can be easily achieved by using the <code>model.matrix()</code> method, which returns a binary matrix for all levels:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">model.matrix</span>(~<span class="st"> </span>health$variable -<span class="st"> </span><span class="dv">1</span>)</code></pre></div>
+<p>As is proper in preparation of dummy variables, if there are <span class="math inline">\(k\)</span> levels in a given discrete variable, we should only keep <span class="math inline">\(k-1\)</span> dummy variables For example, citizenship is a two level variable, thus we only need to keep one of two dummies. It’s common to leave out the level with the most records, but any level will do.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Make copy of health data frame</span>
+  knn_data &lt;-<span class="st"> </span>health[, <span class="kw">c</span>(<span class="st">&quot;id&quot;</span>,<span class="st">&quot;coverage&quot;</span>)]
+
+<span class="co">#Specify variables that need to be discretized</span>
+  discrete.vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;cit&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;schl&quot;</span>, <span class="st">&quot;wage.bin&quot;</span>, <span class="st">&quot;age.bin&quot;</span>, <span class="st">&quot;esr&quot;</span>)
+  
+<span class="co">#Loop through and add dummy matrices to knn_data</span>
+  for(i in discrete.vars){
+    dummy_mat &lt;-<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>health[,i] -<span class="st"> </span><span class="dv">1</span>)
+    knn_data &lt;-<span class="st"> </span><span class="kw">cbind</span>(knn_data, dummy_mat)
+  }</code></pre></div>
+<p>Now the data can be combined. Notice that the new dataset <code>knn_data</code> has 36 features. Note that perform these transformations are necessary given mixed variable types; however, a datasets containing continuous variables only does not require any manipulation other than scaling.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Dimensions</span>
+  <span class="kw">dim</span>(knn_data)</code></pre></div>
+<pre><code>## [1] 27382    27</code></pre>
+</div>
+<div id="sample-partition" class="section level4">
+<h4><span class="header-section-number">9.3.1.2</span> Sample partition</h4>
+<p>As is proper, the next step is to partition the data. For simplicity, we’ll create a vector that will split the data into two halves, denoting the training set as <code>TRUE</code> and the test set as <code>FALSE</code>. We then split the data into two objects contain the input features for each train and test sets.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Split into simple train-test design</span>
+  <span class="kw">set.seed</span>(<span class="dv">100</span>)
+  rand &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="kw">nrow</span>(knn_data)) 
+  rand &lt;-<span class="st"> </span>rand &gt;<span class="st"> </span><span class="fl">0.5</span>
+
+  train &lt;-<span class="st"> </span>knn_data[rand ==<span class="st"> </span>T, <span class="dv">2</span>:<span class="kw">ncol</span>(knn_data)]
+  test &lt;-<span class="st"> </span>knn_data[rand ==<span class="st"> </span>F, <span class="dv">2</span>:<span class="kw">ncol</span>(knn_data)]</code></pre></div>
+</div>
+<div id="modeling" class="section level4">
+<h4><span class="header-section-number">9.3.1.3</span> Modeling</h4>
+<p>As it common and proper, the kNN algorithm needs to be calibrated for the best <span class="math inline">\(k\)</span> using the training set, then applied to a test set. To do this, we will use the <code>kknn</code> library. The training portion uses the <code>train.kknn()</code> function to conduct k-folds cross validation, then the scoring uses the <code>kknn()</code>. While both functions can be fairly easily written from scratch (and we encourage new users to write their own as was demonstarted in the previous chapter), we will plow forth with using the library.</p>
+<p>To start, we will load the <code>kknn</code> library:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Call &quot;class&quot; library</span>
+  <span class="kw">library</span>(kknn)</code></pre></div>
+<p>In order to find the optimal value of <span class="math inline">\(k\)</span>, we will execute the <code>train.kknn()</code> function, which accepts the following arguments:</p>
+<p><code>train.kknn(formula, data, kmax, kernel, distance, kcv)</code></p>
+<ul>
+<li><code>formula</code> is a formula object (e.g. “<code>coverage ~ .</code>”).</li>
+<li><code>data</code> is a matrix or data frame of training data.</li>
+<li><code>kmax</code> is the maximum number of neighbors to be tested</li>
+<li><code>kernel</code> is a string vector indicating the type of distance weighting (e.g. “rectangular” is unweighted, “biweight” places more weight towards closer observations, “gaussian” imposes a normal distribution on distance, “inv” is inverse distance).</li>
+<li><code>distance</code> is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).</li>
+<li><code>kcv</code> is the number of partitions to be used for cross validation.</li>
+</ul>
+<p>The flexibility of <code>train.kknn()</code> allows for test exhaustively and find the best parameters. Below, we conduct 10-folds cross validation up to <span class="math inline">\(k = 200\)</span> for three kernel (rectangular, biweight and inverse) assuming L1-distances. While the command is simple, it runs the kNN algorithm for 2000 times (10 cross-validation models for each k - kernel combination).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  pred.train &lt;-<span class="st"> </span><span class="kw">train.kknn</span>(<span class="kw">factor</span>(coverage) ~. , <span class="dt">data =</span> train, <span class="dt">kcv =</span> <span class="dv">10</span>, <span class="dt">distance =</span> <span class="dv">1</span>,
+              <span class="dt">kmax =</span> <span class="dv">500</span>, <span class="dt">kernel =</span> <span class="kw">c</span>(<span class="st">&quot;rectangular&quot;</span>, <span class="st">&quot;biweight&quot;</span>, <span class="st">&quot;inv&quot;</span>))</code></pre></div>
+<p>The resulting model object contains the cross-validation error log in the <code>MISCLASS</code> attribute, which has been plotted below, as well as <code>best.parameters</code> that indicates that <span class="math inline">\(k = 335\)</span> using an inverse distance kernel yields the lowest error.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Find optimal k and kernel</span>
+  <span class="kw">plot</span>(pred.train$MISCLASS[,<span class="kw">c</span>(<span class="st">&quot;biweight&quot;</span>)], 
+       <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, 
+       <span class="dt">ylab =</span> <span class="st">&quot;Classification error&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;k&quot;</span>)
+    <span class="kw">lines</span>(pred.train$MISCLASS[,<span class="kw">c</span>(<span class="st">&quot;inv&quot;</span>)], <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+    <span class="kw">lines</span>(pred.train$MISCLASS[,<span class="kw">c</span>(<span class="st">&quot;rectangular&quot;</span>)], <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-341"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-341-1.png" alt="10-fold cross validated errors for k = 1 to k = 200" width="672" />
+<p class="caption">
+Figure 9.4: 10-fold cross validated errors for k = 1 to k = 200
+</p>
+</div>
+<p>The result suggest that a combination of <span class="math inline">\(k = 410\)</span> using inverse distance yields the best result. With the kNN algorithm tuned, we can now use the <code>kknn()</code> function to score the test set. The function syntax is as follows:</p>
+<p><code>kknn(formula, train, test, k, kernel, distance)</code></p>
+<ul>
+<li><code>formula</code> is a formula object (e.g. “<code>coverage ~ .</code>”).</li>
+<li><code>train</code> is a matrix or data frame of training data.</li>
+<li><code>test</code> is a matrix or data frame of test data.</li>
+<li><code>k</code> is the number of neighbors.</li>
+<li><code>kernel</code> is the type of weighting of distance (e.g. “rectangular” is unweighted, “biweight” places more weight towards closer observations).</li>
+<li><code>distance</code> is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Score train set</span>
+  out &lt;-<span class="st"> </span><span class="kw">kknn</span>(<span class="kw">factor</span>(coverage) ~. , <span class="dt">train =</span> train, <span class="dt">test =</span> test, 
+              <span class="dt">k =</span> <span class="dv">335</span>, <span class="dt">kernel =</span> <span class="st">&quot;inv&quot;</span>, <span class="dt">distance =</span> <span class="dv">1</span>)
+
+<span class="co">#Extract probabilities</span>
+  test.prob &lt;-<span class="st"> </span>out$prob[,<span class="dv">2</span>]
+  
+<span class="co">#Convert probabilities to prediction </span>
+  pred.class &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">length =</span> <span class="kw">length</span>(test.prob))
+  pred.class[test.prob &lt;<span class="st"> </span><span class="fl">0.5</span>] &lt;-<span class="st"> &quot;Coverage&quot;</span>
+  pred.class[test.prob &gt;=<span class="st"> </span><span class="fl">0.5</span>] &lt;-<span class="st"> &quot;No Coverage&quot;</span>
+
+<span class="co">#Confusion matrix</span>
+  <span class="kw">table</span>(test$coverage, pred.class)</code></pre></div>
+<pre><code>##              pred.class
+##               Coverage No Coverage
+##   Coverage        4397        2480
+##   No Coverage     1210        5699</code></pre>
+<p>Using the extracted probabilities, we now can calculate the accuracy using the True Positive Rate (TPR) using a probability cutoff of 0.5. Typically, one would expect a <span class="math inline">\(2 \times 2\)</span> matrix given a binary label where the accuracy rate can be calculated based on the diagonals. In this case, prediction accuracy was 73.2%, indicating that the model performs reasonably well.</p>
+<p>The test model accuracy can also be calculated by taking the Area Under the Curve (AUC) of the Receiving-Operating Characteristic. The ROC calculates the TPR and FPR at many thresholds, that produces a curve that indicates the general robustness of a model. The AUC is literally the area under that curve, which is a measure between 0.5 and 1 where the former indicates no predictive power and 1.0 indicates a perfect model.</p>
+<p>In order to visualize the ROC, we will rely on the <code>plotROC</code> library, which is an extension of <code>ggplot2</code>. We will create a new data frame <code>input</code> that is comprised of the labels for the test set <code>ytest</code> and the predicted probabilities <code>test.prob</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load libraries</span>
+
+  <span class="kw">library</span>(ggplot2)
+  <span class="kw">library</span>(plotROC)
+
+<span class="co">#Set up test data frame</span>
+  input &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">ytest =</span> test$coverage, 
+                      <span class="dt">prob =</span> test.prob)</code></pre></div>
+<p>We then will first create a ggplot object named <code>base</code> that will contain the labels (<code>d =</code>) and probabilities (<code>m =</code>), then create the ROC plot using <code>geom_roc()</code> and <code>style_roc()</code>. A ROC curve for a well-performing model should sit well-above the the 45 degree diagonal line, which is the reference for an AUC of 0.5 (the minimum expected for a positive predictor). However, as the curve is below the 45 degree line, we may have a seriously deficient model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Base object</span>
+  roc &lt;-<span class="st"> </span><span class="kw">ggplot</span>(input, <span class="kw">aes</span>(<span class="dt">d =</span> ytest, <span class="dt">m =</span> prob)) +<span class="st"> </span>
+<span class="st">         </span><span class="kw">geom_roc</span>() +<span class="st"> </span><span class="kw">style_roc</span>()
+  
+<span class="co">#Show result</span>
+  roc</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-344"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-344-1.png" alt="ROC for k = 410 using inverse distance" width="672" />
+<p class="caption">
+Figure 9.5: ROC for k = 410 using inverse distance
+</p>
+</div>
+<p>To calculate the AUC, we can use the <code>calc_auc()</code> method, from which we find that 0.8, which is generally a decent level of accuracy.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">calc_auc</span>(roc)$AUC</code></pre></div>
+<pre><code>## [1] 0.8001445</code></pre>
+<p>Despite the promising result, there are a few one should ask the following question: <em>Is there a better classifier?</em></p>
+
+</div>
+</div>
+<div id="logistic-regression" class="section level3">
+<h3><span class="header-section-number">9.3.2</span> Logistic Regression</h3>
+<p>Let’s assume that you’ve been provided with a three feature dataset: a target label <span class="math inline">\(z\)</span> and two input features (<span class="math inline">\(x1\)</span> and <span class="math inline">\(x2\)</span>). Upon graphing the features and color coding using the labels, you see that the points are clustered such that light blue points represent to <span class="math inline">\(z = 1\)</span> and gold points represent <span class="math inline">\(z = 0\)</span>. We could, of course, use decision trees and random forests to determine some threshold to classify the two groups; but surely, there is a way to write an elegant statistical formula that would separate one group from the other?</p>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-347-1.png" width="384" /></p>
+<p>As it turns out, we can express the relationship between <span class="math inline">\(z\)</span>, <span class="math inline">\(x_1\)</span>, and <span class="math inline">\(x_2\)</span> as a linear model similar to OLS:</p>
+<p><span class="math display">\[z = w_0 + w_1 x_1 + w_2 x_2 + \epsilon\]</span> where <span class="math inline">\(z\)</span> is a binary outcome and, like OLS, <span class="math inline">\(w_k\)</span> are weights that are learned using some optimization process. If treated as a typical linear model with a continuous outcome variable, we run the risk that <span class="math inline">\(\hat{z}\)</span> would exceed the binary bounds of 0 and 1 and would thus make little sense. Imagine if <span class="math inline">\(\hat{z}\)</span>, the predicted value of <span class="math inline">\(z\)</span> were -103 or +4: what would that mean in the case of a binary variable? This could easily be the shortcoming of a linear model approach.</p>
+<p>Statistical methodologists have, however, cleverly solved the bounding problem by inserting the predicted output into a logistic function:</p>
+<p><span class="math display">\[F(z) = \frac{1}{1+ e^{-z}}\]</span> For a feature <span class="math inline">\(x\)</span> that ranges for -10 to +10, the logit transformation converges to +1 where <span class="math inline">\(x &gt; 0\)</span> and to 0 where <span class="math inline">\(x &lt; 0\)</span>. This S-shaped curve is known as a <em>sigmoid</em> and is a well-used distribution for bounding variables to a 0/1 range.</p>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-348-1.png" width="672" /></p>
+<p>By substituting the linear model output <span class="math inline">\(z\)</span> into the logistic function, we bound the output between 0 and 1 and interpret the result as a conditional probability:</p>
+<p><span class="math display">\[p = Pr(Y=1|X) = F(z) = \frac{1}{1+ e^{-(w_0 + w_1 x_1 + w_2 x_2 )}}  \]</span> To interpret the coefficients, we need to start by defining what <em>odds</em> are:</p>
+<p><span class="math display">\[odds = \frac{p}{1-p}= \frac{F(z)}{1-F(z)}=e^z\]</span> where <span class="math inline">\(F(z)\)</span> is a probability of some event <span class="math inline">\(z = 1\)</span>and <span class="math inline">\(1-F(z)\)</span> is the probability of <span class="math inline">\(z = 0\)</span>. The odds can be re-formulated as:</p>
+<p><span class="math display">\[pr(success) = \frac{e^{(w_0 + w_1 x_1 + w_2 x_2 )}}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}\]</span> <span class="math display">\[pr(failure) = \frac{1}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}\]</span></p>
+<p>Typically, we deal with <em>odds</em> in terms of <em>log odds</em> as the exponentiation may be challenging to work with:</p>
+<p><span class="math display">\[log(odds)=log(\frac{p}{1-p})= w_0 + w_1 x_1 + w_2 x_2 \]</span></p>
+<p>where <em>log</em> is a natural logarithm transformation. This relationship is particularly important as it allows for conversion of probabilities into odds and vice versa.</p>
+<p>The underlying weights of the logistic regression can be interpretted using <em>Odds Ratios</em> or <em>OR</em>. Odds ratios can be expressed as marginal unit comparison. Since <span class="math inline">\(odds = e^{z} = e^{w_0 + w_1 x_1 + w_2 x_2}\)</span>, then we can express an odds ratio as a marginal 1 unit increase in <span class="math inline">\(x_1\)</span> comparing <span class="math inline">\(odds(x+1)\)</span> over <span class="math inline">\(odd(x+0)\)</span>:</p>
+<p><span class="math display">\[OR = \frac{e^{w_0 + w_1 (x_1+1) + w_2 x_2}}{e^{w_0 + w_1 (x_1+0) + w_2 x_2}} = e^{w_1}\]</span></p>
+<p>After a little exponential arithmetic, the OR is simply equal to <span class="math inline">\(e^{w_1}\)</span>, which can be interpreted as a multiplicative effect or a percentage effect if transformed as <span class="math inline">\(100 \times (1-e^{w_1})\%\)</span>. In practice, this means simply exponentiating the regression weights to interpret the point relationship. For example, if the following regression were estimated for healthcare non-coverage where <span class="math inline">\(wage\)</span> is a continuous variable and <span class="math inline">\(non-citzen\)</span> is a discrete binary:</p>
+<p><span class="math display">\[z(\text{non-coverage}) = 0.1878 - 0.000001845 \times wage + 1.69 \times \text{non-citizen} \]</span> Then, the odds of coverage are as follows for each variable:</p>
+<ul>
+<li><span class="math inline">\(OR_{wage} = e^{0.000001845} = 0.9999816\)</span> translates to -0.00000184% lower chance of not being covered.</li>
+<li><span class="math inline">\(OR_{non-citizen} = e^{1.690} = 5.419481\)</span> translates to 441% higher chance of not being covered.</li>
+</ul>
+<p><strong>Optimization</strong> As in the case of all machine learning methods, the formulae need to be optimized. In order to estimate each weight <span class="math inline">\(w_k\)</span>, we will rely on <em>maximum likelihood estimation</em> (MLE) as a framework, starting with a probability function for one record that is inspired by a Bernoulli random variable:</p>
+<p><span class="math display">\[ p(z = z_i | x) = [F(x)]^{z_i}[1-F(x)]^{1-z_i}\]</span> If <span class="math inline">\(z_i=1\)</span>, then the function is equal to the <span class="math inline">\([F(x)]^{z_i}\)</span>. Otherwise, if <span class="math inline">\(z_i = 0\)</span>, then the function is equal to <span class="math inline">\([1-F(x)]^{1-z_i}\)</span>. For all records, we can define a likelihood function as the product of the above:</p>
+<p><span class="math display">\[L = \Pi_{i=1}^N [F(x)]^{z_i}[1-F(x)]^{1-z_i}\]</span> Mathematically, it is easier to handle this formula by taking the natural logarithm, which is also known as the <em>log-likelihood</em>:</p>
+<p><span class="math display">\[ log(L) = z_ilog(F(x)) + (1-z_i)log(1-F(x))\]</span></p>
+<p>The goal here is to maximize <span class="math inline">\(log(L)\)</span>, driven by a search for <span class="math inline">\(w_k\)</span> by taking partial derivatives of <span class="math inline">\(L\)</span> with respect to each <span class="math inline">\(w_k\)</span> and setting them to zero:</p>
+<p><span class="math display">\[\frac{\partial L}{\partial w_k} = 0\]</span></p>
+<p>This process can be driven using optimization algorithms such as gradient descent, the Newton-Raphson algorithm, among other commonly used techniques.</p>
+<p><strong>Practicals</strong> After all the derivation is done, keep the following points in mind when applying logistic regression:</p>
+<ul>
+<li>Tuning a logistic regression is a matter of selecting combinations of features (variables): it all depends on finding the right combination of features that maximize classification accuracy.</li>
+<li>Logistic regression have strong probabilistic assumptions that a linear combination of features is sufficient to describe a phenomenon.</li>
+<li>The technique is well-suited for socializing an empirical problem, but often is outperformed in accuracy by more flexible techniques that are described later in this chapter. This tradeoff between narrative and accuracy is a good example of the bias-variance tradeoff.</li>
+<li>Like ordinary least squares, the method does not perform well when the number of features is greater than the number of observations. Regularization methods (e.g. LASSO and Ridge) described in the previous chapter can be generalized for classification problems.</li>
+</ul>
+<div id="in-practice-logistic-regression" class="section level4">
+<h4><span class="header-section-number">9.3.2.1</span> In Practice: Logistic Regression</h4>
+<p>For the remaining techniques in this chapter, we will use the following data set. The health data are split into a 50-50 train-test sample. Whereas the variables in the kNN example were converted into discrete variables, this sample will use mixed data classes with two continuous variables (<code>wage</code> - wage and <code>age</code> = age) and four discrete variables (<code>coverage</code> = health coverage, <code>mar</code> = marriage, <code>cit</code> = citizenship, <code>esr</code> = employment status, <code>schl</code> = education attainment).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Load ACS health care data</span>
+  <span class="kw">library</span>(digIt)
+  health &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;acs_health&quot;</span>)
+  
+<span class="co"># Convert characters into discrete factors</span>
+  factor_vars &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;coverage&quot;</span>, <span class="st">&quot;mar&quot;</span>, <span class="st">&quot;cit&quot;</span>, <span class="st">&quot;esr&quot;</span>, <span class="st">&quot;schl&quot;</span>)
+  for(var in factor_vars){
+    health[,var] &lt;-<span class="st"> </span><span class="kw">as.factor</span>(health[,var])
+  }
+  
+<span class="co"># Randomly assign</span>
+  <span class="kw">set.seed</span>(<span class="dv">100</span>)
+  rand &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="kw">nrow</span>(health)) &gt;<span class="st"> </span><span class="fl">0.5</span>
+  
+<span class="co"># Create train test sets</span>
+  train &lt;-<span class="st"> </span>health[rand ==<span class="st"> </span>T, ]
+  test &lt;-<span class="st"> </span>health[rand ==<span class="st"> </span>F, ]</code></pre></div>
+<p>Training a logistic regression can be easily done using the <code>glm()</code> function, which is a flexible algorithm class known as Generalized Linear Models. Using this one method, multiple types of linear models can be estimated including ordinary least squares for continuous outcomes, logistic regression for binary outcomes and Poisson regression for count outcomes.</p>
+<p>At a minimum, three parameters are required:</p>
+<p><code>glm(formula, data, family)</code></p>
+<p>where:</p>
+<ul>
+<li><code>formula</code> is a formula object. This can take on a number of forms such as a symbolic description (e.g. <span class="math inline">\(y = w_0 + w_1 x_1+ w_2 x_2 + \epsilon\)</span> is represented as <code>y ~ x1 + x2</code>).</li>
+<li><code>data</code> is a data frame containing the target and inputs.</li>
+<li><code>family</code> indicates the probability distribution used in the model. Distributions typically used for GLMs are <em>binomial</em> (binary outcomes), <em>poisson</em> (count outcomes), <em>gaussian</em> (continuous outcomes - same as OLS), among others.</li>
+</ul>
+<p>The family refers to the probability distribution family that underlies the specific estimation method. In the case of logistic regression, the probability family is <em>binomial</em>.</p>
+<p>To start, we will specify three models:</p>
+<ul>
+<li><em>Economic</em>: <span class="math inline">\(coverage = f(log(age) + wage + employment)\)</span></li>
+<li><em>Social</em>: <span class="math inline">\(coverage = f(citizenship + marital + schooling)\)</span></li>
+<li><em>Combined</em>: <span class="math inline">\(coverage = f(log(age) + wage + employment + citizenship + marital + schooling)\)</span></li>
+</ul>
+<p>then assign each to a formula object and estimate each formula.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Formula objects</span>
+  econ &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="st">&quot;coverage ~ log(agep) + wage + esr&quot;</span>)
+  soc &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="st">&quot;coverage ~ cit + mar + schl&quot;</span>)
+  all &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="st">&quot;coverage ~ log(agep) + wage + schl + esr + cit + mar&quot;</span>)
+  
+<span class="co"># Estimated GLM models</span>
+  glm_econ &lt;-<span class="st"> </span><span class="kw">glm</span>(econ, <span class="dt">data =</span> train, <span class="dt">family =</span> binomial)
+  glm_soc &lt;-<span class="st"> </span><span class="kw">glm</span>(soc, <span class="dt">data =</span> train, <span class="dt">family =</span> binomial)
+  glm_all &lt;-<span class="st"> </span><span class="kw">glm</span>(all, <span class="dt">data =</span> train, <span class="dt">family =</span> binomial)</code></pre></div>
+<p>In the social sciences and in public policy, the focus of regression modeling is typically placed on identifying an effect or an associated relationship that describes the process being studied. Often times, coefficient tables are examined, in particular the direction of the relationships (e.g. positive or negative weights), their statistical significance (e.g. p-value or t-statistics), and the relative fit of the model (e.g. the lowest Akaike Information Criterion or AIC provides <em>relative</em> model fit comparison). For example, an analyst may point out that education has an effect on coverage by interpreting the coefficient point estimates. In the combined model, education attainment coefficients are are estimated relative to people who hold a graduate degree, thus indicating that people who :</p>
+<ul>
+<li>did not finish high school have a <em>6.58-times</em> higher chance of not having health coverage ($ e^{} = 6.58$)</li>
+<li>hold a high school degree have a <em>4.91-times</em> higher chance of not having health coverage ($ e^{} = 4.91$)</li>
+<li>hold a college degree are relatively better off than the previous two groups with a <em>1.79-times</em> higher chance of not having health coverage ($ e^{} = 1.79$)</li>
+</ul>
+<p>All coefficients are statistically significant. While it is valid to evaluate models on this basis, it is necessary to remember that this is not the same as evaluating a model for predictive use cases as predictive accuracy is not assessed on the basis of coefficients.</p>
+<table style="text-align:center">
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+<em>Dependent variable:</em>
+</td>
+</tr>
+<tr>
+<td>
+</td>
+<td colspan="3" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td colspan="3">
+coverage
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(1)
+</td>
+<td>
+(2)
+</td>
+<td>
+(3)
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+log(agep)
+</td>
+<td>
+-1.415<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+-0.785<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.045)
+</td>
+<td>
+</td>
+<td>
+(0.062)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+wage
+</td>
+<td>
+-0.0005<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+-0.001<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.0001)
+</td>
+<td>
+</td>
+<td>
+(0.0001)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+esrArmed Forced
+</td>
+<td>
+-5.261<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+-4.937<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.723)
+</td>
+<td>
+</td>
+<td>
+(0.726)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+esrEmployed Civilian
+</td>
+<td>
+-1.419<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+-1.260<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.073)
+</td>
+<td>
+</td>
+<td>
+(0.077)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+esrNot in Labor Force
+</td>
+<td>
+-1.250<sup>***</sup>
+</td>
+<td>
+</td>
+<td>
+-1.307<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.075)
+</td>
+<td>
+</td>
+<td>
+(0.080)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+esrUnemployed
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+citCitizen
+</td>
+<td>
+</td>
+<td>
+-2.132<sup>***</sup>
+</td>
+<td>
+-2.016<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.083)
+</td>
+<td>
+(0.084)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+citNon-citizen
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+marDivorced
+</td>
+<td>
+</td>
+<td>
+1.837<sup>***</sup>
+</td>
+<td>
+1.459<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.113)
+</td>
+<td>
+(0.118)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+marMarried
+</td>
+<td>
+</td>
+<td>
+0.844<sup>***</sup>
+</td>
+<td>
+0.421<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.105)
+</td>
+<td>
+(0.110)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+marNever Married
+</td>
+<td>
+</td>
+<td>
+2.074<sup>***</sup>
+</td>
+<td>
+1.222<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.106)
+</td>
+<td>
+(0.121)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+marSeparated
+</td>
+<td>
+</td>
+<td>
+2.116<sup>***</sup>
+</td>
+<td>
+1.666<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.152)
+</td>
+<td>
+(0.159)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+marWidowed
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+schlGraduate Degree
+</td>
+<td>
+</td>
+<td>
+-0.648<sup>***</sup>
+</td>
+<td>
+-0.580<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.114)
+</td>
+<td>
+(0.115)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+schlHS Degree
+</td>
+<td>
+</td>
+<td>
+1.064<sup>***</sup>
+</td>
+<td>
+1.035<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.062)
+</td>
+<td>
+(0.064)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+schlLess than HS
+</td>
+<td>
+</td>
+<td>
+1.346<sup>***</sup>
+</td>
+<td>
+1.356<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+(0.071)
+</td>
+<td>
+(0.074)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+schlUndergraduate Degree
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Constant
+</td>
+<td>
+6.427<sup>***</sup>
+</td>
+<td>
+-0.348<sup>**</sup>
+</td>
+<td>
+4.166<sup>***</sup>
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+(0.179)
+</td>
+<td>
+(0.138)
+</td>
+<td>
+(0.298)
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+</td>
+<td>
+</td>
+<td>
+</td>
+<td>
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Observations
+</td>
+<td>
+13,596
+</td>
+<td>
+13,596
+</td>
+<td>
+13,596
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Log Likelihood
+</td>
+<td>
+-8,497.670
+</td>
+<td>
+-7,927.152
+</td>
+<td>
+-7,529.608
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+Akaike Inf. Crit.
+</td>
+<td>
+17,007.340
+</td>
+<td>
+15,872.300
+</td>
+<td>
+15,087.220
+</td>
+</tr>
+<tr>
+<td colspan="4" style="border-bottom: 1px solid black">
+</td>
+</tr>
+<tr>
+<td style="text-align:left">
+<em>Note:</em>
+</td>
+<td colspan="3" style="text-align:right">
+<sup><em></sup>p&lt;0.1; <sup><strong></sup>p&lt;0.05; <sup></strong></em></sup>p&lt;0.01
+</td>
+</tr>
+</table>
+<p>Like the kNN example, the absolute accuracy of a model needs to be obtained through model validation techniques like cross validation. The <code>boot</code> library can be used to generate cross-validated accuracy estimates through the <code>cv.glm()</code> function:</p>
+<p><code>cv.glm(data, glmfit, cost, K)</code></p>
+<p>where:</p>
+<ul>
+<li><code>data</code> is a data frame or matrix.</li>
+<li><code>fit</code> is a glm model object.</li>
+<li><code>cost</code> specifies the cost function for cross validation.</li>
+<li><code>K</code> is the number of cross validation partitions.</li>
+</ul>
+<p>Note that the cost function needs to take two vectors. The first is the observed responses and the second is the predicted responses. For example, the cost function could be the overall accuracy rate:</p>
+<p><span class="math display">\[ \frac{FP+FN}{TP+FP+TN+FN}\]</span></p>
+<p>or the true positive rate (TPR):</p>
+<p><span class="math display">\[\frac{TP}{TP+FN}\]</span> Both are written as functions below:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Misclassification Rate</span>
+  costAccuracy &lt;-<span class="st"> </span>function(y, y.hat){
+    a &lt;-<span class="st"> </span><span class="kw">sum</span>((y ==<span class="st"> </span><span class="dv">1</span> ) &amp;<span class="st"> </span>(y.hat &gt;=<span class="st"> </span><span class="fl">0.5</span>))
+    b &lt;-<span class="st"> </span><span class="kw">sum</span>((y ==<span class="st"> </span><span class="dv">0</span> ) &amp;<span class="st"> </span>(y.hat &lt;<span class="st"> </span><span class="fl">0.5</span>))
+    c &lt;-<span class="st"> </span>((a +<span class="st"> </span>b) /<span class="st"> </span><span class="kw">length</span>(y))
+    <span class="kw">return</span>(c)
+  }
+
+<span class="co"># True Positive Rate</span>
+  costTPR &lt;-<span class="st"> </span>function(y, y.hat){
+    a &lt;-<span class="st"> </span><span class="kw">sum</span>((y ==<span class="st"> </span><span class="dv">1</span> ) &amp;<span class="st"> </span>(y.hat &gt;=<span class="st"> </span><span class="fl">0.5</span>))
+    b &lt;-<span class="st"> </span><span class="kw">sum</span>((y ==<span class="st"> </span><span class="dv">1</span> ) &amp;<span class="st"> </span>(y.hat &lt;<span class="st"> </span><span class="fl">0.5</span>))
+    <span class="kw">return</span>((a) /<span class="st"> </span>(a +<span class="st"> </span>b))
+  }</code></pre></div>
+<p>So that we can compare the cross validation accuracy with kNN, we will specify the <code>cost</code> using the misclassification rate for each of the three candidate models and set <span class="math inline">\(k = 10\)</span>. Whereas kNN was able to achieve a 74% accuracy rate, the best GLM model was able to reach 72%, suggesting that some of the underlying variability in coverage rate is not captured in linear relationships. Also note that the input features for the kNN model were in a dummy matrix, thus the comparison is not perfect.</p>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading
+
+## Warning in predict.lm(object, newdata, se.fit, scale = 1, type =
+## ifelse(type == : prediction from a rank-deficient fit may be misleading</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">specification</th>
+<th align="right">accuracy</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Economic</td>
+<td align="right">0.6482789</td>
+</tr>
+<tr class="even">
+<td align="left">Social</td>
+<td align="right">0.6946161</td>
+</tr>
+<tr class="odd">
+<td align="left">All</td>
+<td align="right">0.7217564</td>
+</tr>
+</tbody>
+</table>
+<p>In order to obtain the predicted values of <span class="math inline">\(coverage\)</span>, we use <code>predict()</code>:</p>
+<p><code>predict(object, newdata, response)</code></p>
+<p>where:</p>
+<ul>
+<li><code>object</code> is a GLM model object.</li>
+<li><code>newdata</code> is a data frame. This can be the training data set or the test set with the same format and features as the training set.</li>
+<li><code>response</code> indicates the type of value to be returned, whether it is the untransformed “link” or the probability “response”.</li>
+</ul>
+<p>We will now apply <code>predict()</code> to score the responses for each <code>train</code> and <code>test</code> samples.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  pred.glm.train &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_all, train, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)
+  pred.glm.test &lt;-<span class="st"> </span><span class="kw">predict</span>(glm_all, test, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</code></pre></div>
+<p>A quick review of the predicted probabilities indicates confirms that we have the right response values (probabilities), bound by 0 and 1.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">summary</span>(pred.glm.train)</code></pre></div>
+<pre><code>##      Min.   1st Qu.    Median      Mean   3rd Qu.      Max. 
+## 0.0000006 0.3015000 0.5117000 0.4988000 0.6881000 0.9892000</code></pre>
+<p>Lastly, to calculate the prediction accuracy, we will once again rely on the combination of <code>ggplot2</code> and `<code>plotROC</code> libraries for the AUC. Interestingly, the test set AUC is greater than that of the train set. This occurs occassionally and is often times due to the luck of the draw.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotROC</span>
+  <span class="kw">library</span>(plotROC)
+  <span class="kw">library</span>(ggplot2)
+
+<span class="co">#Set up ROC inputs</span>
+  input.glm &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;train&quot;</span>, <span class="dt">d =</span> train$coverage, <span class="dt">m =</span> pred.glm.train), 
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;test&quot;</span>, <span class="dt">d =</span> test$coverage,  <span class="dt">m =</span> pred.glm.test))
+  
+<span class="co">#Graph all three ROCs</span>
+  roc.glm &lt;-<span class="st"> </span><span class="kw">ggplot</span>(input.glm, <span class="kw">aes</span>(<span class="dt">d =</span> d, <span class="dt">model =</span> model, <span class="dt">m =</span> m, <span class="dt">colour =</span> model)) +<span class="st"> </span>
+<span class="st">             </span><span class="kw">geom_roc</span>(<span class="dt">show.legend =</span> <span class="ot">TRUE</span>) +<span class="st"> </span><span class="kw">style_roc</span>()  +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;ROC: GLM&quot;</span>)
+
+<span class="co">#AUC</span>
+  <span class="kw">calc_auc</span>(roc.glm)[,<span class="dv">2</span>:<span class="dv">3</span>]</code></pre></div>
+<pre><code>##   group       AUC
+## 1     1 0.7898052
+## 2     2 0.7958594</code></pre>
+
+</div>
+</div>
+<div id="decision-trees" class="section level3">
+<h3><span class="header-section-number">9.3.3</span> Decision trees</h3>
+<p>In everyday policy setting and operations, decision trees are a common tool used for communicating complex processes, whether for how an actor moves through intricate and convoluted bureaucracy or how a sub-population can be described based on a set of criteria. While the garden variety decision tree can be laid out qualitatively, supervised learning allows decision trees to be created in an empirical fashion that not only have the power to aesthetically communicate patterns, but also predict how a non-linear system behaves.</p>
+<p>The structure of a decision tree can be likened to branches of a tree: moving from the base of the tree upwards, the tree trunk splits into two or more large branches, which then in turn split into even smaller branches, eventually reaching even small twigs with leaves. Given a labeled set of data that contains input features, the branches of a decision tree is grown by subsetting a population into smaller, more homogeneous units. In other words, moving from the root of the tree to the terminating branches, each subsequent set of branches should contain records that are more similar, more homogeneous or purer.</p>
+<pre><code>  1. Let Sample = S, Target = Y, Input Features = X
+  2. Screen records for cases that meet termination criteria.
+        If each base case that is met, partition sample to isolate homogeneous cases.
+  3. For each X:
+        Calculate the attribute test comparing all X&#39;s and Y
+  4. Compare and identify Xi that yields the greatest separability
+  5. Split S using input feature that maximizes separability
+  6. Iterate process on steps 3 through 5 until termination criteria is met</code></pre>
+<p>As was demonstrated at the beginning of this chapter, decision trees use a form of recursive partitioning to learn patterns, doing so using central concepts of <em>information theory</em>. There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). All these algorithms follow the same framework that includes the following elements: (1) nodes and edges, (2) attribute tests, and (3) termination criteria.</p>
+<div id="nodes-edges" class="section level4">
+<h4><span class="header-section-number">9.3.3.1</span> (1) Nodes + Edges</h4>
+<p>Recalling the healthcare insurance decision tree, the tree can be characterized by nodes and edges.</p>
+<ul>
+<li>Nodes (circles) contain records.</li>
+<li>Edges (lines) show dependency between nodes and is the product of a split decision. Nodes are split based on an attribute test – a technique to identify the optimal criterion to subset records into more homogeneous groups of the target variable.</li>
+<li>The node at the top of the tree is known as the <em>root</em>and represents the full population.</li>
+<li>Each time a node is split, the result is two nodes – each of which is referred to as a child node. A node without any child nodes is known as a leaf.</li>
+</ul>
+<p>The goal is to grow a tree from the root node into as many smaller, more homogeneous child nodes with respect to the target variable.</p>
+</div>
+<div id="attribute-tests" class="section level4">
+<h4><span class="header-section-number">9.3.3.2</span> (2) Attribute tests</h4>
+<p>To understand attribute tests means to have a thorough understanding of separability. Let’s suppose we have a list of residents of a town. The list contains both users and non-users of a given healthcare service. For each person, the inventory captures whether a given person is employed, has income over $20k, and lives on the west side or east side of town. Each of the features are plotted in the pie chart below. 50% of town residents use the health service, but which of the features is best at separating users from non-users?</p>
+<div class="figure"><span id="fig:unnamed-chunk-357"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-357-1.png" alt="Summary characteristics of town residents." width="672" />
+<p class="caption">
+Figure 9.6: Summary characteristics of town residents.
+</p>
+</div>
+<p>To answer that question, we can rely on a visual cross-tabulation where the size of the circles is scaled proportional to the number of records. The objective is to identify the matrix where the circles are the largest along any diagonal – this would indicate that given usership, a feature is able to serve as a criterion that separates users from non-users. Of the three graphs below, graph #2 is able to separate a relatively large proportion of users from non-users. For a relatively low-dimensional dataset (fewer attributes), a visual analysis is accomplishable. However, on scale, undertaking this process manually may be onerous and prone to error.</p>
+<div class="figure"><span id="fig:unnamed-chunk-358"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-358-1.png" alt="A visual comparison of low separability (1 and 3) and high separability (2)." width="672" />
+<p class="caption">
+Figure 9.7: A visual comparison of low separability (1 and 3) and high separability (2).
+</p>
+</div>
+<p>Enter attribute tests.</p>
+<p>Decision trees are grown by splitting a data set into many smaller samples. Attribute tests are the mode of finding the split criterion, following an empirical process to systematically test all input features to find the feature with the greatest separability. The process starts from the root node where the algorithm examines each input feature to find the one that maximizes separability at that node:</p>
+<pre><code>  Let Sample = S, Target = Y, Input Features = X
+      For each X:
+          Calculate the attribute test statistic comparing X and Y
+          Store statistic
+      Compare and identify Xi that yields the greatest separability
+      Split S using input feature that maximizes separability
+      Iterate process on child node</code></pre>
+<p>Upon finding the optimal feature for a given node, the decision tree algorithm splits the node into two child nodes based on the optimal feature, then moves onto the next node (often times a child node) and runs the same process to find the next split. There are a number of attribute tests, of which we will cover two: <em>Information Gain</em> and <em>Gini Impurity</em>.</p>
+<p><strong>Information gain</strong> is a form of <em>Entropy</em>, which is a measure of purity of information. Based on these distinct states of activity, entropy is defined as:</p>
+<p><span class="math display">\[\text{Entropy} = \sum{-p_{i} log_2(p_{i})}\]</span></p>
+<p>where <span class="math inline">\(i\)</span> is an index of states, <span class="math inline">\(p\)</span> is the proportion of observations that are in state <span class="math inline">\(i\)</span>, and <span class="math inline">\(log_2(p_i)\)</span> is the Base 2 logarithm of the proportion for state <span class="math inline">\(i\)</span>. Information Gain (IG) is variant of entropy, which is the entropy of the root node <em>less</em> the average entropies of the child nodes.</p>
+<p><span class="math display">\[\text{IG} = \text{Entropy}_\text{root} - \text{Avg Child Entropy}\]</span> How does this work in practice? Starting from the root node, we need to calculate the root entropy, where the classes are based on the classes of the target <code>usership</code>.</p>
+<p><span class="math inline">\(\qquad \text{Entropy}_\text{usership} = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))\)</span></p>
+<p><span class="math inline">\(\qquad \qquad \qquad \qquad \qquad = (-\frac{6}{12} log_2(\frac{6}{12})) + (-\frac{6}{12} log_2(\frac{6}{12}))\)</span></p>
+<p><span class="math inline">\(\qquad \qquad \qquad \qquad \qquad = 1.0\)</span></p>
+<p>Then, the attribute test is applied to the root node by calculating the weighted entropy for each proposed child node. Using the <code>income</code> feature, the calculation is as follows:</p>
+<ul>
+<li>Split the root node into two child nodes using the <code>income</code> class. This yields the following subsamples as shown in the table below:</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th>&lt; $20k</th>
+<th>&gt; $20k</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>No</td>
+<td>0</td>
+<td>6</td>
+</tr>
+<tr class="even">
+<td>Yes</td>
+<td>5</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>5</td>
+<td>7</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>For each child node (the columns in the table), calculate entropy:</li>
+</ul>
+<p><span class="math inline">\(\qquad \text{Entropy}_\text{income &lt; 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))\)</span></p>
+<p><span class="math inline">\(\qquad \qquad \qquad \qquad \qquad = -\frac{5}{5} log_2(\frac{5}{5}) = 0\)</span></p>
+<p><span class="math inline">\(\qquad \text{Entropy}_\text{income &gt; 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))\)</span></p>
+<p><span class="math inline">\(\qquad \qquad \qquad \qquad \qquad = -\frac{6}{7} log_2(\frac{6}{7}) + -\frac{1}{7} log_2(\frac{1}{7}) = 0.5916728\)</span></p>
+<ul>
+<li>Calculate the weighted average entropy of children:</li>
+</ul>
+<p><span class="math inline">\(\qquad \text{Entropy}_\text{income split} = \frac{5}{12}(0) + \frac{7}{12}(0.5916728) = 0.3451425\)</span></p>
+<ul>
+<li>Then calculate the information gain:</li>
+</ul>
+<p><span class="math inline">\(\qquad \text{IG}_\text{income} = \text{Entropy}_\text{root} - \text{Entropy}_\text{income split}\)</span></p>
+<p><span class="math inline">\(\qquad \qquad \qquad \qquad \qquad = 1 - 0.3451425 = 0.6548575\)</span></p>
+<ul>
+<li>We then can perform the same calculation on all other features (e.g. employment, part of town) and compare results. The goal is to <em>maximize</em> the IG statistic at each decision point. In this case, we see that income is the best attribute to use for splitting. This split is easily interpretable: “The majority of users of health services can be predicted to earn less than $20,000.”</li>
+</ul>
+<table>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>IG</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Employment</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td>Income</td>
+<td>0.6548575</td>
+</tr>
+<tr class="odd">
+<td>Area of Town</td>
+<td>0.027119</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Gini Impurity</strong> is closely related to the entropy with a slight modification:</p>
+<p><span class="math display">\[\text{Gini Impurity} = \sum{p_{i}(1-p_{i})} = 1 - \sum{p_{i}^2}\]</span> Using Gini Impurity as an attribute test is also similar to Information Gain:</p>
+<p><span class="math display">\[\text{Gini Gain} = \text{Gini}_\text{root} - \text{Weighted Gini}_\text{child}\]</span></p>
+</div>
+<div id="stopping-criteria-tree-pruning" class="section level4">
+<h4><span class="header-section-number">9.3.3.3</span> (3) Stopping Criteria + Tree Pruning</h4>
+<p>Both Gini Gain and Information Gain attribute tests can be recursively applied until there are no longer input features available to split the data. This is also known as a “fully grown tree” or an “unpruned tree”. While the terminal leafs may yield a high degree of accuracy in training, trees may grow to epic and complex proportions that have leaf sizes are often times too small to provide accurate and generalizable results. While fully grown trees are considered to have low bias, their out-of-sample performance may be high in variance. There [theoretically] exists some optimal balancing point where trees are complex enough to capture statistical patterns, but are not too complex to yield misleading results.</p>
+<p>Fortunately, the methodologists who invented decision tree learning have designed two approaches to balance accuracy and generalizability: stopping criteria and pruning.</p>
+<p>Recall that a leaf is defined as a node with no child nodes. Otherwise stated, a leaf is a terminal node in which no additional attribute testing is conducted – it’s placed out of commission. Stopping criteria are employed to determine if a node should be labeled a leaf during the growing process, thereby stopping tree growth at a given node. These criteria are specified before growing the tree and take on a number of different forms including:</p>
+<ul>
+<li>A node has fewer records than a pre-specific threshold;</li>
+<li>The purity or information gain falls below a pre-specified level or is equal to zero;</li>
+<li>The tree is grown to n-number of levels (e.g. Number of levels of child nodes relative to the root exceeds a certain threshold).</li>
+</ul>
+<p>While stopping criteria are useful, the results in some studies indicate their performance may be sub-optimal. The alternative approach involves growing a tree to its fullest, then comparing the prediction performance given tree complexity (e.g. number of nodes in the tree) using cross-validation. In the example graph below, model accuracy degrades beyond a certain number of nodes. Thus, optimal number of nodes is defined as when cross-validation samples (e.g. train/test, k-folds) reaches a minimum across samples. Upon finding the optimal number of nodes, the tree is <em>pruned</em> to only that number of nodes.</p>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-359-1.png" width="672" /></p>
+</div>
+<div id="issues" class="section level4">
+<h4><span class="header-section-number">9.3.3.4</span> Issues</h4>
+<p>Like any technique, decision trees have strengths and weaknesses:</p>
+<table>
+<colgroup>
+<col width="54%" />
+<col width="45%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Strengths</th>
+<th>Weakness</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>- Rules (e.g. all the criteria that form the path from root to leaf) can be directly interpreted.</td>
+<td>- Data sets with large number of features will have overly complex trees that, if left unpruned, may be too voluminous to interpret.</td>
+</tr>
+<tr class="even">
+<td>- Method is well-suited to capture interactions and non-linearities in data.</td>
+<td>- Trees tend to overfitted at the terminal leafs when samples are too small.</td>
+</tr>
+<tr class="odd">
+<td>- Technique can accept both continuous and continuous variables without prior transformation.</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>- Feature selection is conducted automatically</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="in-practice-decision-trees" class="section level4">
+<h4><span class="header-section-number">9.3.3.5</span> In Practice: Decision Trees</h4>
+<p>To put decision trees into practice, we will use the same <code>train</code> and <code>test</code> data frames introduced in the GLM section. There are a number of R implementations of decision trees, the most popular of which is the <code>rpart</code> library:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(rpart)</code></pre></div>
+<p>The main function within the library comes with flexible capabilities to grow decision trees:</p>
+<p><code>rpart(formula, method, data, cp, minbucket, minsplit)</code></p>
+<p>where:</p>
+<ul>
+<li><code>formula</code> is a formula object. This can take on a number of forms such as a symbolic description (e.g. <span class="math inline">\(y = f(x_1, x_2, ...)\)</span> is represented as “<code>y ~ x1 + x2</code>”“).</li>
+<li><code>method</code> indicates the type of tree, which are commonly either a classification tree “class” or regression tree “anova”. Split criteria can also be custom written.</li>
+<li><code>data</code> is the data set in data frame format.</li>
+<li><code>cp</code> is a numeric indicates the complexity of the tree. <span class="math inline">\(cp = 1\)</span> is a tree without branches, whereas <span class="math inline">\(cp = 0\)</span> is the fully grown, unpruned tree. If <span class="math inline">\(cp\)</span> is not specified, <code>rpart()</code> defaults to a value of 0.01.</li>
+<li><code>minbucket</code> is a stopping criteria that specifies the minimum number of observations in any terminal leaf.</li>
+<li><code>minsplit</code> is a stopping criteria that specifies the number of observation in a node to qualify for an attribute test.</li>
+</ul>
+<p>As a first pass, we’ll run <code>rpart()</code> with the default assumptions. Note that in <code>rpart()</code> automatically conducts k-folds cross-validation for each level of tree growth. If one were to use <code>summary()</code> or <code>str()</code> to check the structure of the output object named <code>fit</code>, the inner workings would likely be found to be quite exhaustive and rather complex. Fortunately, the <code>printcp()</code> method can be used to obtain a summary of the overall model accuracy for tree at different stages of growth. Key features of the <code>printcp()</code> output include:</p>
+<ul>
+<li>A listing of the variables actually used in construction (note that <code>cit</code>)</li>
+<li>In the table, <code>CP</code> indicates the tree complexity, <code>nsplit</code> is the number of splits, <code>rel error</code> is the prediction error in the training data, <code>xerror</code> is the cross-validation error, and <code>xstd</code> is the standard error.</li>
+</ul>
+<p>To choose the best tree, a <em>rule of thumb</em> is to first find the tree with the lowest cross-validation <code>xerror</code>, then find the tree that has the lowest number of splits that is still within one standard deviation <code>xstd</code> of the best tree<a href="#fn44" class="footnoteRef" id="fnref44"><sup>44</sup></a>. The idea behinds this rule of thumb takes advantage of uncertainty: the true value lies somewhere within a confidence interval, thus any value within a tight confidence interval of the best value is approximately the same. In this first model, the best tree has nsplit = 7 and xerror = 0.542760247714538. By applying the rule, the upper bound of acceptable error is xerror = 0.54276 + 0.00764 = 0.550399764766261. As it turns out, the tree with nsplit = 6 is within one standard deviation and is thus the best model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Fit decision tree under default assumptions</span>
+  fit &lt;-<span class="st"> </span><span class="kw">rpart</span>(coverage ~<span class="st"> </span>agep +<span class="st"> </span>wage +<span class="st"> </span>cit +<span class="st"> </span>mar +<span class="st"> </span>schl +<span class="st"> </span>esr, 
+               <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>, <span class="dt">data =</span> train)
+  
+<span class="co">#Tools to review outpu</span>
+  <span class="kw">printcp</span>(fit)</code></pre></div>
+<p>The model’s learned rules contained in <code>fit</code> can be plotted with <code>plot()</code>, but it takes a bit of work to get the plot into a presentable format. The substitute is using the <code>rpart.plot</code> library, which auto-formats the tree and color codes nodes based on the concentration of the target variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Plot</span>
+  <span class="kw">library</span>(rpart.plot)
+  <span class="kw">rpart.plot</span>(fit, <span class="dt">shadow.col=</span><span class="st">&quot;gray&quot;</span>, <span class="dt">nn=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-363"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-363-1.png" alt="Decision tree using default parameters." width="672" />
+<p class="caption">
+Figure 9.8: Decision tree using default parameters.
+</p>
+</div>
+<p>While this answer is valid, it should be noted that the CP lower threshold is 0.01, which is the default value. For robustness, we should run the model once more, this time specifying <span class="math inline">\(cp = 0\)</span> to obtain the full, unpruned tree (see below). Applying the error minimization rule once more, the minimum xerror = 0.495429, which corresponds to nsplit = 40. The maximum <span class="math inline">\(xerror\)</span> within one standard deviation is xerror = 0.495429 + 0.007416 = 0.502845, which corresponds to nsplit = 21 with xerror = 0.502802 and cp = 0.000737</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#cp = 0</span>
+  fit<span class="fl">.0</span> &lt;-<span class="st"> </span><span class="kw">rpart</span>(coverage ~<span class="st"> </span>agep +<span class="st"> </span>wage +<span class="st"> </span>cit +<span class="st"> </span>mar +<span class="st"> </span>schl +<span class="st"> </span>esr , 
+               <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>, <span class="dt">data =</span> train, <span class="dt">cp =</span> <span class="dv">0</span>)
+  <span class="kw">printcp</span>(fit<span class="fl">.0</span>)</code></pre></div>
+<pre><code>## 
+## Classification tree:
+## rpart(formula = coverage ~ agep + wage + cit + mar + schl + esr, 
+##     data = train, method = &quot;class&quot;, cp = 0)
+## 
+## Variables actually used in tree construction:
+## [1] agep cit  esr  mar  schl wage
+## 
+## Root node error: 6782/13596 = 0.49882
+## 
+## n= 13596 
+## 
+##            CP nsplit rel error  xerror      xstd
+## 1  2.3061e-01      0   1.00000 1.00664 0.0085963
+## 2  1.4258e-01      1   0.76939 0.81598 0.0084465
+## 3  1.6883e-02      2   0.62681 0.63934 0.0080128
+## 4  1.2976e-02      6   0.54364 0.54527 0.0076506
+## 5  9.5842e-03      7   0.53067 0.53657 0.0076119
+## 6  5.9717e-03      8   0.52109 0.52389 0.0075538
+## 7  4.8658e-03     10   0.50914 0.51533 0.0075135
+## 8  2.9490e-03     11   0.50428 0.50944 0.0074852
+## 9  1.9168e-03     12   0.50133 0.50723 0.0074744
+## 10 1.8185e-03     13   0.49941 0.50560 0.0074665
+## 11 1.1059e-03     16   0.49395 0.50413 0.0074593
+## 12 9.3384e-04     18   0.49174 0.50472 0.0074622
+## 13 7.3725e-04     21   0.48894 0.50280 0.0074527
+## 14 6.8810e-04     25   0.48599 0.50088 0.0074433
+## 15 5.8980e-04     28   0.48393 0.50015 0.0074396
+## 16 4.4235e-04     31   0.48172 0.49808 0.0074293
+## 17 3.4405e-04     34   0.48039 0.49646 0.0074212
+## 18 3.3176e-04     40   0.47832 0.49543 0.0074160
+## 19 2.9490e-04     44   0.47700 0.49720 0.0074249
+## 20 2.4575e-04     54   0.47405 0.49912 0.0074345
+## 21 2.2117e-04     58   0.47302 0.49882 0.0074330
+## 22 1.4745e-04     68   0.47066 0.50265 0.0074520
+## 23 1.2287e-04     94   0.46682 0.50973 0.0074866
+## 24 1.1796e-04    100   0.46609 0.51239 0.0074994
+## 25 9.8299e-05    105   0.46550 0.51357 0.0075050
+## 26 8.8469e-05    108   0.46520 0.51489 0.0075114
+## 27 7.3725e-05    118   0.46432 0.51858 0.0075289
+## 28 5.8980e-05    122   0.46402 0.51932 0.0075324
+## 29 4.9150e-05    132   0.46343 0.52197 0.0075449
+## 30 3.6862e-05    141   0.46299 0.52197 0.0075449
+## 31 2.9490e-05    149   0.46270 0.52256 0.0075476
+## 32 2.1064e-05    154   0.46255 0.52374 0.0075531
+## 33 0.0000e+00    161   0.46240 0.52433 0.0075559</code></pre>
+<p>At this point, we’ll re-run the decision tree once more with the updated <span class="math inline">\(cp\)</span> value, assign the decision tree object to <code>fit.opt</code>, and plot the resulting decision tree. Notice how the rendered tree is significantly more complex relative to the default and interpretation may be more challenging with a plethora of criteria.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fit.opt &lt;-<span class="st"> </span><span class="kw">rpart</span>(coverage ~<span class="st"> </span>agep +<span class="st"> </span>wage +<span class="st"> </span>cit +<span class="st"> </span>mar +<span class="st"> </span>schl +<span class="st"> </span>esr, 
+               <span class="dt">method =</span> <span class="st">&quot;class&quot;</span>, <span class="dt">data =</span> train, <span class="dt">cp =</span> opt.select)
+  <span class="kw">rpart.plot</span>(fit.opt, <span class="dt">shadow.col=</span><span class="st">&quot;gray&quot;</span>, <span class="dt">nn=</span><span class="ot">TRUE</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-367"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-367-1.png" alt="Decision tree for optimized complexity." width="672" />
+<p class="caption">
+Figure 9.9: Decision tree for optimized complexity.
+</p>
+</div>
+<p>In lieu of a thorough review of the learned rules, we may rely on a measure of variable importance, that is defined as follows:</p>
+<p><span class="math display">\[\text{Variable Importance}_k = \sum{\text{Goodness of Fit}_\text{split, k} + (\text{Goodness of Fit}_\text{split,k}\times \text{Adj. Agreement}_\text{split})}\]</span> Where <em>Variable Importance</em> for variable <span class="math inline">\(k\)</span> is the sum of <em>Goodness of Fit</em> (e.g. Gini Gain or Information Gain) at a given split involving variable k. In otherwords, a variable’s importance is the sum of all the contributions variable <span class="math inline">\(k\)</span> makes towards predicting the target. Below, we can see that the measure can be extracted from the <code>fit.opt</code> object. As it turns out, <code>age</code> is the most important factor.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract variable importance list from fit object</span>
+  fit.opt$variable.importance</code></pre></div>
+<pre><code>##      agep      schl       mar       cit       esr      wage 
+## 928.68854 559.14016 375.75373 271.38939 192.99726  68.11775</code></pre>
+<p>Using the <code>plotROC</code> package once again, we calculate the AUC score for each model to assess predictive performance on both the training and test set. One particularly striking difference is the switch in position of the <span class="math inline">\(optimal\)</span> and <span class="math inline">\(cp = 0\)</span> curves: <span class="math inline">\(cp = 0\)</span> is higher in the training set, but are at the approximate safe height in test. This indicates that <span class="math inline">\(cp = 0\)</span> notably overfits, likely to the extra low bias of unpruned leafs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotROC</span>
+  <span class="kw">library</span>(plotROC)
+  <span class="kw">library</span>(gridExtra)
+
+<span class="co">#Predict values for train set</span>
+  pred.opt.train &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.opt, train, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+  pred<span class="fl">.0</span>.train &lt;-<span class="st"> </span><span class="kw">predict</span>(fit<span class="fl">.0</span>, train, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+  pred.default.train &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, train, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+
+<span class="co">#Predict values for test set</span>
+  pred.opt.test &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.opt, test, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+  pred<span class="fl">.0</span>.test &lt;-<span class="st"> </span><span class="kw">predict</span>(fit<span class="fl">.0</span>, test, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+  pred.default.test &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, test, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+  
+<span class="co">#Set up ROC inputs</span>
+  input.test &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;optimal&quot;</span>, <span class="dt">d =</span> test$coverage, <span class="dt">m =</span> pred.opt.test), 
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;CP = 0&quot;</span>, <span class="dt">d =</span> test$coverage,  <span class="dt">m =</span> pred<span class="fl">.0</span>.test),
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;default&quot;</span>, <span class="dt">d =</span> test$coverage,  <span class="dt">m =</span> pred.default.test))
+  input.train &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;optimal&quot;</span>, <span class="dt">d =</span> train$coverage,  <span class="dt">m =</span> pred.opt.train), 
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;CP = 0&quot;</span>, <span class="dt">d =</span> train$coverage,  <span class="dt">m =</span> pred<span class="fl">.0</span>.train),
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;default&quot;</span>, <span class="dt">d =</span>  train$coverage,  <span class="dt">m =</span> pred.default.train))
+  
+  
+<span class="co">#Graph all three ROCs</span>
+  roc.test &lt;-<span class="st"> </span><span class="kw">ggplot</span>(input.test, <span class="kw">aes</span>(<span class="dt">d =</span> d, <span class="dt">model =</span> model, <span class="dt">m =</span> m, <span class="dt">colour =</span> model)) +<span class="st"> </span>
+<span class="st">             </span><span class="kw">geom_roc</span>(<span class="dt">show.legend =</span> <span class="ot">TRUE</span>) +<span class="st"> </span><span class="kw">style_roc</span>()  +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Test&quot;</span>)
+  roc.train &lt;-<span class="st"> </span><span class="kw">ggplot</span>(input.train, <span class="kw">aes</span>(<span class="dt">d =</span> d, <span class="dt">model =</span> model, <span class="dt">m =</span> m, <span class="dt">colour =</span> model)) +<span class="st"> </span>
+<span class="st">             </span><span class="kw">geom_roc</span>(<span class="dt">show.legend =</span> <span class="ot">TRUE</span>) +<span class="st"> </span><span class="kw">style_roc</span>()  +<span class="kw">ggtitle</span>(<span class="st">&quot;Train&quot;</span>)
+  
+<span class="co">#Plot</span>
+  <span class="kw">grid.arrange</span>(roc.train, roc.test, <span class="dt">ncol =</span> <span class="dv">2</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-369"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-369-1.png" alt="ROC curves for train and test sets." width="672" />
+<p class="caption">
+Figure 9.10: ROC curves for train and test sets.
+</p>
+</div>
+<p>Lastly, we can extract the AUC statistics using <code>calc_auc()</code>. As multiple AUCs were calculated, we will need to extract the labels for the AUCs from the <code>input</code> file in order to produce a a ‘prettified’ table using <code>xtable</code>. The resulting table below presents the results of the three models that were trained. For all models, we should expect that the training AUC will be greater than the test AUC. This is generally true, but occassionally the test AUC may be greater and is largely a matter of how the data was sampled.</p>
+<p>Starting from the top of the table:</p>
+<ul>
+<li><em>Full grown</em>. The unpruned tree is the most complex model, which means the model has a higher chance of overfitting. This is characterized by an artificially inflated training AUC and a large drop in test AUC. As seen, the AUC drops from 0.88 to 0.826 in the test sample. The unreliable results of an unpruned tree are likely due to the algorithm’s sensitivity to irregular noise at leafs.</li>
+<li><em>Optimal</em>. The optimal tree achieves a consistent <span class="math inline">\(AUC = 0.83\)</span> with minimal loss of accuracy as an appropriate level of complexity was precisely tuned.</li>
+<li><em>Default</em>. An underfit model will have consistently low performance in both training and testing. As we can see, these patterns are played out in the table below containing AUCs for each the default decision tree, the optimal model complexity and the fully grown tree.</li>
+</ul>
+<p>As the result of tuning towards an optimal model, we can see that the decision tree yields a marked improvement over the kNN model’s <span class="math inline">\(AUC = 0.44\)</span>. For a social science problem, this is considered to be a decent result.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Assemble a well-formatted table</span>
+  tab &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="kw">unique</span>(input.test$model), 
+                    <span class="dt">train =</span> <span class="kw">round</span>(<span class="kw">calc_auc</span>(roc.train)$AUC,<span class="dv">3</span>), 
+                    <span class="dt">test =</span> <span class="kw">round</span>(<span class="kw">calc_auc</span>(roc.test)$AUC,<span class="dv">3</span>))</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">model</th>
+<th align="right">train</th>
+<th align="right">test</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">optimal</td>
+<td align="right">0.824</td>
+<td align="right">0.824</td>
+</tr>
+<tr class="even">
+<td align="left">CP = 0</td>
+<td align="right">0.847</td>
+<td align="right">0.835</td>
+</tr>
+<tr class="odd">
+<td align="left">default</td>
+<td align="right">0.781</td>
+<td align="right">0.780</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+<div id="random-forests" class="section level3">
+<h3><span class="header-section-number">9.3.4</span> Random Forests</h3>
+<p>In much of modern data references, we see more uncertainty being characterized. When a hurricane approaches the US Eastern Seaboard, forecasters often map the “cone of uncertainty” that provides the possible range of motion of a storm based on the results of many forecasted simulations. In presidential elections, often times the most polling results are ones that ensemble or average the results of many other similarly conducted polls. The reliance on predictions from a group of models with the same aim may very well improve prediction quality. In statistical learning, average the results of multiple models is known as <em>ensemble learning</em> or <em>ensembling</em> for short.</p>
+<p>Single models may imposes biases on data and may be well-suited in specific situations. Ensemble methods combine the results of many models to obtain more stable results. For example, the curve in graph #1 can be approximated using a decision tree algorithm. The result of a single tree only loosely fits the curve in a jagged fashion (#2). That one tree may impose biases on the data, perhaps through how the tree is pruned or the assumption that the jagged approximation is appropriate, which may then translate into greater variance in predictions. One could imagine that the structure of that one tree may have happened by chance, and under different situations, the fit could be better.</p>
+<p>Bootstrapping can help. Recall from elementary statistics that bootstrapping is defined as any statistical process that involves sampling records with replacement. By bootstrapping a sample, we treat a sample like a population, we can expose and characterize the qualities of an estimator under various scenarios already available in the data, which in turn produces an empirical probability distribution for predictions using the estimator. We can bootstrap the decision tree by (1) sampling the data with replacement up to the full size of the sample, then (2) run the decision tree. The result of repeating the process 50 times is (graph #3) produces a result that appears to be more organic and more accurate. This process of <em>bootstrapping</em> and <em>aggregating</em> the results is referred to as <em>bagging</em>.</p>
+<div class="figure"><span id="fig:unnamed-chunk-372"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-372-1.png" alt="Comparison of results of applying a single model to fit a curve versus an ensemble of models." width="672" />
+<p class="caption">
+Figure 9.11: Comparison of results of applying a single model to fit a curve versus an ensemble of models.
+</p>
+</div>
+<p>Applying bagging to decision trees may not necessarily be enough to develop a well-balance prediction. In the social sciences and public policy, it is generally assumed that a model’s specification is a choice left to the analyst; However, it may also be a source of methodological bias.</p>
+<p><em>Random forests</em> can help. The technique, as crystallized in Breiman (2001), is an extension of decision trees using a modified form of bootstrapping and ensemble methods to mitigate overfitting and bias issues. Not only are individual records bootstrapped, but input features are bootstrapped such that if <span class="math inline">\(K\)</span> variables are in the training set, then <span class="math inline">\(k\)</span> variables are randomly selected to be considered in a model such that <span class="math inline">\(k &lt; K\)</span>. Each bootstrap sample is exhaustively grown using decision tree learning and is left as an unpruned tree. The resulting predictions of hundreds of trees are ensembled. The logic is described below.</p>
+<p><strong>Pseudo-code</strong></p>
+<pre><code>Let S = training sample, K = number of input features
+  1. Randomly sample S cases with replacement from the original data.
+  2. Given K features, select k features at random where k &lt; K.
+  3. With a sample of s and k features, grow the tree to its fullest complexity.
+  4. Predict the outcome for all records.
+  5. Out-Of-Bag (OOB). Set aside the predictions for records not in the s cases.
+Repeat steps 1 through 5 for a large number of times saving the result after each tree.
+Vote and average the results of the tree to obtain predictions. 
+Calculate OOB error using the stored OOB predictions. </code></pre>
+<p>The <em>Out-Of-Bag</em> (OOB) sample is a natural artifact of bootstrapping: approximately one-third of observations are naturally left un-selected, which can be used as the basis of calculating each tree’s error and the overall model error. Think of it as a convenient built in test sample.</p>
+<p><em>How about interpretation?</em> Unlike decision trees, it is not a simple task to deduce rules or criteria that describe the target variable. Instead, random forests use <em>variable importance</em>, which, like for a decision tree, measures the contribution of a feature to the homogeneity of a classifier. Unlike decision trees, variable importance for a Random Forest is calculated as the mean decrease in the Gini coefficient of a split relative to the Gini coefficient of the root node. Gini coefficients measures homogeneity on a scale of 0 to 1, where 0 is perfect homogeneity and 1 is perfect heterogeneity. The Gini changes are summed for each variable and normalized.</p>
+<div class="figure"><span id="fig:unnamed-chunk-373"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-373-1.png" alt="Random Forests construct hundreds of trees sampling from both observations and features, then combine the trees into one prediction through voting." width="672" />
+<p class="caption">
+Figure 9.12: Random Forests construct hundreds of trees sampling from both observations and features, then combine the trees into one prediction through voting.
+</p>
+</div>
+<div id="tuning" class="section level4">
+<h4><span class="header-section-number">9.3.4.1</span> Tuning</h4>
+<p>Whereas methods like regression have a closed form solution, Random Forest require tuning as optimal models need to be searched for under different conditions. The principal tuning parameters include: Number of features and number of trees.</p>
+<ul>
+<li><em>Number of input features</em>. As <span class="math inline">\(k\)</span> number of parameters need to be selected in each sampling round, the value of <span class="math inline">\(k\)</span> needs to minimize the error on the OOB predictions.</li>
+<li><em>Number of trees</em> influences the stability the Variable Importance metric that is commonly used to infer variable influence in decision tree learning. More trees help to stabilize the Variable Importance estimate. To determine the number of trees, keep adding trees to a sample until the OOB error for a randomly select set of trees is approximately equal to that of the ensemble.</li>
+</ul>
+</div>
+<div id="random-forests-in-practice" class="section level4">
+<h4><span class="header-section-number">9.3.4.2</span> Random Forests in Practice</h4>
+<p>Like decision trees, much of Random Forests rely on easy to use methods made available through the <code>randomForest</code> library. There are a couple of ways to run the algorithm, including:</p>
+<p><code>randomForest(formula, data, method, mtry, ntree)</code></p>
+<p>where: - <code>formula</code> is an object containing the specification to be estimated. Note that - <code>data</code> is a data frame. - <code>mtry</code> is the number of variables to be randomly sampled per iteration. Default is <span class="math inline">\(\sqrt{k}\)</span> for classification trees. - <code>ntree</code> is the number of trees. Default is 500.</p>
+<p>Using the same formula as the <code>rpart()</code> function, we can train a naive Random Forest and check the OOB error. Approximately 75.6% of observations in the OOB sample were correctly classified using 2 randomly selected variables in each of the 500 trees.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load randomForest library</span>
+  <span class="kw">library</span>(randomForest)
+
+<span class="co">#Run Random Forest</span>
+  spec &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="st">&quot;coverage ~  agep + wage + cit + mar + schl + esr&quot;</span>)
+  fit.rf &lt;-<span class="st"> </span><span class="kw">randomForest</span>(spec, <span class="dt">data =</span> train, <span class="dt">mtry =</span> <span class="dv">2</span>, <span class="dt">ntree =</span> <span class="dv">500</span>)
+
+<span class="co">#Check OOB error</span>
+  fit.rf</code></pre></div>
+<pre><code>## 
+## Call:
+##  randomForest(formula = spec, data = train, mtry = 2, ntree = 500) 
+##                Type of random forest: classification
+##                      Number of trees: 500
+## No. of variables tried at each split: 2
+## 
+##         OOB estimate of  error rate: 24.43%
+## Confusion matrix:
+##             Coverage No Coverage class.error
+## Coverage        4958        1856   0.2723804
+## No Coverage     1466        5316   0.2161604</code></pre>
+<p>Using the <code>importance()</code> method, we can see the Mean Decrease Gini, which calculates the mean of Gini coefficients. <code>agep</code> has the largest value of 801.3155193, indicating that age is the best predictor of coverage; However, the values themselves do not have any meaning outside of a comparison with other Gini measures.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">importance</span>(fit.rf)</code></pre></div>
+<pre><code>##      MeanDecreaseGini
+## agep        801.31552
+## wage         77.79932
+## cit         321.67357
+## mar         446.41256
+## schl        444.07750
+## esr         234.16484</code></pre>
+<p>By default, the <code>randomForests</code> library sets the number of trees to equal 500. By plotting the fit object, we can see how OOB error and the confidence interval converges asymptotically as more trees are added to the ensemble. Otherwise stated, more trees will help up to a certain point and the default is likely more than enough.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">plot</span>(fit.rf)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-377-1.png" width="672" /></p>
+<p>As we know that <span class="math inline">\(n = 500\)</span> trees is more than enough, we will now need to tune the tree for the number of variables. To tune the algorithm, we will use the <code>tuneRF()</code> method. The method searches for the optimal number of variables per split by incrementally adding variables. While it’s a useful function, it is relatively verbose. In addition to the target and input features, a number of other parameters need to be specified:</p>
+<p><code>tuneRF(x, y, ntreeTry,  mtryStart, stepFactor, improve, trace, plot)</code></p>
+<p>where: - <code>x</code> is a data frame or matrix of input features. - <code>ntreeTry</code> is the number of trees used in each iteration of tuning. - <code>mtryStart</code> is the number of variables to start. - <code>stepFactor</code> is the number of additional variables tested per iteration. - <code>improve</code> is the minimum relative improvement in OOB error for the search to go on. - <code>trace</code> is a boolean that indicates where to print the search progress. - <code>plot</code> is a boolean that indicates whether to plot the search results.</p>
+<p>Below, we conduct a search from <code>mtryStart = 1</code> with a <code>stepFactor = 2</code>. The search result indicates that <em>2</em> variables per split are optimal.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Search for most optimal number of input features</span>
+  fit.tune &lt;-<span class="st"> </span><span class="kw">tuneRF</span>(<span class="dt">x =</span> train[,<span class="dv">3</span>:<span class="kw">ncol</span>(train)], <span class="dt">y =</span>  train[,<span class="dv">2</span>], <span class="dt">ntreeTry =</span> <span class="dv">500</span>, 
+                     <span class="dt">mtryStart =</span> <span class="dv">1</span>, <span class="dt">stepFactor =</span> <span class="dv">2</span>, 
+                     <span class="dt">improve =</span> <span class="fl">0.001</span>, <span class="dt">plot =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<pre><code>## mtry = 1  OOB error = 26.53% 
+## Searching left ...
+## Searching right ...
+## mtry = 2     OOB error = 24.37% 
+## 0.08123094 0.001 
+## mtry = 4     OOB error = 25% 
+## -0.02564876 0.001</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-378"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-378-1.png" alt="Random Forest tuning result (m = number of features, OOB Error = out of sample error)." width="672" />
+<p class="caption">
+Figure 9.13: Random Forest tuning result (m = number of features, OOB Error = out of sample error).
+</p>
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract best parameter</span>
+  tune.param &lt;-<span class="st"> </span>fit.tune[fit.tune[, <span class="dv">2</span>] ==<span class="st"> </span><span class="kw">min</span>(fit.tune[, <span class="dv">2</span>]), <span class="dv">1</span>]</code></pre></div>
+<p>Using the optimal result, we can plug back into the <code>randomForest()</code> method and re-run. However, as the default model already has the same parameters as the optimal model, we can proceed to calculating the model accuracy. Comparing the training and test models for the Random Forest algorith, we see a large drop in the AUC between train and test, indicating quite a bit of overfitting.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#plotROC</span>
+  <span class="kw">library</span>(plotROC)
+
+<span class="co">#Predict values for train set</span>
+  pred.rf.train &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.rf, train, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+
+<span class="co">#Predict values for test set</span>
+  pred.rf.test &lt;-<span class="st"> </span><span class="kw">predict</span>(fit.rf, test, <span class="dt">type=</span><span class="st">&#39;prob&#39;</span>)[,<span class="dv">2</span>]
+
+  
+<span class="co">#Set up ROC inputs</span>
+  input.rf &lt;-<span class="st"> </span><span class="kw">rbind</span>(<span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;train&quot;</span>, <span class="dt">d =</span> train$coverage, <span class="dt">m =</span> pred.rf.train), 
+                  <span class="kw">data.frame</span>(<span class="dt">model =</span> <span class="st">&quot;test&quot;</span>, <span class="dt">d =</span> test$coverage,  <span class="dt">m =</span> pred.rf.test))
+  
+<span class="co">#Graph all three ROCs</span>
+  roc.rf &lt;-<span class="st"> </span><span class="kw">ggplot</span>(input.rf, <span class="kw">aes</span>(<span class="dt">d =</span> d, <span class="dt">model =</span> model, <span class="dt">m =</span> m, <span class="dt">colour =</span> model)) +<span class="st"> </span>
+<span class="st">             </span><span class="kw">geom_roc</span>(<span class="dt">show.legend =</span> <span class="ot">TRUE</span>) +<span class="st"> </span><span class="kw">style_roc</span>()  +<span class="kw">ggtitle</span>(<span class="st">&quot;Train&quot;</span>)
+
+<span class="co">#AUC</span>
+  <span class="kw">calc_auc</span>(roc.rf)</code></pre></div>
+<pre><code>##   PANEL group       AUC
+## 1     1     1 0.8374157
+## 2     1     2 0.8316592</code></pre>
+
+</div>
+</div>
+<div id="support-vector-machines" class="section level3">
+<h3><span class="header-section-number">9.3.5</span> Support Vector Machines</h3>
+<p>Logistic regression is a probabilistic approach. The linear formulation allows for ease of interpretation and is thus a technique of choice in many fields for general applications. But the predictive accuracy may be a whole magnitude lower relative to other methods. Support Vector Machines, on the other hand, take a purely geometric approach to classification. The technique often yields relatively higher accuracy, at the expense of interpretation. For technical tasks that involve organic relationships such as computer vision or genetic research, SVMs are particularly adept at pattern recognition and classification. It should be noted that it is due to the highly mathematical nature of SVMs in addition to the computational requirements that the technique is typically used for tasks where social interpretation is not required.</p>
+<p>Building upon the same three feature dataset once more, let’s assume this time when data are plotted, there is a clear gap between groups such that a straight line can partition one group from the other (see panel (1) below). A line as simple as <span class="math inline">\(wx + b = y\)</span> may do the trick in two dimensional space, but can also be described as a plane in n-dimensional space <span class="math inline">\(w^T + b = y\)</span>. That line may then serve as a boundary between the two groups where <span class="math inline">\(w^T + b &gt; y\)</span> may describe the group above the boundary and <span class="math inline">\(w^T + b &lt; y\)</span> describes the group below.</p>
+<p>Given the space, however, you realize that multiple lines could do the job: there are almost infinite lines (see panel (2) below) that could serve as the boundary between the groups. But which is the best? There should, in theory, be one line that optimally describes the separation between the groups.</p>
+<div class="figure"><span id="fig:unnamed-chunk-381"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-381-1.png" alt="(1) A two class data set in two dimensional space with a clear gap between classes. (2) Numerous possible decision boundaries in a two class data set." width="672" />
+<p class="caption">
+Figure 9.14: (1) A two class data set in two dimensional space with a clear gap between classes. (2) Numerous possible decision boundaries in a two class data set.
+</p>
+</div>
+<div id="classification-1" class="section level4">
+<h4><span class="header-section-number">9.3.5.1</span> Classification</h4>
+<p>If we are to assume a straight line is appropriate, we can find a line that maximizes the distance between the groups. To intuit distance requires defining points of reference. Let’s then assume that there exists two parallel planes: each sits at the edge of each respective group and the space, labeling the top plane as <span class="math inline">\(y = +1\)</span> and bottom plane as <span class="math inline">\(y = -1\)</span>. As seen in Figure 3, the dashed grey lines and the solid purple lines are <em>hyperplanes</em>, but are simply lines in two dimensional space. H1 (<span class="math inline">\(y = +1\)</span>) and H2 (<span class="math inline">\(y = -1\)</span>) are hyperplanes that are defined by a set of “support vectors” – points that serve as control or reference points for the location of the hyperplane (see Figure 4). The elegance of this method is that not all points in a dataset are used to define H1 and H2: only select points on or near the hyperplanes are required to define the plane. These planes are defined using simple linear equations shown in dot-product form: <span class="math display">\[w^T x - b = +1\]</span> and <span class="math display">\[w^T x - b = -1\]</span> for H2, where <span class="math inline">\(w\)</span> is a weight that needs to be calibrated. H1 and H2 primarily serve as the boundaries of what is known as the <em>margin</em>, or the space that maximally separates the two classes that are linearly separable The optimal hyperplane or <em>decision boundary</em> is defined as <span class="math display">\[w^T x - b = 0\]</span> and sits at a distance of <span class="math inline">\(d+\)</span> from H1 and <span class="math inline">\(d-\)</span> from H2.</p>
+<p>When H1, H2, and the decision boundary are determined through training, scoring essentially maps where a new record falls in the decision space. A point to the left of H1 is scored as <span class="math inline">\(+1\)</span> and to the right of H2 is <span class="math inline">\(-1\)</span>. Note that thus far, a point that falls in between H1 and H2 is not considered.</p>
+<div class="figure"><span id="fig:unnamed-chunk-382"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-382-1.png" alt="(3) Two hyperplanes (H1 and H2) flank the decision boundary. (2) Hyperplanes, including the decision boundary, are defined by support vectors (green points)." width="672" />
+<p class="caption">
+Figure 9.15: (3) Two hyperplanes (H1 and H2) flank the decision boundary. (2) Hyperplanes, including the decision boundary, are defined by support vectors (green points).
+</p>
+</div>
+</div>
+<div id="learning-function" class="section level4">
+<h4><span class="header-section-number">9.3.5.2</span> Learning Function</h4>
+<p>To tune a SVM, we want to find the maximum distance between H1 and H2. This can be done by finding the distance of the line that is perpendicular to H1 and H2 since they are parallel. The following equations are the points at which the perpendicular line intersects at two points: <span class="math display">\[w^T_1 + b =1\]</span> and <span class="math display">\[w^T_2 + b =-1\]</span></p>
+<p>By subtract the two equations, we obtain <span class="math inline">\(w^T(x_1 - x_2) = 2\)</span>, which then can be manipulated by dividing the normalized <span class="math inline">\(w\)</span> vector <span class="math inline">\(||w||\)</span> of the weights. This yields a distance formula for the <em>margin</em>:</p>
+<p><span class="math display">\[\text{margin} = x_1 - x_2 = \frac{2}{||w||}\]</span></p>
+<p>To maximize the margin in its current form may be challenging and is typically reformulated as a minimization problem that can be solved using quadratic programming: <span class="math display">\[min \frac{1}{2}||w||^2\]</span> subject to <span class="math inline">\(y_i(w^Tx_i+b) \geq 1\)</span> for all records in the sample. Like gradient descent and Newton Raphson, these are problems that have standard implementations that are pre-packaged in R in the <code>e1071</code> library.</p>
+<p>For the sake of exposure, the learning function for <span class="math inline">\(w\)</span> is maximized using the following formulation:</p>
+<p><span class="math display">\[w(\alpha) = \sum_i{\alpha_i} - \frac{1}{2}\sum_i{\alpha_1\alpha_0 y_1 y_0 x_1^Tx_0}\]</span></p>
+<p>subject to <span class="math inline">\(\alpha_i \geq 0\)</span> (non-negatives), <span class="math inline">\(\sum_i{\alpha_i y_i} = 0\)</span> (sum of alpha and y are equal to zero). Otherwise stated: the equation is the sum of all points <span class="math inline">\(i\)</span> minus the product of alphas, labels, values. <span class="math inline">\(\alpha\)</span> are parameters that are being tuned in order to maximize <span class="math inline">\(w\)</span>. An interesting observation of this formula is that since the hyperplanes H1 and H2 sit on the edge of their respective groups, the hyperplane will only intersect with only a few records or “vectors”. Mathematically, many of the <span class="math inline">\(\alpha\)</span> values will be zero. Intuitively, that means that the optimization equation will retain only a fraction of the total vectors to support the calculation on the plane. This is the origin of the name of the method: only vectors that support the planar calculation are retained.</p>
+<p>Upon maximizing <span class="math inline">\(w\)</span>, a vector of <span class="math inline">\(w\)</span> containing the weights associated with each feature can be extracted <span class="math display">\[w = \sum_i^N{\alpha_i y_i x_i + b}\]</span> which in turn can be used to solve a planar equation to find the corresponding value of <span class="math inline">\(b\)</span> to define the plane. While there are weights in this method, they are not directly interpretable in the way as logistic regression, but the magnitude of the underlying weights correspond to the importance of each feature.</p>
+</div>
+<div id="in-actuality" class="section level4">
+<h4><span class="header-section-number">9.3.5.3</span> In Actuality</h4>
+<p>The first example provided is what is know as a <em>hard margin</em>, where classes are linearly separable. In actuality, most classification problems do not have a clear margin between classes, meaning that there may be points that are misclassified or lie in the margin. A <em>soft margin</em> formulation is more commonly used to handle cases where there is some fuzziness in the separation: the margin must be determined allowing for misclassification of points. We can characterize the position of challenging-to-classify points using <em>slack variables</em>, or a variable <span class="math inline">\(\xi\)</span> that represents distance from the margin to a point.</p>
+<p>Figure 6 illustrates a number of commonly observed scenarios:</p>
+<ul>
+<li>The green points are the support vectors that sit on H1 and H2, which are <span class="math inline">\(\xi = 0\)</span>.</li>
+<li>The distance from each H2 and H1 to the decision boundary is <span class="math inline">\(\frac{1}{||w||}\)</span>.<br />
+</li>
+<li>The large gold points sit between H0 and H2 such that <span class="math inline">\(0 \leq \xi \leq \frac{1}{||w||}\)</span>. While they still are correctly classified (correct side of the decision boundary), the points sit within the margin. These points are referred to as <em>margin violations</em>.</li>
+<li>The large blue point is a misclassified record as it is to the left of H1, but should be to the right of H2. In terms of slack distance, <span class="math inline">\(\xi &gt; \frac{2}{||w||}\)</span> as its distance from the correct hyperplane is greater than the width of the margin.</li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-383"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-383-1.png" alt="Soft margin SVMs allow some margin violations in order to fit the hyperplanes." width="672" />
+<p class="caption">
+Figure 9.16: Soft margin SVMs allow some margin violations in order to fit the hyperplanes.
+</p>
+</div>
+<p>What does this mean for optimizing the margin? The slack variables need to be accounted for in the optimization of <span class="math inline">\(||w||\)</span>:</p>
+<p><span class="math display">\[min \frac{1}{2}||w||^2 + C\sum_i^N{\xi_i}\]</span></p>
+<p>subject to <span class="math inline">\(y_i(w^Tx_i+b) \geq 1 - \xi_i\)</span> for all records in the sample. The first half of the formula is the same as the hard margin formula. The second half adds a constraint where the new variable <span class="math inline">\(C\)</span> is known as a regularization variable or the <em>Cost</em>. If <span class="math inline">\(C\)</span> is small, the slack variables are ignored and thus allows for larger margins. If <span class="math inline">\(C\)</span> is large, then the slack variables reduce the size of the margin. It is worth noting that <span class="math inline">\(C\)</span> is one of two tuning parameters that data scientists will need to calibrate when running SVMs.</p>
+</div>
+<div id="extending-the-hypothesis-space" class="section level4">
+<h4><span class="header-section-number">9.3.5.4</span> Extending the hypothesis space</h4>
+<p>So far, the examples have focused on linear problems with hard and soft margins in two dimensional space. What if classes are clearly separated in a parabolic (1) or circular pattern (2)? A parabolic separation between classes can be described in terms of polynomials (e.g. <span class="math inline">\(y = x^2\)</span>). A circular pattern may actually be separable if points are projected into higher dimensional space. Moving from two-dimensions (2) to three-dimensions (3), the contour lines demonstrate that there may be some threshold of the third feature at which a hyperplane can separate the two classes. The projection of records into higher dimensional space to improve separability is known as the <em>kernel trick</em>.</p>
+<div class="figure"><span id="fig:unnamed-chunk-384"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-384-1.png" alt="Scenarios for which a hyperplane separates two class targets." width="672" />
+<p class="caption">
+Figure 9.17: Scenarios for which a hyperplane separates two class targets.
+</p>
+</div>
+<p>In a paper by <a href="http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.21.3818">Boser et al. (1992)</a> modified the maximization function:</p>
+<p><span class="math display">\[w(\alpha) = \sum_i{\alpha_i} - \frac{1}{2}\sum_i{\alpha_1\alpha_0 y_1 y_0 x_1^Tx_0}\]</span></p>
+<p>such that the dot products <span class="math inline">\(x_1^Tx_0\)</span> are replaced with non-linearkernel functions. Of particular significance are two common kernels: the Gaussian Radial Basis Function (RBF) and Polynomial kernels.</p>
+<p>RBP is defined as:</p>
+<p><span class="math display">\[RBF = exp(-\gamma ||x_1-x_0||^2)\]</span> where <span class="math inline">\(\gamma = \frac{1}{2\sigma^2}\)</span> and <span class="math inline">\(\sigma\)</span> &gt;0. The value of <span class="math inline">\(\gamma\)</span> determines the tightness of the kernel, where larger values of <span class="math inline">\(\gamma\)</span> yield a compact, tight kernel whereas smaller values of <span class="math inline">\(\gamma\)</span> are associated with wider-spread kernels. In <code>R</code>, the value of <span class="math inline">\(\gamma\)</span> is one of the tuning parameters that a data scientist would need to specify as RBFs are the default kernel. Note that one needs to use a grid search to find the appropriate value of <span class="math inline">\(\gamma\)</span> as it cannot be mathematically optimized, but rather analyzed.</p>
+<p>The polynomial kernel is defined as:</p>
+<p><span class="math display">\[Polynomial = (1+x_1^Tx_0)^d\]</span> where the value of <span class="math inline">\(d &gt; 0\)</span>, indicates the polynomial degree, and assumes that all polynomials from 1 to <span class="math inline">\(d\)</span> are included.</p>
+</div>
+<div id="practical-details" class="section level4">
+<h4><span class="header-section-number">9.3.5.5</span> Practical Details</h4>
+<p>After all the derivation is done, keep the following points in mind when applying SVMs:</p>
+<ul>
+<li>Tuning is centered on two variables: <span class="math inline">\(C\)</span> to manage the extent to which the margin is hard or soft, and <span class="math inline">\(\gamma\)</span> for when a RBF is applied. Note that the quantities of each are tuned using cross-validation in the form of a grid search (e.g. test multiple values at equal intervals).</li>
+<li>Non-linear SVMs are computationally expensive. Very high dimensional data sets will likely take a long time to compute.</li>
+<li>SVMs are particularly well-suited for a pattern recognition, computer vision among other computationally challenging problems. While they may yield more accurate results than many other classifiers, the ability for data scientists to give social policy decision makers control over the story is limited.</li>
+<li>ROC and AUC may at times be challenging to calculate for SVM results. An alternative is to utilize the F1 statistic defined as:</li>
+</ul>
+<p><span class="math display">\[F_1 =  2 \times \frac{\text{precision} \times \text{recall}}{\text{precision} +  \text{recall}}\]</span></p>
+</div>
+<div id="applying-svms" class="section level4">
+<h4><span class="header-section-number">9.3.5.6</span> Applying SVMs</h4>
+<p>SVMs are neatly packaged into an interface library called <code>e1071</code>. The library contains a suite of machine learning tools in addition to SVMs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(e1071)</code></pre></div>
+<p>Syntax is fairly simple and requires a minimum, six parameters are required:</p>
+<p><code>svm(formula, data, cost, gamma, kernel)</code></p>
+<p>where:</p>
+<ul>
+<li><code>formula</code> specifies a specification to be estimated.</li>
+<li><code>data</code> is a data frame.</li>
+<li><code>C</code> is the regularization parameter which needs to be grid searched. Default = 1.</li>
+<li><code>g</code> is a parameter used for RBF.</li>
+<li><code>kernel</code> is string value that indicates the kernel to be used, which may be one of the four types: “linear”, “polynomial”, “radial”, and “sigmoid”. Default = radial basis.</li>
+</ul>
+<p>To start, we will fit an SVM using a “*radial“” kernel assuming <span class="math inline">\(cost = 1\)</span> and <span class="math inline">\(gamma = \frac{1}{\text{dim}}\)</span>, where <span class="math inline">\(dim\)</span> is the number of effective variables in our data (e.g. continuous variables, expanded dummies, and intercept). This effectively is 18 in the health data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  spec &lt;-<span class="st"> </span><span class="kw">as.formula</span>(<span class="st">&quot;coverage ~  agep + wage + cit + mar + schl + esr&quot;</span>)
+  svm_rbf_fit &lt;-<span class="st"> </span><span class="kw">svm</span>(spec, <span class="dt">data=</span>train, <span class="dt">kernel =</span> <span class="st">&quot;radial&quot;</span>, <span class="dt">cost =</span> <span class="dv">1</span>, <span class="dt">gamma =</span> <span class="fl">0.05555</span>)</code></pre></div>
+<p>Typically, it is a good idea to test various values of <code>cost</code> and <code>gamma</code>, though noting that this process for SVMs is computationally expensive (takes a long time), especially for RBF kernels. The <code>e1071</code> library provides a method <code>tune.svm()</code> to find the best <code>cost</code> and <code>gamma</code> (see below). In this example, we will manually tune to develop a sense of how calibration works in practice.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  tune &lt;-<span class="st"> </span><span class="kw">tune.svm</span>(spec ,
+                    <span class="dt">data =</span> train,
+                    <span class="dt">kernel =</span> <span class="st">&quot;linear&quot;</span>, 
+                    <span class="dt">cost=</span><span class="dv">10</span>^(-<span class="dv">1</span>:<span class="dv">2</span>), <span class="dt">gamma=</span><span class="kw">c</span>(.<span class="dv">5</span>,<span class="dv">1</span>,<span class="dv">2</span>))</code></pre></div>
+<p>To determine search for the best parameters, we will conduct a grid search: a combination of four values of <code>cost</code> and four values of <code>gamma</code> will be tested for a total of 16 models. We choose equally spaced values on on a quadratic scale (e.g. <span class="math inline">\(0.01\)</span>, <span class="math inline">\(1\)</span>, <span class="math inline">\(10\)</span>) to emphasize differences in model fit. To evaluate accuracy, we will rely on the F1-scores</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#F1 score</span>
+ meanF1 &lt;-<span class="st"> </span>function(actual, predicted){
+    <span class="co"># Mean F1 score function</span>
+    <span class="co"># </span>
+    <span class="co"># Args: </span>
+    <span class="co">#   actual = a vector of actual labels</span>
+    <span class="co">#   predicted = predicted labels</span>
+    <span class="co">#</span>
+    <span class="co"># Returns: </span>
+    <span class="co">#   F1 score</span>
+    
+    classes &lt;-<span class="st"> </span><span class="kw">unique</span>(actual)
+    results &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+    for(k in classes){
+      results &lt;-<span class="st"> </span><span class="kw">rbind</span>(results, 
+                       <span class="kw">data.frame</span>(<span class="dt">class.name =</span> k,
+                                  <span class="dt">weight =</span> <span class="kw">sum</span>(actual ==<span class="st"> </span>k)/<span class="kw">length</span>(actual),
+                                  <span class="dt">precision =</span> <span class="kw">sum</span>(predicted ==<span class="st"> </span>k &amp;<span class="st"> </span>actual ==<span class="st"> </span>k)/<span class="kw">sum</span>(predicted ==<span class="st"> </span>k), 
+                                  <span class="dt">recall =</span> <span class="kw">sum</span>(predicted ==<span class="st"> </span>k &amp;<span class="st"> </span>actual ==<span class="st"> </span>k)/<span class="kw">sum</span>(actual ==<span class="st"> </span>k)))
+    }
+    results$score &lt;-<span class="st"> </span>results$weight *<span class="st"> </span><span class="dv">2</span> *<span class="st"> </span>(results$precision *<span class="st"> </span>results$recall) /<span class="st"> </span>(results$precision +<span class="st"> </span>results$recall) 
+    <span class="kw">return</span>(<span class="kw">sum</span>(results$score))
+ }</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Prep grid search parameters</span>
+  cost_vec &lt;-<span class="st"> </span><span class="dv">10</span>^(-<span class="dv">1</span>:<span class="dv">2</span>)
+  gamma_vec &lt;-<span class="st"> </span><span class="dv">2</span>^(<span class="kw">seq</span>(-<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>))
+  combo &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">cost =</span> cost_vec, 
+                       <span class="dt">gamma =</span> gamma_vec)
+  
+<span class="co"># Create 10-folds of random partitions</span>
+  <span class="co"># Create index for rows in train set</span>
+  fold &lt;-<span class="st"> </span><span class="kw">rep</span>(<span class="kw">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>), <span class="kw">ceiling</span>(<span class="kw">nrow</span>(train)/<span class="dv">10</span>))[<span class="dv">1</span>:<span class="kw">nrow</span>(train)]
+  
+  <span class="co"># Randomly reorder fold</span>
+  <span class="kw">set.seed</span>(<span class="dv">10</span>)
+  fold &lt;-<span class="st"> </span>fold[<span class="kw">order</span>(<span class="kw">runif</span>(<span class="kw">nrow</span>(train)))]
+  
+<span class="co">#Run 10-folds cross validation while tuning gamma and cost parameters</span>
+  cv_results &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+  
+  for(p in <span class="kw">unique</span>(fold)){
+    for(i in <span class="dv">1</span>:<span class="kw">nrow</span>(combo)){
+      <span class="co">#Fit SVM on 1 to k-1</span>
+      fit &lt;-<span class="st"> </span><span class="kw">svm</span>(spec, <span class="dt">data =</span> train[fold !=<span class="st"> </span>p, ], <span class="dt">kernel =</span> <span class="st">&quot;radial&quot;</span>, 
+                 <span class="dt">cost =</span> combo[i, <span class="dv">1</span>], <span class="dt">gamma =</span> combo[i, <span class="dv">2</span>])
+      
+      <span class="co">#Predict on kth fold</span>
+      pred &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, train[fold ==<span class="st"> </span>p, ])
+      cv_results &lt;-<span class="st"> </span><span class="kw">rbind</span>(cv_results, 
+                          <span class="kw">data.frame</span>(<span class="dt">fold =</span> p,
+                                     <span class="dt">cost =</span> combo[i, <span class="dv">1</span>],
+                                     <span class="dt">gamma =</span> combo[i, <span class="dv">2</span>],
+                                     <span class="dt">mean.f1 =</span> <span class="kw">meanF1</span>(train$coverage[fold ==<span class="st"> </span>p], pred)))
+    }
+  
+  }
+
+<span class="co">#View table</span>
+  combo &lt;-<span class="st"> </span><span class="kw">aggregate</span>(<span class="kw">list</span>(<span class="dt">mean.f1 =</span> combo$mean.f1), 
+                     <span class="dt">by =</span> <span class="kw">list</span>(<span class="dt">cost =</span> combo$cost, <span class="dt">gamma =</span> combo$gamma), 
+                     <span class="dt">FUN =</span> mean)
+  <span class="kw">print</span>(combo)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Cost</th>
+<th align="right">Gamma</th>
+<th align="right">Mean.F1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0.1</td>
+<td align="right">0.0312</td>
+<td align="right">0.7263</td>
+</tr>
+<tr class="even">
+<td align="right">1.0</td>
+<td align="right">0.0312</td>
+<td align="right">0.7412</td>
+</tr>
+<tr class="odd">
+<td align="right">10.0</td>
+<td align="right">0.0312</td>
+<td align="right">0.7377</td>
+</tr>
+<tr class="even">
+<td align="right">100.0</td>
+<td align="right">0.0312</td>
+<td align="right">0.7411</td>
+</tr>
+<tr class="odd">
+<td align="right">0.1</td>
+<td align="right">0.1250</td>
+<td align="right">0.7398</td>
+</tr>
+<tr class="even">
+<td align="right">1.0</td>
+<td align="right">0.1250</td>
+<td align="right">0.7413</td>
+</tr>
+<tr class="odd">
+<td align="right">10.0</td>
+<td align="right">0.1250</td>
+<td align="right">0.7494</td>
+</tr>
+<tr class="even">
+<td align="right">100.0</td>
+<td align="right">0.1250</td>
+<td align="right">0.7502</td>
+</tr>
+<tr class="odd">
+<td align="right">0.1</td>
+<td align="right">0.5000</td>
+<td align="right">0.7414</td>
+</tr>
+<tr class="even">
+<td align="right">1.0</td>
+<td align="right">0.5000</td>
+<td align="right">0.7511</td>
+</tr>
+<tr class="odd">
+<td align="right">10.0</td>
+<td align="right">0.5000</td>
+<td align="right">0.7499</td>
+</tr>
+<tr class="even">
+<td align="right">100.0</td>
+<td align="right">0.5000</td>
+<td align="right">0.7502</td>
+</tr>
+<tr class="odd">
+<td align="right">0.1</td>
+<td align="right">2.0000</td>
+<td align="right">0.7372</td>
+</tr>
+<tr class="even">
+<td align="right">1.0</td>
+<td align="right">2.0000</td>
+<td align="right">0.7500</td>
+</tr>
+<tr class="odd">
+<td align="right">10.0</td>
+<td align="right">2.0000</td>
+<td align="right">0.7502</td>
+</tr>
+<tr class="even">
+<td align="right">100.0</td>
+<td align="right">2.0000</td>
+<td align="right">0.7473</td>
+</tr>
+<tr class="odd">
+<td align="right">Based on</td>
+<td align="right">the grid</td>
+<td align="right">search, we find that the best model has a <span class="math inline">\(C = 1\)</span> and <span class="math inline">\(gamma = 0.5\)</span>. We then train a model with those parameters, then predict the classes of the test set to find that a <span class="math inline">\(F1 = 0.7511\)</span>.</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Predict labels</span>
+  pred_test &lt;-<span class="st"> </span><span class="kw">svm</span>(spec, <span class="dt">data =</span> train, <span class="dt">kernel =</span> <span class="st">&quot;radial&quot;</span>, <span class="dt">cost =</span> <span class="dv">1</span>, <span class="dt">gamma =</span> <span class="fl">0.5</span>)
+  pred_rbf &lt;-<span class="st"> </span><span class="kw">predict</span>(pred_test, test)
+  
+<span class="co">#examine result</span>
+  <span class="kw">table</span>(pred_rbf)</code></pre></div>
+<pre><code>## pred_rbf
+##    Coverage No Coverage 
+##        6564        7222</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##RBF
+  <span class="kw">meanF1</span>(test$coverage, pred_rbf)</code></pre></div>
+<pre><code>## [1] 0.7551924</code></pre>
+
+</div>
+</div>
+</div>
+<div id="diy-6" class="section level2">
+<h2><span class="header-section-number">9.4</span> DIY</h2>
+
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="footnotes">
+<hr />
+<ol start="44">
+<li id="fn44"><p>Hastie et. al (2001)<a href="classification.html#fnref44">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="continuous-problems-how-much-should-we-expect.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

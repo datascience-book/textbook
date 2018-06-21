@@ -1,0 +1,372 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeffrey Chen"
+date: '`r Sys.Date()`'
+output:
+  html_document: default
+  latex_engine: xelatex
+  pdf_document: null
+description: Chapter 5 - cell level
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalikex
+---
+
+## Cell-Level Operations
+
+Cell-level operations is a matter of changing the contents of data elements. With numeric data, this may involve various arithmetic operations like subtraction and multiplication, but that is applicable assuming that data is already of good quality. More often than not, data cleansing involves finding, extracting, and replacing the contents of string values. For example, below is a vector of four string values: 
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  budget <- c("Captain's Log, Stardate 1511.8. I have $10.20 for a big galactic mac.",
+            "The ensign has $1,20 in her pocket.", 
+            "The ExO spent has $0.25 left after paying for overpriced warp core fuel.",
+            "Chief medical officer is the high roller with $53,13.")
+```
+\vspace{12pt} 
+
+What if we need to extract the total available funds available to buy galactic big macs? All four elements contain dollar values, which can benefit from feature engineering. To do so, we use a combination of text manipulation functions and _regular expressions_ or _regex_ --  a series of characters that describe a regularly occurring text pattern.
+  
+First, commas should be replaced with a period using `gsub()`, assigning the result to a new object `new`.  Note that in some regions, such as Europe, commas are used as decimals rather than periods.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  new <- gsub(",", "\\.", budget)
+```
+\vspace{12pt} 
+
+Second, find the elements that contain the following pattern: a dollar sign followed by one to two digits, followed by a period, then another two digits (`\\$\\d{1,2}\\.\\d{2}`). The pattern can be used with the functions `regexpr()` to find the positions of the matching patterns in the text, then `regmatches()` is used to extract.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  indices <- regexpr("\\$\\d{1,2}\\.\\d{2}", new)
+  numbers <- regmatches(new, indices)
+  print(numbers)
+```
+\vspace{12pt} 
+
+Third, we should replace dollar sign with blank and strip out any leading white space using `trimws()`.
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  numbers <- trimws(gsub("\\$","", numbers))
+  print(numbers)
+```
+\vspace{12pt}   
+
+Lastly, convert the character vector to numeric, then sum the vector.
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  money <- as.numeric(numbers)
+  print(paste0("Total galactic big mac funds = $", sum(money)))
+```
+\vspace{12pt} 
+  
+A number of observations. In steps one through three, you will have noticed that the characters `"$"`, `"."`, and `"d"` were preceded by double backslash. These are known as _escaped characters_ as the double backslash preceding the characters changes their meanings. In step two, a sequence of unusual characters (`\\$\\d{1,2}\\.\\d{2}`) was used to find the `$x.xx` pattern, which can be broken into specific commands:
+  
+  - `\\$` is a dollar sign.
+  - `\\d{1,2}` is a series of numerical characters that is between one to two digits long.
+  - `\\.` is a period.
+  - `\\d{2}` is a series of numerical characters that is exactly two digits long.
+  
+Mastering _regex_ is a productivity multiplier, opening the possibility of ultra-precise text replacement, extraction, and other manipulation. Imagine scenarios where raw data is not quality controlled and mass errors plague the usefulness of the data. An analyst may spend days if not weeks or months cleaning data by hand (or rather through find and replace). With regex, haphazard cleaning is no longer an issue. To make the most of regex requires a command of both _text manipulation functions_ that are designed to interpret regex as well as _regex_ itself.
+
+
+### Text manipulation functions
+Find and replace are useful functions in most word processing and spreadsheet softwares. But what does it take to do find and replace at scale. The following seven text manipulation functions are commonly implemented in programming languages. Each searches for a user-defined pattern and returns a result in a well-defined format.
+  
+  - `grep()`: Returns either the index position of a matched string or the string containing the matched portion.
+  
+  - `grepl()`: Returns a logical vector -- a vector of TRUE/FALSE for whether a matched string was found. 
+  
+  - `gsub()`: Searches and replaces patterns in strings.
+  
+  
+  - `regexpr()`: Returns the character position of a pattern in a string.
+  
+  
+  - `strsplit()`: Splits strings into a list of values based on a delimiter.
+  
+  
+  - `regmatches()`: Extract substring using information from `regexpr()`
+  
+  
+  - `substr()`: Extract substring from a string based on string positions.
+  
+  
+Traditionally, functions like `grep()` are available through command line interfaces and are a core offering of the R programming language. On their own, some basic tasks can be accomplished such as exact matches of specific text. As will be seen later, these functions combined with regex are quite powerful. To illustrate the basic functionality, let's assume we have four sentences that indicate when four US laws were signed. 
+
+\vspace{12pt}  
+```{r}
+  laws <- c(". Dodd-Frank Act was signed into federal law on July 21, 2010.", 
+      "Glass-Steagall Act was signed into federal law by FDR on June 16, 1933", 
+      "Hatch Act went into effect on August 2, 1939", 
+      "Sarbanes-Oxley Act was signed into law on July 30, 2002")
+```
+\vspace{12pt} 
+
+#### Example Task: I need to find all sentences about laws that were sponsored by two congressmen. {-}
+  
+Suppose we need to find acts that are named for two congressmen. The `grep()` function can be used to find the index positions of elements in a vector that contain `"-"`. Otherwise stated, return the row number for each sentence that contains a hyphen. In this case, the 1st, 2nd, and 4th elements in the `laws` vector contain hyphens.
+
+\vspace{12pt}   
+```{r}
+  grep("-", laws)
+```
+\vspace{12pt} 
+
+`grep()` can also return the matched value when the option `value` is set to `TRUE`. This is handy for inspecting the accuracy of matches. In practice, with large data sets that contain variable names that follow a common convention, column names can be efficiently searched.
+
+\vspace{12pt}   
+```{r}
+  grep("-", laws, value = TRUE)
+```
+\vspace{12pt} 
+
+This can also be expressed in a different way. The `grepl()` function can be used to obtain a vector of logical values (`TRUE`/`FALSE`) that is the same length as the input vector `laws`.  
+```{r}
+  grepl("-", laws)
+```
+  
+  
+#### Example Task: I need to find text about laws passed in the 21st century. {-}
+  
+The same functions can be used to find laws that were passed int he 21st century. We can look for sentences that contain `20` followed by any two digits. This is a regex expression that will be elaborated upon in the following section.
+
+\vspace{12pt}   
+```{r}
+  grep("20\\d{2}", laws)
+```
+\vspace{12pt}   
+
+#### Example Task: I need to find the names of co-sponsored laws. {-}
+  
+Similar to `grep()`, `regexpr()` enables more precise search and extraction. Rather than returning which element contains a matched string pattern, `regexpr()` returns two sets of attributes. The first indicates the position of the first character that is matched in each string (e.g. 7 indicates that the `-` value is the fifth character is the first string) whereas the second set of attributes indicate the length of the match.  Positive values indicate the number of characters and a value of -1 indicates no match. 
+
+\vspace{12pt}   
+```{r}
+  regexpr("-", laws)
+```
+\vspace{12pt} 
+
+For even greater precision, a regex search can be used to turn up positions of within an element that contains a match. In the example below, `\\w` is used to find any alphanumeric character. The numbers `{3,20}` indicate how many characters -- in this case, we're searching for substrings that are between three and 20 charaters long, separated by a hyphen. The result is two set of values. The first set of numbers indicates the position of the first string character that matches the pattern (e.g. 3 indicates that Dodd-Frank starts in the 3rd space in the string). The second number in the following row indicates the length of the match (e.g. 10 indicates that Dodd-Frank is 10 characters long). More of these regex oeprators are described later in this chapter.
+ 
+\vspace{12pt}  
+```{r}
+  regexpr("\\w{3,20}-\\w{3,20}", laws)
+```
+\vspace{12pt}   
+
+`regexpr` alone is not all that useful, but is incredibly powerful when combined with `regmatches()`, which extracts character values based on the output of `regexpr()`.  Below, we place the results of a search for two alphabetic strings separated by a hyphen in the object `result`, then pass both the `laws` vector and the `regexpr()` `result` in `regmatches()`. We print to console the resulting vector.
+
+\vspace{12pt}   
+```{r}
+  result <- regexpr("\\w{3,20}-\\w{3,20}", laws)
+  matched <- regmatches(laws, result)
+  print(matched)
+```
+\vspace{12pt} 
+
+#### Example Task: I need to remove a pesky hyphen. {-}
+  
+To remove the hyphen, we can use `gsub()` to find "-" and replace with a space " ".
+
+\vspace{12pt} 
+```{r}
+  cleaned <- gsub("-"," ", matched)
+  print(cleaned)
+```
+\vspace{12pt} 
+
+#### Example Task: I need to make a catchy abbreviation for these law names. {-}
+  
+Using `substr()`, substrings or parts of strings can be extracted based on their position. To get the first two letters of each law, we can do the following:
+\vspace{12pt}   
+```{r}
+  substr(laws,1,2)
+```
+\vspace{12pt} 
+
+Or create new vectors that are a concatenation of the first two letters of each name like _SoHo_, _NoHo_, or any trendy name.
+
+\vspace{12pt}   
+```{r}
+#Get index of second name (search for space followed by two characters)
+  indices <- regexpr(" \\w{2}",cleaned)
+  
+#extract first two letters 
+  secondhalf <- trimws(regmatches(cleaned, indices))
+  paste0(substr(cleaned,1,2), secondhalf)
+```
+\vspace{12pt} 
+
+#### Example Task: I need to extract the last names of each congressman who co-sponsored bills. {-}
+  
+Lastly, `strsplit()` can be used to create a list of all names that have been used in laws, simply by using the `-` as a separator or delimiter. 
+
+\vspace{12pt}   
+```{r}
+  print(matched)
+  lawnames <- strsplit(matched, "-")
+  print(lawnames)
+```
+\vspace{12pt} 
+
+Note that a list object is not the same as a vector. Lists can contain multiple instances of another class of object. The list returned from `strsplit()` contains multiple vectors. To access each item, simply refer to the element in the list using an index number. To access the Glass-Steagall objects,  we can refer to the 2nd object in `[[]]`.
+
+\vspace{12pt}  
+```{r}
+  lawnames[[2]]
+```
+\vspace{12pt} 
+
+### Regular Expressions
+Next up: _Regex_.  These powerful commands give users the flexibility to search data and surface results with possible matches. Before proceeding into more complex string combinations, knowledge of a few cleverly designed capabilities may go a long way: 
+  
+(1) Alternatives (e.g. "OR" searches) can be surfaced by using a pipe "`|`". For example, a string search for "Bob or Moe" would be represented as "Bob|Moe".
+  
+(2) The extent of a search should be denoted by parentheses `()`. For example, a string search for "Jenny" or an alternative spelling like Jenny would be represented as "Jenn(y|i)"."
+  
+(3) A search for one specific character should be placed between square brackets `[]`. 
+  
+(4) The number of characters is placed between curly brackets `{}`. 
+  
+In New York City, the famed avenue _Broadway_ is may be written and abbreciated in a number of ways. The vector `streets` contains a few instances of spellings of Broadway mixed in with other streets that start with the letter `B`.
+
+\vspace{12pt}   
+```{r}
+#A sampling of street names
+  streets <- c("Bruckner Blvd", "Bowery", "Broadway", "Bway", "Bdway", 
+        "Broad Street", "Bridge Street", "B'way")
+  
+#Search for two specific options
+  grep("Broadway|Bdway", streets, value = TRUE)
+  
+#Search for two variations of Broadway
+  grep("B(road|')way", streets, value = TRUE)
+  
+#Search for cases where either d or apostrophe are between B and way
+  grep("B[d']way", streets, value = TRUE)
+  
+```
+\vspace{12pt} 
+
+  
+#### Escaped characters
+Quite a few single characters hold a special meaning in addition to the literal meaning. To disambiguate their meaning, a backslash precedes these characters to denote the alternative meaning. A few include:
+  
+  - `\n`: new line
+  
+  - `\r`: carriage return
+  
+  - `\t`: tab
+  
+  - `\'`: single quote when in a string enclosed in single quotes (`'Nay, I can\'t'`)
+  
+  - `\"`: double quote when in a string enclosed in double quotes  (`"I have a \"guy\"."`)
+  
+In other cases, double backslashes should be used:
+  
+  - `\\.`: period. Otherwise, un-escaped periods indicate searches for _any_ single character.
+  
+  - `\\$`: dollar sign. A dollar sign without backslashes indicates to find patterns at the end of a string.
+  
+#### Character Classes
+  
+A _character class_ or _character set_ is used to identify specific characters within a string. How would one represent "12.301.1034" or "?!?!?!"?  One or more of the following character classes can do the job:
+  
+  - `[:punct:]`: Any and all punctuation such as periods, commas, semicolons, etc. For specific specific punctuation, simply enclose the characters between two brackets. For example, to find only commas and carrots, use `[<>,]`.
+  
+  
+  - `[:alpha:]`: Alphabetic characters such as a, b, c, etc. With other languages including R, it is commonly written as `[a-z]` for lower case and `[A-Z]` for upper case.
+  
+  
+  - `[:digit:]`: Numerical values.  With other languages including R, it is commonly written as `\\d` or `[0-9]`. For any non-digit, write `\\D`.
+  
+  
+  - `[:alnum:]`: Alphanumeric characters (mix of letters and numbers). With other languages including R, it is indicated using to as `[0-9A-Za-z]` or `\\w`. For any non-alphanumeric character, use `\\W`.
+  
+  
+  - `[:space:]`: Spaces such as tabs, carriage returns, etc. For any white space, use `\\s`. For any non-whitespace character, use `\\S`.
+  
+  
+  - `[:graph:]`: Human readable characters including `[:alnum:]` and `[:punct:]`.
+  
+  - `\\b`: Used to denote "whole words". `\\b` should be placed before and after a regex pattern. For example, `\\b\\w{10}\\b` indicates a 10 letter word.
+  
+  
+There are quite a few character classes not listed above, but for these constitute the lion's share. It is worth keeping in mind that the implementation of character classes may differ between programming languages. A number of the above are extensions that have been implemented in R in a specific manner.
+  
+#### Quantifiers 
+Each character class on its own indicates a search for _one and only one character_. In practice, most character searches will involve a search for more than just one character. To indicate such a search, regex relies on _quantifiers_ to indicate the length of patterns. For example, a search for a year between the year 1980 and 2000 will require exactly four digits, but a search for the speed of a gust of wind will likely vary between 1 and 3 digits. The following six quantifiers provide a degree of both flexibility and specificity to accomplish search tasks:
+  
+  - `{n}`: match pattern n times for a preceding character class. For example `"\\d{4}"` looks for a four digit number.
+  
+  - `{n, m}`: match pattern at least n-times and not more than m times for a preceding character class. For example `"\\d{1,4}"` looks for one to four digit number.
+  
+  - `{n, }`: match at least n times for a preceding character class. For example `"\\d{4,}"` looks for a number that has at least four digits.
+  
+  - `*`: Wildcard, or match at least 0 times. 
+  
+  - `+`: Match at least once. 
+  
+  - `?`: Match at most once. 
+  
+
+In the example below, quantifiers are used to extract specific number patterns with a high degree of accuracy.
+\vspace{12pt} 
+```{r}
+  dates <- c("Octavian became Augustus on 16 Jan 27 BCE", 
+             "In the year 2000, a computer bug was expected to topple society.", 
+             "In the 5400000000 years, our sun will become a red dwarf.")
+  
+#Match an element with a 9 digit number
+  grep("\\d{9}", dates, value = TRUE)
+
+#Match an element with a 9 digit number
+  grep("\\b\\d{4}\\b", dates, value = TRUE)
+  
+#Match a date that follows 16 January 27 BCE
+  grep("\\d{2}\\s\\w{3}\\s\\d{2}\\s\\w{3}", dates, value = TRUE)
+```
+\vspace{12pt} 
+
+
+#### Position matching
+Regex builds in functionality to search for patterns based on position of a substring in a string, such as at the start or end of a string. There are quite a few other position matching patterns, but the following two are the workhorses.
+  
+  - `$`: Search at the end of a string.
+  
+  - `^`: Start of string when placed at the beginning of a regex pattern. 
+  
+To demonstrate these patterns, we'll apply `grep()` to three headlines from the BBC.
+
+\vspace{12pt}   
+```{r, warning = FALSE, message=FALSE}
+  headlines <- c("May to deliver speech on Brexit", 
+           "Pound falls with May's comments", 
+           "May: Brexit plans to be laid out in new year")
+  print(headlines)
+  
+#Find elements that contain May at the beginning of the string
+  grep("^May", headlines, value = TRUE)
+  
+#Find elements that contain Brexit at the beginning of the string
+  grep("Brexit$", headlines, value = TRUE)
+
+```
+\vspace{12pt}   
+  
+#### Exercises
+  
+Personally identifiable information or PII is often a barrier to sharing information For the following financial record, anonymize records by removing age and name using `gsub()` and `regmatches()` to extract the amount of money John owes the bank.
+
+\vspace{12pt}  
+```{r}
+  statement <- "John (SSN: 012-34-5678) owes $1004 to the bank at 49-29 Pewter Street."
+```
+\vspace{12pt}   
+

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="clustering.html">
+<link rel="next" href="continuous-problems-how-much-should-we-expect.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="model-validation-how-do-we-know-what-we-know" class="section level1">
+<h1><span class="header-section-number">Chapter 7</span> Model validation: How do we know what we know?</h1>
+<div id="when-knowing-the-answer-is-not-enough" class="section level2">
+<h2><span class="header-section-number">7.1</span> When knowing the answer is not enough</h2>
+<p>It’s the first day of differential equations class and anxiety is in the air. Students chat amongst themselves, trying to play cool as the anticipation of a semester of tedious, grueling problem sets weighs down on them – the sort that merit all-nighters. As a distant clock tower chimes at the top of the hour, the professor stands up and begins to hand out a stack of packets, with a <em>final exam</em> and <em>answer key</em>. The first page is a blurry cover letter that appears to have been photocopied to the <span class="math inline">\(n^{th}\)</span> degree:</p>
+<blockquote>
+<p><em>Dear Student: You will be graded on this final exam and this exam alone. The answer key has been provided – memorize it. When you’re done, copy your answers into this online survey form. Good luck with the rest of your time at the university.</em></p>
+</blockquote>
+<p>As the first student finishes reading the letter, the door slams as the professor makes her getaway.</p>
+<p>So, from an epistemological perspective, what exactly does this final exam score reflect? To answer this question, we would need to first define the objective of a test, which is measuring the degree to which students can retain knowledge of and apply mathematical concepts – not if students remember the specific sequence of numbers and characters that are on a specific handout or event the use of the <code>CTRL + C</code> - <code>CTRL + V</code> hot key combination. If the resulting test score were used to assess student performance, we would grossly overstate and overestimate their skill. We shall refer to this as the <em>final exam as practice</em> paradigm – it is not possible to assess learned ability if a student that has already seen the final exam. From the testing perspective, the goal is to estimate <span class="math inline">\(Pr(\text{Correct | Subject Matter Knowledge})\)</span> – not <span class="math inline">\(Pr(\text{Correct | Test Question})\)</span>, which is biased as <span class="math inline">\(\text{mean(score on practice final exam) ~ mean(score on final test)}\)</span>. So, what’s a <em>more correct</em> way of testing?</p>
+<p>We all know the answer: teach the material, assign homeworks and provide practice exams before administering the final exam. To keep units consistent, we’ll simply focus on practice and final exams. A common experiment design is to provide <span class="math inline">\(k\)</span> number of practice exams for students to study and keep at least one <em>hold-out</em> exam to test their learned abilities. Assuming that the structure of all exams are approximately the same but with different questions, this <em>train - test design</em> is a stronger method for assessing how well knowledge is generalized <em>out-of-sample</em>. There, of course, are a couple of issues with this approach:</p>
+<ul>
+<li><p>A student may actually know the material inside and out, but may stumble during the exam at random. Thus, placing the whole semester’s grade on one exam may not provide a true indication of their ability.</p></li>
+<li><p>If there are a maximum of <span class="math inline">\(k\)</span> available tests, then it may be possible to split the tests into more <em>hold-outs</em>. This, however, reduces the amount of opportunities for a student to learn the material and may thus increase the variability in the extra testing.</p></li>
+</ul>
+<p>In the classroom, there is not a magic bullet design. Perhaps science fiction could help. Suppose the professor has six possible exams to give to students. She decides to give five exams as practice and reserve a sixth as the actual exam. If the same exact students existed in six different parallel universes with the same behaviors, intelligence, laws of physics, etc (this is the science fiction part) and the professor had some trans-dimensional method of monitoring student performance, then we could do the following:</p>
+<ul>
+<li>For universe A, use practice exams 1, 2, 3, 4, 5 for studying. <em>Hold out</em> exam 6 as the final test.</li>
+<li>For universe B, use practice exams 1, 2, 3, 4, 6 for studying. <em>Hold out</em> exam 5 as the final test.</li>
+<li>For universe C, use practice exams 1, 2, 3, 6, 5 for studying. <em>Hold out</em> exam 4 as the final test.</li>
+<li>For universe D, use practice exams 1, 2, 6, 4, 5 for studying. <em>Hold out</em> exam 3 as the final test.</li>
+<li>For universe E, use practice exams 1, 6, 3, 4, 5 for studying. <em>Hold out</em> exam 2 as the final test.</li>
+<li>For universe F, use practice exams 6, 2, 3, 4, 5 for studying. <em>Hold out</em> exam 1 as the final test.</li>
+</ul>
+<p>At the end of the semester, take the average performance of each student’s hold out tests. This assumes that the learned knowledge of each student is independent between universes (e.g. student 1 in Universe A does not know what student 1 in Universe F has seen). This in turn means that the hold out exams are independent of knowledge of the practice exams, therefore, the average of the hold out exams gives an unbiased and lower variance estimate of how a given student has learned.</p>
+<p>This is a rather farcical scenario on so many levels, but unfortunately the <em>final test as practice</em> paradigm happens everyday, but the multi-verse validation approach is also used everyday– not necessarily in a classroom setting, but in analytical teams in virtually all fields.</p>
+</div>
+<div id="converting-a-farcical-scenario-into-practical-knowledge" class="section level2">
+<h2><span class="header-section-number">7.2</span> Converting a farcical scenario into practical knowledge</h2>
+<p>Suppose an economic analyst at a hedge fund is given bitcoin price data along with a few hundred financial market data series that coincide with bitcoin trading. She is asked to develop a statistical model to predict bitcoin prices using the market indicators, then forecast prices using a real-time input stream. In data science parlance, this is a <em>supervised learning</em> problem: given a <em>target</em> (dependent variable), a model trained to map a set of <em>input features</em> (independent variables or explanatory variables) onto a target. Supervised learning essentially is a method of teaching an algorithm to see certain patterns, but not in a way that is explicitly programmed by the modeler (e.g. heuristics, rules).</p>
+<p>Our enterprising, endeavoring analyst determines that a linear regression approach makes most sense (see (a) below) and devises a methodology for developing predictions. First, she acquires data, then cleans and explores it as we have illustrated in past chapters. When the data are ready for modeling, she experiments with combinations of a few variables to see which produces desirable results based on a series of diagnostics. More often than not, analysts will rely on subject matter intuition to construct models, then fixate on one or two measures of model fit (e.g. R-squared, F-test, p-values, etc.) and judge model performance based on those diagnostics alone. Although prediction is not the same as characterization, models are built with the intent to tell a narrative that is rooted in a parsomonious set of variables (e.g. increased social hype increases bitcoin prices). Without realizing it, this equates to the assumption that a phenomenon can be characterized by a few specific features of a data set. A set of candidate models are selected based on some quantitative or qualitative criteria. As a final check, all candidate models are “backcasted”, which is a way compare the actual bitcoin prices <span class="math inline">\(y\)</span> and the predicted prices <span class="math inline">\(\hat{y}\)</span> using the data that was used to build the model. A function is a function, so <em>what could go wrong?</em></p>
+<p>Not to be overly dramatic, <em>many, many things could go wrong</em>.</p>
+<div class="figure">
+<img src="assets/experiments/img/flow.png" alt="Comparison of two modeling workflows: (a) model training without validation, (b) model training with k-folds cross validation." />
+<p class="caption">Comparison of two modeling workflows: (a) model training without validation, (b) model training with k-folds cross validation.</p>
+</div>
+<p>The above approach, while seemingly logical, follows the <em>final exam as practice materials</em> paradigm. While diagnostics and backcasts are conducted, the analyst is unable to truly determine if one model’s formulation is better than another as the models were all constructed on the final exam set. What are the consequences? Unlike the earlier scenario where students may enjoy grade inflation, failure to incorporate model validation to test assumptions may lead to any number of techical horror stories:</p>
+<ul>
+<li>The input data used to predict bitcoin prices are correlated with prices in early years of a sample, but not in later years. Failing to validate a model’s assumptions is a failure in checking if modeled relationships are stable. Unstable, unchecked relationships will invariably lead to erroneous predictions, which in turn lead to large losses at the cryptocurrency hedge fund. Needless to say, the economic analyst would likely be afforded opportunities to consider roles elsewhere.</li>
+<li>With so many variables available, the analyst uses a <em>kitchen sink</em> approach by dumping all available variables into the model. While there are plenty of techniques to efficiently surface the most influential features within high-dimensional data sets (e.g. k is large), ordinary least squares is not one of those techniques. As a result, OLS will attempt to map correlated, but spurious features with bitcoin prices, which– for all intents and purposes – is developing a model on noise. This is known as <em>model overfitting</em> – erroneous relationships sensitive to irrelevant movements in the inputs and investment become highly volatile. This is known as <em>model overfitting</em>. While the analyst will not likely be provided opportunities to consider roles elsewhere, her work will likely be scrutinized a bit closer.</li>
+<li>The observed paradigm is not mature in that all types of movement in the data have not been observed. For example, conditions for price growth and decline should be observed in the sample – not only growth. This ensures that conditions for growth and decline are learned by the model. After all, what goes up must come down, and if that is not reflected in the data, then a model is not needed to predict what will eventually happen.</li>
+</ul>
+<p>Inaccurate model assumptions may give way to <em>overfitting</em> in which the patterns that are learned reflect noise rather than true underlying patterns. Strong model biases may also give rise to <em>underfitting</em> in which models are not sensitive to the patterns in the data, leading to models that do not provide much insight. In both cases, the result are high variance out-of-sample predictions. Let’s take a look at the underlying <a href="https://www.worldcoinindex.com/coin/bitcoin">Bitcoin prices</a>. Below are three examples of model conditions:</p>
+<ul>
+<li><strong>Underfitting</strong>. Starting from the left, an overly simplistic explanation might get the gist of bitcoin prices. Indeed, as of September of 2017, the prices have been increasing, but that is insufficient information to be used for anything other than long term investment. This idea of <em>underfit</em> is when an empirical model does not capture observed relationships. The variance of predictions in the training set is likely to be high for missing peaks and troughs. That being said, underfit, high bias models tend to tell a digestible story, but have little predictive value.</li>
+<li><strong>Overfitting</strong>. The middle graph shows a low bias model, which is often a far more complex model with more features and polynomials to improve the model fit. At first glance, it captures much of the variability in the point-spread. While low bias models tend to have low bias in the training step, their predictions in out-of-sample testing tend to have high variance as the model was calibrated to noise and is thus extra sensitive to noise.</li>
+<li><strong>Goldilocks</strong>. The last graph shows a good balance between the two extremes: Just enough complexity to capture the curvature, but not so much that the model reacts to noise.</li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-271"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-271-1.png" alt="Bitcoin prices and model fits. Data obtained from coindesk." width="672" />
+<p class="caption">
+Figure 7.1: Bitcoin prices and model fits. Data obtained from coindesk.
+</p>
+</div>
+<p>Model validation is crucial to test proposed models in order to find the right balance. Among the many designs are the following:</p>
+<ul>
+<li><em>Train-Test</em>. A simple design involves a <em>train-test</em> where a training set of 70% of the records is used to built models and a testing set of 30% is used as a final exam. While this is a step in the right direction, the testing set will eventually be biased. As the analyst builds and tests models, she will predict results for the hold-out 30%, find model deficiencies, then iterate. In theory, the 30% should be used to validate once one is confident with model performance, but that requires a degree of discipline that is not easy enforceable. Eventually, the model accuracies of the 30% bias towards to that of the 70%, resembling a less severe version of the <em>final exam as a practice materials</em> problem.</li>
+<li><em>Train-Validate-Test</em>. An improvement to the <em>train-test</em> design is to add a validation step: <em>train-validate-test</em> in which 70% of the sample is used for model development, 15% of the sample is used for validation and tuning of the model, and 15% is used as a final hold out. While an improvement, the problem with both <em>train-test</em> and <em>train-validate-test</em> designs are that large proportions of the data sample are lost to testing and the variance on the testing accuracies are large.</li>
+<li><em>K-Folds Cross Validation</em>. A better, but computationally more costly approach is <em>k-folds cross validation</em> (see below). This is equivalent to the multi-verse scenario: Each <span class="math inline">\(k\)</span> is simply a set of observations that are assigned to a group known as a <em>fold</em>, which is a convenient way of assigning and keeping track of hold out samples. For a proposed set of models, whether model specification or different types of algorithms, the approach is iterative: to start, for folds <span class="math inline">\(1\)</span> through <span class="math inline">\(k-1\)</span>, we develop our models, then predict on the hold out sample <span class="math inline">\(k\)</span>, record the scores and diagnostics. Then, we repeat this process until each of the k-folds is used as a hold out sample. All model performance results are averaged across all hold out samples to derive a more accurate estimate of model performance.</li>
+</ul>
+<div class="figure">
+<img src="assets/experiments/img/Slide2.png" alt="K-Folds Cross-Validation Workflow" />
+<p class="caption">K-Folds Cross-Validation Workflow</p>
+</div>
+<p>Model validation can become a complex topic. This section is meant to plant the seed. In subsequent chapters, we will put model selection into action.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="clustering.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="continuous-problems-how-much-should-we-expect.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

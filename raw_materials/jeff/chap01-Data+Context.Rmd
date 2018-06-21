@@ -1,0 +1,232 @@
+--- 
+title: "Data Science + Public Policy (v0.1)"
+author: "by Jeff Chen - contact@jeffchen.org"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Introduction
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+# Data And Its Many Contexts
+
+
+## Fires and Data
+
+On an August afternoon in 2007, a fire broke out on the 17th floor of the then-vacant Deutsche Bank Building, a skyscraper situated across from the former World Trade Center in New York City. The building, seriously damaged after the 9/11 attacks, had been undergoing hazard abatement and controlled demolition, leading to changes to the building floor plans and safety apparatus. When the New York City Fire Department (FDNY) responded to the scene, it was clear the fire was a serious one, quickly escalating to a seven-alarm fire incident requiring 87 units and 475 firefighters. ^[https://cityroom.blogs.nytimes.com/2007/08/18/2-firefighters-are-dead-in-deutsche-bank-fire/]  As standpipes had been disabled and floor plans altered, FDNY units found it difficult to navigate the skyscraper and put water on the fire, resorting to unconventional methods of supplying water to crews. Eventually, the fire was put out seven hours after it started, not before two firefighters lost their lives, succumbing to cardiac arrest from heavy smoke inhalation. ^[http://www.nydailynews.com/news/firefighters-dead-7-alarm-deutsche-bank-blaze-article-1.238838]  In response to the tragedy, a mayoral investigation found that the deaths could have been prevented had city agencies established information sharing protocols and leveraged a risk-based strategy to mitigate and avoid hazards. ^[http://www1.nyc.gov/assets/doi/downloads/pdf/pr_db_61909_final.pdf]  While an ideal end state would be to end all structural fires, the recommendations focused on reducing death and injury by ensuring that FDNY had the most up-to-date ground intelligence.
+
+Risk mitigation strategy was indeed due for improvements. Since the 1950’s, FDNY building inspections were managed using a manual index card system where inspection schedules were based on tiers of perceived risk, where the riskiest buildings needed to be inspected once a year and the least risky buildings were inspected once every seven years. Despite the longevity of the system, it was not without shortcomings, namely that a building’s risk tier was not updated with the latest intelligence nor was it guaranteed that schedules remained on track. To maintain the intelligence would have been a laborious process, requiring cards to be updated by hand for one-third of a million buildings. Hypothetically, if each building record were updated daily and the process were to take one second per record, FDNY would only have a refreshed profile of the city once every 229 days. By then, firefighters could have wasted valuable time at buildings that posed little danger and preventable risks could have led to disaster. It was clear that a data-driven strategy could fundamentally change the nature of fire risk.
+
+The New York City Fire Department (FDNY) set out to address the risk management problem by melding data and technology with their operations. On the surface, the idea of using data and technology to reduce the risk of fire is quite alluring. However, under the hood, there were notable obstacles. On the operational side, buy-in was required. Anyone who has observed fire fighters on scene will notice that it is a well-choreographed operation -- every person knows their part and believes in the established protocols. For data to drive value, it needed to be integrated and accepted into the culture of a 10,000+ person fire fighting organization. On the technical side, decades worth of index cards needed to be digitized and a scheduling platform needed to be developed. Perhaps most importantly, the system had to work. Scheduling just any inspection is simple; scheduling inspections to buildings with observable risks is far more challenging. Without effective targeting, the entire effort would be for naught. 
+
+The Commissioner and First Deputy Commissioner at the time both believed that technology had a role to play at FDNY. Aligned with Mayor Michael Bloomberg's vision of smart, data-driven government, they saw an opportunity to set an example for the nation's fire service.  They relied on the the Assistant Commissioner for Management Initiatives to lead a change management process with fire chiefs and fire officers, information technology (IT) managers, among others to change the flow of operations so that data served as a pillar on which FDNY could rely. Alliances were forged with leading fire personnel such as the Deputy Chief of Fire Operations and Battalion Chiefs to formalize the role of data in the culture of the fire house, amending standard operating procedures (SOPs) to use a digital inspection system. On the IT front, a lead software engineer and project manager meticulously gathered specifications that were then used to construct a scheduling platform. Recognizing that the proof of a risk-based strategy was in the pudding, a Director of Analytics was hired to lead the overhaul of a prediction algorithm to rank buildings based on their risk and convincing stakeholders that a mathematical representation of fire ignition was indeed true. The result was the Risk-Based Inspection System (RBIS), a firefighter-facing data platform that scheduled inspections at buildings with the greatest risk of fire. Three times a week for three hours per session, fire officers logged onto RBIS to obtain a list of buildings for scheduled inspection. Buildings were selected using FireCast, a statistical algorithm developed in-house to predict fires at the building level. Through FireCast, buildings no longer used assumed a static risk classification, but rather a dynamic risk score that took into account the latest information.  
+
+Prediction often relies on accuracy measures to determine how well algorithms perform in the field; FireCast was no different. The algorithm was able to identify buildings with fires over 80% of the time -- a degree of accuracy that was not previously possible. Upon implementing the new system, impacts were observed in leading operational indicators. In the first month, the number of safety violations issued grew by +19% relative to the trend under the index card system, but fell to +10% in the second month. This indicated that the riskiest buildings did indeed have more observable risks than less risky buildings, but the amount of observable risk fell as teams went down the list. From a statistical perspective, the prediction should have yielded far more violations, but efficacy of the prediction program was limited by (1) a fire unit's time budget to conduct inspections; (2) a policy requiring that time had to be set aside for weekly inspections, which at times led to inspecting buildings that were not observably risky after all truly risky buildings were exhausted; (3) the rule of law giving residents the right to refuse inspection. To measure efficacy, FDNY developed an indicator known as the Pre-Arrival Coverage Rate (PACR), which measures the proportion of buildings that experienced a fire that were inspected within some period (90 days) before the fire occurred -- essentially measuring if fire companies had the opportunity to evaluate risks of priority buildings. Under FireCast, FDNY had achieved a PACR of 16.5%, which was an eightfold improvement over the old strategy that yielded 1.5%. ^[http://www.nfpa.org/news-and-research/publications/nfpa-journal/2014/november-december-2014/features/in-pursuit-of-smart] 
+
+The RBIS-FireCast program went onto gain recognition as a modern approach to optimizing city operations, recognized by Harvard University’s Ash Center with a Bright Idea Award and serves as a reference implementation for next generation fire fighting technologies. ^[https://www.nist.gov/publications/research-roadmap-smart-fire-fighting] 
+
+## The Answer is 42. Well, Maybe. 
+
+In the novel _The Hitch Hiker's Guide to the Galaxy_, author Douglas Adams describes how a super computer called Deep Thought calculated the ultimate answer to "Life, the Universe and Everything". The computer's calculation lasted seven and a half million years and returned a simple answer: __42__.^[Adams, D. Hitchhiker's Guide to the Galaxy. New York: Harmony Books, 2004.] It is a rather unsatisfying answer. It lacks context. It is abstract. It has perplexed and intrigued readers for decades, and to some degree has amassed a following. The answer lacks a narrative that is expected by all humans. After all, as people, we are social creatures and we need closure. 
+
+This book answers the question "How do we make data _real_ to people?" Data and the number 42 are kindred spirits -- both are often viewed as an abstract concepts that are characterized by commercial buzzwords. To many, working in the data space is described as a discipline for specialists. It is actually quite the opposite. It has a tangible real world role that people use on a day to day basis.  
+
+Depending on your specialty and environment, the way data is used falls onto a spectrum of *use cases* -- or actions that a user takes with a system, software, or information.  On the simpler end are __benchmarks__ -- a way of contextualizing numbers.  In the middle are empirical __explanations__ of what factors influence observed phenomena.  And on the other end are __predictions__ -- the product of highly technical, scientific computing. 
+
+The #42 falls into one of these three use case buckets. The number could have been easily benchmarked and contextualized using units or comparison to other numbers so that a significance and value judgment could be applied.  Alas, it did not.  Naturally, people would want to understand how 42 was derived, what parameters guided it, and what influenced the magnitude. A 7.5 million year calculation may seem daunting to explain though conversely one may argue that the code was quite inefficient.  The algorithm that underlied the estimation was not made open source, thus its rational is still unknown. But it is after all the meaning of literally everything, thus a universal constant is persistent in the past, present and future -- making it a prediction of _something_. Now if only someone could define the unit of analysis.
+
+![Data use case spectrum](assets/intro/img/spectrum.jpg)
+
+### Benchmarking 
+
+Human nature functions of comparisons. Thus, __benchmarking__ helps to contextualize the current state relative to a reference point. The reference point gives context over time and space to illustrate a trend or can be used to show relative performance. 
+
+This is the most natural use of data: often times they are presented as a statistic or a graph to which people can react. It is easily achievable _data product_ -- a use of data on which a specific user or audience can rely. Everyday, we naturally use benchmarks to understand the state of our world, set expectations and make decisions:
+
+- _Employment_. In the news, the monthly employment figures published by the US Bureau of Labor Statistics are contextualized in comparison to the previous month or the same time last year. For example, the first sentence of a August 2017 article from NPR online stated: "The U.S. economy created an estimated 209,000 jobs in July, representing a modest slowdown from the previous month but coming in better than many economists had expected."^[http://www.npr.org/sections/thetwo-way/2017/08/04/541562855/u-s-economy-adds-209-000-jobs-in-july-unemployment-dips-to-4-3-percent] On its own, the 209,000 jobs figure is a number in a vacuum. In comparison to the previous month, it givens some indication of economic health.
+
+- _SAT Scores_. For high school students looking to apply to college, SAT scores have some bearing on the chance of being accepted. Let's assume a student received the following scores: math = 710 and evidence-based reading and writing = 800 for a combined score of 1510. Is that good enough to get into a school? Many universities have begun to publish the profile of the incoming class the range of combined SAT scores for the middle 50% ("interquartile range") of admitted students. This range at Columbia University, for example, is 1510 to 1580.^[https://undergrad.admissions.columbia.edu/classprofile/2020]. This means that 75% of admitted students scored 1510 and above, indicating that a higher score may better position the student for success. College admissions, however, take into account a large number of factors as the process is competitive. Using the SAT benchmark alone may be misleading when selecting schools, but certainly can provide a notional understanding of the chances of admittance.
+
+Benchmarks tend to rely on summary-level statistics such as counts, proportions, averages, and percentiles. Given their conciseness, it is easy to incorporate them into narratives, reports and visualizations. But they do not tell a full story. 
+
+### Explaining 
+
+Benchmarks do not provide evidence as to _why_ things are the way they are or _how_ phenomena come to be. This naturally gives way to the need to __explain__ how things work, or at least quantify relationships between observed phenomena (e.g. dependent variables or target features) and their associated characteristics (e.g. independent variables or input features). Everyday phenomena can be explained using _explanatory models_ with varying degrees of accuracy. A baseball that is hit by a batter will go a certain distance given a number of factors such as the angle of departure, the mass of bat, the velocity of the bat, among others.  Traffic on a highway may be higher on a Monday than a Sunday due to the rhythm of the work week, the time of year, weather among other factors. By developing _explanatory models_, fields from the natural sciences to the social have been able surface quantifiable relationships between A and B. For instance:
+
+- _Housing prices_. In real estate, hedonic price models are used to attribute the price of home (dependent variable) to the characteristics and amenities (independent variables), such as the number of rooms, age of home, construction quality, location, school district among others.  Usually employing statistical methods such as _linear regression_, hedonic models allow economists and statisticians to tease out the value of specific amenities holding all else constant or _ceteris paribus_. For example, the marginal price for each additional room may fetch $30,000 or houses located in the central business district may be worth 15% lower due to noise. Marginal prices help home sellers and buyers better understand the economic value of a home in terms of tangible characteristics.^[https://www.washingtonpost.com/news/wonk/wp/2013/10/29/heres-zillows-strategy-for-dominating-online-real-estate/?utm_term=.ca2d6094674e]  
+
+- _Food Stamps and Crime_. Explanatory models may be used to evaluate the effect of policy changes. In February 2010, the State of Illinois enacted a new policy to distribute food stamps over the course of a month as opposed to a former practice to distribute them on the first of each month. This policy shift had a clear impact on public safety, reducing grocery store thefts by 32%. By using a technique known as _interrupted time series_, economists at Purdue University were able to first determine what the level of theft was in the past and would have been had the policy not been implemented, then compared against what actually happened.^[https://www.washingtonpost.com/news/wonk/wp/2017/07/13/shoplifting-in-chicago-dropped-after-a-change-in-the-food-stamps-program/?utm_term=.6bfe5a75d1fc] From a strategic perspective, understanding even the direction of impact of this specific policy change may be enough to serve as a reference implementation for other states seeking to curb crime.
+
+
+Explanatory models help to filter all possible influential factors down to those that hold water, making way for compelling narratives, discussion and possibly rules of thumb. Their usefulness in practice, however, is largely backward looking and forecast accuracy is often not a concern. A health study may very well determine that people are two-times more likely to develop a rare form of cancer if exposed to a certain substance, but the predicted probability of developing cancer for a person who uses the substance is only 1% -- a value that is not perceived as risky to most.
+
+### Predicting
+
+__Prediction__, on the other hand,  ventures to make empirical guesses about what will happen and optimizes for accuracy. The quantitative algorithms and approaches used to make predictions overlap with explanatory models. The difference lies in how we validate predictions. 
+
+Prediction is largely a matter of instituting an experimental design.  The process of building a _predictive model_ is quite similar to assessing a student's academic performance in class. Let's pretend that students are provided the final exam for a calculus class on day one of a semester. For the duration of the semester, they are instructed to study that exam alone. If the professor gave that same practice test to students as the _actual_ final exam, then students' grades will very likely overstate their command of calculus for a number of reasons.  This farcical scenario almost never happens, yet it is commonly how _explantory models_ are formulated and treated as prediction models. To demonstrate this, what if different test questions were introduced that are framed differently than the practice test: would the students' grades hold up?  
+
+In reality, students in the United States' education system are given plenty of opportunity to _train_ on practice examples through homework assignments and projects, then are _tested_ on quizzes and tests -- the answers to which they are not privy. This _train-test_ approach is designed to give professors the best chance at measuring the skills students have developed. Prediction is uncovering stable and accurate relationships such that guesses on new, unseen data are reliable and dependable. In prediction parlance, train-test is a form of _model validation_: models are developed on some data, leaving another set of data to make sure the accuracy is what we think it is.  Similar to RBIS-FireCast, cross-validation and experiment designs open the door to applying data in vastly more advanced ways.
+
+- _Recommendation engines_. Digital companies such as Amazon and Netflix collect information on consumer purchases, views, and ratings, then build recommendation engines -- models that predict user preferences.^[http://fortune.com/2012/07/30/amazons-recommendation-secret/] Often times, recommendation engines offer products that are used by other users who have similar tastes, thereby providing an seamless way to traverse immense amounts of options in a targeted and useful way. 
+
+- _Voter targeting_. During the 2012 election cycle, data scientists collected survey data on voter attitudes and preferences, then built voter targeting algorithms to predict who is likely to vote for whom and cater messaging for _individualized campaigns_.^[https://www.technologyreview.com/s/509026/how-obamas-team-used-big-data-to-rally-voters/] This micro-targeting concept is a common strategy in marketing and online advertisement, benefiting from the use of cookies.^[https://www.vox.com/conversations/2017/3/16/14935336/big-data-politics-donald-trump-2016-elections-polarization]
+
+- _Computer vision_. Data scientists have been able to predict stock prices of retailers by developing computer vision algorithms that sift through satellite imagery in order to count the number of cars parked near retailers.^[http://www.newsweek.com/how-satellite-surveillance-helping-predict-stock-prices-skynet-562973]  The ability for computer vision algorithms to identify discrete objects or characteristics in images has far reaching applications from monitoring  illegal fishing^[http://www.satellitetoday.com/technology/2017/08/02/using-artificial-intelligence-track-illegal-activities-sea/] to predicting neighborhood wealth.^[https://www.wired.com/story/penny-an-ai-that-predicts-a-neighborhoods-wealth-from-space/]
+
+Together, these three analytic functions are powerful and should be used to make successful projects. In short: Benchmarks build trust and context for users; Explanations build understanding of processes; and Prediction enables precise action. 
+
+
+## The Buzz and the Buzzworthy 
+
+In recent memory, there is a spike in terms such as _Artificial Intelligence_ (AI) and _Machine Learning_ -- ideas that lie at forefront of the public's imagination of what data could enable, capturing a greater proportion of searches on Google than other topics. Human fascination with artificial intelligence lies in the idea that tedious, complex tasks can somehow be automated and acted upon in a way that is independent of human hands. This fanciful goal was accelerated at a time after World War II when computer science was in its infancy. British computer scientist and mathematician Alan Turing published an article in 1950 that proposed the _Imitation Game_, later was renamed the _Turing Test_^[A. M. Turing (1950) Computing Machinery and Intelligence. Mind 49: 433-460.], designed to assess how a machine may demonstrate intelligent behavior that is the or indistinguishable than that of humans. His article frames the test in terms of a machine issuing chess moves in a manner that humans cannot tell is artificial in nature. While Turing himself did not create AI, he helped to shape the philosophical foundations used to define human-like intelligence -- exhibiting similar judgment as humans, but doing so mathematically. 
+
+
+```{r, echo=FALSE, fig.height=3, fig.cap = "Comparison of popular data and technology search topics, Jan. 2004 to Jan 2017. All values are range standardized where 100 indicates the maximum number of searches on Google."}
+library(ggplot2)
+data <- read.csv("assets/intro/data/google-buzz.csv")
+data$Month <- as.Date(paste0(data$Month,"-01"), "%Y-%m-%d")
+
+long <-reshape(data, direction="long", varying=list(names(data)[2:6]), v.names="Value", 
+        idvar=c("Month"), timevar="term", times = names(data)[2:6])
+
+long$term <- gsub("\\."," ",tolower(long$term))
+ggplot(long, aes(x = Month, y = Value, colour = term)) + 
+  geom_line() + 
+  ylab(label="Relative popularity (100 = most)") + 
+  xlab("Month") + theme(text = element_text(size = 10))
+```
+
+Like many technical fields, interest in AI has experienced cycles of interest with an initial wave of interest in the 1950's to 1960's before experiencing the AI winter in the 1970's ^[https://www.technologyreview.com/s/603062/ai-winter-isnt-coming/]. The latest cycle was in the early 2000's with the introduction of autonomous robots for home such as the iRobot Roomba in 2002 that cleans homes.^[http://www.bbc.co.uk/timelines/zq376fr#z2c6nbk]
+
+Under the hood, the technologies that lead to AI are guided by the idea that a machine can learn from a set of examples (sometimes referred to as _labels_ or _targets_), doing so in a manner that is free of direct human instruction. This notion of _machine learning_ is accomplished by providing a computer with mathematical functions to find underlying structures and rules in data, absent of a human's explicit rules and common sense. Machine learning involves _algorithms_, which are processes and calculations that are followed to solve well-defined problems. _Statistical modeling_ uses many of the same algorithms as machine learning, but takes a perspective of systematically answering human-defined hypotheses. This is all to say that AI, machine learning and statistical modeling overlap in the mathematics that are employed, but there are technical nuances. Generally machine learning focuses on computers learning patterns and statistical modeling focuses on testing hypotheses. Both use similar techniques. AI takes it one step farther by automating actions and behaviors without a human explicitly instructing it to do so. There are many examples of machine and statistical learning, but only few true instances of artificial intelligence per the Turing Test due to the intensity of data and technology required. Despite this, society has, to some subtle degree, begun to brace for the yet-to-be-seen impacts of AI. One example is the "reverse" Turing Test in the form of CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) used to ensure that programmed bots are not conducting human transactions.^[von Ahn, Luis; Blum, Manuel; Hopper, Nicholas J.; Langford, John (May 2003). CAPTCHA: Using Hard AI Problems for Security. EUROCRYPT 2003: International Conference on the Theory and Applications of Cryptographic Techniques.]  
+
+_...and Deep Learning?_ Deep Learning has become popular term in technology circles in recent memory. It is the application of machine learning class of techniques known as _Artificial Neural Networks_ (ANNs) to problems that may benefit from more than one _hidden layer_ -- essentially learning data representations (e.g. what constitutes a yes/no, sell/buy/, cat/dog) is dependent on multiple levels of abstraction so that latent characteristics can also be learned. Deep learning is commonly applied often to vision problems, audio data and other highly dimensional data^[Bengio, Yoshua; LeCun, Yann; Hinton, Geoffrey (2015). "Deep Learning". Nature. 521: 436–444.].  For example, if a human were given the following two images, she would be able to determine one is a cup and the other is a bowl. This simple task requires human brains years to be trained and recognize objects and  associate the items with their shapes, proportions, sizes, colors, texture  among other contextual features.
+
+
+```{r, echo=FALSE, fig.height=2, fig.cap = "Example images: A cup and bowl. [Credit goes here]"}
+library(jpeg)
+library(grid)
+library(gridExtra)
+img1 <-  rasterGrob(as.raster(readJPEG("assets/intro/img/bowl.jpg")), interpolate = FALSE)
+img2 <-  rasterGrob(as.raster(readJPEG("assets/intro/img/cup.jpg")), interpolate = FALSE)
+grid.arrange(img1,
+             img2,
+             ncol = 2)
+
+```
+
+For computers, however, the task is quite a computationally costly challenge as it requires a machine to learn latent features (e.g. shapes, texture, color) from the grid of pixels that comprise an image. For this to be useful and accurate, ANNs requires a large amount of data, a requirement that is rooted in the mathematical assumptions that underlie the techniques.
+
+_Lambourghini vs. Jeep_. With all the data science techniques to choose from, being effective with data is like the vehicle choice an astute, wealthy adventurer needs to make when traveling into the rainy, muddy jungle and traverse streams and obstacles unknown. Should she drive her \$494,000  Lamborghini Aventador super car that can reach speeds of 217 mph on flat roads or her \$24,000 Jeep Cherokee with all-wheel drive?  _The way in which data is used should fit the scope of the problem_. Advanced AI and deep learning capabilities have a role to play, but its not for everything. As easily as we can see trade offs of a Jeep and Lamborghini, we should see data-driven techniques in the same light and recognize that a data panacea does not likely exist. 
+
+_Learning to walk_. [Google Trends](https://trends.google.com/trends/?hl=en) indicates that interest in artificial intelligence is consistently outstripped by the fields of _statistics_ and _computer science_, perhaps as a  command of each discipline enables practitioners to be more versatile in how they apply data intelligently  The field of statistics is more than _means_ and _standard deviations_, but the study and practice of collecting and analyzing large quantities of numerical data. Computer science is a field that solves algorithmic problems on scale. Both fields have their roots in mathematics, but maintain divergent views of how to approach and use data. 
+
+```{r, echo=FALSE, fig.height=3, fig.cap = "Comparison of search topics, Jan. 2004 to Jan 2017. Google Trends."}
+library(ggplot2)
+data <- read.csv("assets/intro/data/google-context.csv")
+data$Month <- as.Date(paste0(data$Month,"-01"), "%Y-%m-%d")
+
+long <-reshape(data, direction="long", varying=list(names(data)[2:4]), v.names="Value", 
+        idvar=c("Month"), timevar="term", times = names(data)[2:4])
+
+long$term <- gsub("\\."," ",tolower(long$term))
+ggplot(long, aes(x = Month, y = Value, colour = term)) + 
+  geom_line() + 
+  ylab(label="Relative popularity (100 = most)") + 
+  xlab("Month") + theme(text = element_text(size = 10))
+```
+
+Both computer science and statistics rely on _data analysis_ to aid in the systematic process of inspecting, cleaning, and analyzing data in order to uncover patterns about the data itself and the information it represents.  In more contemporary parlance, this is referred to as _data analytics_, _data mining_, or _data science_ although there is little consensus on the definitions.^[https://www.forbes.com/sites/gilpress/2013/08/19/data-science-whats-the-half-life-of-a-buzzword/#3caa5cc57bfd] 
+
+## What's The Value Proposition?
+
+Over 20 software and coding languages were enumerated in the previous section alone in addition to quite a few types of roles and applications. The ecosystem that is centered upon data analytics is indeed large and rapidly expanding, but why does it matter? As was illustrated through RBIS-FireCast, the value of data analytics will likely vary at each level in an organization. Making successful data projects like RBIS-FireCast is not only a matter of mastering the problem identification process, technical skills, methods, and software described above, but also recognizing that technology is a social affair that requires _buy-in, potential, and consensus_. Building consensus and buy-in is largely a matter of communicating insights so that it is "real", so that it answers the questions on peoples' minds:
+
+- _Executive_. In a sentence, what does your data project do for our organization? How can I [the executive] use this to advance my strategic goals? What do people in the ranks think? What do people outside think? What makes you excited about this work? How can you measure the benefit? Does it give our organization more benefit than it costs? What cutting edge technologies will/do you use? Prove to me that this is real through a "live fire" visual demo or presentation.  Do you have a clear, buzz worthy one pager I can shop around? Is anyone else doing it -- why or why not? What can I do to support this work?
+
+- _Team Lead_. In five sentences, what does your project do to support our team? Does it align with the organizational goals? How do you know that this works? Does it try any of the things that I have done previously? How did you build it? Tell me about your road map -- what are the milestones? What is the end state? How much resources do you need? When can we raise it to folks above? 
+
+- _Analyst/Researcher_. What new skills does this project allow me to develop? Are there new and exciting approaches that I can attempt? Will I have autonomy to work on this? 
+
+Throughout this book, we will concretely illustrate the value of implementing data analytics.
+
+##Structure
+
+This book is designed to be a holistic resource, bringing importance to both the technical and qualitative aspects of data science. Each chapter introduces complex technical concepts in humanized contexts before proceeding to the math and coding. 
+
+We will begin in Chapter 2 by providing a common approach to initiating and delivering data analytics projects as well as setting expectations of what to expect. We then proceed to Chapters 3 and 4 that introduces statistical programming practical applications. Chapters 8 through 16 cover foundations for machine learning and statistical modeling for applied applications. As this book is designed to function not only as a textbook but also as a handbook, each of the machine learning and statistical modeling chapters contain a _Do It Yourself_ (DIY) that poses common types of problems in plain English and provides an "empirical recipe" to solve for it through worked examples (see below). Chapters 17 through 19 focus on additional considerations for data analytics excellence, including presentation of model outputs, ethics considerations, and further skills development to remain competitive in the market.
+
+__Chapter 2: Light Programming__
+
+  - How to read a file direct from the web?
+
+__Chapter 3: Manipulation / Wrangling__
+
+  - How do I auto-populate messages pro forma?
+  - How much do these lists overlap? - An entity resolution example using the European Union and United Nations' sanctions lists.
+  - What do I do find patterns in event-level data? - An example using Washington Metropolitan Area Transit Authority delays.
+  - How do extract keywords from text? - A text processing example using State of the Union Speeches.
+  - How can shapes be identified in images? - An edge detection example using a photograph of Marine One.
+  
+__Chapter 4: Exploratory Data Analysis__
+
+  - What's a common exploratory data analysis workflow? - An end-to-end example using the American Community Survey
+
+__Chapter 5: Similarity Measures__
+
+  - Given product [A], which other products [X, Y, Z] should be recommended? - An item-item collaborative filtering example using the Consumer Expenditure Survey from the Bureau of Labor Statistics.
+  - How much is customer willing to pay for a specific [attribute]? 
+  
+__Chapter 6: Clustering__
+
+  - How much of the ground is covered in [vegetation/buildings/economic activity]? - A color quantization example using ASTER satellite imagery.
+  - How do I characterize the demand for [products/services]? - A agglomerative clustering example using NYC 311 service request data.
+  - Which series are trending together? - A example of clustering correlations of economic indicators.
+   
+__Chapter 8: Continuous Problems__
+
+  - What level of [demand/staff] should I expect? - A simple regression example using Maryland tollroad transactions.
+  - What do I do when there are too many features? - A regularized regression example using CDC Influenza-Like Illness (ILI) data and Google Trends data.
+  - What's the best way to fill-in missing [data/characteristics]? - A kNN example using NASA Normalized difference vegetation index (NDVI) data.
+  - How much is customer willing to pay for a specific [attribute]? - A hedonic price regression example using American Housing Survey data.
+ 
+
+__Chapter 9: Discrete Problems__
+
+  - Who is most likely to use a service? - A prediction example using the US Census Bureau's Survey of Income and Program Participation (SIPP).
+  - How do I find more prospective users who have the same profile as my current user base? - An extension to the SIPP example using propensity scoring.
+  - How can I make an activity tracker? - A classification example using accelerometer data.
+  - Which building is most likely to catch fire? - A classification and prioritization example using fire incident data and building characteristics.
+    
+__Chapter 10: Time-Based Problems__
+
+  - Which [organization] has the most turn over? An HR churn analytics example using state legislature representative lists
+  - Which [machine/patient] are at risk of repeat [failure/admission]? 
+
+  
+__Chapter 11: Text Problems__
+
+  - What topics are present in this text? 
+  - How does these [text/comments/article/tweet] lean? 
+
+__Chapter 12: Spatial Problems__
+
+  - []
+
+
+__Chapter 13: Visualization__
+
+  - []
+
+
+ 
+
+
+
+
+

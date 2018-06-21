@@ -1,0 +1,160 @@
+---
+title: "Economic Data: Map Example"
+output: html_document
+---
+
+## Extract-Transform-Load
+
+Get the data
+```{r, message = FALSE, warning = FALSE, echo= FALSE}
+library(bea.R)
+library(leaflet)
+library(sp)
+
+beaKey =  readLines("/Users/jeff/Documents/keys/beaKey.txt")
+
+#Personal Income Per Capita
+  pcinc_regional <- beaGet(
+   list(
+    userid   = beaKey, 
+    method   = 'getdata', 
+    linecode   = '3', 
+    tablename  = 'CA1', 
+    frequency  = 'a', 
+    datasetname = 'regionalincome', 
+    year     = 'all', 
+    geofips   = 'state'
+   )
+  )
+  
+#Consumer Spending
+  pcpce <- beaGet(
+   list(
+    UserID = beaKey, 
+    Method = 'GetData', 
+    DatasetName = 'RegionalProduct', 
+    Component = 'PCPCE_SAN',
+    IndustryID = '1' , 
+    year = 'all', 
+    geofips = 'state', 
+    frequency = 'a'
+   )
+  )
+
+pcpce$pcpce.growth <- 100 * (pcpce$DataValue_2016/pcpce$DataValue_2015 - 1)
+pcpce$STATEFP <- substr(pcpce$GeoFips,1,2)
+pcpce <- pcpce[, c("STATEFP", "pcpce.growth")]
+
+pcinc_regional$pcinc_growth <- 100 * (pcinc_regional$DataValue_2016/pcinc_regional$DataValue_2015 - 1)
+pcinc_regional$STATEFP <- substr(pcinc_regional$GeoFips,1,2)
+pcinc_regional <- pcinc_regional[, c("STATEFP", "pcinc_growth")]
+
+pcinc_regional <- merge(pcinc_regional, pcpce, by = "STATEFP")
+```
+
+
+### Get Shapefile
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+
+library(rgdal)
+
+getShape <- function(url){
+  # Download, unzip and load shapefile from URL
+  #
+  # Args: 
+  #   url = URL to zip file containing shapefile
+  #
+  # Returns:
+  #   
+  #   Loaded shapefile
+  
+  #Create temp objects
+  temp_dir <- tempdir()
+  temp_file <- tempfile()
+  
+  #Download and unzip file
+  download.file(url, temp_file,method="libcurl")
+  unzip(temp_file, exdir = temp_dir)
+  
+  #Load shapefile
+  file_prefix <- grep("*\\.shp$",list.files(temp_dir), value = TRUE)
+  file_prefix <- gsub("\\.shp", "", file_prefix)
+  return(readOGR(temp_dir, layer = file_prefix, verbose = FALSE))
+}
+
+
+# Get Shapefile
+  states <- getShape("http://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_state_20m.zip")
+  states@data$STATEFP <- as.character(states@data$STATEFP)
+  states <- merge(states, pcinc_regional, by = "STATEFP")
+  states <- states[!is.na(states@data$pcinc_growth),]
+```  
+
+### Set color palette
+
+```{r, message = FALSE, warning = FALSE}
+
+library(RColorBrewer)
+
+#Set up color palette
+  bins1 <- seq(floor(min(states@data$pcinc_growth)), ceiling(max(states@data$pcinc_growth)), 1)
+  pal1 <- colorBin("YlGnBu", domain = states@data$pcinc_growth, bins = bins1)
+  
+  bins2 <- seq(floor(min(states@data$pcpce.growth)), ceiling(max(states@data$pcpce.growth)), 1)
+  pal2 <- colorBin("YlOrRd", domain = states@data$pcpce.growth, bins = bins2)
+  
+```
+### Set labels
+
+```{r, message = FALSE, warning = FALSE}
+#Pop Up Label
+labels <- sprintf(
+  "<strong>%s</strong><br> <small>Per Capita Growth (2015-16)<br>PI:<span style='font-size:12px;color:darkblue;font-weight:bold'>%g </span> percent <br> PCE: <span style='font-size:12px;color:darkblue;font-weight:bold'> %g </span> percent</small>",
+                    states@data$NAME, round(states@data$pcinc_growth,2), round(states@data$pcpce.growth,2)) %>% lapply(htmltools::HTML)
+```
+
+### Set labels
+
+```{r, message = FALSE, warning = FALSE}
+#Set canvas
+map_object <- leaflet(states, width = "100%", height = "500px") %>% 
+              setView(-96.5, 37.7, 4) 
+
+
+#Add background
+map_object <- map_object  %>% 
+              addProviderTiles(provider = "CartoDB.Positron") 
+
+
+#Add data 
+map_object <- map_object %>% 
+                addPolygons(group = "Personal Income",
+                  fillColor = ~pal1(pcinc_growth), weight = 1, color = "white", fillOpacity = 0.5,
+                  highlight = highlightOptions(
+                    weight = 2, color = "#666", fillOpacity = 0.4),
+                  label = labels,
+                  labelOptions = labelOptions(
+                    style = list("font-weight" = "normal", padding = "3px 8px"),
+                    textsize = "15px", direction = "auto")) %>% 
+                addPolygons(group = "Personal Consumption",
+                  fillColor = ~pal2(pcpce.growth), weight = 1, color = "white", fillOpacity = 0.5,
+                  highlight = highlightOptions(
+                    weight = 2, color = "#666", fillOpacity = 0.4),
+                  label = labels,
+                  labelOptions = labelOptions(
+                    style = list("font-weight" = "normal", padding = "3px 8px"),
+                    textsize = "15px", direction = "auto")) 
+
+
+#Add Layer Controls
+map_object <- map_object %>%
+              addLayersControl(
+                overlayGroups = c("Personal Income", "Personal Consumption")
+                )
+
+#Render
+map_object
+```
+
+
+

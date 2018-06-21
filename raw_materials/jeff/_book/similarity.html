@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="exploratory-data-analysis.html">
+<link rel="next" href="clustering.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="similarity" class="section level1">
+<h1><span class="header-section-number">Chapter 5</span> Similarity</h1>
+<p>We all have heard people react with the following remarks:</p>
+<ul>
+<li>“That idea sounds awfully like…”;</li>
+<li>“Did you mean to say…”;</li>
+<li>“That looks like…”;</li>
+<li>“That’s pretty close to…”;</li>
+<li>“That seems to trend with…”;</li>
+<li>“You might actually like this as well…”;</li>
+</ul>
+<p>Humans need to contextualize the world around us. We are creatures of experiential learning, equipped with a powerful ability of cognition to quickly relate one thing to another in abstract terms. While we are endowed with strong cognitive abilities, our abilities are not scalable. For the most part, humans take things one at a time. Even multi-taskers are not truly multi-taskers as each task is serially initialized.</p>
+<p>What if we wanted to scale our abilities so that it can be applied more widely. This is very much part of the data science mantra. So, how would one quantify the underlying logic behind the above reactions?</p>
+<ul>
+<li>“That idea sounds awfully like…” is a matter of intersection of two ideas, which in part can be quantified as the overlap of words in two descriptions.</li>
+<li>“Did you mean to say…” may be simply due to associated with a spelling difference.</li>
+<li>“That looks like…” relates physical and latent qualities of two objects, whether color, shape or size.</li>
+<li>“That’s pretty close to…” is an abstraction of distance;</li>
+<li>“That seems to trend with…” is a matter of co-occurrence over time</li>
+<li>“You might actually like this as well…” matches two entities to one another.</li>
+</ul>
+<p>If basic everyday comparisons can be parameterized, then a bold new set of questions can be asked to support policy and strategy such as “Find all documents that relate to X” or “Which other services might a user of Y need?”.</p>
+<p>In short, these everyday responses can be operationalized in simple measures of similarity – some are distance related, some are volumetrically related, and others are linguistically related. Together, they provide a versatile set of methods to guide scalable tasks. Each type of similarity plays a part in algorithms, from simple variance estimators in regression models to split criteria in non-linear tree methods. In this section, we introduce a set of common measures that will appear and re-appear throughout the rest of the book, and we will tie each method to a real world use.</p>
+<div id="distances" class="section level2">
+<h2><span class="header-section-number">5.1</span> Distances</h2>
+<p>If a resident of a neighborhood searches the internet to find the nearest police station from a list of a dozen precincts, what happens in the background? The search site will ask for the user’s address, then convert that into latitude and longitude coordinates (<span class="math inline">\(x_0, y_0\)</span>). The search site also contains a list of known police stations and has already converted the coordinates into a table of coordinates such that police station 1 is (<span class="math inline">\(x_1, y_1\)</span>), police station 2 is (<span class="math inline">\(x_2, y_2\)</span>), Based on this information, a simple <em>dissimilarity matrix</em> may be calculated – basically a <span class="math inline">\(n \times n\)</span> matrix of distances among items in the list of police stations and the user coordinate:</p>
+<p><span class="math display">\[\begin{bmatrix} 0 \\ 2 &amp;&amp; 0 \\ 1 &amp;&amp; 10 &amp;&amp; 0 \\ 4 &amp;&amp; 3 &amp;&amp; 23 &amp;&amp; 0 \end{bmatrix}\]</span></p>
+<p>where the diagonal represents distance from a coordinate to itself. If the first column is the user’s coordinate, then the closest distance is in the 3rd row of the matrix. This is known as a nearest neighbor search – within a metric space, which entities are the closest (covered in supervised learning).</p>
+<p>Distance implies a measure in space, but distance can be represented in a number of ways. Perhaps the most generalizable form of distance is the <em>Minkowski Distance</em>, which is given in math-fabulous as follows:</p>
+<p><span class="math display">\[ d(x_1,x_2) = \sqrt[p]{|a_1-a_2|^p +|b_1-b_2|^p + ... +|z_1-z_2|^p}\]</span></p>
+<p>where <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are n-dimensional vectors (a set of coordinates). In layman terms, the <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> are each lists of equal length containing coordinates that identify locations <span class="math inline">\(1\)</span> and <span class="math inline">\(2\)</span>. <span class="math inline">\(x_1\)</span> for instance can be represented as <span class="math inline">\(x_1 = \begin{bmatrix} a_1 \\ b_1 \\ \vdots \\z_1 \end{bmatrix}\)</span>. For each corresponding dimension of <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span>, we take the absolute distance to the <span class="math inline">\(p\)</span> power, sum up the absolute dimensions, then take the <span class="math inline">\(p^{th}\)</span> root. The disimilarity matrix described before is comprised of the above equation, repeated for each pair of coordinates. One thing to note is that calculating <span class="math inline">\(d(x_1, x_2)\)</span> and <span class="math inline">\(d(x_2, x_1)\)</span> is the same, thus when computing the matrix, only slightly more than half of the matrix (above the diagonal or below the diagonal) contains unique information.</p>
+<p>It does not take much to see that <em>Euclidean distance</em> – “straight-line distance”, “ordinary distance”, <span class="math inline">\(L_2\)</span> distance – is a case where <span class="math inline">\(p = 2\)</span> and is the most likely candidate for the geographic nearest neighbor search:</p>
+<p><span class="math display">\[ d(x_1,x_2) = \sqrt[2]{|a_1-a_2|^2 +|b_1-b_2|^2 + ... +|z_1-z_2|^2}\]</span></p>
+<p>where subscripts <span class="math inline">\(x\)</span>, <span class="math inline">\(y\)</span>, and <span class="math inline">\(z\)</span> represent dimensions (continuous variables). Euclidean distances make the most sense when the coordinates are given in similar units. If the same resident from the above example wanted to find the closest police station that is located within half a mile of a train station, then adding an additional dummy variable as a dimension would not be appropriate as binary and coordinates are not in the same scale.</p>
+<p>When <span class="math inline">\(p = 1\)</span>, the Minkowski Distance gives rise to the <span class="math inline">\(L-1\)</span>-norm, “Manhattan distance” or “taxicab distance”, which resembles distance along the edge of the blocks of a grid.</p>
+<p><span class="math display">\[ d(x_1,x_2) = |a_1-a_2| +|b_1-b_2|+ ... +|z_1-z_2|\]</span></p>
+<p>The <em>Hamming Distance</em> is a special case of the <span class="math inline">\(L-1\)</span>-norm in which the coordinates are <em>binary</em>, such as binary variables that indicate level of education, demographics, prior service use, etc. In cases where binary is the only available information, Hamming distance offer a convenient strategy to similarity in terms of “bits”.</p>
+<p>The big picture with distance is to measure similarity or its inverse dissimilarity among records, which can then form the basis of:</p>
+<ul>
+<li>finding clusters of similar records (clustering and unsupervised learning)</li>
+<li>defining bandwidths – or the number of records to be included in a calculation</li>
+<li>selecting variables to be included in a model (regularization)</li>
+</ul>
+<div id="exercise" class="section level3 unnumbered">
+<h3>Exercise</h3>
+<p>Write a function that calculates the Minkowski Distance. The input parameters should accomodate two vectors <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> along with <span class="math inline">\(p\)</span> for the <span class="math inline">\(p^{th}\)</span>-root.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">minkowski &lt;-<span class="st"> </span>function(x, y, p){
+  <span class="co"># Returns Minkowski distance for the pth power</span>
+  <span class="co"># </span>
+  <span class="co"># Args:</span>
+  <span class="co">#  x, y = numeric vectors</span>
+  <span class="co">#  p = power</span>
+  <span class="co"># </span>
+  <span class="co"># returns:</span>
+  <span class="co">#  l-p distance</span>
+  <span class="co">#</span>
+    <span class="kw">return</span>(<span class="kw">sum</span>(<span class="kw">abs</span>(x -<span class="st"> </span>y)^p) ^<span class="st"> </span>(<span class="dv">1</span>/p))
+}
+
+<span class="co">#Try a Euclidean distance (two continuous vectors)</span>
+  a1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">5</span>)
+  b1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">20</span>, <span class="dv">10</span>)
+  <span class="kw">minkowski</span>(a1, b1, <span class="dv">2</span>)</code></pre></div>
+<pre><code>## [1] 17.74824</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Try a Hamming distance (two binary vectors)</span>
+  a1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>)
+  b1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>)
+  <span class="kw">minkowski</span>(a1, b1, <span class="dv">1</span>)</code></pre></div>
+<pre><code>## [1] 2</code></pre>
+</div>
+</div>
+<div id="correlation" class="section level2">
+<h2><span class="header-section-number">5.2</span> Correlation</h2>
+<p>Research on the effect of temperature on crime is fairly common. For instance, the findings from a Field (1992) describes this relationship in the United Kingdom<a href="#fn36" class="footnoteRef" id="fnref36"><sup>36</sup></a>:</p>
+<blockquote>
+<p>An analysis of annual, quarterly, and monthly data for recorded crime in England and Wales yielded strong evidence that temperature has a positive effect on most types of property and violent crime. The effect was independent of seasonal variation. No relationship between crime and rainfall or hours of sunshine emerged in the study. The main explanation advanced is that in England and Wales higher temperatures cause people to spend more time outside the home. Time spent outside the home, in line with routine activity explanations for crime, has been shown to increase the risk of criminal victimization for most types of crime. The results suggest that temperature is one of the main factors to be taken into account when explaining quarter-to-quarter and month-to-month variations in recorded crime.</p>
+</blockquote>
+<p>The results are <em>correlative</em> when temperature increases, crime also increases. As has been covered in Exploratory Data Analysis, correlation is commonly measured using <em>Pearson’s Correlation Coefficient</em>, which defined as:</p>
+<p><span class="math display">\[\rho(X,Y) = \frac{cov(X,Y)}{\sigma{_X}\sigma{_Y}} = \frac{\sum_{i=1}^n{(x_i-\bar{x})(y_i-\bar{y})}}{\sqrt{\sum_{i=1}^n{(x_i-\bar{x})^2}}\sqrt{\sum_{i=1}^n{(y_i-\bar{y})^2}}}\]</span></p>
+<p>Which is the covariance of X and Y divided by the product of the standard deviation of X and Y. The measure is bound between -1 and 1, where 1 indicates that two quantities move together all the time and -1 indicates two quantities move in exact opposite direction. To make the most of the correlation coefficient, it makes the most sense to use this measure with continuous variables.</p>
+<p>The idea of correlation can be generalized to other kinds of similarity. Suppose an organization, such as an online vendor or even a government agency, offers a portfolio of products and services. Typically, the needs and consumption of goods and services by customers are tracked for administrative and budgetary purposes. From the field of economics, it is common to observe that within a basket or portfolio of goods, two or more items may be complements:</p>
+<ul>
+<li>Someone who calls a government office to report noise pollution may also be in a place that may need to be checked for building structural problems (prioritization)</li>
+<li>Someone who buys hot dogs may also need to buy top-sliced buns (product recommendaiton)</li>
+<li>Someone who listens to Lenny Kravitz may also want to listen to Jimi Hendrix (product recommendaiton)</li>
+<li>Someone who reads a specific document in a database should also read a set of other documents (information retrieval)</li>
+</ul>
+<p>This is the fundamental idea behind <em>recommendation engines</em>.<a href="#fn37" class="footnoteRef" id="fnref37"><sup>37</sup></a> A customer of product A may be interested or may benefit from products X, Y, and Z. This can be inferred by how often two or more products are purchased together – essentially the Amazon, Netflix and general e-commerce experience. The basis of the technique known as <em>item-item collaborative filtering</em> starts with <em>cosine similarity</em>.</p>
+<p>Cosine similarity measures the angle between two vectors – basically if the vectors are going in the same direction. It is given as:</p>
+<p><span class="math display">\[ cos(\theta) = \frac{\sum_{i=1}^n{(X_i Y_i)}}{\sqrt{\sum_{i=1}^n{X_i^2}}\sqrt{\sum_{i=1}^n{Y_i^2}}}\]</span></p>
+<p>Unlike the correlation coefficient, the input vectors should contain positive real numbers and returns a value between 0 and 1, where 1 indicates that two vectors are perfectly aligned. While it is easy to write the underlying cosine similarity function, fast matrix implementation of cosine similarity is available in the <code>coop</code> package with the function <code>cosine()</code>.</p>
+<p>In practice, how does this work? Take a look at the DIY recommendation engine example later in this chapter.</p>
+<p><em>Jaccard Similarity Coefficient</em></p>
+<p>Plagerism is a problem in academic and professional settings. With information ever more accessible via the internet, it becomes easier to simply copy and paste information. Imagine a case where 1,000 submit essays in a freshman English seminar – how can the uniqueness of essays be checked? Or how can news articles be monitored in order to find dependence between news agencies (e.g. one news outlet citing an article from another outlet)?</p>
+<p>In an online setting, new users of web applications may be prompted to provide their preferences to populate their profile so that they can be connected to relevant products and services. How are users matched to recommendations?</p>
+<p>These are basic cases in which the Jaccard Similarity Coefficient is a good fit. Given two vectors <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>, the Jaccard coefficient is the intersection <span class="math inline">\(X \cap Y\)</span> divided by the union of the two vectors <span class="math inline">\(X \cup Y\)</span>:</p>
+<p><span class="math display">\[ J(X,Y) = \frac{|X \cap Y|}{|X \cup Y|} = \frac{|X \cap Y|}{|X| + |Y| - |X \cap Y|}\]</span></p>
+<p>In other words, it is a measure of how much two vectors overlap. Thus, the word frequencies of two or more documents can be compared and also proves to a convenient method of checking for the uniqueness of programming scripts.</p>
+</div>
+<div id="linguistic-distances" class="section level2">
+<h2><span class="header-section-number">5.3</span> Linguistic Distances</h2>
+<p>Spelling errors are common and are a continuous challenge in entity resolution. <em>Edit distances</em> are methods of comparing two strings to determine their similarity. The <em>Levenshtein Distance</em> is a similarity measure that counts the number additions, substitutions, or deletions that are required to transform one string to another string.<a href="#fn38" class="footnoteRef" id="fnref38"><sup>38</sup></a> For example: the difference between the name “Jeff” and “Geoff” is 2: (1) substitute “J” for “G”, and (2) delete the “o”.</p>
+<p>In R, one function that implements Levenshtein Distance is <code>adist(x, y)</code>, where <code>x</code> and <code>y</code> are string vectors. Below is a stylized output from <code>adist()</code> that provides the similarity measure for each string compbination.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Two sets of names</span>
+  x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Bill&quot;</span>, <span class="st">&quot;Warren&quot;</span>)
+  y &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Billy&quot;</span>,<span class="st">&quot;Wally&quot;</span>,<span class="st">&quot;Billie&quot;</span>, <span class="st">&quot;Golly&quot;</span>, <span class="st">&quot;William&quot;</span>)
+  
+<span class="co"># Calculate Levenshtein distances</span>
+  dist =<span class="st"> </span><span class="kw">adist</span>(x, y)
+  
+<span class="co">#Rename columns and rows</span>
+  <span class="kw">row.names</span>(dist) &lt;-<span class="st"> </span>x
+  <span class="kw">colnames</span>(dist) &lt;-<span class="st"> </span>y
+  
+<span class="co">#Print out</span>
+  <span class="kw">print</span>(dist)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-228">Table 5.1: </span>Levenshtein distances for “Bill” and “Warren”</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Billy</th>
+<th align="right">Wally</th>
+<th align="right">Billie</th>
+<th align="right">Golly</th>
+<th align="right">William</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Bill</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">3</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td>Warren</td>
+<td align="right">6</td>
+<td align="right">4</td>
+<td align="right">6</td>
+<td align="right">6</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>Levenshtein distances are quite useful with textual data, especially for surfacing potential alternative spellings. However, the choice of a “close match” is generally subjective.</p>
+<p>Another method of measuring linguistic distances is phonetically. <em>Phonetic Algorithms</em> index strings by sounds with respect to a target language. The <em>soundex</em> algorithm, for example, was developed to identify homophones – names that are pronounced the same but may have different spellings. This is done by encoding characters in names in a particular way that retains certain comparable sounds<a href="#fn39" class="footnoteRef" id="fnref39"><sup>39</sup></a>:</p>
+<ol style="list-style-type: decimal">
+<li><p>Keep the first letter of a string.</p></li>
+<li><p>Disregard the letters A, E, I, O, U, H, W, and Y.</p></li>
+<li><p>For each of the following groups of letters, replace with the associated number:</p></li>
+</ol>
+<ul>
+<li>1 [B, F, P, V]</li>
+<li>2 [C, G, J, K, Q, S, X, Z]</li>
+<li>3 [D, T]</li>
+<li>4 [L]</li>
+<li>5 [M, N]</li>
+<li>6 [R]</li>
+</ul>
+<ol start="4" style="list-style-type: decimal">
+<li><p>If a name has double letters, drop one (e.g. Keep one <em>r</em> in <em>Torres</em>)</p></li>
+<li><p>If sequential number encodings are the same, keep only one. Examples from the National Archives:</p></li>
+</ol>
+<ul>
+<li>Pfister is coded as P-236 (P, F ignored, 2 for the S, 3 for the T, 6 for the R).</li>
+<li>Jackson is coded as J-250 (J, 2 for the C, K ignored, S ignored, 5 for the N, 0 added).</li>
+<li>Tymczak is coded as T-522 (T, 5 for the M, 2 for the C, Z ignored, 2 for the K). Since the vowel “A” separates the Z and K, the K is coded.</li>
+</ul>
+<ol start="6" style="list-style-type: decimal">
+<li>If a name has a prefix (e.g. Van, Di) that is separated by a space, encode the name with and without the prefix and use both sets of encodings for search purposes. Example:</li>
+</ol>
+<ul>
+<li>Van Doren, Di Caprio, etc.</li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li>Consonant separators (two rules).</li>
+</ol>
+<ul>
+<li>If the letters “H” or “W” separate two consonants with the same soundex code, the consonant to the right of the vowel is not coded.<a href="#fn40" class="footnoteRef" id="fnref40"><sup>40</sup></a></li>
+<li>If a vowel (A, E, I, O, U) separates two consonants that have the same soundex code, the consonant to the right of the vowel is coded.<a href="#fn41" class="footnoteRef" id="fnref41"><sup>41</sup></a></li>
+</ul>
+<p>The result of a soundex is a four character code in which the first character is a letter proceeded by three numbers. The <code>phonics</code> library enables the use of common phonetic algorithms, which can help facilitate search and matching of names. In the example below, different spellings of John and Eric are compared using soundex encodings. Notice how names that sounds the same are successfully mapped to the same encodings.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load phonics package</span>
+  <span class="kw">library</span>(phonics)
+
+<span class="co">#John</span>
+  <span class="kw">soundex</span>(<span class="kw">c</span>(<span class="st">&quot;John&quot;</span>, <span class="st">&quot;Jon&quot;</span>, <span class="st">&quot;Jonathan&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;J500&quot; &quot;J500&quot; &quot;J535&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Eric</span>
+  <span class="kw">soundex</span>(<span class="kw">c</span>(<span class="st">&quot;Eric&quot;</span>, <span class="st">&quot;Erik&quot;</span>, <span class="st">&quot;Erich&quot;</span>, <span class="st">&quot;Enrique&quot;</span>))</code></pre></div>
+<pre><code>## [1] &quot;E620&quot; &quot;E620&quot; &quot;E620&quot; &quot;E562&quot;</code></pre>
+<p>Soundex is best for English language names and may not be adapted for all names. A number of variants have arisen with varying degrees of flexibility.</p>
+<div id="exercise-1" class="section level3 unnumbered">
+<h3>Exercise</h3>
+<p>Given the following rules, write a function to convert a string vector into soundex encodings using the first five rules.</p>
+</div>
+</div>
+<div id="entropy" class="section level2">
+<h2><span class="header-section-number">5.4</span> Entropy</h2>
+<p>Humans are creatures of habit, thus our range of actions are fairly predictable. Let’s suppose a restaurants in a city need to follow nearly a thousand statutes to remain in good standing. Chances are that a health inspector is not likely to know all statutes and will rely on a smaller set of violation types when conducting inspections. There is always the chance that the inspector will use extraneous and usual violations for unethical purposes, thus inspectors should generally issue a consistent set of violations. With this in mind, how does one detect abuse?</p>
+<p>Similarly, given a set of student characteristics, what constitutes better information? Information must contain signal that differentiates one idea/thing/topic from another in a consistent manner. Given a dummary variable indicating if a student has a SAT score above 1500 and another dummy variable indicating if a student’s toe nail is longer than 5 inches, which is better determinant of college admissions? Logically, it would be whichever measure that is able to partition the admissions pool into high success and low success.</p>
+<p>Enter <em>entropy</em>. With it origins in physics, entropy is a measure of randomness – a way to compare how many states a particle holds over some unit time. In statistics, it is a common method for identifying outliers and useful information of a system, given as:</p>
+<p><span class="math display">\[\text{entropy} = -\sum_i^{n}p_i \times log_np_i\]</span> where subscripts <span class="math inline">\(p_i\)</span> is the proportion of a system that occupied a state or condition <span class="math inline">\(i\)</span>. To contextualize this, let’s take a simple case of three inspectors in which each state is a type of violation that had been issued:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#The volume of each type of violation that has been issued</span>
+  inspector<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">10</span>, <span class="dv">10</span>, <span class="dv">30</span>, <span class="dv">20</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">2</span>)
+  inspector<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">20</span>)
+  inspector<span class="fl">.3</span> &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">30</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">20</span>)</code></pre></div>
+<p>To find the inspector who has not been consistent with their violation issuances, we can calculate entropy:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">entropy &lt;-<span class="st"> </span>function(x){
+  <span class="co"># Returns entropy of a vector</span>
+  <span class="co"># </span>
+  <span class="co"># Args:</span>
+  <span class="co">#  x = vector of states</span>
+  <span class="co"># </span>
+  <span class="co"># returns:</span>
+  <span class="co">#  Raw entropy</span>
+  <span class="co">#</span>
+  tot &lt;-<span class="st"> </span><span class="kw">sum</span>(x)
+  prop &lt;-<span class="st"> </span>x/tot
+  <span class="kw">return</span>(-<span class="kw">sum</span>(prop *<span class="st"> </span><span class="kw">log</span>(prop)))
+}</code></pre></div>
+<p>And apply the function to each inspector. The inspector with the highest entropy is inspector 1. This does not mean that inspector 1 did anything wrong, but perhaps should be evaluated a bit closer.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">entropy</span>(inspector<span class="fl">.1</span>)</code></pre></div>
+<pre><code>## [1] 2.185227</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">entropy</span>(inspector<span class="fl">.2</span>)</code></pre></div>
+<pre><code>## [1] 0.995027</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">entropy</span>(inspector<span class="fl">.3</span>)</code></pre></div>
+<pre><code>## [1] 1.366159</code></pre>
+<p>An another way of viewing entropy is as a measure of homogeneity. Relative to inspector 1, inspectors 2 and 3 were relatively consistent in their issuance history, thus there is little indication of deviant behavior. As we will see later in the book, entropy plays a central role in decision tree learning methods for classification.</p>
+</div>
+<div id="diy-3" class="section level2">
+<h2><span class="header-section-number">5.5</span> DIY</h2>
+
+<div id="given-product-a-which-other-products-x-y-z-should-i-recommend" class="section level3">
+<h3><span class="header-section-number">5.5.1</span> Given product [A], which other products [X, Y, Z] should I recommend?</h3>
+<p><strong>Motivation</strong></p>
+<p><strong>Principles</strong></p>
+<p>Two types of Item-to-Item collaborative filtering</p>
+<p><strong>A Worked Example</strong></p>
+<p>Consumer-level purchasing behavior is mostly collected on e-commerce proprietary systems or available for purchase from data aggregators. However, there is an anonymized, publically available, person-level data set that is published by the U.S. Bureua of Labor Statistics (BLS). The BLS Consumer Expenditure Survey (<a href="https://www.bls.gov/cex/">CEX</a>) provides an in-depth view into Americans’ purchasing patterns. The survey is divided into two parts. The first is an interview for larger purchases and the second is a diary survey focuses on frequently purchased items. These surveys are primarily aimed at informing the market basket of the Consumer Price Index (CPI). From an applied perspective, this data can be used to illustrate the mechanics of producing an item-to-item matrix through collaborative filtering (CF).</p>
+<p>Data for 2010 through 2016 has been aggregated and processed into a convenient format where each row represents a consumption unit (essentially a household) and each column represents a different type of item. Each household collects data on two separate weeks in the same year, but for the purpose of this exercise, the two weeks’ purchases are collapsed into one.</p>
+<p>To kick off this exercise, we will first load the data using the <code>digIt()</code> function. The data is also avalable at <a href="https://s3.amazonaws.com/dspp/cex_binary_matrix.Rda" class="uri">https://s3.amazonaws.com/dspp/cex_binary_matrix.Rda</a>.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(digIt)
+purchased &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;cex_binary&quot;</span>)</code></pre></div>
+
+<p>In total, the dataset contains <span class="math inline">\(n = 82809\)</span> records with <span class="math inline">\(k = 548\)</span> purchase items plus a household ID. Each feature provides a highly detail description with a broad range of products such as candy, bicycles, and wine.</p>
+
+<table>
+<caption><span id="tab:unnamed-chunk-234">Table 5.2: </span>40 types of purchase items from the BLS CEX data set</caption>
+<tbody>
+<tr class="odd">
+<td align="left">visual goods</td>
+<td align="left">oranges</td>
+<td align="left">postage</td>
+<td align="left">used motorcycles</td>
+</tr>
+<tr class="even">
+<td align="left">material &amp; suppli…</td>
+<td align="left">salt spices other…</td>
+<td align="left">rent</td>
+<td align="left">wine at vending m…</td>
+</tr>
+<tr class="odd">
+<td align="left">clocks &amp; other ho…</td>
+<td align="left">gas tank repair r…</td>
+<td align="left">landscaping items…</td>
+<td align="left">other serving pie…</td>
+</tr>
+<tr class="even">
+<td align="left">round steak</td>
+<td align="left">shoe repair &amp; oth…</td>
+<td align="left">smoking access</td>
+<td align="left">drivers license</td>
+</tr>
+<tr class="odd">
+<td align="left">candy &amp; chewing g…</td>
+<td align="left">girls skirts pant…</td>
+<td align="left">toys games arts &amp;…</td>
+<td align="left">clothing storage</td>
+</tr>
+<tr class="even">
+<td align="left">drive shaft &amp; rea…</td>
+<td align="left">potato chips &amp; ot…</td>
+<td align="left">docking &amp; landing…</td>
+<td align="left">apparel laundry &amp;…</td>
+</tr>
+<tr class="odd">
+<td align="left">snacks &amp; nonalcoh…</td>
+<td align="left">vcr s &amp; video dis…</td>
+<td align="left">noncarbonated fru…</td>
+<td align="left">canned misc veget…</td>
+</tr>
+<tr class="even">
+<td align="left">appliance repair …</td>
+<td align="left">eyeglasses &amp; cont…</td>
+<td align="left">boys access</td>
+<td align="left">bicycles</td>
+</tr>
+<tr class="odd">
+<td align="left">other pork</td>
+<td align="left">athletic gear gam…</td>
+<td align="left">jams preserves ot…</td>
+<td align="left">pet food</td>
+</tr>
+<tr class="even">
+<td align="left">olives pickles re…</td>
+<td align="left">womens sportcoats…</td>
+<td align="left">washers &amp; dryers</td>
+<td align="left">sewing machines</td>
+</tr>
+</tbody>
+</table>
+<p>Each feature is a binary indicator of whether a given household had purchased a given item during the data collection period. It becomes easy to see that overlaps between households may serve as the basis of finding items that may be purchased together. For example, an examination of the overlap between items would indicate the apples and citrus are more related than biscuits. Empirically, we find that the cosine similarity <span class="math inline">\(cos(X,Y) = \frac{\sum{(X Y)}}{\sqrt{\sum{X^2}}\sqrt{\sum{Y^2}}}\)</span> of apples and biscuits is <code>0.58</code> and apples and citrus is <code>0.77</code>, confirming our initial observation.</p>
+<table>
+<caption><span id="tab:unnamed-chunk-235">Table 5.3: </span>View of six random observations and three randomly selected items</caption>
+<thead>
+<tr class="header">
+<th align="left">unit id</th>
+<th align="right">apples</th>
+<th align="right">biscuit &amp; rolls</th>
+<th align="right">citrus fruits excl. oranges</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1042252</td>
+<td align="right">1</td>
+<td align="right">1</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">1078541</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">1221502</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">3452592</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="left">3543762</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">1</td>
+</tr>
+<tr class="even">
+<td align="left">2895591</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Imagine the pain of manually calculating and modifying a formula to calculate the cosine similarity. For a matrix of 500+ items, the calculation will need to be performed up to 250,000 times. To streamline the process, we write two functions to facilitate computation. The first <code>cosSim()</code> calculates the cosine similarity for two vectors. The second <code>cosSimMat()</code> produces an item-item recommendation list.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cosSim &lt;-<span class="st"> </span>function(a, b){
+  <span class="co"># Desc.</span>
+  <span class="co">#   Returns cosine similarity for two vectors</span>
+  <span class="co"># </span>
+  <span class="co"># Args.</span>
+  <span class="co">#   Two numeric vectors</span>
+  <span class="co">#</span>
+  <span class="co"># Returns.</span>
+  <span class="co">#   A numeric value between 0 and 1</span>
+  <span class="co">#</span>
+    complete &lt;-<span class="st"> </span>!<span class="kw">is.na</span>(a) &amp;<span class="st"> </span>!<span class="kw">is.na</span>(b)
+    a &lt;-<span class="st"> </span>a[complete]
+    b &lt;-<span class="st"> </span>b[complete]
+    z &lt;-<span class="st"> </span><span class="kw">sum</span>(a *<span class="st"> </span>b) /<span class="st"> </span>(<span class="kw">sqrt</span>(<span class="kw">sum</span>(a^<span class="dv">2</span>)) *<span class="st"> </span><span class="kw">sqrt</span>(<span class="kw">sum</span>(b^<span class="dv">2</span>)))
+    <span class="kw">return</span>(z)
+}</code></pre></div>
+<p>To test out the function, we correlate “sirloin.steak” and “sauces.and.gravies”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cosSim</span>(purchased$sirloin.steak, purchased$sauces.and.gravies)</code></pre></div>
+<pre><code>## [1] 0.2114076</code></pre>
+<p>As a next step, we whittle down the data set to items that were purchased more than 3000 times across all households. This is done for convenience as calculating all pairs of cosine similarity values is computationally costly.</p>
+<p>Reduce the sample just for illustrative purposes</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Items</span>
+  items &lt;-<span class="st"> </span>purchased[,<span class="dv">2</span>:<span class="kw">ncol</span>(purchased)]
+
+<span class="co">#Calculate the number of times an item was purchased (sum by column)</span>
+  column.sums &lt;-<span class="st"> </span><span class="kw">apply</span>(items, <span class="dv">2</span>, sum)
+
+<span class="co">#Keep items that were purchased at least 3000 times</span>
+  items &lt;-<span class="st"> </span>items[, column.sums &gt;<span class="st"> </span><span class="dv">3000</span>]</code></pre></div>
+<p>With the item list cut down to a manageable set, a new function <code>cosSimMat()</code> is written to populate the similarity matrix in long form. While there are far faster methods of calculating the similarity matrix such as the <code>cosine()</code> function in the <code>coop</code> package, there is no better way of gaining an expert understanding of such problems than through writing the functions from the ground up.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cosSimMat &lt;-<span class="st"> </span>function(items){
+   <span class="co">#</span>
+  <span class="co"># Desc:</span>
+  <span class="co">#   Constructs item-to-item similarity matrix </span>
+  <span class="co"># </span>
+  <span class="co"># Args:</span>
+  <span class="co">#   items = matrix of items purchased by consumer</span>
+  <span class="co">#</span>
+  <span class="co"># Returns:</span>
+  <span class="co">#   A data frame with the similarity score for each item-item pair</span>
+  <span class="co">#</span>
+  
+  ##Find all unique item-item combinations
+  ##as data frame of column index pairs
+  combos &lt;-<span class="st"> </span><span class="kw">expand.grid</span>(<span class="dt">x =</span> <span class="dv">1</span>:<span class="kw">ncol</span>(items), <span class="dt">y =</span> <span class="dv">1</span>:<span class="kw">ncol</span>(items))
+  index &lt;-<span class="st"> </span>!<span class="kw">duplicated</span>(<span class="kw">t</span>(<span class="kw">apply</span>(combos, <span class="dv">1</span>, sort)))
+  combos &lt;-<span class="st"> </span>combos[index, ]
+  
+  <span class="co">#Loop through each combination based on combo index</span>
+  out &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span>:<span class="kw">nrow</span>(combos), function(i){
+        left &lt;-<span class="st"> </span>combos[i, <span class="st">&quot;x&quot;</span>]
+        right &lt;-<span class="st"> </span>combos[i, <span class="st">&quot;y&quot;</span>]
+        score &lt;-<span class="st"> </span><span class="kw">cosSim</span>(items[, left], items[, right])
+        <span class="kw">return</span>(<span class="kw">data.frame</span>(<span class="dt">x =</span> left, <span class="dt">y =</span> right, <span class="dt">score =</span> score))
+      })
+  
+  <span class="co">#Populate item names</span>
+  df &lt;-<span class="st"> </span><span class="kw">do.call</span>(rbind, out)
+  df$x &lt;-<span class="st"> </span><span class="kw">colnames</span>(items)[df$x]
+  df$y &lt;-<span class="st"> </span><span class="kw">colnames</span>(items)[df$y]
+  <span class="kw">return</span>(df)
+}</code></pre></div>
+<p>With the function fully built, run <code>cosSimMat()</code> on the items matrix, then examine the first six items as a check. Notice that the output may be challenging to navigate.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">recs &lt;-<span class="st"> </span><span class="kw">cosSimMat</span>(items)
+<span class="kw">head</span>(recs, <span class="dv">6</span>)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-241">Table 5.4: </span>Example recommendations</caption>
+<thead>
+<tr class="header">
+<th align="left">x</th>
+<th align="left">y</th>
+<th align="right">score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">apples</td>
+<td align="left">apples</td>
+<td align="right">1.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">bacon</td>
+<td align="left">apples</td>
+<td align="right">0.2417474</td>
+</tr>
+<tr class="odd">
+<td align="left">baking.needs.and.misc.products</td>
+<td align="left">apples</td>
+<td align="right">0.2444923</td>
+</tr>
+<tr class="even">
+<td align="left">bananas</td>
+<td align="left">apples</td>
+<td align="right">0.4603425</td>
+</tr>
+<tr class="odd">
+<td align="left">beer.and.ale</td>
+<td align="left">apples</td>
+<td align="right">0.1621774</td>
+</tr>
+<tr class="even">
+<td align="left">beer.and.ale.at.full.service.restaurants</td>
+<td align="left">apples</td>
+<td align="right">0.1317498</td>
+</tr>
+</tbody>
+</table>
+<p>Thus, to make navigating the matrix an accessible task, we create a simple utility function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">findItem &lt;-<span class="st"> </span>function(recs, item.name){
+  <span class="co">#</span>
+  <span class="co"># Desc:</span>
+  <span class="co">#   Conducts keywords search for item names</span>
+  <span class="co"># </span>
+  <span class="co"># Args:</span>
+  <span class="co">#   recs = data frame output from cosSimMat</span>
+  <span class="co">#   item.name = string containing part of item name to be searched</span>
+  <span class="co">#</span>
+  <span class="co"># Returns:</span>
+  <span class="co">#   String vector of matched names</span>
+  <span class="co">#</span>
+  itemList &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">c</span>(<span class="kw">grep</span>(item.name, recs[[<span class="st">&quot;x&quot;</span>]], <span class="dt">value =</span> <span class="ot">TRUE</span>), <span class="kw">grep</span>(item.name, recs[[<span class="st">&quot;y&quot;</span>]], <span class="dt">value =</span> <span class="ot">TRUE</span>)))
+  <span class="kw">return</span>(itemList)
+}</code></pre></div>
+<p>We now test the <code>findItem()</code> function with the term “veg”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">findItem</span>(recs, <span class="st">&quot;veg&quot;</span>)</code></pre></div>
+<pre><code>## [1] &quot;canned.misc.vegetables&quot;            &quot;dried.misc.vegetables&quot;            
+## [3] &quot;fresh.and.canned.vegetable.juices&quot; &quot;frozen.vegetables&quot;                
+## [5] &quot;other.fresh.vegetables&quot;</code></pre>
+<p>To retrieve the top 10 results from the recommendations, the <code>getRec()</code> function is developed and returns results in a readable format.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">getRec &lt;-<span class="st"> </span>function(recs, item.id, <span class="dt">len =</span> <span class="dv">10</span>){
+  <span class="co">#</span>
+  <span class="co"># Desc:</span>
+  <span class="co">#   Returns top recommended items</span>
+  <span class="co"># </span>
+  <span class="co"># Args:</span>
+  <span class="co">#   recs = data frame output from cosSimMat</span>
+  <span class="co">#   item.id = matched series name (use getItem to find items)</span>
+  <span class="co">#   len = number of results. Default = 10</span>
+  <span class="co">#</span>
+  <span class="co"># Returns:</span>
+  <span class="co">#   Data frame of most associated items from recs file</span>
+  <span class="co">#</span>
+  
+  ##Get matching records
+  index &lt;-<span class="st"> </span><span class="kw">unique</span>(<span class="kw">c</span>(<span class="kw">grep</span>(item.id, recs$x), <span class="kw">grep</span>(item.id, recs$y)))
+  results &lt;-<span class="st"> </span>recs[index, ]
+  
+  ##Clean up output
+  results &lt;-<span class="st"> </span>results[results$x !=<span class="st"> </span>results$y, ]
+  results$x[results$x ==<span class="st"> </span>item.id] &lt;-<span class="st"> </span>results$y[results$x ==<span class="st"> </span>item.id]
+  results &lt;-<span class="st"> </span>results[<span class="kw">order</span>(-results$score),]
+  
+  <span class="co">#</span>
+  results$x &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;</span><span class="ch">\\</span><span class="st">.&quot;</span>, <span class="st">&quot; &quot;</span>, results$x)
+  results$x &lt;-<span class="st"> </span><span class="kw">substr</span>(results$x, <span class="dv">1</span>, <span class="dv">40</span>)
+  results &lt;-<span class="st"> </span>results[<span class="dv">1</span>:len, <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>,<span class="st">&quot;score&quot;</span>)]
+  <span class="kw">colnames</span>(results) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;item&quot;</span>,<span class="st">&quot;score&quot;</span>)
+  
+  <span class="kw">return</span>(results)
+}</code></pre></div>
+<p>The value of the retrieval function is clear – if a consumer has purchased <em>fresh and canned vegetable juices</em>, then perhaps there is an opportunity to canned and bottled fruit juice and milk to a lesser degree.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">getRec</span>(recs, <span class="st">&quot;fresh.and.canned.vegetable.juices&quot;</span>)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-246">Table 5.5: </span>Recommendations for (1) Beer &amp; Ale and (2) Frozen Vegetables</caption>
+<thead>
+<tr class="header">
+<th align="left">Matches: Beer &amp; Ale</th>
+<th align="right">Score</th>
+<th align="left">Matches: Frozen Vegetables</th>
+<th align="right">Score</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">dinner at full service restaurants</td>
+<td align="right">0.396</td>
+<td align="left">other fresh vegetables</td>
+<td align="right">0.428</td>
+</tr>
+<tr class="even">
+<td align="left">other alcoholic beverages at full servic</td>
+<td align="right">0.329</td>
+<td align="left">cheese</td>
+<td align="right">0.421</td>
+</tr>
+<tr class="odd">
+<td align="left">wine</td>
+<td align="right">0.317</td>
+<td align="left">fresh milk all types</td>
+<td align="right">0.406</td>
+</tr>
+<tr class="even">
+<td align="left">gasoline</td>
+<td align="right">0.304</td>
+<td align="left">potato chips and other snacks</td>
+<td align="right">0.401</td>
+</tr>
+<tr class="odd">
+<td align="left">snacks and nonalcoholic beverages at ful</td>
+<td align="right">0.284</td>
+<td align="left">misc prepared foods</td>
+<td align="right">0.401</td>
+</tr>
+<tr class="even">
+<td align="left">wine at full service restaurants</td>
+<td align="right">0.282</td>
+<td align="left">sauces and gravies</td>
+<td align="right">0.395</td>
+</tr>
+<tr class="odd">
+<td align="left">other fresh vegetables</td>
+<td align="right">0.276</td>
+<td align="left">other fresh fruits</td>
+<td align="right">0.387</td>
+</tr>
+<tr class="even">
+<td align="left">lunch at fast food take out delivery con</td>
+<td align="right">0.276</td>
+<td align="left">bread other than white</td>
+<td align="right">0.383</td>
+</tr>
+<tr class="odd">
+<td align="left">fresh milk all types</td>
+<td align="right">0.269</td>
+<td align="left">bananas</td>
+<td align="right">0.379</td>
+</tr>
+<tr class="even">
+<td align="left">lunch at full service restaurants</td>
+<td align="right">0.266</td>
+<td align="left">ready to eat and cooked cereals</td>
+<td align="right">0.369</td>
+</tr>
+</tbody>
+</table>
+<p>This example is straight-forward from an technical perspective, but there are moving pieces and conditions that effect the ultimate success of a recommendation engine. In an item-item recommender, <em>data is needed</em> – an obvious necessity. Thus, an item-item strategy is only possible when a system has been collecting data for some time. If a recommender is absolutely required, the <em>cold start</em> problem will force one to make certain assumptions on how to recommend information in the absence of observed human behavior. An alternative strategy is content-based, which requires that the qualities of products. in an inventory (e.g. type of product, price, characteristics) are articulated as generalizable features and users are asked to provide their preferences, which in turn map to the product features. Then, the features for each product and customer preferences are compared using a Jaccard Similarity Coefficient – essentially looking for the overlap of qualities.</p>
+<p>There is much more that goes into a recommendation engine than just the calculation. How the recommendations are surfaced to consumer is a matter of user experience and interface design, which may have a large effect on whether the recommendations are acceepted by users. More often than not, the construction of a recommender system is a team effort, requiring data scientists, web developers, data engineers and product managers to create a cohesive, user-friendly but technically sound product.</p>
+<p><strong>Exercises</strong></p>
+<p>Write a new function <code>jaccardSim()</code> to calculate the Jaccard Similarity Coefficient:</p>
+<p><span class="math display">\[J(X,Y) = \frac{|X \cap Y|}{|X \cup Y|} = \frac{|X \cap Y|}{|X| + |Y| - |X \cap Y|}\]</span></p>
+<p>Then reconstruct the similarity matrix using the same steps as shown in the DIY. Compare the matches from each cosine similarity and Jaccard similarity results for each <em>Beer &amp; Ale</em> and <em>Frozen Vegetables</em>.</p>
+
+</div>
+<div id="which-texts-are-saying-similar-things" class="section level3">
+<h3><span class="header-section-number">5.5.2</span> Which texts are saying similar things?</h3>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="36">
+<li id="fn36"><p><a href="https://academic.oup.com/bjc/article-abstract/32/3/340/319313?redirectedFrom=PDF" class="uri">https://academic.oup.com/bjc/article-abstract/32/3/340/319313?redirectedFrom=PDF</a><a href="similarity.html#fnref36">↩</a></p></li>
+<li id="fn37"><p><a href="https://www.cs.umd.edu/~samir/498/Amazon-Recommendations.pdf" class="uri">https://www.cs.umd.edu/~samir/498/Amazon-Recommendations.pdf</a><a href="similarity.html#fnref37">↩</a></p></li>
+<li id="fn38"><p>Ref required<a href="similarity.html#fnref38">↩</a></p></li>
+<li id="fn39"><p><a href="https://www.archives.gov/research/census/soundex.html" class="uri">https://www.archives.gov/research/census/soundex.html</a><a href="similarity.html#fnref39">↩</a></p></li>
+<li id="fn40"><p><a href="https://www.archives.gov/research/census/soundex.html" class="uri">https://www.archives.gov/research/census/soundex.html</a><a href="similarity.html#fnref40">↩</a></p></li>
+<li id="fn41"><p><a href="https://www.archives.gov/research/census/soundex.html" class="uri">https://www.archives.gov/research/census/soundex.html</a><a href="similarity.html#fnref41">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="exploratory-data-analysis.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="clustering.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

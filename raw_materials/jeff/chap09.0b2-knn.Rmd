@@ -1,0 +1,195 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 11
+documentclass: book
+link-citations: yes
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+### KNN 
+
+As covered in Lecture 6, KNNs are a weak learning algorithm that treats input features as coordinate sets. Given a class label $y$ associated with input features $x$, a given record $i$ in a dataset can be related to all other records using Euclidean distances in terms of $x$: 
+
+$$ \text{distance} = \sqrt{\sum(x_{ij} - x_{0j})^{2} }$$ 
+
+where $j$ is an index of features in $x$ and $i$ is an index of records (observations). For each $i$, a neighborhood of taking the $k$ records with the shortest distance to that point $i$. From that neighborhood, the value of $y$ can be approximated. Given a discrete target variables, $y_i$ is determined using a procedure called *majority voting* where the most prevalent value in the neighborhood around $i$ is assigned. 
+
+Recall that in the case of KNNs, all variables should be in the same scale such that each input feature has equal weight. A review of the data indicates that the health data is not in the appropriate form to be used. 
+
+#### Data preparation: Mixed variable formats
+Continuous variables can be discretized by binning records into equal intervals, then converting the bins into dummy matrices For simplicity, we'll bin the age and wage varaibles in the following manner:
+
+- `age`: 10 year intervals.
+- `wage`: $20,000 intervals, topcoded at $200,000.
+
+Upon binning, each variable needs to be set as a factor.
+
+
+```{r}
+#Age
+  health$age.bin <- round(health$agep / 10) * 10
+  health$age.bin <- factor(health$age.bin)
+
+#Wage
+  health$wage.bin <- round(health$wage / 20000) * 20000
+  health$wage.bin[health$wage.bin > 200000] <- 200000
+  health$wage.bin <- factor(health$wage.bin)
+  
+```
+
+For all discrete features including the newly added `age` and `wage` variables, we can convert them into dummy matrices (e.g. all except one level in a discrete feature is converted into a binary variable). The former can be easily achieved by using the `model.matrix()` method, which returns a binary matrix for all levels:
+
+```{r, eval = FALSE}
+  model.matrix(~ health$variable - 1)
+```
+
+As is proper in preparation of dummy variables, if there are $k$ levels in a given discrete variable, we should only keep $k-1$ dummy variables For example, citizenship is a two level variable, thus we only need to keep one of two dummies. It's common to leave out the level with the most records, but any level will do.
+
+```{r}
+#Make copy of health data frame
+  knn_data <- health[, c("id","coverage")]
+
+#Specify variables that need to be discretized
+  discrete.vars <- c("cit", "mar", "schl", "wage.bin", "age.bin", "esr")
+  
+#Loop through and add dummy matrices to knn_data
+  for(i in discrete.vars){
+    dummy_mat <- model.matrix(~ health[,i] - 1)
+    knn_data <- cbind(knn_data, dummy_mat)
+  }
+
+```
+
+Now the data can be combined. Notice that the new dataset `knn_data` has 36 features.  Note that perform these transformations are necessary given mixed variable types; however, a datasets containing continuous variables only does not require any manipulation other than scaling.
+
+```{r}
+#Dimensions
+  dim(knn_data)
+```
+
+#### Sample partition
+As is proper, the next step is to partition the data. For simplicity, we'll create a vector that will split the data into two halves, denoting the training set as `TRUE` and the test set as `FALSE`. We then split the data into two objects contain the input features for each train and test sets.
+
+
+```{r}
+#Split into simple train-test design
+  set.seed(100)
+  rand <- runif(nrow(knn_data)) 
+  rand <- rand > 0.5
+
+  train <- knn_data[rand == T, 2:ncol(knn_data)]
+  test <- knn_data[rand == F, 2:ncol(knn_data)]
+
+```
+
+
+#### Modeling
+As it common and proper, the kNN algorithm needs to be calibrated for the best $k$ using the training set, then applied to a test set. To do this, we will use the `kknn` library. The training portion uses the `train.kknn()` function to conduct k-folds cross validation, then the scoring uses the `kknn()`. While both functions can be fairly easily written from scratch (and we encourage new users to write their own as was demonstarted in the previous chapter), we will plow forth with using the library.
+
+To start, we will load the `kknn` library:
+
+```{r}
+#Call "class" library
+  library(kknn)
+```
+
+
+In order to find the optimal value of $k$, we will execute the `train.kknn()` function, which accepts the following arguments:
+
+`train.kknn(formula, data, kmax, kernel, distance, kcv)`
+
+- `formula` is a formula object (e.g. "`coverage ~ .`").
+- `data` is a matrix or data frame of training data.
+- `kmax` is the maximum number of neighbors to be tested
+- `kernel` is a string vector indicating the type of distance weighting (e.g. "rectangular" is unweighted, "biweight" places more weight towards closer observations, "gaussian" imposes a normal distribution on distance, "inv" is inverse distance).
+- `distance` is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).
+- `kcv` is the number of partitions to be used for cross validation.
+
+The flexibility of `train.kknn()` allows for test exhaustively and find the best parameters. Below, we conduct 10-folds cross validation up to $k = 200$ for three kernel (rectangular, biweight and inverse) assuming L1-distances. While the command is simple, it runs the kNN algorithm for 2000 times (10 cross-validation models for each k - kernel combination).
+
+```{r}
+  pred.train <- train.kknn(factor(coverage) ~. , data = train, kcv = 10, distance = 1,
+              kmax = 500, kernel = c("rectangular", "biweight", "inv"))
+```
+
+The resulting model object contains the cross-validation error log in the `MISCLASS` attribute, which has been plotted below, as well as `best.parameters` that indicates that $k = 335$ using an inverse distance kernel yields the lowest error.
+
+```{r, message=FALSE, warning = FALSE, fig.cap = "10-fold cross validated errors for k = 1 to k = 500"}
+#Find optimal k and kernel
+  plot(pred.train$MISCLASS[,c("biweight")], 
+       type = "l", col = "orange", 
+       ylab = "Classification error", xlab = "k")
+    lines(pred.train$MISCLASS[,c("inv")], col = "red")
+    lines(pred.train$MISCLASS[,c("rectangular")], col = "blue")
+```
+
+The result suggest that a combination of $k = 335$ using inverse distance yields the best result. With the kNN algorithm tuned, we can now use the `kknn()` function to score the test set. The function syntax is as follows:
+
+`kknn(formula, train, test, k, kernel, distance)`
+
+- `formula` is a formula object (e.g. "`coverage ~ .`").
+- `train` is a matrix or data frame of training data.
+- `test` is a matrix or data frame of test data.
+- `k` is the number of neighbors.
+- `kernel` is the type of weighting of distance (e.g. "rectangular" is unweighted, "biweight" places more weight towards closer observations).
+- `distance` is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).
+
+
+```{r}
+#Score train set
+  out <- kknn(factor(coverage) ~. , train = train, test = test, 
+              k = 335, kernel = "inv", distance = 1)
+
+#Extract probabilities
+  test.prob <- out$prob[,2]
+  
+#Convert probabilities to prediction 
+  pred.class <- vector(length = length(test.prob))
+  pred.class[test.prob < 0.5] <- "Coverage"
+  pred.class[test.prob >= 0.5] <- "No Coverage"
+
+#Confusion matrix
+  table(test$coverage, pred.class)
+```
+
+Using the extracted probabilities, we now can calculate the accuracy using the True Positive Rate (TPR) using a probability cutoff of 0.5. Typically, one would expect a $2 \times 2$ matrix given a binary label where the accuracy rate can be calculated based on the diagonals. In this case, prediction accuracy was `r tab = table(test$coverage, pred.class); paste0(round(100*(tab[1] + tab[4])/nrow(test),1), "%")`, indicating that the model performs reasonably well.
+
+The test model accuracy can also be calculated by taking the Area Under the Curve (AUC) of the Receiving-Operating Characteristic. The ROC calculates the TPR and FPR at many thresholds, that produces a curve that indicates the general robustness of a model. The AUC is literally the area under that curve, which is a measure between 0.5 and 1 where the former indicates no predictive power and 1.0 indicates a perfect model. 
+
+In order to visualize the ROC, we will rely on the `plotROC` library, which is an extension of `ggplot2`. We will create a new data frame `input` that is comprised of the labels for the test set `ytest` and the predicted probabilities `test.prob`. 
+
+```{r, warning=FALSE, message=FALSE}
+#Load libraries
+
+  library(ggplot2)
+  library(plotROC)
+
+#Set up test data frame
+  input <- data.frame(ytest = test$coverage, 
+                      prob = test.prob)
+```
+
+We then will first create a ggplot object named `base` that will contain the labels (`d = `) and probabilities (`m = `), then create the ROC plot using  `geom_roc()` and `style_roc()`. A ROC curve for a well-performing model should sit well-above the the 45 degree diagonal line, which is the reference for an AUC of 0.5 (the minimum expected for a positive predictor). However, as the curve is below the 45 degree line, we may have a seriously deficient model. 
+
+```{r, message = FALSE, warning=FALSE, fig.height = 3, fig.cap = "ROC for k = 410 using inverse distance"}
+#Base object
+  roc <- ggplot(input, aes(d = ytest, m = prob)) + 
+         geom_roc() + style_roc()
+  
+#Show result
+  roc
+```
+
+
+To calculate the AUC, we can use the `calc_auc()` method, from which we find that `r paste0(round(calc_auc(roc)$AUC, 1))`, which is generally a decent level of accuracy. 
+
+```{r, message=FALSE, warning = FALSE, fig.height = 2}
+  calc_auc(roc)$AUC
+```
+
+Despite the promising result, there are a few one should ask the following question: _Is there a better classifier?_ 
+

@@ -1,0 +1,61 @@
+---
+title: ""
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### Reading a CSV directly from the web
+
+For an initial demo, we will learn to load in a Comma Separated Values (CSV) file containing energy data from the [National Institute of Standards and Technology Net Zero Residential Test Facility](https://pages.nist.gov/netzero) -- a laboratory that produces as much energy as it uses and is a testbed for sustainable and efficient home technologies. The specific dataset that will be used is the hourly photovoltaic sensor dataset [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv), which contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. From a sustainability perspective, this data can eventually be used to inform home efficiency policies, solar panel siting, among other things. Our goal in this demonstration is to plot sun exposure by month to see the relative differences. 
+
+To start, we'll use the `read.csv()` function to import the object at the `url` destination that contains the the CSV dataset and assign the resulting dataframe to the object `df`.
+```{r}
+  url <- "https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv"
+  df <- read.csv(url)
+```
+
+With the dataset imported, we will now check the data by using `head()` to print the first three lines of data, `colnames()` to see the names of all variables, and `str()` to look at the data structure.
+```{r}
+  head(df,3)
+  str(df)
+```
+
+Based on initial examination, the dataset contains 34 variables with over 8,000 observations where *Timestamp* is the only date variable. However, while the variable contains information on dates, R treats the *Timestamp* as a factor. In order to accomplish the goal of this demo, we would need to: 
+- (1) convert the *Timestamp* variable into a date-time object using `strptime()`, which requires the user to identify the date pattern so that R can extract the right information. In the case of the PV data, the format is in "%Y-%m-%d %H:%M:%S" or "Year-Month-Day Hour:Minute:Second". 
+- (2) extract the month from the date object using `format()`, which only requires the date object and the desired output format. In this case, the output format is "%m"
+
+```{r}
+  df$Timestamp <- strptime(df$Timestamp, "%Y-%m-%d %H:%M:%S")
+  df$month <- format(df$Timestamp, "%m")
+```
+
+Upon doing so, we can now graph the data. Of particular relevance to our analysis is the *PV_PVInsolationHArray* variable that contains an estimate of amount of sunlight that impacting the solar array during the last hour. R has a number of rudimentary graphing capabilities such as `plot()`, which accepts two vectors of data and renders a scatter plot. Below, `plot()` outputs a scatter plot where *month* is the x or horizontal axis variable and *PV_PVInsolationHArray* as the y or vertical axis variable.
+
+```{r}
+  plot(df$month,df$PV_PVInsolationHArray)
+```
+
+The result is not particularly compelling or meaningful as the points are too many and too dense to discern a pattern. The graph could use use style enhancements. Perhaps boxplot would be more suitable to summarize the shape of the PV distribution for each month.
+
+Enter *ggplot2*.
+
+```{r}
+library(ggplot2)
+```
+
+Upon loading the *ggplot2* library, we can quickly get to work. The bare minimum syntax to render a stylized boxplot:
+
+```{r, eval=FALSE}
+ggplot([dataframe goes here], aes([x value here], [y value here])) + 
+  geom_boxplot(colour = "[colour]", fill = "[colour]")  
+```
+
+Putting this into action yields the following:
+```{r}
+ggplot(df, aes(factor(month),PV_PVInsolationHArray)) + 
+  geom_boxplot(colour = "grey", fill = "navy")  
+  
+```
+
+From this graph, we can see the peak sunlight months are between May and August where May and August. The third quartile (the upper end of each box) is protracted in May and August, indicating that there are hourly periods where the light is more intense during those months. 

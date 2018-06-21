@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="index.html">
+<link rel="next" href="a-light-introduction-to-programming.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="data-and-its-many-contexts" class="section level1">
+<h1><span class="header-section-number">Chapter 1</span> Data And Its Many Contexts</h1>
+<div id="fires-and-data" class="section level2">
+<h2><span class="header-section-number">1.1</span> Fires and Data</h2>
+<p>On an August afternoon in 2007, a fire broke out on the 17th floor of the then-vacant Deutsche Bank Building, a skyscraper situated across from the former World Trade Center in New York City. The building, seriously damaged after the 9/11 attacks, had been undergoing hazard abatement and controlled demolition, leading to changes to the building floor plans and safety apparatus. When the New York City Fire Department (FDNY) responded to the scene, it was clear the fire was a serious one, quickly escalating to a seven-alarm fire incident requiring 87 units and 475 firefighters.<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a> As standpipes had been disabled and floor plans altered, FDNY units found it difficult to navigate the skyscraper and put water on the fire, resorting to unconventional methods of supplying water to crews. Eventually, the fire was put out seven hours after it started, not before two firefighters lost their lives, succumbing to cardiac arrest from heavy smoke inhalation.<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a> In response to the tragedy, a mayoral investigation found that the deaths could have been prevented had city agencies established information sharing protocols and leveraged a risk-based strategy to mitigate and avoid hazards.<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a> While an ideal end state would be to end all structural fires, the recommendations focused on reducing death and injury by ensuring that FDNY had the most up-to-date ground intelligence.</p>
+<p>Risk mitigation strategy was indeed due for improvements. Since the 1950’s, FDNY building inspections were managed using a manual index card system where inspection schedules were based on tiers of perceived risk, where the riskiest buildings needed to be inspected once a year and the least risky buildings were inspected once every seven years. Despite the longevity of the system, it was not without shortcomings, namely that a building’s risk tier was not updated with the latest intelligence nor was it guaranteed that schedules remained on track. To maintain the intelligence would have been a laborious process, requiring cards to be updated by hand for one-third of a million buildings. Hypothetically, if each building record were updated daily and the process were to take one second per record, FDNY would only have a refreshed profile of the city once every 229 days. By then, firefighters could have wasted valuable time at buildings that posed little danger and preventable risks could have led to disaster. It was clear that a data-driven strategy could fundamentally change the nature of fire risk.</p>
+<p>The New York City Fire Department (FDNY) set out to address the risk management problem by melding data and technology with their operations. On the surface, the idea of using data and technology to reduce the risk of fire is quite alluring. However, under the hood, there were notable obstacles. On the operational side, buy-in was required. Anyone who has observed fire fighters on scene will notice that it is a well-choreographed operation – every person knows their part and believes in the established protocols. For data to drive value, it needed to be integrated and accepted into the culture of a 10,000+ person fire fighting organization. On the technical side, decades worth of index cards needed to be digitized and a scheduling platform needed to be developed. Perhaps most importantly, the system had to work. Scheduling just any inspection is simple; scheduling inspections to buildings with observable risks is far more challenging. Without effective targeting, the entire effort would be for naught.</p>
+<p>The Commissioner and First Deputy Commissioner at the time both believed that technology had a role to play at FDNY. Aligned with Mayor Michael Bloomberg’s vision of smart, data-driven government, they saw an opportunity to set an example for the nation’s fire service. They relied on the the Assistant Commissioner for Management Initiatives to lead a change management process with fire chiefs and fire officers, information technology (IT) managers, among others to change the flow of operations so that data served as a pillar on which FDNY could rely. Alliances were forged with leading fire personnel such as the Deputy Chief of Fire Operations and Battalion Chiefs to formalize the role of data in the culture of the fire house, amending standard operating procedures (SOPs) to use a digital inspection system. On the IT front, a lead software engineer and project manager meticulously gathered specifications that were then used to construct a scheduling platform. Recognizing that the proof of a risk-based strategy was in the pudding, a Director of Analytics was hired to lead the overhaul of a prediction algorithm to rank buildings based on their risk and convincing stakeholders that a mathematical representation of fire ignition was indeed true. The result was the Risk-Based Inspection System (RBIS), a firefighter-facing data platform that scheduled inspections at buildings with the greatest risk of fire. Three times a week for three hours per session, fire officers logged onto RBIS to obtain a list of buildings for scheduled inspection. Buildings were selected using FireCast, a statistical algorithm developed in-house to predict fires at the building level. Through FireCast, buildings no longer used assumed a static risk classification, but rather a dynamic risk score that took into account the latest information.</p>
+<p>Prediction often relies on accuracy measures to determine how well algorithms perform in the field; FireCast was no different. The algorithm was able to identify buildings with fires over 80% of the time – a degree of accuracy that was not previously possible. Upon implementing the new system, impacts were observed in leading operational indicators. In the first month, the number of safety violations issued grew by +19% relative to the trend under the index card system, but fell to +10% in the second month. This indicated that the riskiest buildings did indeed have more observable risks than less risky buildings, but the amount of observable risk fell as teams went down the list. From a statistical perspective, the prediction should have yielded far more violations, but efficacy of the prediction program was limited by (1) a fire unit’s time budget to conduct inspections; (2) a policy requiring that time had to be set aside for weekly inspections, which at times led to inspecting buildings that were not observably risky after all truly risky buildings were exhausted; (3) the rule of law giving residents the right to refuse inspection. To measure efficacy, FDNY developed an indicator known as the Pre-Arrival Coverage Rate (PACR), which measures the proportion of buildings that experienced a fire that were inspected within some period (90 days) before the fire occurred – essentially measuring if fire companies had the opportunity to evaluate risks of priority buildings. Under FireCast, FDNY had achieved a PACR of 16.5%, which was an eightfold improvement over the old strategy that yielded 1.5%.<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></p>
+<p>The RBIS-FireCast program went onto gain recognition as a modern approach to optimizing city operations, recognized by Harvard University’s Ash Center with a Bright Idea Award and serves as a reference implementation for next generation fire fighting technologies.<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a></p>
+</div>
+<div id="the-answer-is-42.-well-maybe." class="section level2">
+<h2><span class="header-section-number">1.2</span> The Answer is 42. Well, Maybe.</h2>
+<p>In the novel <em>The Hitch Hiker’s Guide to the Galaxy</em>, author Douglas Adams describes how a super computer called Deep Thought calculated the ultimate answer to “Life, the Universe and Everything”. The computer’s calculation lasted seven and a half million years and returned a simple answer: <strong>42</strong>.<a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a> It is a rather unsatisfying answer. It lacks context. It is abstract. It has perplexed and intrigued readers for decades, and to some degree has amassed a following. The answer lacks a narrative that is expected by all humans. After all, as people, we are social creatures and we need closure.</p>
+<p>This book answers the question “How do we make data <em>real</em> to people?” Data and the number 42 are kindred spirits – both are often viewed as an abstract concepts that are characterized by commercial buzzwords. To many, working in the data space is described as a discipline for specialists. It is actually quite the opposite. It has a tangible real world role that people use on a day to day basis.</p>
+<p>Depending on your specialty and environment, the way data is used falls onto a spectrum of <em>use cases</em> – or actions that a user takes with a system, software, or information. On the simpler end are <strong>benchmarks</strong> – a way of contextualizing numbers. In the middle are empirical <strong>explanations</strong> of what factors influence observed phenomena. And on the other end are <strong>predictions</strong> – the product of highly technical, scientific computing.</p>
+<p>The #42 falls into one of these three use case buckets. The number could have been easily benchmarked and contextualized using units or comparison to other numbers so that a significance and value judgment could be applied. Alas, it did not. Naturally, people would want to understand how 42 was derived, what parameters guided it, and what influenced the magnitude. A 7.5 million year calculation may seem daunting to explain though conversely one may argue that the code was quite inefficient. The algorithm that underlied the estimation was not made open source, thus its rational is still unknown. But it is after all the meaning of literally everything, thus a universal constant is persistent in the past, present and future – making it a prediction of <em>something</em>. Now if only someone could define the unit of analysis.</p>
+<div class="figure">
+<img src="assets/intro/img/spectrum.jpg" alt="Data use case spectrum" />
+<p class="caption">Data use case spectrum</p>
+</div>
+<div id="benchmarking" class="section level3">
+<h3><span class="header-section-number">1.2.1</span> Benchmarking</h3>
+<p>Human nature functions of comparisons. Thus, <strong>benchmarking</strong> helps to contextualize the current state relative to a reference point. The reference point gives context over time and space to illustrate a trend or can be used to show relative performance.</p>
+<p>This is the most natural use of data: often times they are presented as a statistic or a graph to which people can react. It is easily achievable <em>data product</em> – a use of data on which a specific user or audience can rely. Everyday, we naturally use benchmarks to understand the state of our world, set expectations and make decisions:</p>
+<ul>
+<li><p><em>Employment</em>. In the news, the monthly employment figures published by the US Bureau of Labor Statistics are contextualized in comparison to the previous month or the same time last year. For example, the first sentence of a August 2017 article from NPR online stated: “The U.S. economy created an estimated 209,000 jobs in July, representing a modest slowdown from the previous month but coming in better than many economists had expected.”<a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a> On its own, the 209,000 jobs figure is a number in a vacuum. In comparison to the previous month, it givens some indication of economic health.</p></li>
+<li><p><em>SAT Scores</em>. For high school students looking to apply to college, SAT scores have some bearing on the chance of being accepted. Let’s assume a student received the following scores: math = 710 and evidence-based reading and writing = 800 for a combined score of 1510. Is that good enough to get into a school? Many universities have begun to publish the profile of the incoming class the range of combined SAT scores for the middle 50% (“interquartile range”) of admitted students. This range at Columbia University, for example, is 1510 to 1580.<a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a>. This means that 75% of admitted students scored 1510 and above, indicating that a higher score may better position the student for success. College admissions, however, take into account a large number of factors as the process is competitive. Using the SAT benchmark alone may be misleading when selecting schools, but certainly can provide a notional understanding of the chances of admittance.</p></li>
+</ul>
+<p>Benchmarks tend to rely on summary-level statistics such as counts, proportions, averages, and percentiles. Given their conciseness, it is easy to incorporate them into narratives, reports and visualizations. But they do not tell a full story.</p>
+</div>
+<div id="explaining" class="section level3">
+<h3><span class="header-section-number">1.2.2</span> Explaining</h3>
+<p>Benchmarks do not provide evidence as to <em>why</em> things are the way they are or <em>how</em> phenomena come to be. This naturally gives way to the need to <strong>explain</strong> how things work, or at least quantify relationships between observed phenomena (e.g. dependent variables or target features) and their associated characteristics (e.g. independent variables or input features). Everyday phenomena can be explained using <em>explanatory models</em> with varying degrees of accuracy. A baseball that is hit by a batter will go a certain distance given a number of factors such as the angle of departure, the mass of bat, the velocity of the bat, among others. Traffic on a highway may be higher on a Monday than a Sunday due to the rhythm of the work week, the time of year, weather among other factors. By developing <em>explanatory models</em>, fields from the natural sciences to the social have been able surface quantifiable relationships between A and B. For instance:</p>
+<ul>
+<li><p><em>Housing prices</em>. In real estate, hedonic price models are used to attribute the price of home (dependent variable) to the characteristics and amenities (independent variables), such as the number of rooms, age of home, construction quality, location, school district among others. Usually employing statistical methods such as <em>linear regression</em>, hedonic models allow economists and statisticians to tease out the value of specific amenities holding all else constant or <em>ceteris paribus</em>. For example, the marginal price for each additional room may fetch $30,000 or houses located in the central business district may be worth 15% lower due to noise. Marginal prices help home sellers and buyers better understand the economic value of a home in terms of tangible characteristics.<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></p></li>
+<li><p><em>Food Stamps and Crime</em>. Explanatory models may be used to evaluate the effect of policy changes. In February 2010, the State of Illinois enacted a new policy to distribute food stamps over the course of a month as opposed to a former practice to distribute them on the first of each month. This policy shift had a clear impact on public safety, reducing grocery store thefts by 32%. By using a technique known as <em>interrupted time series</em>, economists at Purdue University were able to first determine what the level of theft was in the past and would have been had the policy not been implemented, then compared against what actually happened.<a href="#fn10" class="footnoteRef" id="fnref10"><sup>10</sup></a> From a strategic perspective, understanding even the direction of impact of this specific policy change may be enough to serve as a reference implementation for other states seeking to curb crime.</p></li>
+</ul>
+<p>Explanatory models help to filter all possible influential factors down to those that hold water, making way for compelling narratives, discussion and possibly rules of thumb. Their usefulness in practice, however, is largely backward looking and forecast accuracy is often not a concern. A health study may very well determine that people are two-times more likely to develop a rare form of cancer if exposed to a certain substance, but the predicted probability of developing cancer for a person who uses the substance is only 1% – a value that is not perceived as risky to most.</p>
+</div>
+<div id="predicting" class="section level3">
+<h3><span class="header-section-number">1.2.3</span> Predicting</h3>
+<p><strong>Prediction</strong>, on the other hand, ventures to make empirical guesses about what will happen and optimizes for accuracy. The quantitative algorithms and approaches used to make predictions overlap with explanatory models. The difference lies in how we validate predictions.</p>
+<p>Prediction is largely a matter of instituting an experimental design. The process of building a <em>predictive model</em> is quite similar to assessing a student’s academic performance in class. Let’s pretend that students are provided the final exam for a calculus class on day one of a semester. For the duration of the semester, they are instructed to study that exam alone. If the professor gave that same practice test to students as the <em>actual</em> final exam, then students’ grades will very likely overstate their command of calculus for a number of reasons. This farcical scenario almost never happens, yet it is commonly how <em>explantory models</em> are formulated and treated as prediction models. To demonstrate this, what if different test questions were introduced that are framed differently than the practice test: would the students’ grades hold up?</p>
+<p>In reality, students in the United States’ education system are given plenty of opportunity to <em>train</em> on practice examples through homework assignments and projects, then are <em>tested</em> on quizzes and tests – the answers to which they are not privy. This <em>train-test</em> approach is designed to give professors the best chance at measuring the skills students have developed. Prediction is uncovering stable and accurate relationships such that guesses on new, unseen data are reliable and dependable. In prediction parlance, train-test is a form of <em>model validation</em>: models are developed on some data, leaving another set of data to make sure the accuracy is what we think it is. Similar to RBIS-FireCast, cross-validation and experiment designs open the door to applying data in vastly more advanced ways.</p>
+<ul>
+<li><p><em>Recommendation engines</em>. Digital companies such as Amazon and Netflix collect information on consumer purchases, views, and ratings, then build recommendation engines – models that predict user preferences.<a href="#fn11" class="footnoteRef" id="fnref11"><sup>11</sup></a> Often times, recommendation engines offer products that are used by other users who have similar tastes, thereby providing an seamless way to traverse immense amounts of options in a targeted and useful way.</p></li>
+<li><p><em>Voter targeting</em>. During the 2012 election cycle, data scientists collected survey data on voter attitudes and preferences, then built voter targeting algorithms to predict who is likely to vote for whom and cater messaging for <em>individualized campaigns</em>.<a href="#fn12" class="footnoteRef" id="fnref12"><sup>12</sup></a> This micro-targeting concept is a common strategy in marketing and online advertisement, benefiting from the use of cookies.<a href="#fn13" class="footnoteRef" id="fnref13"><sup>13</sup></a></p></li>
+<li><p><em>Computer vision</em>. Data scientists have been able to predict stock prices of retailers by developing computer vision algorithms that sift through satellite imagery in order to count the number of cars parked near retailers.<a href="#fn14" class="footnoteRef" id="fnref14"><sup>14</sup></a> The ability for computer vision algorithms to identify discrete objects or characteristics in images has far reaching applications from monitoring illegal fishing<a href="#fn15" class="footnoteRef" id="fnref15"><sup>15</sup></a> to predicting neighborhood wealth.<a href="#fn16" class="footnoteRef" id="fnref16"><sup>16</sup></a></p></li>
+</ul>
+<p>Together, these three analytic functions are powerful and should be used to make successful projects. In short: Benchmarks build trust and context for users; Explanations build understanding of processes; and Prediction enables precise action.</p>
+</div>
+</div>
+<div id="the-buzz-and-the-buzzworthy" class="section level2">
+<h2><span class="header-section-number">1.3</span> The Buzz and the Buzzworthy</h2>
+<p>In recent memory, there is a spike in terms such as <em>Artificial Intelligence</em> (AI) and <em>Machine Learning</em> – ideas that lie at forefront of the public’s imagination of what data could enable, capturing a greater proportion of searches on Google than other topics. Human fascination with artificial intelligence lies in the idea that tedious, complex tasks can somehow be automated and acted upon in a way that is independent of human hands. This fanciful goal was accelerated at a time after World War II when computer science was in its infancy. British computer scientist and mathematician Alan Turing published an article in 1950 that proposed the <em>Imitation Game</em>, later was renamed the <em>Turing Test</em><a href="#fn17" class="footnoteRef" id="fnref17"><sup>17</sup></a>, designed to assess how a machine may demonstrate intelligent behavior that is the or indistinguishable than that of humans. His article frames the test in terms of a machine issuing chess moves in a manner that humans cannot tell is artificial in nature. While Turing himself did not create AI, he helped to shape the philosophical foundations used to define human-like intelligence – exhibiting similar judgment as humans, but doing so mathematically.</p>
+<div class="figure"><span id="fig:unnamed-chunk-2"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-2-1.png" alt="Comparison of popular data and technology search topics, Jan. 2004 to Jan 2017. All values are range standardized where 100 indicates the maximum number of searches on Google." width="672" />
+<p class="caption">
+Figure 1.1: Comparison of popular data and technology search topics, Jan. 2004 to Jan 2017. All values are range standardized where 100 indicates the maximum number of searches on Google.
+</p>
+</div>
+<p>Like many technical fields, interest in AI has experienced cycles of interest with an initial wave of interest in the 1950’s to 1960’s before experiencing the AI winter in the 1970’s.<a href="#fn18" class="footnoteRef" id="fnref18"><sup>18</sup></a> The latest cycle was in the early 2000’s with the introduction of autonomous robots for home such as the iRobot Roomba in 2002 that cleans homes.<a href="#fn19" class="footnoteRef" id="fnref19"><sup>19</sup></a></p>
+<p>Under the hood, the technologies that lead to AI are guided by the idea that a machine can learn from a set of examples (sometimes referred to as <em>labels</em> or <em>targets</em>), doing so in a manner that is free of direct human instruction. This notion of <em>machine learning</em> is accomplished by providing a computer with mathematical functions to find underlying structures and rules in data, absent of a human’s explicit rules and common sense. Machine learning involves <em>algorithms</em>, which are processes and calculations that are followed to solve well-defined problems. <em>Statistical modeling</em> uses many of the same algorithms as machine learning, but takes a perspective of systematically answering human-defined hypotheses. This is all to say that AI, machine learning and statistical modeling overlap in the mathematics that are employed, but there are technical nuances. Generally machine learning focuses on computers learning patterns and statistical modeling focuses on testing hypotheses. Both use similar techniques. AI takes it one step farther by automating actions and behaviors without a human explicitly instructing it to do so. There are many examples of machine and statistical learning, but only few true instances of artificial intelligence per the Turing Test due to the intensity of data and technology required. Despite this, society has, to some subtle degree, begun to brace for the yet-to-be-seen impacts of AI. One example is the “reverse” Turing Test in the form of CAPTCHA (Completely Automated Public Turing test to tell Computers and Humans Apart) used to ensure that programmed bots are not conducting human transactions.<a href="#fn20" class="footnoteRef" id="fnref20"><sup>20</sup></a></p>
+<p><em>…and Deep Learning?</em> Deep Learning has become popular term in technology circles in recent memory. It is the application of machine learning class of techniques known as <em>Artificial Neural Networks</em> (ANNs) to problems that may benefit from more than one <em>hidden layer</em> – essentially learning data representations (e.g. what constitutes a yes/no, sell/buy/, cat/dog) is dependent on multiple levels of abstraction so that latent characteristics can also be learned. Deep learning is commonly applied often to vision problems, audio data and other highly dimensional data<a href="#fn21" class="footnoteRef" id="fnref21"><sup>21</sup></a>. For example, if a human were given the following two images, she would be able to determine one is a cup and the other is a bowl. This simple task requires human brains years to be trained and recognize objects and associate the items with their shapes, proportions, sizes, colors, texture among other contextual features.</p>
+<div class="figure"><span id="fig:unnamed-chunk-3"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-3-1.png" alt="Example images: A cup and bowl. [Credit goes here]" width="672" />
+<p class="caption">
+Figure 1.2: Example images: A cup and bowl. [Credit goes here]
+</p>
+</div>
+<p>For computers, however, the task is quite a computationally costly challenge as it requires a machine to learn latent features (e.g. shapes, texture, color) from the grid of pixels that comprise an image. For this to be useful and accurate, ANNs requires a large amount of data, a requirement that is rooted in the mathematical assumptions that underlie the techniques.</p>
+<p><em>Lambourghini vs. Jeep</em>. With all the data science techniques to choose from, being effective with data is like the vehicle choice an astute, wealthy adventurer needs to make when traveling into the rainy, muddy jungle and traverse streams and obstacles unknown. Should she drive her $494,000 Lamborghini Aventador super car that can reach speeds of 217 mph on flat roads or her $24,000 Jeep Cherokee with all-wheel drive? <em>The way in which data is used should fit the scope of the problem</em>. Advanced AI and deep learning capabilities have a role to play, but its not for everything. As easily as we can see trade offs of a Jeep and Lamborghini, we should see data-driven techniques in the same light and recognize that a data panacea does not likely exist.</p>
+<p><em>Learning to walk</em>. <a href="https://trends.google.com/trends/?hl=en">Google Trends</a> indicates that interest in artificial intelligence is consistently outstripped by the fields of <em>statistics</em> and <em>computer science</em>, perhaps as a command of each discipline enables practitioners to be more versatile in how they apply data intelligently The field of statistics is more than <em>means</em> and <em>standard deviations</em>, but the study and practice of collecting and analyzing large quantities of numerical data. Computer science is a field that solves algorithmic problems on scale. Both fields have their roots in mathematics, but maintain divergent views of how to approach and use data.</p>
+<div class="figure"><span id="fig:unnamed-chunk-4"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-4-1.png" alt="Comparison of search topics, Jan. 2004 to Jan 2017. Google Trends." width="672" />
+<p class="caption">
+Figure 1.3: Comparison of search topics, Jan. 2004 to Jan 2017. Google Trends.
+</p>
+</div>
+<p>Both computer science and statistics rely on <em>data analysis</em> to aid in the systematic process of inspecting, cleaning, and analyzing data in order to uncover patterns about the data itself and the information it represents. In more contemporary parlance, this is referred to as <em>data analytics</em>, <em>data mining</em>, or <em>data science</em> although there is little consensus on the definitions.<a href="#fn22" class="footnoteRef" id="fnref22"><sup>22</sup></a></p>
+</div>
+<div id="whats-the-value-proposition" class="section level2">
+<h2><span class="header-section-number">1.4</span> What’s The Value Proposition?</h2>
+<p>Over 20 software and coding languages were enumerated in the previous section alone in addition to quite a few types of roles and applications. The ecosystem that is centered upon data analytics is indeed large and rapidly expanding, but why does it matter? As was illustrated through RBIS-FireCast, the value of data analytics will likely vary at each level in an organization. Making successful data projects like RBIS-FireCast is not only a matter of mastering the problem identification process, technical skills, methods, and software described above, but also recognizing that technology is a social affair that requires <em>buy-in, potential, and consensus</em>. Building consensus and buy-in is largely a matter of communicating insights so that it is “real”, so that it answers the questions on peoples’ minds:</p>
+<ul>
+<li><p><em>Executive</em>. In a sentence, what does your data project do for our organization? How can I [the executive] use this to advance my strategic goals? What do people in the ranks think? What do people outside think? What makes you excited about this work? How can you measure the benefit? Does it give our organization more benefit than it costs? What cutting edge technologies will/do you use? Prove to me that this is real through a “live fire” visual demo or presentation. Do you have a clear, buzz worthy one pager I can shop around? Is anyone else doing it – why or why not? What can I do to support this work?</p></li>
+<li><p><em>Team Lead</em>. In five sentences, what does your project do to support our team? Does it align with the organizational goals? How do you know that this works? Does it try any of the things that I have done previously? How did you build it? Tell me about your road map – what are the milestones? What is the end state? How much resources do you need? When can we raise it to folks above?</p></li>
+<li><p><em>Analyst/Researcher</em>. What new skills does this project allow me to develop? Are there new and exciting approaches that I can attempt? Will I have autonomy to work on this?</p></li>
+</ul>
+<p>Throughout this book, we will concretely illustrate the value of implementing data analytics.</p>
+</div>
+<div id="structure" class="section level2">
+<h2><span class="header-section-number">1.5</span> Structure</h2>
+<p>This book is designed to be a holistic resource, bringing importance to both the technical and qualitative aspects of data science. Each chapter introduces complex technical concepts in humanized contexts before proceeding to the math and coding.</p>
+<p>We will begin in Chapter 2 by providing a common approach to initiating and delivering data analytics projects as well as setting expectations of what to expect. We then proceed to Chapters 3 and 4 that introduces statistical programming practical applications. Chapters 8 through 16 cover foundations for machine learning and statistical modeling for applied applications. As this book is designed to function not only as a textbook but also as a handbook, each of the machine learning and statistical modeling chapters contain a <em>Do It Yourself</em> (DIY) that poses common types of problems in plain English and provides an “empirical recipe” to solve for it through worked examples (see below). Chapters 17 through 19 focus on additional considerations for data analytics excellence, including presentation of model outputs, ethics considerations, and further skills development to remain competitive in the market.</p>
+<p><strong>Chapter 2: Light Programming</strong></p>
+<ul>
+<li>How to read a file direct from the web?</li>
+</ul>
+<p><strong>Chapter 3: Manipulation / Wrangling</strong></p>
+<ul>
+<li>How do I auto-populate text and stences pro forma?</li>
+<li>How much [overlap/commonality/competition] is there between two or more groups?</li>
+<li>What do I do find trends in transactional or event-level data?</li>
+<li>How do I extract some basic keywords from unstructured text data?</li>
+</ul>
+<p><strong>Chapter 4: Exploratory Data Analysis</strong></p>
+<ul>
+<li>What’s a common exploratory data analysis workflow?</li>
+</ul>
+<p><strong>Chapter 10: Number Problems</strong></p>
+<ul>
+<li>What level of [demand/staff] should I expect?</li>
+<li>When is consistently peak time of the [year/day/month]?</li>
+<li>How much is customer willing to pay for a specific [attribute]?</li>
+<li>What’s the best way to fill-in missing [data/characteristics]?</li>
+<li>Does that look a little [high/low] to you?</li>
+<li>Where will demand be this time [next year/tomorrow/ next month]?</li>
+</ul>
+<p><strong>Chapter 11: Discrete </strong></p>
+<ul>
+<li>Will A or B […or C, …] happen?</li>
+<li>Who will likely say yes to a [pitch/offer/request/service]?</li>
+<li>Who has not yet been [converted/sign-on/covered]?</li>
+<li>What other [goods/resources] would a customer like?</li>
+<li>What is the profile of someone who [uses X, does y]?</li>
+<li>Which images contain [x]?</li>
+</ul>
+<p><strong>Chapter 12: Clustering</strong></p>
+<ul>
+<li>What are the profiles of [customers/people/events]?</li>
+<li>What is the underlying pattern of this list of [people/events]?</li>
+<li>How do I extract the outline from an image?</li>
+</ul>
+<p><strong>Chapter 13: Survival</strong></p>
+<ul>
+<li>How long will this [machine/infrastructure/person] last?- worked example = business dynamics from census</li>
+<li>Which [organization] has the most turn over? = City gov employee data</li>
+<li>Which [machine/patient/] are at risk of repeat [failure/admission]?</li>
+</ul>
+<p><strong>Chapter 14: Explanatory</strong></p>
+<ul>
+<li>What [factors/variables/influences] matter the most?</li>
+<li>What was the impact of implementing a new [program/policy/strategy]?</li>
+</ul>
+<p><strong>Chapter 15: Anomalies</strong></p>
+<ul>
+<li>When was there a paradigm shift?</li>
+<li>Does the [network traffic/activity] look irregular?</li>
+<li>Which [person/event/organization] do we understand the least about?</li>
+</ul>
+<p><strong>Chapter 16: Text</strong></p>
+<ul>
+<li>What topics are present in this text?</li>
+<li>How does these [text/comments/article/tweet] lean?</li>
+</ul>
+
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="1">
+<li id="fn1"><p><a href="https://cityroom.blogs.nytimes.com/2007/08/18/2-firefighters-are-dead-in-deutsche-bank-fire/" class="uri">https://cityroom.blogs.nytimes.com/2007/08/18/2-firefighters-are-dead-in-deutsche-bank-fire/</a><a href="data-and-its-many-contexts.html#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="http://www.nydailynews.com/news/firefighters-dead-7-alarm-deutsche-bank-blaze-article-1.238838" class="uri">http://www.nydailynews.com/news/firefighters-dead-7-alarm-deutsche-bank-blaze-article-1.238838</a><a href="data-and-its-many-contexts.html#fnref2">↩</a></p></li>
+<li id="fn3"><p><a href="http://www1.nyc.gov/assets/doi/downloads/pdf/pr_db_61909_final.pdf" class="uri">http://www1.nyc.gov/assets/doi/downloads/pdf/pr_db_61909_final.pdf</a><a href="data-and-its-many-contexts.html#fnref3">↩</a></p></li>
+<li id="fn4"><p><a href="http://www.nfpa.org/news-and-research/publications/nfpa-journal/2014/november-december-2014/features/in-pursuit-of-smart" class="uri">http://www.nfpa.org/news-and-research/publications/nfpa-journal/2014/november-december-2014/features/in-pursuit-of-smart</a><a href="data-and-its-many-contexts.html#fnref4">↩</a></p></li>
+<li id="fn5"><p><a href="https://www.nist.gov/publications/research-roadmap-smart-fire-fighting" class="uri">https://www.nist.gov/publications/research-roadmap-smart-fire-fighting</a><a href="data-and-its-many-contexts.html#fnref5">↩</a></p></li>
+<li id="fn6"><p>Adams, D. Hitchhiker’s Guide to the Galaxy. New York: Harmony Books, 2004.<a href="data-and-its-many-contexts.html#fnref6">↩</a></p></li>
+<li id="fn7"><p><a href="http://www.npr.org/sections/thetwo-way/2017/08/04/541562855/u-s-economy-adds-209-000-jobs-in-july-unemployment-dips-to-4-3-percent" class="uri">http://www.npr.org/sections/thetwo-way/2017/08/04/541562855/u-s-economy-adds-209-000-jobs-in-july-unemployment-dips-to-4-3-percent</a><a href="data-and-its-many-contexts.html#fnref7">↩</a></p></li>
+<li id="fn8"><p><a href="https://undergrad.admissions.columbia.edu/classprofile/2020" class="uri">https://undergrad.admissions.columbia.edu/classprofile/2020</a><a href="data-and-its-many-contexts.html#fnref8">↩</a></p></li>
+<li id="fn9"><p><a href="https://www.washingtonpost.com/news/wonk/wp/2013/10/29/heres-zillows-strategy-for-dominating-online-real-estate/?utm_term" class="uri">https://www.washingtonpost.com/news/wonk/wp/2013/10/29/heres-zillows-strategy-for-dominating-online-real-estate/?utm_term</a>=.ca2d6094674e<a href="data-and-its-many-contexts.html#fnref9">↩</a></p></li>
+<li id="fn10"><p><a href="https://www.washingtonpost.com/news/wonk/wp/2017/07/13/shoplifting-in-chicago-dropped-after-a-change-in-the-food-stamps-program/?utm_term" class="uri">https://www.washingtonpost.com/news/wonk/wp/2017/07/13/shoplifting-in-chicago-dropped-after-a-change-in-the-food-stamps-program/?utm_term</a>=.6bfe5a75d1fc<a href="data-and-its-many-contexts.html#fnref10">↩</a></p></li>
+<li id="fn11"><p><a href="http://fortune.com/2012/07/30/amazons-recommendation-secret/" class="uri">http://fortune.com/2012/07/30/amazons-recommendation-secret/</a><a href="data-and-its-many-contexts.html#fnref11">↩</a></p></li>
+<li id="fn12"><p><a href="https://www.technologyreview.com/s/509026/how-obamas-team-used-big-data-to-rally-voters/" class="uri">https://www.technologyreview.com/s/509026/how-obamas-team-used-big-data-to-rally-voters/</a><a href="data-and-its-many-contexts.html#fnref12">↩</a></p></li>
+<li id="fn13"><p><a href="https://www.vox.com/conversations/2017/3/16/14935336/big-data-politics-donald-trump-2016-elections-polarization" class="uri">https://www.vox.com/conversations/2017/3/16/14935336/big-data-politics-donald-trump-2016-elections-polarization</a><a href="data-and-its-many-contexts.html#fnref13">↩</a></p></li>
+<li id="fn14"><p><a href="http://www.newsweek.com/how-satellite-surveillance-helping-predict-stock-prices-skynet-562973" class="uri">http://www.newsweek.com/how-satellite-surveillance-helping-predict-stock-prices-skynet-562973</a><a href="data-and-its-many-contexts.html#fnref14">↩</a></p></li>
+<li id="fn15"><p><a href="http://www.satellitetoday.com/technology/2017/08/02/using-artificial-intelligence-track-illegal-activities-sea/" class="uri">http://www.satellitetoday.com/technology/2017/08/02/using-artificial-intelligence-track-illegal-activities-sea/</a><a href="data-and-its-many-contexts.html#fnref15">↩</a></p></li>
+<li id="fn16"><p><a href="https://www.wired.com/story/penny-an-ai-that-predicts-a-neighborhoods-wealth-from-space/" class="uri">https://www.wired.com/story/penny-an-ai-that-predicts-a-neighborhoods-wealth-from-space/</a><a href="data-and-its-many-contexts.html#fnref16">↩</a></p></li>
+<li id="fn17"><p>A. M. Turing (1950) Computing Machinery and Intelligence. Mind 49: 433-460.<a href="data-and-its-many-contexts.html#fnref17">↩</a></p></li>
+<li id="fn18"><p><a href="https://www.technologyreview.com/s/603062/ai-winter-isnt-coming/" class="uri">https://www.technologyreview.com/s/603062/ai-winter-isnt-coming/</a><a href="data-and-its-many-contexts.html#fnref18">↩</a></p></li>
+<li id="fn19"><p><a href="http://www.bbc.co.uk/timelines/zq376fr#z2c6nbk" class="uri">http://www.bbc.co.uk/timelines/zq376fr#z2c6nbk</a><a href="data-and-its-many-contexts.html#fnref19">↩</a></p></li>
+<li id="fn20"><p>von Ahn, Luis; Blum, Manuel; Hopper, Nicholas J.; Langford, John (May 2003). CAPTCHA: Using Hard AI Problems for Security. EUROCRYPT 2003: International Conference on the Theory and Applications of Cryptographic Techniques.<a href="data-and-its-many-contexts.html#fnref20">↩</a></p></li>
+<li id="fn21"><p>Bengio, Yoshua; LeCun, Yann; Hinton, Geoffrey (2015). “Deep Learning”. Nature. 521: 436–444.<a href="data-and-its-many-contexts.html#fnref21">↩</a></p></li>
+<li id="fn22"><p><a href="https://www.forbes.com/sites/gilpress/2013/08/19/data-science-whats-the-half-life-of-a-buzzword/#3caa5cc57bfd" class="uri">https://www.forbes.com/sites/gilpress/2013/08/19/data-science-whats-the-half-life-of-a-buzzword/#3caa5cc57bfd</a><a href="data-and-its-many-contexts.html#fnref22">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="a-light-introduction-to-programming.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

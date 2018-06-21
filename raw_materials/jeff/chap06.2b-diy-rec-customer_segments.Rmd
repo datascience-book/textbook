@@ -1,0 +1,186 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 10
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+### How do I characterize the demand for [products/services]? 
+
+Clustering algorithms are useful for more exploratory purposes, especially for characterizing types of demand for services. In private industry, data on product consumption can be used to group types of customers and their preferences together, which in turn form the basis of customer segments. In the public sector, this is not the norm, but just because it is uncommon does not prevent it from being the norm in the future.
+
+311 Call Centers have become common place in US cities. These citizen-facing centers triage requests for local government services and dispatch resources to address needs. 311 also has become a rich source of data on what constituents need. In New York City, millions of calls and hundreds of types of requests are logged and made public via the open data platform. 
+
+
+Suppose the following question were asked:
+
+> How do I characterize the demand for [products/services]? 
+
+or otherwise stated:
+
+> Which constituents share similar concerns?
+
+Using NYC's data, the millions of 311 requests were reprocessed into grid points in Lat/Lon with precision to three places (e.g. lat = 40.552, lon = -74.212). The data are available using the `digIt` library:
+
+```{r, message = FALSE, warning = FALSE}
+library(digIt)
+nyc311 <- digIt("nyc311_gridded")
+```
+
+Overall, the data set contains `r paste("n = ", paste(dim(nyc311), collapse = " and k =  "))` with features such as `r paste0('"',sample(colnames(nyc311), 2), '"', collapse = " and ")`
+```{r, message = FALSE, warning = FALSE}
+  dim(nyc311)
+  colnames(nyc311)[1:20]
+```
+
+Although the sample size is modest, dissimilarity matrix would yield 3.3 billion data elements (`r paste0(nrow(nyc311))`$^2$). For simplicity, we sample only $n = 15000$ records.
+
+```{r, message = FALSE, warning = FALSE}
+  nyc311.short <- nyc311[sample(1:nrow(nyc311), 15000), ]
+```
+
+The data should be on the same scale with the same mean (0) and unit variance. We can use the `scale()` function to scale all features, then use the `dist()` function to produce a dissimilarity matrix:
+
+`dist(x, method)`
+
+where:
+
+- `x` is a matrix of continuous values.
+- `method` is a string value that indicates the type of dissimilarity used, which can include "binary", "minkowski", "euclidean" among others where the latter is the default. 
+
+For cases where the data are all binary or discrete, a binary distance may be more appropriate. For continuous values, Euclidean is the best bet. 
+
+For the 311 data, the dissimilarity matrix is based on Euclidean distance, then assigned to the object `dis.mat`.
+```{r, message = FALSE, warning = FALSE}
+#Scale columns
+  nyc.short <- scale(nyc311.short[,3:ncol(nyc311.short)])
+
+#Create dissimilarity matrix using Euclidean distances
+  dis.mat <- dist(as.matrix(nyc.short), method = "euclidean")  
+         
+```
+
+Finally, the hierarchical clustering algorithm can be run using the `hclust()` command:
+
+`hclust(d, method)`
+
+where
+
+- `d` is a dissimilarity matrix from `dist()`
+- `method` is a string value specifying the agglomeration method, such as "single", "complete", "average", "centroid", "ward.D" among others. Note that the time to processing a data set is dependent on the complexity of the method.
+
+Below, we pass the `dis.mat` object to the `hclust()` function is choose Ward's D to guide agglomeration.
+```{r, message = FALSE, warning = FALSE}
+#Run hierarchical clustering
+  hc <- hclust(dis.mat, method = "ward.D")     
+```
+
+The results can be easily plotted as a _dendrogram_, which shows the hierarchical relationships within the data. The graph below is rendered by plotting the `hc` object using `plot()`. At the bottom of the dendrogram are all observations in the sample. Given the number of observations included, it is challenging to clearly identify each observation. As we move from the bottom to the top, vertical lines emerge and come together, representing observations and subclusters that were clustered together. Eventually, all subclusters are linked at the top. A given height in the graph indicates the cumulative number of linkages that are contained in the dendrogram up to that point.
+
+Given all the possible clusters, the number of clusters could be determined purely based on the height. Fewer the clusters, greater the height. 
+
+```{r, message = FALSE, warning = FALSE, fig.cap = "Dendrogram of hierarchical clustering on gridded NYC 311 data"}
+
+par(mfrow = c(1,3))
+# Draw dendrogram
+  plot(hc, cex = 0.001, col = "grey", main = "Dendrogram") 
+  
+# Cut at k = 3
+  plot(hc, cex = 0.001, col = "grey", main = "k = 2") 
+  rect.hclust(hc, k = 2, border="red")
+  
+# Cut at k = 10
+  plot(hc, cex = 0.001, col = "grey", main = "k = 10") 
+  rect.hclust(hc, k = 10, border="red")
+```
+
+
+The sample generally appears to be cleaner cut at $k=2$ than at higher values, thus we cut the sample into two groups using the `cutree()` function. 
+
+```{r, message = FALSE, warning = FALSE}
+    groups <- cutree(hc, k = 2)
+```
+While it is easy to separate the observations into their respective clusters, the process leaves much to be desired when it comes to interpretation. Ideally, the most common characteristics could be surfaced to characterize the cluster. To do so, a custom function (`clustSum`) is required to calculate the mean share of each service request for each cluster and return the top X most frequent requests.
+
+
+```{r, message = FALSE, warning = FALSE}
+clustSum <- function(data, clusters, depth = 3, horizontal = FALSE){
+    # Summarize cluster variables by most frequently occurring
+    #
+    # Args:
+    #       data: input data
+    #       clusters: vector of cluster labels
+    #       depth: top X most frequent variables (depth = 3 as default)
+    #       horizontal: control format of results. FALSE means one cluster per row.
+    #
+    # Returns:
+    #       A data frame of k-number of centroids
+    #
+    
+    #Calculate means, rotate such that features = rows
+      overview <- aggregate(data, list(clusters), FUN = mean)
+      
+    #Transpose data so that each row contains the mean frequency of a complaint type
+      overview <- as.data.frame(cbind(colnames(overview)[2:ncol(overview)], 
+                                      t(overview[,2:ncol(overview)])))
+      
+    #Clean up table
+      row.names(overview) <- 1:nrow(overview)
+      overview[,1] <- gsub("count.","",as.character(overview[,1]))
+      
+    #Clean up values as numerics
+      for(i in 2:ncol(overview)){
+        overview[,i] <- round(as.numeric(as.character(overview[,i])),2)
+      }
+      
+    #Get top X features
+      depth.temp <- data.frame()
+      for(i in 2:ncol(overview)){
+        temp <- overview[order(-overview[,i]), ]
+        temp <- paste("(",temp[,i], "): ", temp[,1], sep = "")
+        temp <- as.data.frame(matrix(temp[1:depth], 
+                                     nrow = 1, 
+                                     ncol = depth))
+        colnames(temp) <- paste0("Rank.", 1:depth)
+        depth.temp <- rbind(depth.temp, temp)
+      }
+      depth.temp <- cbind(data.frame(table(clusters)), depth.temp)
+      
+    #Rotate?
+      if(horizontal == TRUE){
+        depth.temp <- t(depth.temp)
+      }
+      
+    return(depth.temp)
+  }
+  
+
+```
+
+The result indicates that one cluster is associated with road-way conditions and the other cluster is associated with residential problems. Note that the value in parentheses indicates what proportion of a given type of service request will appear in the average grid cell in a cluster. 
+
+```{r}
+clustSum(nyc311.short[,3:ncol(nyc311.short)], groups, depth = 3)
+```
+
+As public housing tends to be clustered in New York City, one might expect to see spatial patterns in the data. The clusters are mapped back to the original grid cells and indicate that there is some degree of spatial clustering of service requests. From an operational perspective, clustering could be an analytical strategy to help field operations to employ preventive maintenance. For example, a housing unit may have heating issues and may also be suceptible to santitation issues. Knowing which requests tend to cluster together could give way to more coordinated visits, thereby reducing the amount of scheduling burden placed on customers. 
+
+```{r}
+  #Set color palette
+  palette(colorRampPalette(c('#a6cee3','#6a3d9a'))(2))
+  
+  #Graph lat-lons with color coding by cluster
+  plot(nyc311.short$lon, nyc311.short$lat, col = factor(groups), 
+       pch = 15, cex = 0.3, frame.plot = FALSE, yaxt = 'n', ann = FALSE, xaxt = 'n')
+      legend(x = "topleft", bty = "n", legend = levels(factor(groups)), 
+         cex = 1,  x.intersp = 0, xjust = 0, yjust = 0, text.col=seq_along(levels(factor(groups))))
+  
+```

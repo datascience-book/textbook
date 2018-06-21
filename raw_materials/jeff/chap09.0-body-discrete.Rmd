@@ -1,0 +1,82 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 11
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+# Classification
+
+## Healthcare sans the politics
+
+In many countries, universal healthcare has become a basic human right. In the United States, this is not currently a guarantee, shrouded in heated political debate and controvery whether its a matter of human rights or a matter in which an individual may choose his or her fate. Regardless of the politics, there is data on healthcare coverage.
+
+According to the American Community Survey [ACS](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_pums_csv_2009&prodType=document), an annual survey of approximately 3.5% of the US population as conducted by the US Census Bureau, over 22.4% of residents of the U.S. state of Georgia were without healthcare coverage in 2009. That is a fairly sizable proportion of the population -- for every ten people, between two to three did not have coverage. To some degree, this is [un]surprising. If you read the news in 2010, the then President of the United States championed a new law to provide [affordable healthcare](http://www.nytimes.com/2010/03/24/health/policy/24health.html?mcubz=1) to the uninsured. 
+
+Leaving aside the operational logistics of coordinating and establishing the actual healthcare system, imagine that you are hypothetically tasked with getting the word out and drive recruitment in the state of Georgia. There is a hiccup, however. While commercial registries exist with people's demographic and personal contact information, most statistics on coverage are based on surveys, thus we do not precisely know _who_ does not have insurance. A brute force approach could be to reach out to everyone under the sun though we can easily infer a wasted effort as 776 of every 1000 people are already covered.  Of the 224 people, they are likely to come from different walks of life, which means that the message will need to be cater to different target segments. How can we more efficiently target and identify audience profiles? For marketers, this is a classic targeting problem.
+
+Data needs to enable the prediction and classification of a population into two classes: covered and not covered. This _binary problem or membership problem is known as a classification problem. By correctly classifying a population as covered and not covered, decision makers and outreach staff can mobilize targeted outreach. From a data science perspective, the real objective is to be able to identify and replicate re-occurring patterns in the training data, then generalize the insights onto a sample or population that is not contained in the sample.
+
+In most environments, a data analyst will typically manually select population characteristics to use in cross tabulations to find statistical patterns; however, this tradtional approach can suffer from human bias that may yield misleading results. Some features may be more important than others, and humans usually do not systematically check all features. For example, the table below compares healthcare coverage and citizenship. Each of the cells are quite interpretable: 63.2% of non-citizens are without coverage, but non-citizens are only 7.2% of the population. 
+
+|  | Coverage | Without coverage | % Without coverage |
+|-------------+------------+----------+-------------|
+| Citizen     | 5,642,889 |1,341,211 | 19.2% |
+| Non-citizen     | 199,039 | 343,088 | 63.2% |
+| All      | 5,841,928 | 1,684,299 | 22.3% |
+| % Non-citizen | 3.4% | 20.4% | |
+
+A cross-tabulation does not provide sufficient predictive power and solely relying on it will place one at the biased end of the bias-variance trade off. Expanding the table to include more features such as age, gender, wages, etc. may not improve inference either -- too much information will invariably lead to _analysis paralysis_. 
+
+__Enter classifiers__
+
+_Classifiers_ or _classification algorithms_ are a form of supervised learning that can  efficiently and effectively identify patterns, surface important variables, and predict membership. Given the label $Y(Coverage)$, we can use supervised learning techniques to find ways in which the following features can be used to make predictions:
+
+$Y(Coverage) = f(\text{Sex, Age, Education, Marital Status, Race, Citizenship})$
+
+An algorithm can take on many forms, one of which known as a decision tree can essentially perform many cross-tabulations on steroids. The point of a cross-tabulation is to find patterns. _But what defines a pattern?_  In some respects, a pattern is a sustained difference -- a distinction that appears over and over again. For example, if we recall the citizenship vs. healthcare coverage example, we know that non-citizens are roughly 3.3-times more likely to not have coverage. Decision trees recursively split a population into smaller, more homogeneous cells. The result  is a tree-like set of rules (below) that can not only be visualized, but interpreted as discrete cells of Georgians who have and do not have healthcare coverage. Green boxes indicate a majority of people have health insurance and blue boxes indicate a majority of people in the cell do not have insurance. For example, people who are not married, making less than \$30,000 per year, are between the ages of 18 and 64 and are not citizens have a 73% chance of not having coverage. This subpopulation or _leaf_ in decision tree parlance is roughly 1% of the population or roughly $n = 75262$ and focusing on that leaf  would in theory provide a maximum of a 75% hit rate.
+
+
+```{r, echo=FALSE, fig.cap = "Simple decision tree", fig.height = 2}
+# Classification Tree with rpart
+  library(rpart)
+  library(rpart.plot)
+  library(digIt)
+
+#get data
+  acs09 <- digIt("acs_health")
+
+#fit
+  set.seed(123)
+  fit <- rpart(coverage ~ agep + cit + mar + schl   + wage , method="class", data=acs09, cp=0.005)
+
+
+# plot tree 
+rpart.plot(fit,extra=104, box.palette="GnBu", 
+           branch.lty=3, shadow.col="gray", nn=TRUE)
+
+
+```
+
+Granted, the decision tree above is a simplistic biased instance. More complex, lower bias decision trees also can be trained (below), but may suffer from overfitting. Ultimately, the information provided by supervised models should be able to give outreach campaigns an economical advantage: _a well-trained classification algorithm can weigh many more variables than a human, make predictions that are magnitudes better than random, and inform decisions using hard quantitative evidence._ 
+
+```{r, fig.cap = "A \"deep\" decision tree." ,echo=FALSE, warning=FALSE, fig.height = 2}
+  fit <- rpart(coverage ~ agep + cit + mar + schl   + wage , method="class", data=acs09, cp=0.00001)
+
+# plot tree 
+rpart.plot(fit,extra=106, box.palette="GnBu",
+           branch.lty=3, shadow.col="gray", nn=FALSE)
+
+```
+
+Decision tree algorithms are just one of many _classifiers_ or _classification algorithms_, and, in fact, decision trees form the basis of many other classifiers. Some use recursive partitioning to segment a population into many, smaller homogeneous subpopulations. Other algorithms estimate geometrically inspired formulae to fit a multi-dimensional plane between two or more classes. Others average the results of a series of models in order to get the best of many worlds. Each class of model is defined with a mathematical scenarios in mind. 
+
+
+

@@ -1,0 +1,181 @@
+---
+title: 'DIY: Edge Detection'
+output:
+  html_document: default
+  pdf_document: default
+---
+
+
+
+### How can shapes be identified in images?
+  
+#### Motivation {-}
+
+Ever wonder how an algorithm can effortlessly identify the outline of an object in a photograph? It may seem like magic, but it is really a matter of basic mathematical operations along a grid. To build up to the magic, we begin with a few basic concepts. 
+
+A digital photograph is comprised of pixels, which are arrange at equal intervals in a grid. From a data perspective, pixels can hold multiple values. A photograph that is captured in RGB or Red-Green-Blue contains three channels of information based in different parts of the visible light spectrum. Each pixel in turn holds three values -- one for each color, which can be brought together to represent what a camera witnessed at the time of capture. A grayscale image has only one channel that can take one of 255 unique values. A RGB photograph is essentially three overlaid matrices. A grayscale image is one matrix where each pixel is one cell in the matrix. 
+
+Suppose we were to look at one row of pixels in a photograph. As we progress from one side to the other, the pixel values may change -- sometimes due to noise and sometimes due to different objects that are captured when composing a photograph. A meaningful change in the pixel values along each row and each column can be viewed as an edge: _an edge is defined as a point in an image in which values transition_. The noise in the photograph make _edge detection_ a challenge, thus noise should be removed by blurring the image, or averaging values around each pixel in some consistent manner. The before and after results for a given row or column of pixels may resemble the result below.
+
+
+```{r, echo = FALSE, fig.cap = "Example of raw and smoothed greyscale values along a row of pixels"}
+library(ggplot2)
+series1 <- c(rep(20, 20), 200/(1+exp(20:-20)) + 20)
+set.seed(123)
+series2 <- c(rep(5, 20),200/(1+exp(20:-20))) + 30 - 30*runif(41) + 20*runif(41)
+df <- data.frame(pixel.value = c(series1, series2), row.pos = rep(1:61,2), type = c(rep("smoothed value",61), rep("raw value",61)))
+ggplot(data=df, aes(x=row.pos, y=pixel.value, group=type, color=type)) +
+  geom_line() + geom_point()+
+  theme_minimal() + ylab("Greyscale Pixel Value") + xlab("Pixel Position in Row")
+
+```
+
+Next, detecting an edge is a matter of calculating the _gradient_ in the pixels, or how much change in values is observed around each pixel in both vertical and horizontal directions. _Gradient operators_ are mathematical methods of calculating those gradients and are used to determine the strength of the gradient and its direction. The gradient for the example row of pixels is plotted below. Local maxima in the gradients can be used to define a edge threshold. 
+
+
+```{r, echo = FALSE, fig.cap = "Gradient for smoothed pixel values"}
+df$diff <- 0
+for(i in 2:(nrow(df)-1)){
+  df$diff[i] <- coef(lm(df$pixel.value[c(i-1,i,i+1)]~c(-1,0,1)))[2]
+}
+df$diff[61:nrow(df)] <- NA
+df$type[61:nrow(df)] <- ""
+ggplot(data=df, aes(x=row.pos, y=diff)) +
+  geom_path() + geom_point()+
+  theme_minimal() + ylab("Pixel Value Gradient") + xlab("Pixel Position in Row")
+```
+
+There are a variety of edge detection methods used in the wild, among the most commonly used is the _Canny Edge Detection_ algorithm^[Canny, J., A Computational Approach To Edge Detection, IEEE Trans. Pattern Analysis and Machine Intelligence, 8(6):679–698 (1986)] The mathematics of edge detection can be fairly straight forward; However, there is a diversified toolkit of transformations that have been developed to improve the results. 
+
+
+#### A Worked example {-}
+
+To illustrate how edge detection works, we will use a high contrast photograph of Marine One flying over Washington D.C. Images that are "busy" (have many overlapping objects) may prove to be more challenging to identify clear cut edges. To start, we use the `digIt()` library to retrieve the image and render it using `image()`, specifying `asp = 1` for an aspect ratio of 1:1. The helicopter is easy to identify with some propeller detail despite being a low resolution image with 134 x 157 pixels and 3 channels (RGB).
+
+```{r, fig.cap = "Raw image of Marine One", warning = FALSE, message=FALSE}
+  library(digIt)
+require(raster)
+  img <- digIt("image_set_marine1")
+  image(img, asp = 1, main = "Marine One")
+  dim(img)
+```
+
+To make the data manipulation simpler, the three color channels can be weighted to derive greyscale values.^[ref required]  
+```{r, fig.cap = "Converted to greyscale", warning = FALSE, message=FALSE}
+#convert to greyscale
+  img1 <- img[[1]]*0.2126 + 
+          img[[2]]*0.7152 + 
+          img[[3]]*0.0722
+
+#render image
+  image(img1, asp = 1, col =paste("gray",1:99, sep=""))
+```
+
+Notice that the above image contains noise and pixelation, which may disrupt the detection of true edges in the photograph. A blur filter can be applied using any number of techniques. The Gaussian filter is a method that applies a kernel to an $n \times n$ areas around a given pixel, placing the greatest weight on the central pixel and less weight on pixels that are farther from the center. For the Canny approach, a $5 \times 5$ matrix -- also known as a filter mask -- is used as the basis to calculate a weighted average pixel value around each pixel:
+
+$$\begin{bmatrix} 2 & 4 & 5 & 4 & 2 \\ 4& 9& 12& 9& 4\\ 5& 12& 15& 12& 5\\ 4& 9& 12& 9& 4 \\ 2& 4& 5& 4& 2 \end{bmatrix}$$
+
+For a photograph of $100 \times 100$ pixels, the filter mask is applied to each of the 1000 pixels in order to estimate its blurred (smoothed) value.
+
+```{r, fig.cap = "Gaussian blur applied to image to average out noise.", warning = FALSE, message=FALSE}
+#(1) Blur Image  ---------------------------------
+  gaussianBlur <- function(mat){
+    # Blur an image using a Gaussian kernel
+    # 
+    # Args:
+    #  mat = image in matrix form
+    #
+    # Returns:
+    #  Blurred image
+    #
+    
+    filter5 <- matrix(c(2,4,5,4,2,
+                        4,9,12,9,4,
+                        5,12,15,12,5,
+                        4,9,12,9,4,
+                        2,4,5,4,2), 
+                      ncol = 5, nrow = 5, byrow = TRUE)
+    tot <- sum(filter5)
+    
+    #placeholder matrix
+    new <- matrix(NA, ncol = ncol(mat), nrow = nrow(mat))
+    
+    #loop through each cell by row and column 
+    for(i in 2:(ncol(mat)-2)){
+      for(j in 2:(nrow(mat)-2)){
+        new[j,i] <- sum((mat[(j-2):(j+2), (i-2):(i+2)] * filter5)) / tot
+      }
+    }
+    
+    #resulting image is upside down and rotated, apply transformations to rectify
+    new <- apply(new, 2, rev)
+    new <- t(new)
+    
+    #return result
+    return(new)
+    
+  }
+
+#Test blur function on Marine One
+  new <- gaussianBlur(img1)
+  image(new, asp = 1, col = paste("grey", 1:99))
+
+```
+
+Next, edges can be detected using a Sobel operator. The operator makes use of two masks -- one for rows and one for columns:
+
+$$\text{kernel}_x=\begin{bmatrix} -1 & 0 & 1 \\ -2& 0& 2\\ -1& 0& 1 \end{bmatrix}, 
+\text{  kernel}_y=\begin{bmatrix} 1 & 2 & 1 \\ 0& 0& 0\\ -1& 2& -1 \end{bmatrix}$$
+
+For each pixel in the blurred image, each $\text{kernel}_x$ and $\text{kernel}_y$ are applied to produce the point estimate of the  gradient $G$ as the first derivative for each the x and y axes. The resulting values can be combined to estimate the gradient strength $G =\sqrt{G_x^2+G_y^2}$ and edge direction $\theta = atan2(\frac{|G_y|}{|G_x|}) \frac{180}{\pi}$. Below, the Sobel operator is programmed as as a function `sobel()` that accepts a blurred image in matrix form.
+
+```{r, fig.cap = "Sobel operator applied to calculate gradient along X and Y axes, combined into gradient magnitude.", warning = FALSE, message=FALSE}
+#(2) Gradient magnitudes
+  sobel <- function(mat){
+    # Apply a Sobel operator to image matrix, returns strength and direction of edges
+    # 
+    # Args:
+    #  mat = blurred image in matrix form
+    #
+    # Returns:
+    #  A list object with two matrices: one for gradient strength and one for edges
+    #
+    
+    #filters
+    xkernel <- matrix(c(-1, 0, 1,
+                        -2, 0, 2,
+                        -1, 0, 1), 
+                      ncol = 3, nrow = 3, byrow = TRUE)
+    ykernel <- matrix(c(1, 2, 1,
+                        0, 0, 0,
+                        -1, -2, -1), 
+                      ncol = 3, nrow = 3, byrow = TRUE)
+    
+    #Placeholders
+    strength <- matrix(NA, ncol = ncol(mat), nrow = nrow(mat))
+    direction <- matrix(NA, ncol = ncol(mat), nrow = nrow(mat))
+    
+    #Calculate 1st derivative gradients
+    for(j in 2:(nrow(mat)-1)){
+      for(i in 2:(ncol(mat)-1)){
+        #Calculate gradient
+        valx <- sum(mat[(j-1):(j+1), (i-1):(i+1)] * xkernel)
+        valy <- sum(mat[(j-1):(j+1), (i-1):(i+1)] * ykernel)
+        
+        #Combine into strength and direction
+        strength[j,i] <- sqrt((valx)^2 + (valy)^2)
+        direction[j,i] <- atan(abs(valy)/abs(valx)) * 180 / pi
+      }
+    }
+    
+    return(list(strength = strength,
+                direction = direction))
+  }
+```
+
+The result of applying the Sobel operator is a thick outline around Marine One. 
+```{r}
+  gradients <- sobel(new)
+  image(gradients$strength, asp = 1, col = paste("gray",1:99, sep=""))
+  
+```

@@ -1,0 +1,292 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output:
+  html_document: default
+description: Chapter 11
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+
+# Similarity 
+
+We all have heard people react with the following remarks: 
+
+- "That idea sounds awfully like...";
+- "Did you mean to say...";
+- "That looks like..."; 
+- "That's pretty close to..."; 
+- "That seems to trend with..."; 
+- "You might actually like this as well..."; 
+
+
+Humans need to contextualize the world around us. We are creatures of experiential learning, equipped with a powerful ability of cognition to quickly relate one thing to another in abstract terms. While we are endowed with strong cognitive abilities, our abilities are not scalable. For the most part, humans take things one at a time. Even multi-taskers are not truly multi-taskers as each task is serially initialized.
+
+What if we wanted to scale our abilities so that it can be applied more widely. This is very much part of the data science mantra. So, how would one quantify the underlying logic behind the above reactions? 
+
+- "That idea sounds awfully like..." is a matter of intersection of two ideas, which in part can be quantified as the overlap of words in two descriptions. 
+- "Did you mean to say..." may be simply due to associated with a spelling difference.
+- "That looks like..." relates physical and latent qualities of two objects, whether color, shape or size.
+- "That's pretty close to..." is an abstraction of distance;
+- "That seems to trend with..." is a matter of co-occurrence over time 
+- "You might actually like this as well..." matches two entities to one another.
+
+If basic everyday comparisons can be parameterized, then a bold new set of questions can be asked to support policy and strategy such as "Find all documents that relate to X" or "Which other services might a user of Y need?".
+
+In short, these everyday responses can be operationalized in simple measures of similarity -- some are distance related, some are volumetrically related, and others are linguistically related. Together, they provide a versatile set of methods to guide scalable tasks. Each type of similarity plays a part in algorithms, from simple variance estimators in regression models to split criteria in non-linear tree methods. In this section, we introduce a set of common measures that will appear and re-appear throughout the rest of the book, and we will tie each method to a real world use.
+
+
+
+
+## Distances
+
+If a resident of a neighborhood searches the internet to find the nearest police station from a list of a dozen precincts, what happens in the background? The search site will ask for the user's address, then convert that into latitude and longitude coordinates ($x_0, y_0$). The search site also contains a list of known police stations and has already converted the coordinates into a table of coordinates such that police station 1 is ($x_1, y_1$), police station 2 is ($x_2, y_2$), Based on this information, a simple  _dissimilarity matrix_ may be calculated -- basically a $n \times n$ matrix of distances among items in the list of police stations and the user coordinate:
+
+$$\begin{bmatrix} 0 \\ 2 && 0 \\ 1 && 10 && 0 \\ 4 && 3 && 23 && 0 \end{bmatrix}$$ 
+
+where the diagonal represents distance from a coordinate to itself. If the first column is the user's coordinate, then the closest distance is in the 3rd row of the matrix. This is known as a nearest neighbor search -- within a metric space, which entities are the closest (covered in supervised learning).
+
+Distance implies a measure in space, but distance can be represented in a number of ways. Perhaps the most generalizable form of distance is the *Minkowski Distance*, which is given in math-fabulous as follows:
+
+$$ d(x_1,x_2) = \sqrt[p]{|a_1-a_2|^p +|b_1-b_2|^p + ... +|z_1-z_2|^p}$$
+
+where $x_1$ and $x_2$ are n-dimensional vectors (a set of coordinates). In layman terms, the $x_1$ and $x_2$ are each lists of equal length containing coordinates that identify locations $1$ and $2$. $x_1$ for instance can be represented as $x_1 = \begin{bmatrix} a_1  \\  b_1 \\ \vdots \\z_1 \end{bmatrix}$. For each corresponding dimension of $x_1$ and $x_2$, we take the absolute distance to the $p$ power, sum up the absolute dimensions, then take the $p^{th}$ root. The disimilarity matrix described before is comprised of the above equation, repeated for each pair of coordinates. One thing to note is that calculating $d(x_1, x_2)$ and $d(x_2, x_1)$ is the same, thus when computing the matrix, only slightly more than half of the matrix (above the diagonal or below the diagonal) contains unique information. 
+
+It does not take much to see that *Euclidean distance* -- "straight-line distance", "ordinary distance", $L_2$ distance -- is a case where $p = 2$ and is the most likely candidate for the geographic nearest neighbor search:
+
+$$ d(x_1,x_2) = \sqrt[2]{|a_1-a_2|^2 +|b_1-b_2|^2 + ... +|z_1-z_2|^2}$$
+
+where subscripts $x$, $y$, and $z$ represent dimensions (continuous variables). Euclidean distances make the most sense when the coordinates are given in similar units. If the same resident from the above example wanted to find the closest police station that is located within half a mile of a train station, then adding an additional dummy variable as a dimension would not be appropriate as binary and coordinates are not in the same scale.  
+
+
+When $p = 1$, the Minkowski Distance gives rise to the $L-1$-norm, "Manhattan distance" or "taxicab distance", which resembles distance along the edge of the blocks of a grid. 
+
+$$ d(x_1,x_2) = |a_1-a_2| +|b_1-b_2|+ ... +|z_1-z_2|$$
+
+The _Hamming Distance_ is a special case of the $L-1$-norm in which the coordinates are _binary_, such as binary variables that indicate level of education, demographics, prior service use, etc. In cases where binary is the only available information, Hamming distance offer a convenient strategy to similarity in terms of "bits". 
+
+The big picture with distance is to measure similarity or its inverse dissimilarity among records, which can then form the basis of:
+
+- finding clusters of similar records (clustering and unsupervised learning)
+- defining bandwidths -- or the number of records to be included in a calculation
+- selecting variables to be included in a model (regularization)
+
+### Exercise {-}
+Write a function that calculates the Minkowski Distance. The input parameters should accomodate two vectors $x$ and $y$ along with  $p$ for the $p^{th}$-root. 
+
+```{r}
+minkowski <- function(x, y, p){
+  # Returns Minkowski distance for the pth power
+  # 
+  # Args:
+  #  x, y = numeric vectors
+  #  p = power
+  # 
+  # returns:
+  #  l-p distance
+  #
+    return(sum(abs(x - y)^p) ^ (1/p))
+}
+
+#Try a Euclidean distance (two continuous vectors)
+  a1 <- c(1, 3, 5)
+  b1 <- c(2, 20, 10)
+  minkowski(a1, b1, 2)
+
+#Try a Hamming distance (two binary vectors)
+  a1 <- c(0, 1, 1, 0)
+  b1 <- c(0, 1, 0, 1)
+  minkowski(a1, b1, 1)
+```
+
+
+## Correlation
+
+Research on the effect of temperature on crime is fairly common. For instance, the findings from a Field (1992) describes this relationship in the United Kingdom^[https://academic.oup.com/bjc/article-abstract/32/3/340/319313?redirectedFrom=PDF]:
+
+> An analysis of annual, quarterly, and monthly data for recorded crime in England and Wales yielded strong evidence that temperature has a positive effect on most types of property and violent crime. The effect was independent of seasonal variation. No relationship between crime and rainfall or hours of sunshine emerged in the study. The main explanation advanced is that in England and Wales higher temperatures cause people to spend more time outside the home. Time spent outside the home, in line with routine activity explanations for crime, has been shown to increase the risk of criminal victimization for most types of crime. The results suggest that temperature is one of the main factors to be taken into account when explaining quarter-to-quarter and month-to-month variations in recorded crime.
+
+The results are _correlative_ when temperature increases, crime also increases. As has been covered in Exploratory Data Analysis, correlation is commonly measured using *Pearson's Correlation Coefficient*, which defined as: 
+
+$$\rho(X,Y) = \frac{cov(X,Y)}{\sigma{_X}\sigma{_Y}} = \frac{\sum_{i=1}^n{(x_i-\bar{x})(y_i-\bar{y})}}{\sqrt{\sum_{i=1}^n{(x_i-\bar{x})^2}}\sqrt{\sum_{i=1}^n{(y_i-\bar{y})^2}}}$$
+
+Which is the covariance of X and Y divided by the product of the standard deviation of X and Y. The measure is bound between -1 and 1, where 1 indicates that two quantities move together all the time and -1 indicates two quantities move in exact opposite direction. To make the most of the correlation coefficient, it makes the most sense to use this measure with continuous variables.
+
+The idea of correlation can be generalized to other kinds of similarity. Suppose an organization, such as an online vendor or even a government agency, offers a portfolio of products and services. Typically, the needs and consumption of goods and services by  customers are tracked for administrative and budgetary purposes. From the field of economics, it is common to observe that within a basket or portfolio of goods, two or more items may be complements: 
+
+- Someone who calls a government office to report noise pollution may also be in a place that may need to be checked for building structural problems (prioritization)
+- Someone who buys hot dogs may also need to buy top-sliced buns (product recommendaiton)
+- Someone who listens to Lenny Kravitz may also want to listen to Jimi Hendrix (product recommendaiton)
+- Someone who reads a specific document in a database should also read a set of other documents (information retrieval)
+
+This is the fundamental idea behind _recommendation engines_.^[https://www.cs.umd.edu/~samir/498/Amazon-Recommendations.pdf] A customer of product A may be interested or may benefit from products X, Y, and Z. This can be inferred by how often two or more products are purchased together -- essentially the Amazon, Netflix and general e-commerce experience. The basis of the technique known as _item-item collaborative filtering_ starts with *cosine similarity*. 
+
+Cosine similarity measures the angle between two vectors -- basically if the vectors are going in the same direction. It is given as: 
+
+$$ cos(\theta) = \frac{\sum_{i=1}^n{(X_i Y_i)}}{\sqrt{\sum_{i=1}^n{X_i^2}}\sqrt{\sum_{i=1}^n{Y_i^2}}}$$
+
+Unlike the correlation coefficient, the input vectors should contain positive real numbers and returns a value between 0 and 1, where 1 indicates that two vectors are perfectly aligned. While it is easy to write the underlying cosine similarity function, fast matrix implementation of cosine similarity is available in the `coop` package with the function `cosine()`.
+
+In practice, how does this work? Take a look at the DIY recommendation engine example later in this chapter.
+
+*Jaccard Similarity Coefficient*
+
+Plagerism is a problem in academic and professional settings. With information ever more accessible via the internet, it becomes easier to simply copy and paste information. Imagine a case where 1,000 submit essays in a freshman English seminar -- how can the uniqueness of essays be checked?  Or how can news articles be monitored in order to find dependence between news agencies (e.g. one news outlet citing an article from another outlet)?
+
+In an online setting, new users of web applications may be prompted to provide their preferences to populate their profile so that they can be connected to relevant products and services. How are users matched to recommendations?
+
+These are basic cases in which the Jaccard Similarity Coefficient is a good fit. Given two vectors $X$ and $Y$, the Jaccard coefficient is the intersection $X \cap Y$ divided by the union of the two vectors $X \cup Y$: 
+
+$$ J(X,Y) = \frac{|X \cap Y|}{|X \cup Y|} = \frac{|X \cap Y|}{|X| + |Y| - |X \cap Y|}$$
+
+In other words, it is a measure of how much two vectors overlap. Thus, the word frequencies of two or more documents can be compared and also proves to a convenient method of checking for the uniqueness of programming scripts.
+
+
+
+## Linguistic Distances
+
+Spelling errors are common and are a continuous challenge in entity resolution. _Edit distances_ are methods of comparing two strings to determine their similarity. The _Levenshtein Distance_ is a similarity measure that counts the number additions, substitutions, or deletions that are required to transform one string to another string.^[Ref required]  For example: the difference between the name "Jeff" and "Geoff" is 2: (1) substitute "J" for "G", and (2) delete the "o". 
+
+In R, one function that implements Levenshtein Distance is `adist(x, y)`, where `x` and `y` are string vectors. Below is a stylized output from `adist()` that provides the similarity measure for each string compbination.
+
+
+```{r, eval = FALSE}
+# Two sets of names
+  x <- c("Bill", "Warren")
+  y <- c("Billy","Wally","Billie", "Golly", "William")
+  
+# Calculate Levenshtein distances
+  dist = adist(x, y)
+  
+#Rename columns and rows
+  row.names(dist) <- x
+  colnames(dist) <- y
+  
+#Print out
+  print(dist)
+```
+
+
+```{r, echo = FALSE}
+# Two sets of names
+  x <- c("Bill", "Warren")
+  y <- c("Billy","Wally","Billie", "Golly", "William")
+  
+# Calculate distances
+  dist = adist(x, y)
+  row.names(dist) <- x
+  colnames(dist) <- y
+  
+#Print out
+  knitr::kable(dist, booktabs = TRUE, caption = "Levenshtein distances for \"Bill\" and \"Warren\"")
+```
+
+Levenshtein distances are quite useful with textual data, especially for surfacing potential alternative spellings. However, the choice of a "close match" is generally subjective.
+
+Another method of measuring linguistic distances is phonetically. _Phonetic Algorithms_ index strings by sounds with respect to a target language. The _soundex_ algorithm, for example, was developed to identify homophones -- names that are pronounced the same but may have different spellings. This is done by encoding characters in names in a particular way that retains certain comparable sounds^[https://www.archives.gov/research/census/soundex.html]:
+
+1. Keep the first letter of a string.
+
+2. Disregard the letters A, E, I, O, U, H, W, and Y.
+
+3. For each of the following groups of letters, replace with the associated number: 
+
+- 1 [B, F, P, V]
+- 2	[C, G, J, K, Q, S, X, Z]
+- 3	[D, T]
+- 4	[L]
+- 5	[M, N]
+- 6	[R]
+
+4. If a name has double letters, drop one (e.g. Keep one _r_ in _Torres_)
+
+5. If sequential number encodings are the same, keep only one. Examples from the National Archives: 
+
+- Pfister is coded as P-236 (P, F ignored, 2 for the S, 3 for the T, 6 for the R).
+- Jackson is coded as J-250 (J, 2 for the C, K ignored, S ignored, 5 for the N, 0 added).
+- Tymczak is coded as T-522 (T, 5 for the M, 2 for the C, Z ignored, 2 for the K). Since the vowel "A" separates the Z and K, the K is coded.
+
+6. If a name has a prefix (e.g. Van, Di) that is separated by a space, encode the name with and without the prefix and use both sets of encodings for search purposes. Example:
+
+- Van Doren, Di Caprio, etc.
+
+7. Consonant separators (two rules).
+
+- If the letters "H" or "W" separate two consonants with the same soundex code, the consonant to the right of the vowel is not coded.^[https://www.archives.gov/research/census/soundex.html]
+- If a vowel (A, E, I, O, U) separates two consonants that have the same soundex code, the consonant to the right of the vowel is coded.^[https://www.archives.gov/research/census/soundex.html] 
+
+The result of a soundex is a four character code in which the first character is a letter proceeded by three numbers. The `phonics` library enables the use of common phonetic algorithms, which can help facilitate search and matching of names. In the example below, different spellings of John and Eric are compared using soundex encodings. Notice how names that sounds the same are successfully mapped to the same encodings.
+
+```{r, message= FALSE, warning=FALSE}
+#Load phonics package
+  library(phonics)
+
+#John
+  soundex(c("John", "Jon", "Jonathan"))
+
+#Eric
+  soundex(c("Eric", "Erik", "Erich", "Enrique"))
+```
+
+Soundex is best for English language names and may not be adapted for all names. A number of variants have arisen with varying degrees of flexibility.
+
+### Exercise {-}
+
+Given the following rules, write a function to convert a string vector into soundex encodings using the first five rules.
+
+
+
+## Entropy
+
+Humans are creatures of habit, thus our range of actions are fairly predictable. Let's suppose a restaurants in a city need to follow nearly a thousand statutes to remain in good standing. Chances are that a health inspector is not likely to know all statutes and will rely on a smaller set of violation types when conducting inspections. There is always the chance that the inspector will use extraneous and usual violations for unethical purposes, thus inspectors should generally issue a consistent set of violations. With this in mind, how does one detect abuse?
+
+Similarly, given a set of student characteristics, what constitutes better information? Information must contain signal that differentiates one idea/thing/topic from another in a consistent manner. Given a dummary variable indicating if a student has a SAT score above 1500 and another dummy variable indicating if a student's toe nail is longer than 5 inches, which is better determinant of college admissions? Logically, it would be whichever measure that is able to partition the admissions pool into high success and low success. 
+
+Enter _entropy_. With it origins in physics, entropy is a measure of randomness -- a way to compare how many states a particle holds over some unit time. In statistics, it is a common method for identifying outliers and useful information of a system, given as:
+
+$$\text{entropy} = -\sum_i^{n}p_i \times log_np_i$$
+where subscripts $p_i$ is the proportion of a system that occupied a state or condition $i$. To contextualize this, let's take a simple case of three inspectors in which each state is a type of violation that had been issued:
+
+```{r}
+#The volume of each type of violation that has been issued
+  inspector.1 <- c(2, 10, 20, 10, 10, 30, 20, 5, 2, 5, 2, 3, 2)
+  inspector.2 <- c(50, 20, 20)
+  inspector.3 <- c(30, 20, 30, 20)
+```
+
+To find the inspector who has not been consistent with their violation issuances, we can calculate entropy:
+```{r}
+entropy <- function(x){
+  # Returns entropy of a vector
+  # 
+  # Args:
+  #  x = vector of states
+  # 
+  # returns:
+  #  Raw entropy
+  #
+  tot <- sum(x)
+  prop <- x/tot
+  return(-sum(prop * log(prop)))
+}
+```
+
+And apply the function to each inspector. The inspector with the highest entropy is inspector 1. This does not mean that inspector 1 did anything wrong, but perhaps should be evaluated a bit closer.
+
+```{r}
+entropy(inspector.1)
+entropy(inspector.2)
+entropy(inspector.3)
+```
+
+An another way of viewing entropy is as a measure of homogeneity. Relative to inspector 1, inspectors 2 and 3 were relatively consistent in their issuance history, thus there is little indication of deviant behavior. As we will see later in the book, entropy plays a central role in decision tree learning methods for classification.
+
+##DIY
+

@@ -1,0 +1,242 @@
+---
+title: "Chapter 5. DIY: Entity Resolution"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+### What is the overlap between these two lists? 
+
+#### Motivation {-}
+
+Bill de Blasio, the 109th Mayor of New York City, was not always known as _Bill de Blasio_. In fact, he has changed his name twice and he has had three legal names, including _Warren Wilhelm Jr._, _Warren de Blasio-Wilhelm_ and _Bill de Blasio_.^[http://www.nydailynews.com/news/election/de-blasio-names-de-blasio-article-1.1463591] His current name first appeared in 1990 as a working name and was only officially with a court petition in 2001. In addition, his close network addresses him as _Billy_.^[https://beta.prx.org/stories/81520]  While his entities are well-covered in the press and are common knowledge for New Yorkers, to others it may not be. Name changes are quite common throughout society. Some people may choose to change part of or their entire name at major life events, such as at joyous occassions like marriage or more clandestine efforts with witness protection. The way in which people refer to themselves colloquially also tends to differ such as nicknames (e.g. Bob = Robert, Dick = Richard, Jen = Jennifer) and stage names (e.g. George Michael = Georgios Kyriacos Panayiotou, Stevie Wonder = Stevland Hardaway Judkins). Organizations may use the same acronyms to refer to themselves. CIA can refer to the clandestine Central Intelligence Agency or the more gastronomically inclined Culinary Institute of America. 
+
+In data science, _entity resolution_ (ER) or the disambiguation of names and entities is paramount in the early stages of developing data sets for analysis and application. ER is also referred to as record linakge and as deduplication in certain contexts -- essentially being able to systematically map aliases to a canonical identifier. This process goes beyond simply names and spellings, but other identiable information that can be used to triangulate upon an entity or identity. 
+
+For example, a unique identifier in the US is the social security number (SSN). Composite identifiers can be developed using a number of pieces of information, such as the last four digits of the social security number (SSN4), a person's last name, and birth date. For businesses, an identifier might be the tax identification number (TIN) or even commercial email address in certain cases. 
+
+Through successfully resolving entities, fundamental business analysis problems can be solved:
+
+- How many people do I have in these customer lists?
+- How many customers return more than once per year?
+- How many records overlap between these two lists?
+- I have two data sets with data about people. How do I combine them to augment my knowledge about those people?
+
+#### Principles {-}
+
+The goal of entity resolution is to get entity $A$ in one set of information to equate $A$ in another set of information. On one level, getting identifiers to line up, such as names, is a matter of ensuring that characters in two sets of information are the same. On another level, it is a matter of identifying the right combination of fields that have enough identifiable information to make the linkage. There are a broad set of complex techniques that can be applied to achieve this task. To start, the mastering the following can go a long way:
+
+- Text may be processed to remove punctuation and spacing as well as standardize capitalization. For example, `Bill de Blasio-Wilhelm` and `billdeblasiowilhelm` are the same name. 
+- Misspellings and alternative spellings are a common problem. In NYC, Broadway has been known to be spelled as B-way, B'way, Bwy, Bdway, among others. _Fuzzy matching_ can be used to find candidate matches among strings based on how they sound or are spelled words. _Phonetic algorithms_, such as Soundex, are useful with indexing names based on how they sound in English as opposed to their spelling. In Soundex, for example, names are represented as a letter and three numbers as derived by encoding rules^[https://www.archives.gov/research/census/soundex.html] The soundex for the name "Boston" is "B-235". Other names that would have the same soundex are "Bostin", "Bawstin", and "Bastin" -- all of which would be phonetic matches. When spelling matters, methods such as _Levenshtein Distance_ or _Edit Distances_ can be used to calculate the number of character insertions, deletions and substitutions are required to convert a source string into a target -- essentially a character similarity measure. The Levenshtein Distance from "Boston" to "Bawstin" is 3 and to "Bostin" is 1. Note that matching based on Levenshtein Distance would require the user to specify an acceptable cutoff distance.
+- Disambiguation is reliant on linking known names to a canonical name. Bill can be linked to Billy and Warren in de Blasio's case, but not in the case of Bill Clinton or Bill Nye. Typically, these linkages are surfaced through manual investigation and keeping track of the "Also Known As" or "AKA" may accomplish more than any text manipulation ever could.
+
+
+
+#### A Worked example {-}
+
+Publicly available PII is becoming increasingly abundant due to cybersecurity breaches. But, published PII is officially published on sanction lists and watch lists. A number of nations and governing bodies publically publish such lists of enemies of the state and their many aliases so that companies and people conducting global commerce can follow international sanctions. Indeed, the value of data here is one of a serious and grave nature, but without such lists, diplomacy and policy is hard to implement and enforce. 
+
+For this example, four sanctions lists have been assembled:
+
+- US Consolidated Screening List: http://2016.export.gov/ecr/eg_main_023148.asp
+- UK Financial sanctions targets: list of all targets: https://www.gov.uk/government/publications/financial-sanctions-consolidated-list-of-targets/consolidated-list-of-targets
+- UN  Sanctions List:  https://scsanctions.un.org/resources/xml/en/consolidated.xml
+- EU Sanctions List: http://ec.europa.eu/external_relations/cfsp/sanctions/list/version4/global/global.xml 
+
+For simplicity, we will focus only on the UN and EU lists to create a cleaned set of names in order to determine the number of unique entities in each list, then conduct matching to determine the overlap. To start, we will directly read the EU and UN data using the `digIt()` library. 
+
+\vspace{12pt}   
+```{r, warning= FALSE, message=FALSE, echo = FALSE}
+  library(digIt)
+  un <- digIt("watch_list_un")
+  eu <- digIt("watch_list_eu")
+```
+
+```{r, warning= FALSE, message=FALSE, eval = FALSE}
+  library(digIt)
+  un <- digIt("watch_list_un")
+  eu <- digIt("watch_list_eu")
+```
+\vspace{12pt}   
+
+As a first step, we will examine a few records. There are quite a few fields that could be used for matching such as name, birth date, and citizenship. Typically, it is best to clean and prepare multiple fields for matching. 
+
+\vspace{12pt}   
+```{r, echo = FALSE, message = FALSE }
+# produce a data frame for comparing data sets
+example <- data.frame( eu.variables = c(colnames(eu), rep("",6)), 
+                       eu.example = c(t(eu[eu$id==13,]), rep("",6)),
+                       un.variables = colnames(un), 
+                       un.example = c(t(un[un$id==6908048,])))
+
+#Loop through and limit number of characters
+for(i in 1:4){
+  example[,i] <- substr(example[,i], 1,23)
+  example[,i][is.na(example[,i])] <- ""
+}
+row.names(example) <- NULL
+knitr::kable(example, caption = "Comparison of EU and UN lists.", booktab = TRUE,
+             col.names = c("EU Variables", "", "UN Variables", "Example"))
+
+```
+\vspace{12pt}   
+
+For this example, we will rely largely on the EU `wholename` field and construct a similar fields from the UN list using `firstname`, `secondname`, and `thirdname`. A first step in preparation is to fill all `NA` values with an empty quotation as concatenating multiple `NA` values will be erroneously interpretted as a string value "NA" (e.g. "Saddam NA Hussein"). As a cursory check, we match both the `eu` and `un` data sets by the `wholename` field, which reveals that only four of hundreds of records are readily matchable.
+
+\vspace{12pt}   
+```{r, warning= FALSE, message=FALSE}
+#PRE-PROCESSING
+  eu[is.na(eu)] <- ""
+  un[is.na(un)] <- ""
+
+#Concatenate names in UN set
+  un$wholename <- paste(un$firstname, un$secondname, un$thirdname)
+
+#Test straight up matches (only for records that match without any changes)
+  base.merge <- merge(eu, un, by = "wholename")
+  paste("Number of matched rows =",nrow(base.merge))
+  
+```
+\vspace{12pt}   
+
+
+To build out the entity resolution process, we will need to write two functions. The first function to be named `cleanEntity()` will clean, deduplicate and standardize a vector of names. 
+
+- Computers interpret characters *as is*, thus a capital "A" is not he same a a lower case "a" and one space is not the same as a tab indent. To clean, spaces and punctuation will be stripped out. In addition, all characters will be turned into lower case and trim excess white space from the beginning and end of each string. 
+- Deduplication will be conduct on the resulting cleaned string vector. This is a key step to ensure that matching is conducted as close to a 1:1 basis, otherwise we run the risk of a Cartesian Product (all duplicate matches can matched to one another, thereby multiplying the number of matched records). 
+
+The result is a data frame containing both the original whole name and the cleaned whole name.
+
+\newpage
+```{r, warning= FALSE, message=FALSE}
+#Write function to cleaning data
+cleanEntity <- function(x){
+  #
+  # Desc: 
+  #   Accepts a vector of names, returns a cleaned, deduplicated, data frames
+  #
+  # Args:
+  #   x = a string vector
+  #
+  # Returns:
+  #   Data frame with two fields: Original string and a cleaned name
+  
+  x <- x[!duplicated(x)]
+  lower <- trimws(tolower(x))
+  nopunct <- gsub("[[:punct:]]", "", lower)
+  nospace <- gsub("[[:space:]]", "", nopunct)
+  return(data.frame(original = x, cleaned = nospace))
+  
+}
+
+```
+\vspace{12pt}   
+
+As a proof of concept, we run the `cleanEntity()` function and examine the first five records. For the most part, the names look fairly standardized.
+
+\vspace{12pt}   
+```{r, warning= FALSE, message=FALSE, eval = FALSE}
+#Check to see that it works
+  test.match <- cleanEntity(eu$wholename)
+  head(test.match, 5)
+```
+```{r, warning= FALSE, message=FALSE, echo = FALSE}
+  temp <- cleanEntity(eu$wholename)
+  knitr::kable(head(temp, 5), booktab = TRUE, caption = "Cursory comparison of original and cleaned string vectors")
+```
+\vspace{12pt}   
+
+
+
+The next step is to write a function called `canonicalNames()` that is designed to find which raw, uncleaned name in one data set matches with a raw, uncleaned name in a second data set. This is accomplished by translating two vectors of names into a standardized form, then conducts matching. The function starts by using `cleanNames()` to standardize the two name vectors. Notice the modularity -- how a user-defined function is designed to work as part of a more complex function. Upon transforming each vector, `canonicalNames()` conducts two rounds of matching: one with the uncleaned names as these contain arguably the highest quality matches, then another round on cleaned names. The result of this function is a data frame that contains matched, untransformed names that can be used as a key to join data between data sets.
+
+\newpage
+
+\vspace{12pt}   
+```{r, warning= FALSE, message=FALSE}
+
+canonicalNames <- function(a, b){
+  #
+  # Desc:
+  #   Accepts two vectors of identifiers, returns matches
+  # 
+  # Args: 
+  #   a and b are string vectors of names
+  #
+  # Result:
+  #   A matched list with original names in each dataset
+  
+  #Clean Data
+  a <- cleanEntity(a)
+  b <- cleanEntity(b)
+  
+  #Change field names
+  colnames(a) <- paste0("a.",colnames(a))
+  colnames(b) <- paste0("b.",colnames(b))
+  
+  #Match on originals 
+  overlap1 <- merge(a, b, by.x = "a.original", by.y = "b.original")
+  overlap1$step <- "original"
+  overlap1$b.original <- overlap1$a.original
+  print(paste0("Original: # matches = ", nrow(overlap1)))
+  
+  #Match on cleaned 
+  overlap2 <- merge(a, b, by.x = "a.cleaned", by.y = "b.cleaned")
+  overlap2$step <- "cleaned"
+  print(paste0("Cleaned: # matches = ", nrow(overlap2)))
+  
+  #Create master
+  master <- rbind(overlap1[,c("a.original","b.original", "step")], 
+                  overlap2[,c("a.original","b.original", "step")])
+  
+  #De-dupe
+  master <- master[ !duplicated(paste(master$a.original), master$b.original), ]
+  print(paste0("Total de-duplicated matches  = ", nrow(master)))
+  return(master)
+}
+
+```
+\vspace{12pt}   
+
+When we apply these functions to the UN and EU data, we find $n = 667$ matches out of $n = 1046$ in the UN data set and $n = 2016$ in the EU data set.
+
+\vspace{12pt}   
+```{r, warning= FALSE, message=FALSE, eval = FALSE}
+  eu.un <- canonicalNames(un$wholename, eu$wholename)
+```
+
+A closer examination of matches reveals that punctuation and capitalization accounts for the majority of the differences between names. This, however, omits name disambiguation.
+```{r, warning= FALSE, message=FALSE, eval = FALSE}
+  tail(eu.un, 6)
+```
+
+```{r, warning= FALSE, message=FALSE, echo = FALSE}
+  eu.un <- canonicalNames(un$wholename, eu$wholename)
+  row.names(eu.un) <- NULL
+  knitr::kable(tail(eu.un, 6), booktab = TRUE, caption = "Comparison of Matched Records")
+```
+
+
+```{r, warning= FALSE, message=FALSE}
+#JOINING
+  un.new <- merge(un, eu.un, 
+                  by.x = "wholename", 
+                  by.y = "a.original", 
+                  all.x = TRUE)
+  
+  eu.new <- merge(eu, eu.un, 
+                  by.x = "wholename", 
+                  by.y = "b.original", 
+                  all.x = TRUE)
+  
+  joint <- merge(un.new, eu.new,
+                 by.x = "b.original", 
+                 by.y = "wholename")
+  
+```
+\vspace{12pt}   
+
+#### Exercises {-}
+
+- Conduct the same process on the US and UK data sets using the functions that you have written for cleaning and resolution.
+- Determine the total number of people who overlap between the UK and UN sanction lists, doing so also considering primary and secondary (AKA) aliases. In the UN file, aliases are listed under the `alias` field. In the UK list, entities are listed in long form, thus use a combination of the `Alias.Type` and `Group.ID` fields to identify unique individuals. Note that matching may require more than just character changes to names.

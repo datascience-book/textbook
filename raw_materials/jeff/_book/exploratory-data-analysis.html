@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="data-manipulation-wrangling-processing.html">
+<link rel="next" href="similarity.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="exploratory-data-analysis" class="section level1">
+<h1><span class="header-section-number">Chapter 4</span> Exploratory Data Analysis</h1>
+<div id="visually-detecting-patterns" class="section level2">
+<h2><span class="header-section-number">4.1</span> Visually Detecting Patterns</h2>
+<p>Mobile technologies have lowered the bar to using lightweight sensors that measure the physical world and have opened new applications of data in daily life. From a smart phone’s accelerometer, it’s possible to track distinct patterns in one’s activity based on the fluctuations in acceleration (<span class="math inline">\(\frac{m}{s^{2}}\)</span>). In fact, many of these technologies have become commonly available, enabling physical fitness activity monitoring to characterizing transportation quality. Below is a set of exercise measurements from an smartphone accelerometer that lasted approximately 6.5 minutes and graphed at a frequency of 5 hertz (five readings per second).</p>
+<p>Can you visually identify distinct patterns? What makes those patterns distinct?</p>
+<div class="figure"><span id="fig:unnamed-chunk-181"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-181-1.png" alt="Net acceleration collected from a mobile phone, sampled at a rate of 5 hertz (readings per second)." width="672" />
+<p class="caption">
+Figure 4.1: Net acceleration collected from a mobile phone, sampled at a rate of 5 hertz (readings per second).
+</p>
+</div>
+<p>Over the short time sample, the graphs indicate four distinct types of acceleration patterns. If we manually extract samples from these periods, we can quantify the patterns in terms of their central tendencies. Idle periods have near zero acceleration, walking periods have acceleration around 0.2 with tight dispersion, running periods hover around 0.6 +/- 0.2, and descending stairs vary widely. Given how these basic insights, we can experiment with various methods of <em>feature engineering</em>, or ways to distill and represent useful signal from the raw data. We can also begin to formulate hypotheses for how to model and represent the patterns and relationships in the data.</p>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-182-1.png" width="672" /></p>
+<p>This is the basis of <em>exploratory data analysis</em> or <em>EDA</em> – the first look at a dataset. Much of exploratory data analysis is focused on formulating hypotheses, assessing data structures, and understanding the quirks and tolerances of data in order to develop useful and insightful data-driven applications. This is achieved by using visual techniques (e.g. histograms, other graphs) to identify outliers and assess the distribution of variables as well as statistical measures help to understand central tendency among other properties of the data. A well-conducted EDA would yield critical insights into how the data can and should be processed, methods for feature extraction to represent usable signal in the data, and options for operationalizing a strategy for solving the problem at hand.</p>
+<p>We can break EDA into a series of high-level goals, each of which is associated with analytical tasks that help piece together a clearer picture of what is contained in the data. Each of these questions can be answered through a graphical or numerical technical approach.</p>
+<table style="width:100%;">
+<colgroup>
+<col width="20%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Goal</strong></th>
+<th><strong>Common Questions</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Assess the data types</td>
+<td>- Are the data categorical, numerical, factor, strings, other? <br> - What manipulations will you need to perform to get the data into usable shape?</td>
+</tr>
+<tr class="even">
+<td>Understand the empirical distributions</td>
+<td>- Does the data fall into a commonly recognized shape? <br> - Is it unimodal, bimodal? <br> - Is there any indication of time-dependence?</td>
+</tr>
+<tr class="odd">
+<td>Detect outliers, missingness and errors</td>
+<td>- Are there anomalous values? <br> - Do records spike or occur during odd times? <br> - How complete is the data? <br> - Which variables need to be standardized and cleaned?</td>
+</tr>
+<tr class="even">
+<td>Check the assumptions</td>
+<td>- How exactly is the data collected? <br> - Does the data reflect what would be expected?</td>
+</tr>
+<tr class="odd">
+<td>Identify important variables</td>
+<td>-Which variables are correlated with one another?</td>
+</tr>
+<tr class="even">
+<td>Formulate data-bounded hypotheses</td>
+<td>- Which variables are most correlated?</td>
+</tr>
+</tbody>
+</table>
+<p>This chapter will equip you with the skills to explore the data in an efficient and thoughtful manner. There are three considerations that underlie effective discovery: data structure, statistical measures, and graphical summaries. We begin with an overview of elements of EDA, then reinforce by walking through an example workflow.</p>
+</div>
+<div id="how-does-this-work" class="section level2">
+<h2><span class="header-section-number">4.2</span> How does this work?</h2>
+<p>The structure of the data dictates the amount and type of processing required to make data usable and wieldy. Typically, data should be in matrix or tabular form – a basic requirement for data to be manipulated and analyzed. However, at times, the raw data may be in an unstructured format (e.g. raw text) or in different structured formats (e.g. satellite imagery, long form), requiring processing, reshaping and/or feature extraction so that the data is usable.</p>
+<div id="where-to-start" class="section level4">
+<h4><span class="header-section-number">4.2.0.1</span> Where to start</h4>
+<p>To start, we’ll create a simulated dataset, containing five variables: sex, age, weight, program, and status.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">num_recs &lt;-<span class="st"> </span><span class="dv">1200</span> 
+
+long =<span class="st"> </span><span class="kw">expand.grid</span>(<span class="kw">seq</span>(<span class="dv">1</span>,num_recs,<span class="dv">1</span>), <span class="kw">c</span>(<span class="st">&quot;sex&quot;</span>,<span class="st">&quot;age&quot;</span>, <span class="st">&quot;weight&quot;</span>, <span class="st">&quot;program&quot;</span>, <span class="st">&quot;status&quot;</span>))
+<span class="kw">colnames</span>(long) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;person_id&quot;</span>, <span class="st">&quot;field&quot;</span>)
+long$values &lt;-<span class="st"> </span><span class="kw">c</span>( <span class="kw">round</span>(<span class="kw">runif</span>(num_recs)),
+                  <span class="kw">round</span>(<span class="kw">rnorm</span>(num_recs,<span class="dv">40</span>,<span class="dv">10</span>)),
+                  <span class="kw">sample</span>(<span class="kw">c</span>(<span class="kw">rep</span>(-<span class="dv">9999</span>, num_recs), <span class="kw">round</span>(<span class="kw">rnorm</span>(num_recs,<span class="dv">120</span>,<span class="dv">20</span>))),num_recs),
+                  <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;a&quot;</span>,<span class="st">&quot;b&quot;</span>),num_recs/<span class="dv">2</span>),
+                  <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;in&quot;</span>,<span class="ot">NA</span>,<span class="st">&quot;out&quot;</span>),num_recs/<span class="dv">3</span>))
+long &lt;-<span class="st"> </span>long[<span class="kw">order</span>(long$person_id),]
+ 
+<span class="kw">head</span>(long, <span class="dv">10</span>)</code></pre></div>
+<pre><code>##      person_id   field values
+## 1            1     sex      0
+## 1201         1     age     43
+## 2401         1  weight    101
+## 3601         1 program      a
+## 4801         1  status     in
+## 2            2     sex      1
+## 1202         2     age     42
+## 2402         2  weight     98
+## 3602         2 program      b
+## 4802         2  status   &lt;NA&gt;</code></pre>
+<p>Using the <code>str()</code> method (below), we can produce a structural summary of each variable in a dataset. There are a few common things to keep in mind:</p>
+<ul>
+<li><u>Is the data in the right <em>shape</em>?</u>. The data is ‘stacked’ or in ‘long’ form, which means that each row contains a value (<code>values</code>) that corresponds to a person-variable combination (<code>person_id</code> and <code>field</code>). Notice that while there are numeric and character values, all variables are coded as characters. In order to analyze the data, each field should be represented in a separate column. This process is known as <em>reshaping</em> from <em>long</em> to <em>wide</em> form and is pre-requisite.</li>
+<li><u>Are there discrete variables that are coded as integers?</u>. Numeric codes often are used in order to keep the data files smaller. For example, <code>sex</code> is coded as a binary integer, but represents two values: 0 = Female, 1 = Male. In some case, it may be helpful to recode using the text value for ease of interpretation</li>
+<li><u>Are there missing values?</u>. Missing values are often coded as <code>NA</code> or a large negative number in cases where values should be non-zero positive such as <code>-9999</code>. This will require some cleaning to standardize values and at times imputation.</li>
+<li><u>Which variables should be numeric?</u>. At times, numeric variables will be formatted as strings and factors.</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">str</span>(long)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    6000 obs. of  3 variables:
+##  $ person_id: num  1 1 1 1 1 2 2 2 2 2 ...
+##  $ field    : Factor w/ 5 levels &quot;sex&quot;,&quot;age&quot;,&quot;weight&quot;,..: 1 2 3 4 5 1 2 3 4 5 ...
+##  $ values   : chr  &quot;0&quot; &quot;43&quot; &quot;101&quot; &quot;a&quot; ...
+##  - attr(*, &quot;out.attrs&quot;)=List of 2
+##   ..$ dim     : int  1200 5
+##   ..$ dimnames:List of 2
+##   .. ..$ Var1: chr  &quot;Var1=   1&quot; &quot;Var1=   2&quot; &quot;Var1=   3&quot; &quot;Var1=   4&quot; ...
+##   .. ..$ Var2: chr  &quot;Var2=sex&quot; &quot;Var2=age&quot; &quot;Var2=weight&quot; &quot;Var2=program&quot; ...</code></pre>
+</div>
+<div id="example-of-structural-fixes" class="section level4">
+<h4><span class="header-section-number">4.2.0.2</span> Example of structural fixes</h4>
+<p>Data should be in wide form. To do so, we can rely on the <code>reshape()</code> method to create a column for each of the <code>field</code> variables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">head</span>(long)</code></pre></div>
+<pre><code>##      person_id   field values
+## 1            1     sex      0
+## 1201         1     age     43
+## 2401         1  weight    101
+## 3601         1 program      a
+## 4801         1  status     in
+## 2            2     sex      1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">wide &lt;-<span class="st"> </span><span class="kw">reshape</span>(long, <span class="dt">idvar =</span> <span class="kw">c</span>(<span class="st">&quot;person_id&quot;</span>), <span class="dt">timevar=</span><span class="st">&quot;field&quot;</span>, <span class="dt">direction=</span><span class="st">&quot;wide&quot;</span>)
+<span class="kw">head</span>(wide)</code></pre></div>
+<pre><code>##   person_id values.sex values.age values.weight values.program
+## 1         1          0         43           101              a
+## 2         2          1         42            98              b
+## 3         3          0         46           108              a
+## 4         4          0         36           165              b
+## 5         5          1         49            97              a
+## 6         6          1         32         -9999              b
+##   values.status
+## 1            in
+## 2          &lt;NA&gt;
+## 3           out
+## 4            in
+## 5          &lt;NA&gt;
+## 6           out</code></pre>
+<p>When using <code>colnames()</code>, we can see that the reshaped dataset contains “values.” as a prefix. For conciseness, we’ll remove the prefix using <code>gsub()</code> to replace the <em>string pattern</em> with “” or blank.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#get column names</span>
+  <span class="kw">colnames</span>(wide)</code></pre></div>
+<pre><code>## [1] &quot;person_id&quot;      &quot;values.sex&quot;     &quot;values.age&quot;     &quot;values.weight&quot; 
+## [5] &quot;values.program&quot; &quot;values.status&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#rename by removing &quot;values.&quot;</span>
+  <span class="kw">colnames</span>(wide) &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;values.&quot;</span>,<span class="st">&quot;&quot;</span>,<span class="kw">colnames</span>(wide))
+  
+<span class="co">#get column names</span>
+  <span class="kw">colnames</span>(wide)</code></pre></div>
+<pre><code>## [1] &quot;person_id&quot; &quot;sex&quot;       &quot;age&quot;       &quot;weight&quot;    &quot;program&quot;   &quot;status&quot;</code></pre>
+<p>Lastly, variables should be recoded and reformatted into the appropriate format. These basic fixes help ensure the usability of the dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#re-code sex</span>
+  wide$sex[wide$sex ==<span class="st"> &quot;1&quot;</span>] &lt;-<span class="st"> &quot;male&quot;</span>
+  wide$sex[wide$sex ==<span class="st"> &quot;0&quot;</span>] &lt;-<span class="st"> &quot;female&quot;</span>
+
+<span class="co">#Character to numeric</span>
+  wide$age &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(wide$age)
+  wide$weight &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(wide$weight)
+  
+<span class="co">#Recode -9999 to NA</span>
+  wide$weight[wide$weight ==<span class="st"> </span>-<span class="dv">9999</span>] &lt;-<span class="st"> </span><span class="ot">NA</span></code></pre></div>
+<hr>
+</div>
+</div>
+<div id="univariate-data-analysis" class="section level2">
+<h2><span class="header-section-number">4.3</span> Univariate data analysis</h2>
+<p>The tools and techniques used to analyze can be distinguished into univariate (concerning one data series at a time) or multivariate (concerning two or more data series at a time). To start, we will focus on univariate techniques, starting with statistics, then moving into graphical methods.</p>
+<div id="statistics-for-continuous-variables" class="section level3">
+<h3><span class="header-section-number">4.3.1</span> Statistics for continuous variables</h3>
+<p>The shape and properties of a continous variables will vary greatly. These <em>moments</em>, or common attributes of data, should influence how an analyst will treat the data. Four continuous distributions are plotted below:</p>
+<ul>
+<li>The first graph looks similar to a box, indicating that there is an equal chance that a value can take on any value between 0 and 1.</li>
+<li>The second graph follows a bell curve ( also known as a ‘normal distribution’ or ‘Gaussian distribution’) with a central peak and symmetrical tails.</li>
+<li>The third graph peaks to the left with a longer tail to the right.</li>
+<li>The fourth graph peaks to the right with a longer tail to the left.</li>
+</ul>
+<p>While graphical techniques are useful, and are the topic of the next section in this chapter, sample statistics can concisely summarize the contents of data in a way that are insightful and comparable.</p>
+<div class="figure"><span id="fig:unnamed-chunk-189"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-189-1.png" alt="Histograms with distributions of varying shapes" width="672" />
+<p class="caption">
+Figure 4.2: Histograms with distributions of varying shapes
+</p>
+</div>
+<p>How can we quantitatively tell these variables apart? Sample statistics are particularly helpful with characterizing central tendency, spread, skewness and kurtosis.</p>
+<div id="central-tendency" class="section level4">
+<h4><span class="header-section-number">4.3.1.1</span> Central tendency</h4>
+<p>Data with any amount of signal typically tends towards a central value or location. This means that values will <em>peak</em> or <em>cluster</em> around a central point, but need not be symmetrically distributed around that central point. There are two common measures that are used to characterize central tendency: the mean and the median.</p>
+<p>The mean, also known as the <em>arithmetic mean</em> or <em>average</em>, is simply the sum of all values in <code>x</code> divided by the sample size <code>n</code>. Since the calculation takes into account <em>all</em> values in <code>x</code>, means are sensitive to outliers and extreme values. Often times, the mean is the main statistic used to describe what is typical of a sample or population as it is considered to be the <em>expected value</em>. For example:</p>
+<ul>
+<li>Average age of a cohort entering graduate school</li>
+<li>Average speed of vehicles traveling down a highway segment</li>
+<li>Average number of days to close a complaint</li>
+</ul>
+<p>The median or <em>P50</em> is also used as a method of indicate central tendency based on indexed position in a variable. It is computed as the 50th percentile value: sort all values from lowest to highest, then find the value at the <span class="math inline">\((\frac{n+1}{2})^{th}\)</span> position. Essentially, the median is denotes the position at which 50% of values are above and below. Medians are robust to outliers, meaning that the change in the magnitude of values above or below the 50th percentile point may change, but the median may stay the same.</p>
+<table>
+<colgroup>
+<col width="13%" />
+<col width="15%" />
+<col width="19%" />
+<col width="19%" />
+<col width="13%" />
+<col width="18%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Formula</th>
+<th>Definition</th>
+<th>When to use</th>
+<th>R Function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Mean or Average</td>
+<td><span class="math display">\[ \mu = \frac{1}{n} \sum_{i=1}^{n} x_i\]</span></td>
+<td>A measure of central tendency formulated as the sum of all values. Also known as the ‘expected value’.</td>
+<td>The general de facto choice</td>
+<td>mean()</td>
+<td>mean(c(1,3,5,7,9)) = 5</td>
+</tr>
+<tr class="even">
+<td>Median</td>
+<td>Value at <span class="math display">\[(\frac{n+1}{2})^{th} \]</span> position</td>
+<td>A measure of central tendency based on the ‘middle value’ or 50th percentile of a random variable.</td>
+<td>When data appears to be skewed or asymmetrical</td>
+<td>median()</td>
+<td>median(c(1,3,5,7,9)) = 5</td>
+</tr>
+</tbody>
+</table>
+<p>Typically, it’s helpful to consider and compare both median and mean values as they provide context. Revisiting the four distributions, we can compare the means and medians. In graphs 1 and 2, the distributions are symmetrical, thus one would expect the mean to be approximately equal to the mean. In graph 3, the longer tail to the right pulls the mean above the median, whereas in graph 4, the left tail pulls the mean below the median.</p>
+<div class="figure"><span id="fig:unnamed-chunk-190"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-190-1.png" alt="Histograms with distributions of varying shapes" width="672" />
+<p class="caption">
+Figure 4.3: Histograms with distributions of varying shapes
+</p>
+</div>
+</div>
+<div id="spread" class="section level4">
+<h4><span class="header-section-number">4.3.1.2</span> Spread</h4>
+<p>Just as important as central tendency is the spread or dispersion, or measures that gauge the variability of data relative to a central point. There are a number of measures that commonly are focused upon, such as variance and the interquartile range, and all help piece together a comprehensive understanding of a given data series.</p>
+<p>Perhaps the simplest measures are those that are based on positions of records. The <em>minimum</em> and <em>maximum</em> are the smallest and largest values of a continuous variable. The minimum and maximum are also known as the <em>P0</em> and <em>P100</em>. The arithmetic difference between those values is the <em>range</em>. Similar to the range is the <em>Interquartile Range</em> or <em>IQR</em>, which is the arithmetic difference in values between the <em>P75</em> and <em>P25</em>. Examining the IQR gives a sense of the density of the center mass of a distribution, or the middle 50%. Together, these basic measures can contextualize the shape and density of a variable, especially comparing between subpopulations. For example, the income range of group A is $100,000 and group B is $2,000,000, indicating that the top and bottom of group A are closely distributed whereas there are large outliers in group B.</p>
+<p>In addition, the <em>variance</em> of a data series contains key information about variability around the mean. Variance is defined as the <em>average squared difference between each value of a series and its mean</em>. The differences are squared in order to (1) preserve the information as simply adding the differences would net to zero, (2) emphasize differences from the mean. While the variance is a key part of statistics, it’s not particularly interpretable without some additional transformations. The <em>standard deviation</em> is the square-root of the variance, which has the same units as the original data and can be used to contextualize dispersion of data relative to the mean. In fact, standard deviations are used as a unit of analysis. Under a normal distribution using the mean as a point of reference, +/- 1.96 standard deviations should contain 95% of records and +/- 3 standard deviations should contain 99.7% of records. These benchmarks are commonly used to identify outliers.</p>
+<table style="width:94%;">
+<colgroup>
+<col width="13%" />
+<col width="16%" />
+<col width="30%" />
+<col width="13%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Formula</th>
+<th>Definition</th>
+<th>R Function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Minimum</td>
+<td><span class="math inline">\(\operatorname{argmin}(x_i)\)</span></td>
+<td>The smallest value of a random variable.</td>
+<td>min()</td>
+<td>min(c(1,3,5,7,9))</td>
+</tr>
+<tr class="even">
+<td>Maximum</td>
+<td><span class="math inline">\(\operatorname{argmax}(x_i)\)</span></td>
+<td>The largest value of a random variable.</td>
+<td>max()</td>
+<td>max(c(1,3,5,7,9))</td>
+</tr>
+<tr class="odd">
+<td>Range</td>
+<td><span class="math inline">\(\operatorname{argmax}(x_i) - \operatorname{argmin}(x_i)\)</span></td>
+<td>Difference of its largest and smallest data values</td>
+<td>range()</td>
+<td>range(c(1,3,5,7,9))</td>
+</tr>
+<tr class="even">
+<td>IQR</td>
+<td>P75 - P50</td>
+<td>Difference of the 75th percentile and 25th percentile value</td>
+<td>IQR()</td>
+<td>IQR(c(1,3,5,7,9))</td>
+</tr>
+<tr class="odd">
+<td>Variance</td>
+<td><span class="math inline">\(s^2 = \frac{1}{n} \sum_{i=1}^{n} (x_i-\mu)^2\)</span></td>
+<td>A measure of dispersion around the mean.</td>
+<td>var()</td>
+<td>var(c(1,3,5,7,9))</td>
+</tr>
+<tr class="even">
+<td>Standard Deviation</td>
+<td><span class="math inline">\(s = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (x_i-\mu)^2}\)</span></td>
+<td>The square root of the variance.</td>
+<td>sd()</td>
+<td>sd(c(1,3,5,7,9))</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="skewness-kurtosis" class="section level4">
+<h4><span class="header-section-number">4.3.1.3</span> Skewness + Kurtosis</h4>
+<table style="width:94%;">
+<colgroup>
+<col width="13%" />
+<col width="16%" />
+<col width="30%" />
+<col width="13%" />
+<col width="19%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Measure</th>
+<th>Formula</th>
+<th>Definition</th>
+<th>R Function</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Skewness</td>
+<td><span class="math inline">\(\mu = \frac{1}{n} \sum_{i=1}^{n} x_i\)</span></td>
+<td>Measure of symmetry</td>
+<td>library(e1071)<br> kurtosis()</td>
+<td><code>example</code></td>
+</tr>
+<tr class="even">
+<td>Kurosis</td>
+<td><span class="math inline">\(\mu = \frac{1}{n} \sum_{i=1}^{n} x_i\)</span></td>
+<td>Measure of peakedness relative to Gaussian distribution</td>
+<td>library(e1071)<br> skewness()</td>
+<td><code>example</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="graphical-approaches" class="section level3">
+<h3><span class="header-section-number">4.3.2</span> Graphical Approaches</h3>
+<p>While sample statistics help to determine expected values and overall trends of continuous variables, graphical and visual approaches help to identify unexpected values – where are there outliers and unusual quirks of the data.</p>
+<div id="histograms-and-kernel-density-graphs" class="section level5">
+<h5><span class="header-section-number">4.3.2.0.1</span> Histograms and kernel density graphs</h5>
+<p>The most commonly used graph to visualize univariate data is the histogram. Essentially, histograms will break a continuous variable into equal sized <em>bins</em> based on the range of values, then graph the number of observations in each bin. This practice of <em>binning</em> or <em>discretizing</em> add a second dimension to a continuous variable that is needed to visualize patterns. Typically the number of bins is determined automatically when using functions such as <code>hist()</code>.</p>
+<p>While normal distributions are the best known probability distribution, a pure normal distribution is fairly rare in the wild. In social data, it’s more common to see long tails as seen below. Thus, data is often times <em>transformed</em> using mathematical functions in order to reshape the distribution of values. For data with large peaks to the left and long tails, common transformations include the natural logarithm (<code>log()</code>), logarithm base 2 (<code>log2()</code>) or logarithm base 10 (<code>log10()</code>). In the graph below, we use the <code>log10()</code> transformation to <em>stretch</em> the data to the right so that it is more normally or symmetrically distributed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Set up format</span>
+  <span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))
+
+<span class="co">#Basic histogram</span>
+  <span class="kw">hist</span>(df$WAGP, <span class="dt">main =</span> <span class="st">&quot;Wages&quot;</span>)
+  <span class="kw">hist</span>(<span class="kw">log10</span>(df$WAGP), <span class="dt">main =</span> <span class="st">&quot;log10(Wage)&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-192"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-192-1.png" alt="Two histograms - wages and log(wages)" width="672" />
+<p class="caption">
+Figure 4.4: Two histograms - wages and log(wages)
+</p>
+</div>
+<p>The <code>hist()</code> function provides rudimentary stylings for histograms. For more advanced stylings, the <code>ggplot2</code> library offers more convenient and easier to use stylistic options. In the example below, the log10 transformation is applied using <code>scale_x_log10()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(WAGP))  +<span class="st"> </span>
+<span class="st">      </span><span class="kw">ggtitle</span>(<span class="st">&quot;Histogram&quot;</span>) +<span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log10(Wage)&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">scale_x_log10</span>()</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-193"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-193-1.png" alt="Histogram of Log(Wage)" width="672" />
+<p class="caption">
+Figure 4.5: Histogram of Log(Wage)
+</p>
+</div>
+<p>An alternative to histograms is the <em>kernel density plot</em>, which applies a technique known as <em>kernel-density estimation</em> as opposed to binning. Using ggplot2, we can apply the <code>geom_density()</code> argument to use the kernel density plot. The plot is notably smoother and organic when compared to histograms.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#K-density</span>
+  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(WAGP))  +<span class="st"> </span>
+<span class="st">      </span><span class="kw">ggtitle</span>(<span class="st">&quot;Kernel Density&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_density</span>(<span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log10(Wage)&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">scale_x_log10</span>()</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-194"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-194-1.png" alt="Kernel Density Plot" width="672" />
+<p class="caption">
+Figure 4.6: Kernel Density Plot
+</p>
+</div>
+<p>Both histograms and kernel density graphs are helpful for developing a notional understanding of the shape of data. Due to binning, the individual bins of a histograms correspond to an actual number of observations whereas kernel densities can be used to illustrate the organic shape of the distribution. However, neither provide quantitative benchmarks such as the mean or quantiles.</p>
+</div>
+</div>
+</div>
+<div id="multivariate-data" class="section level2">
+<h2><span class="header-section-number">4.4</span> Multivariate Data</h2>
+<p>Much of data analysis focuses on the possibilities of combining two or more data series in order to uncover relationships and patterns as well as inform modeling hypotheses. In this section, we will focus on using correlation statistics and bivariate graphs to identify patterns.</p>
+<div id="correlation-of-continuous-variables" class="section level4">
+<h4><span class="header-section-number">4.4.0.1</span> Correlation of continuous variables</h4>
+<p>In everyday rhetoric, the term <em>correlation</em> is relatively loosely used. In statistics, it commonly has a specific definition, specifically, the <em>Pearson Product-Moment Correlation Coefficient</em> or <em>Correlation Coefficient</em> for short – a measure of relatedness. It is defined as:</p>
+<p><span class="math display">\[\rho(X,Y) = \frac{cov(X,Y)}{\sigma{_X}\sigma{_Y}} \]</span></p>
+<p>where <span class="math inline">\(\rho\)</span> denotes the correlation coefficient, <em>cov</em> is the covariance of two variables (X and Y) as defined as <span class="math inline">\((X - \mu_X)(Y - \mu_Y)\)</span>, and <span class="math inline">\(\sigma\)</span> is the standard deviation of each X and Y. The correlation coefficient is bound between -1 and 1, where:</p>
+<ul>
+<li>-1 indicates perfectly negative linear relationship (as X increases, Y decreases proportionally)</li>
+<li>0 indicates no relationship (X and Y are not related)</li>
+<li>+1 indicates perfectly positive linear relationship (as X increases, Y increases proportionally)</li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-195"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-195-1.png" alt="Varying Degrees of Correlation" width="672" />
+<p class="caption">
+Figure 4.7: Varying Degrees of Correlation
+</p>
+</div>
+<p>In practice, it’s fairly simply to calculate and explore relationships by using <code>cor()</code>. For example, what if we were to compare age (AGEP) with retirement income (RETP). Notice that we use the <code>complete.obs</code> option to use only records that have values for both <code>AGEP</code> and <code>RETP</code>. The correlation coefficient is +0.226 indicating only a slight correlation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">cor</span>(df$AGEP, df$RETP, <span class="dt">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</code></pre></div>
+<pre><code>## [1] 0.2262218</code></pre>
+<p>How do we examine a much broader set of variables such as WAGP - wage income, PERNP - personal income, RETP - retirement income, SSIP - supplemental security income, PAP - public assistance income, SEMP - self-employment income, and OIP - all other income. The <code>cor()</code> function can accept a dataframe or matrix of continuous variables and outputs a <code>k x k</code> matrix of pairwise correlation coefficients. The diagonal will always be filled with <code>1</code> as a correlation of a variable with itself will be the highest possible value. Values above the diagonal are identical to values below.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">select &lt;-<span class="st"> </span>df[, <span class="kw">c</span>(<span class="st">&quot;AGEP&quot;</span>, <span class="st">&quot;WAGP&quot;</span>, <span class="st">&quot;PERNP&quot;</span>, <span class="st">&quot;SEMP&quot;</span>)]
+<span class="kw">cor</span>(select, <span class="dt">use =</span> <span class="st">&quot;complete.obs&quot;</span>)</code></pre></div>
+<pre><code>##              AGEP        WAGP       PERNP       SEMP
+## AGEP   1.00000000 -0.11366644 -0.09416775 0.02141612
+## WAGP  -0.11366644  1.00000000  0.91511883 0.02645639
+## PERNP -0.09416775  0.91511883  1.00000000 0.42725385
+## SEMP   0.02141612  0.02645639  0.42725385 1.00000000</code></pre>
+<p>The correlation matrix may be a bit overwhelming to decipher. We may use the <code>corrplot</code> package to visualize the size of correlations. In this case, we can see that the strongest correlations are PERNP, WAGP, and SEMP.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(corrplot)
+M &lt;-<span class="st"> </span><span class="kw">cor</span>(select, <span class="dt">use =</span> <span class="st">&quot;complete.obs&quot;</span>)
+<span class="kw">corrplot</span>(M, <span class="dt">method =</span> <span class="st">&quot;ellipse&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-198"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-198-1.png" alt="Correlation plot" width="672" />
+<p class="caption">
+Figure 4.8: Correlation plot
+</p>
+</div>
+</div>
+<div id="bivariate-plots-continuous-vs-continuous" class="section level4">
+<h4><span class="header-section-number">4.4.0.2</span> Bivariate plots: continuous vs continuous</h4>
+<p>The simplest bivariate graph is the scatter plot, which graphs points placing one variable on the horizontal axis and another on the vertical axis. The intersection of the values fall on a two-dimensional canvas, exposing relationships between variables. Below, a simple scatter plot shows the non-linear relationship between log-transformed personal income and age, suggesting that wages may reach a ceiling as one gets older.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">plot</span>(df$AGEP, <span class="kw">log10</span>(df$PERNP), <span class="dt">cex =</span> <span class="fl">0.5</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-199"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-199-1.png" alt="Scatter plot of age and log(personal income)" width="672" />
+<p class="caption">
+Figure 4.9: Scatter plot of age and log(personal income)
+</p>
+</div>
+<p>In data science, often times, the amount of the data will push the limits of traditional graphs and require more stylized ways to derive empirical insight:</p>
+<ul>
+<li><p>Graph (a) plots a traditional scatter plot with much of the plot saturated with points. This is generally good when strong linear trends are present or with relatively few data points.</p></li>
+<li><p>Graph (b) is another scatter plot with an adjusted <code>alpha</code>, also known as opacity. In graphs, changing the opacity in a graph without any overlapping points makes the entire image look faint. In cases where points overlap, the opacity values add up, thereby darkening areas with overlapping points. This style is particularly useful when there is a high volume of points.</p></li>
+<li><p>Graph (c) is a scatter plot, but uses a <em>locally weighted smoother</em> to show the direction of local relationships and the variability around the trend line. This style can be used to find candidate transformations and non-linear specifications for the modeling phase.</p></li>
+<li><p>Graph (d) is a hexbin plot, which converts a graphical canvas into equal hexagonal bins, counts the number of values in each discrete bin and color codes based on the counts. This style is particularly useful when there is a high volume of points.</p></li>
+<li><p>Graph (e) is a contour graph that bins the graph into distinct regions where concentric regions towards the middle are larger values. This is useful for geographic or spatial data, particulary for terrain data.</p></li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Base data for plot</span>
+p =<span class="st"> </span><span class="kw">ggplot</span>(df,<span class="kw">aes</span>(<span class="dt">x=</span>AGEP,<span class="dt">y=</span><span class="kw">log10</span>(PERNP)))  +
+<span class="st">      </span><span class="kw">xlab</span>(<span class="st">&quot;Age&quot;</span>) +
+<span class="st">      </span><span class="kw">ylab</span>(<span class="st">&quot;log(earnings)&quot;</span>) 
+
+##Scatter plot
+p1 =<span class="st"> </span>p +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">size =</span> <span class="fl">0.2</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">ggtitle</span>(<span class="st">&quot;(a) traditional scatter&quot;</span>)
+
+##Scatter plot with transparency
+p2 =<span class="st"> </span>p +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">colour=</span><span class="st">&quot;navy&quot;</span>, <span class="dt">size =</span> <span class="fl">0.2</span>) +
+<span class="st">      </span><span class="kw">theme_bw</span>() +<span class="st"> </span>
+<span class="st">      </span><span class="kw">ggtitle</span>(<span class="st">&quot;(b) scatter (alpha = 0.1)&quot;</span>)
+
+<span class="co">#Scatter plot with regression line (locally weighted smoother)</span>
+p3 =<span class="st"> </span>p +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;(c) scatter + regression line&quot;</span>)+
+<span class="st">      </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>, <span class="dt">colour=</span><span class="st">&quot;navy&quot;</span>,<span class="dt">size =</span> <span class="dv">1</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_smooth</span>() +<span class="st"> </span><span class="kw">xlab</span>(<span class="st">&quot;Age&quot;</span>) +<span class="st"> </span><span class="kw">ylab</span>(<span class="st">&quot;log(earnings)&quot;</span>)
+
+##Hexbin 
+p4 =<span class="st"> </span>p +<span class="st"> </span><span class="kw">stat_bin_hex</span>(<span class="dt">colour =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">na.rm =</span> <span class="ot">TRUE</span>, <span class="dt">alpha =</span> <span class="fl">0.9</span>) +
+<span class="st">      </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">colours=</span><span class="kw">c</span>(<span class="st">&quot;lightgrey&quot;</span>,<span class="st">&quot;navy&quot;</span>), <span class="dt">name =</span> <span class="st">&quot;Frequency&quot;</span>) +<span class="st"> </span>
+<span class="st">      </span><span class="kw">guides</span>(<span class="dt">fill=</span><span class="ot">FALSE</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;(d) hex-bin plot&quot;</span>)
+
+<span class="co">#Contour graph</span>
+p5  =<span class="st"> </span>p +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;(e) contour&quot;</span>)+<span class="st"> </span>
+<span class="st">      </span><span class="kw">geom_density2d</span>() +<span class="st"> </span>
+<span class="st">      </span><span class="kw">theme_bw</span>()
+
+
+
+<span class="co">#Arrange graphs</span>
+<span class="kw">grid.arrange</span>(p1, p2, p3, p4, p5, <span class="dt">ncol =</span> <span class="dv">3</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-200"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-200-1.png" alt="Comparison of Five Bivariate Plots" width="672" />
+<p class="caption">
+Figure 4.10: Comparison of Five Bivariate Plots
+</p>
+</div>
+<div id="comparing-subpopulations" class="section level5">
+<h5><span class="header-section-number">4.4.0.2.1</span> Comparing subpopulations</h5>
+<p>A common task in EDA is the search for <em>separability</em> – when data cluster in such a way that can help distinguish one group from another. This helps with identifying qualities that distinguish one subpopulation from another and factors that may be included in a modeling strategy. Side-by-side graphical comparisons, such as violin and boxplots, and graph overlays are powerful tools in showing differences.</p>
+<p>To illustrate this, let’s create a variable for whether a respondent holds a bachelor’s degree. These two levels can be used to stratify a dataset into subpopulations for comparison.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df$college &lt;-<span class="st"> </span><span class="ot">NA</span>
+df$college[df$SCHL &lt;<span class="st"> </span><span class="dv">21</span>] &lt;-<span class="st"> &quot;Less than bachelor&#39;s&quot;</span>
+df$college[df$SCHL &gt;=<span class="st"> </span><span class="dv">21</span>] &lt;-<span class="st"> &quot;With bachelor&#39;s&quot;</span></code></pre></div>
+<p>The natural shape of kernel density plots lend themselves to easier comparison. As seen below, we two kernel density plots are overlaid. Using the <code>fill</code> and <code>colour</code> parameters, the kernel densities are color-coded for ease of inspection. Notice that distributions are differently distributed, with college graduates generally earning higher wages.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(WAGP, <span class="dt">fill =</span> <span class="kw">factor</span>(college), <span class="dt">colour =</span> <span class="kw">factor</span>(college))) +
+<span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.1</span>) +<span class="st"> </span><span class="kw">scale_x_log10</span>() +
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log10(Wage)&quot;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Kernel Overlay&quot;</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-202"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-202-1.png" alt="Kernel Densities by Education Attainment" width="672" />
+<p class="caption">
+Figure 4.11: Kernel Densities by Education Attainment
+</p>
+</div>
+<p>What if there are many subpopulations? If there are more than a couple of sub-groups, other side-by-side comparisons lend themselves for easier interpretation and reduce clutter.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df$SCHL2[df$SCHL &lt;<span class="st"> </span><span class="dv">16</span> ] &lt;-<span class="st"> &quot;1 - Less than HS&quot;</span>
+df$SCHL2[df$SCHL &gt;=<span class="st"> </span><span class="dv">16</span> &amp;<span class="st"> </span>df$SCHL &lt;<span class="st"> </span><span class="dv">21</span>] &lt;-<span class="st"> &quot;2 - HS&quot;</span>
+df$SCHL2[df$SCHL ==<span class="st"> </span><span class="dv">21</span>] &lt;-<span class="st"> &quot;3 - Undergrad. Degree&quot;</span>
+df$SCHL2[df$SCHL &gt;<span class="st"> </span><span class="dv">21</span>] &lt;-<span class="st"> &quot;4 - Grad. Degree&quot;</span>
+df$SCHL2[<span class="kw">is.na</span>(df$SCHL)] &lt;-<span class="st"> &quot;5 - N/A&quot;</span></code></pre></div>
+<p>Two data scientist favorites are the violin plot and the boxplot. The <em>violin plot</em> (left) is a kernel density graph rotated onto a vertical axis with the probability density plotted symmetrically across the vertical axis. <em>Boxplots</em> display the distribution of the data following key summary statistics, namely the median, 25th percentile/first quartile and the 75th percentile/third quartile. On the right, the median is denoted by the gray horizontal line in each blue box, and the upper and lower edges of the box are the 75th and 25th percentiles, respectively, also referred to as the shoulders of the distribution. Points to the top and the bottom are outliers, which are points located outside the body of the distribution (usually a distance of over 1.5-times the IQR above 75th percentile and below the 25th percentile). Both graphs are quite useful. The violin plot shows the shape of the distribution, whereas the boxplot allows for comparison of center mass.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Violin</span>
+vio &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="kw">factor</span>(SCHL2), WAGP))  +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_violin</span>(<span class="dt">colour =</span> <span class="st">&quot;navy&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>)   +<span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log10(Wage)&quot;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Violin Plot&quot;</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() +<span class="st"> </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>))
+
+<span class="co">#Boxplot</span>
+box &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="kw">factor</span>(SCHL2), WAGP)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">colour =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>)   +<span class="st"> </span>
+<span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log10(Wage)&quot;</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Box Plot&quot;</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">scale_y_log10</span>() +<span class="st"> </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>))
+
+<span class="co">#Plot side by side</span>
+<span class="kw">grid.arrange</span>(vio, box, <span class="dt">ncol =</span> <span class="dv">1</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-204"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-204-1.png" alt="Comparison of Violin Plot and Box Plot for log(Wage)" width="672" />
+<p class="caption">
+Figure 4.12: Comparison of Violin Plot and Box Plot for log(Wage)
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="diy-2" class="section level2">
+<h2><span class="header-section-number">4.5</span> DIY</h2>
+
+<div id="whats-a-common-exploratory-data-analysis-workflow" class="section level3">
+<h3><span class="header-section-number">4.5.1</span> What’s a common exploratory data analysis workflow?</h3>
+<p>To put EDA into context, we will rely upon the American Community Survey (<a href="http://www.census.gov/programs-surveys/acs/">ACS</a>), which is one of the most relied upon public data sources in the United States. A survey that is produced by the U.S. Census Bureau, the ACS provides a highly detailed socioeconomic snapshot of households and communities, allowing for data-driven insight to inform public policy as well as business decisions. The data dictionary containing variable definitions and descriptions can be found <a href="http://www2.census.gov/programs-surveys/acs/tech_docs/pums/data_dict/PUMSDataDict15.txt">here</a>.</p>
+<p>Note: While each record is associated with a sampling weight, meaning that one record represents more than one record. For simplicity, we will treat each record with equal weight. We will also only focus on one state in this exercise – in this case, we have selected Iowa. The same analysis can be easily replicated for other states if not the entire United States.</p>
+<p><strong>Get data</strong></p>
+<p>To start, we will need to retrieve data from the Census website: <a href="https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pia.zip" class="uri">https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pia.zip</a>.</p>
+<p>First, we create a temporary file using <code>tempfile()</code>, which will be used to hold a the zipfile. Then, we will need to use the <code>download.file()</code> method, specifying the <code>mode = &quot;wb&quot;</code> to ensure the file downloads the binary values – a simple trick to get around security problems associated with “https”. We download the zipfile to the <code>temp</code> file location.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Set link</span>
+url &lt;-<span class="st"> &quot;https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pia.zip&quot;</span>
+
+<span class="co">#Create a temporary directory</span>
+temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
+
+<span class="co">#Download file from url, save to temporary directory</span>
+<span class="kw">download.file</span>(url, temp, <span class="dt">mode =</span> <span class="st">&quot;wb&quot;</span>)
+
+<span class="co">#Unzip file and read in as csv</span>
+unz &lt;-<span class="st"> </span><span class="kw">unzip</span>(temp, <span class="dt">exdir =</span> <span class="kw">getwd</span>())
+df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(unz[<span class="dv">1</span>])</code></pre></div>
+
+<p>Now that the data has been downloaded, we will need to unzip the file using <code>unzip()</code>, and place it in our current working drive <code>getwd()</code>. As the dataset is a .csv, we can use the <code>read.csv()</code> method to import the data.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  unz &lt;-<span class="st"> </span><span class="kw">unzip</span>(temp, <span class="dt">exdir=</span><span class="kw">getwd</span>())
+  acs &lt;-<span class="st"> </span><span class="kw">read.csv</span>(unz[<span class="dv">1</span>])</code></pre></div>
+<p><strong>Examine data structure</strong></p>
+<p>Now, let’s take a look at the structure of the first 5 variables using the `<code>str()</code> method. “PUMA” and “ST” are codes for Public Use Microdata Areas and States, both of which are geographic units, yet the data represents them as integers. These variables as well as CIT (citizenship), SEX (sex) and a few others are also coded as integers although they represent factors. We will need to clean these up before using them for visual analysis.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">str</span>(acs[,<span class="dv">1</span>:<span class="dv">5</span>])</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    31900 obs. of  5 variables:
+##  $ RT      : Factor w/ 1 level &quot;P&quot;: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ SERIALNO: int  141 215 215 215 227 262 312 312 327 327 ...
+##  $ SPORDER : int  1 1 2 3 1 1 1 2 1 2 ...
+##  $ PUMA    : int  1800 1500 1500 1500 200 1400 100 100 2100 2100 ...
+##  $ ST      : int  19 19 19 19 19 19 19 19 19 19 ...</code></pre>
+<p><strong>Cut down data</strong></p>
+<p>To make the analysis a bit more manageable, we will extract 14 demographic variables, limit the analysis to ages 16 and above.</p>
+
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  var_list &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;HICOV&quot;</span>,<span class="st">&quot;RAC1P&quot;</span>,<span class="st">&quot;MAR&quot;</span>,<span class="st">&quot;SEX&quot;</span>,<span class="st">&quot;ESR&quot;</span>,<span class="st">&quot;CIT&quot;</span>,<span class="st">&quot;AGEP&quot;</span>,<span class="st">&quot;PINCP&quot;</span>,<span class="st">&quot;POVPIP&quot;</span>,<span class="st">&quot;WKHP&quot;</span>,<span class="st">&quot;SCHL&quot;</span>)
+  df &lt;-<span class="st"> </span>acs[acs$AGEP &gt;=<span class="st"> </span><span class="dv">16</span>, var_list]
+
+  <span class="co">#Healthcare coverage (target variable): </span>
+  <span class="co">#Create one binary variable for calculations</span>
+  df$coverage[df$HICOV ==<span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">0</span>
+  df$coverage[df$HICOV ==<span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> </span><span class="dv">1</span>
+    
+  <span class="co">#another with characters</span>
+  df$hicov2[df$HICOV ==<span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> &quot;With Healthcare&quot;</span>
+  df$hicov2[df$HICOV ==<span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> &quot;Without Healthcare&quot;</span>
+
+  <span class="co">#Gender</span>
+  df$sex2[df$SEX ==<span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> &quot;Male&quot;</span>
+  df$sex2[df$SEX ==<span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> &quot;Female&quot;</span>
+
+  <span class="co">#Race</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> &quot;White alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> &quot;Black or African Amer. alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> &quot;Amer. Indian alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">4</span>] &lt;-<span class="st"> &quot;Alaska Native alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">5</span>] &lt;-<span class="st"> &quot;Amer. Indian + Alaska Nat. tribes&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">6</span>] &lt;-<span class="st"> &quot;Asian alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">7</span>] &lt;-<span class="st"> &quot;Nat. Hawaiian + Other Pac. Isl.&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">8</span>] &lt;-<span class="st"> &quot;Some other race alone&quot;</span>
+  df$race2[df$RAC1P ==<span class="st"> </span><span class="dv">9</span>] &lt;-<span class="st"> &quot;Two or more&quot;</span>
+  
+  <span class="co">#Marital Status</span>
+  df$mar2[df$MAR ==<span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> &quot;Married&quot;</span>
+  df$mar2[df$MAR ==<span class="st"> </span><span class="dv">2</span>] &lt;-<span class="st"> &quot;Widowed&quot;</span>
+  df$mar2[df$MAR ==<span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> &quot;Divorced&quot;</span>
+  df$mar2[df$MAR ==<span class="st"> </span><span class="dv">4</span>] &lt;-<span class="st"> &quot;Separated&quot;</span>
+  df$mar2[df$MAR ==<span class="st"> </span><span class="dv">5</span>] &lt;-<span class="st"> &quot;Never Married&quot;</span>
+  
+  <span class="co">#Employment Status</span>
+  df$esr2[df$ESR %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">5</span>)] &lt;-<span class="st"> &quot;Employed&quot;</span>
+  df$esr2[df$ESR ==<span class="st"> </span><span class="dv">3</span>] &lt;-<span class="st"> &quot;Unemployed&quot;</span>
+  df$esr2[df$ESR ==<span class="st"> </span><span class="dv">6</span>] &lt;-<span class="st"> &quot;Not in labor force&quot;</span>
+
+  <span class="co">#Citizenship</span>
+  df$cit2[df$CIT %in%<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)] &lt;-<span class="st"> &quot;Citizen&quot;</span>
+  df$cit2[df$CIT ==<span class="st"> </span><span class="dv">5</span>] &lt;-<span class="st"> &quot;Not citizen&quot;</span>
+  
+  <span class="co">#School</span>
+  df$schl2[df$SCHL&lt;<span class="dv">16</span> ] &lt;-<span class="st"> &quot;Less than HS&quot;</span>
+  df$schl2[df$SCHL&gt;=<span class="dv">16</span> &amp;<span class="st"> </span>df$SCHL&lt;<span class="dv">21</span>] &lt;-<span class="st"> &quot;HS Degree&quot;</span>
+  df$schl2[df$SCHL==<span class="dv">21</span>] &lt;-<span class="st"> &quot;Undergrad. Degree&quot;</span>
+  df$schl2[df$SCHL&gt;<span class="dv">21</span>] &lt;-<span class="st"> &quot;Grad. Degree&quot;</span></code></pre></div>
+
+<p><strong>Making sense of discrete variables</strong></p>
+<p>With the data in place, we now can run a few basic cross-tabulations. We’ll compare education attainment against healthcare coverage using the <code>table()</code> function to produce a tabulation by combination of levels. Then, use that table to feed into the <code>prop.table()</code> method, specifying <span class="math inline">\(1\)</span> to indicate that we would like to see numbers presented as proportions of each row. We then will use the <code>chisq.test()</code> method to determine if people who have health care have statistically different levels of educational attainment.</p>
+<p>In the proportions table, we can see that 9.2% of people with less than a HS degree are without healthcare, which is notably more than the others.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##Comparison of education attainment vs. healthcare coverage 
+  tab &lt;-<span class="st"> </span><span class="kw">table</span>(df$schl2, df$hicov2)
+
+<span class="co">#Get proportions by row</span>
+  <span class="kw">prop.table</span>(tab, <span class="dv">1</span>)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-210">Table 4.1: </span>Percent with healthcare by education attainment</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">With Healthcare</th>
+<th align="right">Without Healthcare</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Grad. Degree</td>
+<td align="right">0.988</td>
+<td align="right">0.012</td>
+</tr>
+<tr class="even">
+<td>HS Degree</td>
+<td align="right">0.954</td>
+<td align="right">0.046</td>
+</tr>
+<tr class="odd">
+<td>Less than HS</td>
+<td align="right">0.908</td>
+<td align="right">0.092</td>
+</tr>
+<tr class="even">
+<td>Undergrad. Degree</td>
+<td align="right">0.978</td>
+<td align="right">0.022</td>
+</tr>
+</tbody>
+</table>
+<p>We also can see from the chi-squared test, used to determine if there is a significant difference between observed and expected frequencies in one or more categories. In this case, we’re comparing if the distribution of education attainment are proportional among those who have and do not have healthcare coverage. Based on the test statistic, we see that the p-value is less than 0.01, allowing us to conclude that education attainment is different among those who have and do not have healthcare coverage.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">chisq.test</span>(tab)</code></pre></div>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 229.61, df = 3, p-value &lt; 2.2e-16</code></pre>
+<p>Using this basic process, we can easily loop through all the categorical variables in our abridged dataset.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Set the variables</span>
+master &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">var =</span> <span class="kw">c</span>(<span class="st">&quot;esr2&quot;</span>, <span class="st">&quot;mar2&quot;</span>, <span class="st">&quot;race2&quot;</span>, <span class="st">&quot;sex2&quot;</span>, <span class="st">&quot;schl2&quot;</span>, <span class="st">&quot;cit2&quot;</span>),
+                       <span class="dt">descrip =</span> <span class="kw">c</span>(<span class="st">&quot;Employment&quot;</span>, <span class="st">&quot;Marital Status&quot;</span>, 
+                                   <span class="st">&quot;Race&quot;</span>, <span class="st">&quot;Sex&quot;</span>, <span class="st">&quot;Education&quot;</span>, <span class="st">&quot;Citizenship&quot;</span>))
+master[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">as.character</span>(master[,<span class="dv">1</span>])
+master[,<span class="dv">2</span>] &lt;-<span class="st"> </span><span class="kw">as.character</span>(master[,<span class="dv">2</span>])
+
+<span class="co">#Loop through each variable and print result</span>
+for(i in <span class="dv">1</span>:<span class="kw">nrow</span>(master)){
+  <span class="kw">print</span>(master[i, <span class="dv">2</span>])
+  tab &lt;-<span class="st"> </span><span class="kw">table</span>(df[, master[i, <span class="dv">1</span>]], df$hicov2)
+  <span class="kw">print</span>(<span class="kw">prop.table</span>(tab, <span class="dv">1</span>))
+  <span class="kw">print</span>(<span class="kw">chisq.test</span>(tab))
+}</code></pre></div>
+<pre><code>## [1] &quot;Employment&quot;
+##                     
+##                      With Healthcare Without Healthcare
+##   Employed                0.95632330         0.04367670
+##   Not in labor force      0.95899153         0.04100847
+##   Unemployed              0.83806344         0.16193656
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 192.94, df = 2, p-value &lt; 2.2e-16
+## 
+## [1] &quot;Marital Status&quot;
+##                
+##                 With Healthcare Without Healthcare
+##   Divorced           0.92605887         0.07394113
+##   Married            0.97285345         0.02714655
+##   Never Married      0.91821862         0.08178138
+##   Separated          0.82375479         0.17624521
+##   Widowed            0.98907104         0.01092896
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 511.98, df = 4, p-value &lt; 2.2e-16
+## 
+## [1] &quot;Race&quot;
+##                                    
+##                                     With Healthcare Without Healthcare
+##   Amer. Indian + Alaska Nat. tribes      0.82352941         0.17647059
+##   Amer. Indian alone                     0.75308642         0.24691358
+##   Asian alone                            0.90291262         0.09708738
+##   Black or African Amer. alone           0.88560158         0.11439842
+##   Nat. Hawaiian + Other Pac. Isl.        0.66666667         0.33333333
+##   Some other race alone                  0.79310345         0.20689655
+##   Two or more                            0.92549020         0.07450980
+##   White alone                            0.95898771         0.04101229
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 300.79, df = 7, p-value &lt; 2.2e-16
+## 
+## [1] &quot;Sex&quot;
+##         
+##          With Healthcare Without Healthcare
+##   Female      0.96413470         0.03586530
+##   Male        0.94459768         0.05540232
+## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  tab
+## X-squared = 56.594, df = 1, p-value = 5.357e-14
+## 
+## [1] &quot;Education&quot;
+##                    
+##                     With Healthcare Without Healthcare
+##   Grad. Degree           0.98825602         0.01174398
+##   HS Degree              0.95367693         0.04632307
+##   Less than HS           0.90847578         0.09152422
+##   Undergrad. Degree      0.97780713         0.02219287
+## 
+##  Pearson&#39;s Chi-squared test
+## 
+## data:  tab
+## X-squared = 229.61, df = 3, p-value &lt; 2.2e-16
+## 
+## [1] &quot;Citizenship&quot;
+##              
+##               With Healthcare Without Healthcare
+##   Citizen          0.95791252         0.04208748
+##   Not citizen      0.77983539         0.22016461
+## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  tab
+## X-squared = 344.67, df = 1, p-value &lt; 2.2e-16</code></pre>
+<p><strong>Making sense of continuous variables</strong> Continuous variables offer a lot more opportunity to visualize patterns. Typically, two general types of graphs are common: univariate distribution graphs and bivariate graphs.</p>
+<p><strong><em>Univariate graphs</em></strong> Two univariate graphs are typically used: (1) histograms, and (2 kernel density diagrams.</p>
+<p>Histograms are a way to depict the distribution of continuous variables. For values between the minimum and maximum value of a variable, the data is partitioned into equal intervals or “bins”. For each equal interval, a count is taken of the number of records in each bin. Using the <code>AGEP</code> variable (age), we can plot a histogram using ggplot2.</p>
+<p>In <code>ggplot2</code>, we use the <code>ggplot()</code> method to specify the data frame and variables that will be used to create graphs, then add various <code>geom</code> arguments to specify the type of graph. For a histogram, we specify the dataset <code>df</code> and the <span class="math inline">\(x\)</span> variable <code>aes(x = AGEP)</code>, then tag on <code>+geom_histogram()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(ggplot2)
+  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP)) +<span class="st"> </span><span class="kw">geom_histogram</span>() </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-213"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-213-1.png" alt="Histogram of Age" width="672" />
+<p class="caption">
+Figure 4.13: Histogram of Age
+</p>
+</div>
+<p><code>AGEP</code> can be replaced with <code>PINCP</code>(personal income). Notice that the distribution occupies only a small part of the graph.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> PINCP)) +<span class="st"> </span><span class="kw">geom_histogram</span>() </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-214"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-214-1.png" alt="Histogram of Personal Income" width="672" />
+<p class="caption">
+Figure 4.14: Histogram of Personal Income
+</p>
+</div>
+<p>This can be adjusted by adding the <code>+ scale_x_log10()</code> argument in order to transform the <span class="math inline">\(x\)</span> variable using a <span class="math inline">\(log_{10}\)</span> transformation. Within the <code>geom_histogram()</code> arguement, we change the color of the histogram to “navy”, add a title using <code>ggtitle()</code> and adjust the size of the label text using <code>theme()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span>  PINCP)) +<span class="st"> </span><span class="kw">geom_histogram</span>(<span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>) +<span class="st"> </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-215"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-215-1.png" alt="Histogram of  log(Personal Income)" width="672" />
+<p class="caption">
+Figure 4.15: Histogram of log(Personal Income)
+</p>
+</div>
+<p>Another type of univariate graph is the kernel density graph. Whereas the histogram is boxy, the kernel density graph applies a rolling window approach to calculate the count of values at small but equally spaced intervals, weighing the count using a bandwidth – a threshold that determines how wide or narrow the rolling window should be.</p>
+<p><code>ggplot</code> provides facility to use a kernel density graph using the <code>+ geom_density()</code>. Kernel density diagrams provide a more organic representation of a distribution and can better illustrate small fluctuations at different magnitudes of the variable in question. This is useful for finding more discrete natural breaks in the data that can be used for classification. Furthermore, kernel densities are generally easier to compare when overlaying two more or more distributions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> PINCP)) +<span class="st"> </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>) +<span class="st"> </span><span class="kw">scale_x_log10</span>() +<span class="st"> </span>
+<span class="st">    </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>))</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-216"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-216-1.png" alt="Histogram of  log(Personal Income)" width="672" />
+<p class="caption">
+Figure 4.16: Histogram of log(Personal Income)
+</p>
+</div>
+<p>To compare two or more groups, simply set the <code>colours</code> and <code>fill</code> arguments to a categorical variable. For example, we can compare the ages of Iowans by employment status. As may be expected, most Iowans who are not in the labor force (not seeking employment) are past retirement age while there is a slight bump in unemployment among younger members of society.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">colours =</span> esr2, <span class="dt">fill =</span> esr2)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Employment Status by Age&quot;</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>)) </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-217"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-217-1.png" alt="Employment status and age" width="672" />
+<p class="caption">
+Figure 4.17: Employment status and age
+</p>
+</div>
+<p>Likewise, comparing healthcare coverage by age, younger Iowans are a greater proportion of people without healthcare.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">colours =</span> hicov2, <span class="dt">fill =</span> hicov2)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.2</span>) +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;Healthcare coverage and Age&quot;</span>) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">hjust =</span> <span class="fl">0.5</span>)) </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-218"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-218-1.png" alt="Healthcare coverage and age" width="672" />
+<p class="caption">
+Figure 4.18: Healthcare coverage and age
+</p>
+</div>
+<p><strong><em>Bivariate graphs</em></strong></p>
+<p>Scatter plots are among the most standard bivariate graphs and can be easily called by adding <code>geom_point()</code> to the base <code>ggplot()</code> method. They also can be easily stylized. Below, we plot <code>x = AGEP</code> and <code>y = PINCP</code>. The result is a mess of points without a clear trend.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">y =</span> PINCP)) +<span class="st"> </span><span class="kw">geom_point</span>() </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-219"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-219-1.png" alt="Scatter plot: log(personal income) and age." width="672" />
+<p class="caption">
+Figure 4.19: Scatter plot: log(personal income) and age.
+</p>
+</div>
+<p>To move the mass of points above the x-axis, we can apply a <span class="math inline">\(log_{10}\)</span> transformation to the <code>PINCP</code> variable. In addition, changing the <code>alpha</code> to a value less than 1.0 will allow us to take advantage of additive transparency – that is allowing the transparencies of multiple overlapping points to darken areas of creater density. We now can see that income generally rises quickly before the age of 25, then plateaus.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">y =</span> PINCP)) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.01</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">scale_y_log10</span>() </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-220"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-220-1.png" alt="Scatter plot with style. log(personal income) and age." width="672" />
+<p class="caption">
+Figure 4.20: Scatter plot with style. log(personal income) and age.
+</p>
+</div>
+<p>In addition, we can apply a kernel density smoothed line to show the moving average trend of income as a function of age.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">y =</span> PINCP)) +<span class="st"> </span><span class="kw">geom_point</span>(<span class="dt">alpha =</span> <span class="fl">0.01</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">scale_y_log10</span>() +<span class="st"> </span><span class="kw">geom_smooth</span>()</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-221"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-221-1.png" alt="Scatter plot with smoothed line: log(personal income) and age." width="672" />
+<p class="caption">
+Figure 4.21: Scatter plot with smoothed line: log(personal income) and age.
+</p>
+</div>
+<p>Using the same principles, we can find the bivariate relationship between age and health coverage. As health coverage (<code>coverage</code>) is coded as a binary, the smoothed estimate is equivalent to a locally estimated probability of no healthcare coverage.</p>
+<p>First up is coverage versus age. Lack of coverage spikes around <code>AGEP = 25</code> at a value of about 9%, then drops for older ages. Notice that the grey region around the smoothed mean estimate hugs the line fairly closely, indicating that the estimates are fairly certain with low variability.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> AGEP, <span class="dt">y =</span> coverage))  +<span class="st"> </span><span class="kw">geom_smooth</span>() +
+<span class="st">   </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Age (years)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Pct w/o Coverage (1.0 = 100%)&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-222"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-222-1.png" alt="Percent without healthcare coverage by age." width="672" />
+<p class="caption">
+Figure 4.22: Percent without healthcare coverage by age.
+</p>
+</div>
+<p>A comparison of coverage and income yields challenging results to interpret due to the notably large uncertainties at the very low and very high incomes, largely due to lower densities of records.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> PINCP, <span class="dt">y =</span> coverage)) +<span class="st"> </span><span class="kw">geom_smooth</span>() +<span class="st"> </span>
+<span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;log(Personal Income)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;Pct w/o Coverage (1.0 = 100%)&quot;</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">scale_x_log10</span>() </code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-223"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-223-1.png" alt="Percent without healthcare coverage by log(personal income)." width="672" />
+<p class="caption">
+Figure 4.23: Percent without healthcare coverage by log(personal income).
+</p>
+</div>
+<p>Hours worked per week sheds some interesting insights on coverage patterns, particularly around the 20 to 32 hours a week range as well as beyond 50 hours a week. This may be due to the nature of part-time work or multiple jobs.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> WKHP, <span class="dt">y =</span> coverage)) +<span class="st"> </span><span class="kw">geom_smooth</span>() +<span class="st"> </span>
+<span class="st">      </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Hours Worked Per Week&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;% w/o Coverage (1.0 = 100%)&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-224"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-224-1.png" alt="Percent without healthcare coverage by hours worked per week." width="672" />
+<p class="caption">
+Figure 4.24: Percent without healthcare coverage by hours worked per week.
+</p>
+</div>
+<p>Lastly, there is less coverage among those who are closer to and below the coverage line.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x =</span> POVPIP, <span class="dt">y =</span> coverage))  +<span class="st"> </span><span class="kw">geom_smooth</span>() +<span class="st"> </span>
+<span class="st">      </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&quot;Poverty Level (100 = at level)&quot;</span>, <span class="dt">y =</span> <span class="st">&quot;% w/o Coverage (1.0 = 100%)&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-225"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-225-1.png" alt="Percent without healthcare coverage by poverty level." width="672" />
+<p class="caption">
+Figure 4.25: Percent without healthcare coverage by poverty level.
+</p>
+</div>
+</div>
+</div>
+<div id="exercises-8" class="section level2">
+<h2><span class="header-section-number">4.6</span> Exercises</h2>
+<ul>
+<li>Train your eyes to identify strong correlations. Play the <a href="http://guessthecorrelation.com/"><em>Guess The Correlation</em> Game</a> for 5 minutes. This game challenges players to guess the coefficient correlation based on randomly assigned scatter plots of two continuous variables.</li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-manipulation-wrangling-processing.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="similarity.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
