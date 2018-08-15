@@ -1,1 +1,165 @@
 # Chapter 3
+
+__Main question of the chapter:__  How do I get started?
+
+__Gist:__  Bare-bone basics: Going deeper into the basics of R. Types of data and objects. Installing packages. Importing data and directories.
+
+## Data are everywhere—and they come in all types.
+
+- We see data everywhere, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37..."".
+  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, boolean, dates).
+  - "Dow Jones industrial average" references the name of a specific stock-market index.
+  - "today" references a date (as does "earlier")
+  - "56.97" and "21,865.37" are numbers (with units)
+  - There are also data embedded in the phrases "erased", "earlier losses" and "higher".
+
+## Data types
+
+In R, you encode (often implicitly) your variables/data as having one of several types of data: numeric, logical, character, etc.
+
+### `numeric`
+
+As you might guess, ‘numeric' data are numbers. The numeric type is R's catch-all for all numbers, encompassing both integer and continuous numbers.
+
+### `logical`
+
+If you want to test whether something is true or false, then you've found yourself in the world of logic. Because programming and data science use logical data so frequently, they get their own data type. In R, logical data are `TRUE` or `FALSE`, which you can abbreviate as `T` or `F`. As is always the case in R: the letters' cases matter (meaning you must use `TRUE` and cannot use `true`).
+
+### `character`
+
+You will most often
+
+### `factor`
+
+Factors are a bit of special data type in R, because they allow you to take one type of variable (e.g,. numeric or character) and add a few more layers of information. For instance, you can add labels to your data (so that the values "Sun" and "Mon" are labeled "Sunday" and "Monday") and you also have the option to indicate that the data are order (meaning Sunday precedes Monday). You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`.
+
+### `date`
+
+While there are many ways to think about dates—characters data like "January" or numbers like 1—dates are so common (and so strange to work with) that they get their own type of data, namely, the date type.
+
+### The `class` function.
+
+Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as numeric, character, factor, or perhaps factor. The `class` function helps you here.
+
+Let's see `class` is action...
+
+```{R, ch3 class type examples}
+class(56.97)
+class(57)
+class(57L)
+class("Dow Jones")
+Sys.Date; class(Sys.Date())
+Date("2015-12-31"); class(Date("2015-12-31"))
+class(class) (Mind blows)
+```
+
+## Objects in R
+
+Simply entering data into R's console is not going to be enough. We need a way to store the data in our computer's memory. To be able to access the data that we store, we need to give the data a name. In R parlance, we need a way to assign the values (the data) to objects stored in memory (the names).
+
+R's assignment operator `<-` exists solely for the task of assigning a value (on the right-hand side) to the .
+
+`object <- value` is read “object gets value.”
+
+__Examples__
+
+- `a <- 3`
+- `string_ex <- “Some funny/clever words.”`
+- `some_logic <- TRUE`
+
+As you can see, you get a lot of freedom in the names that you use for the objects.
+Examples of `class` with assigned objects.
+
+## R’s object classes
+
+### `vector`
+
+- Vectors are one of the simplest and most used classes of objects in R.
+- In R, a vector is a one-dimensional ‘list’ of values. The values can be logical, numeric, factor, or character, but they must all be of the same type. If they are not, R will coerce them to the most conducive type.
+- The simplest way to create a vector is with the concatenate function: `c`. For instance, to create a vector out of the numbers 1, 2, and 3, we write `c(1, 2, 3)`.
+- __TODO__ Coercion example...  
+
+### `matrix`
+
+- R’s matrices are very close what your mathematics courses taught you: they are rows and columns filled with data. You can fill your R matrices with numbers, but you can also fill them with other types of data—just as you can with vectors.
+- The matrix function in R takes two arguments...
+- __TODO__ Example
+
+### The `class` function again!
+
+__TODO__
+
+### `data frame`
+
+__TODO__
+
+### `list`
+
+### More classes
+
+R offers many other object classes. Many of the object classes are specific to an application (e.g., geographic data like rasters or shapefiles) or packages (e.g., when you run a regression with the function `lm`, the function produces a special `lm` object).
+
+## Packages
+
+### Base R and filling the need for more functions
+
+When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations, conduct statistical summaries, run a regression, plot a histogram—even make a map. This original set of functions that shipped with R is called base R—the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to do something that is not handled by any function in base R. Lucky for you, there is a whole universe of functions waiting for you on the Comprehensive R Archive Network (CRAN)—and on Github. Specifically, you download families of related functions from CRAN. These families of functions are formally called packages.
+
+For example, imagine some crazy, hypothetical world where someone sends you an Excel spreadsheet that you then need to load into R. Herein lies the problem: base R does not have a function to read directly from a spreadsheet. But... as its name implies the `readxl` package on CRAN provides exactly the functionality you need.
+
+### Installing packages
+
+- We need to add additional functionality. We need new functions. And thus, we need new packages.
+- Installing packages is quite easy. You need (A) an internet connection and (B) R’s `install.packages` function.
+- Continuing our example, you can install the `readxl` package by executing `install.packages(“readxl”)` in your R console.
+- There are sources (e.g., METACRAN) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends are going to be your best bets.
+
+### Loading packages
+
+- Installing a package simply means that you now have access to the package and its functions—installing a package does not load the package into R.
+- To load a package, you use the `library` function in combination with the package’s name. Note that `library` will only load one package at a time (more on this shortcoming later).
+- E.g., `library(“readxl”)` loads the `readxl` package that we previously installed.
+- Whenever you close/restart R (or RStudio), your computer will remove the packages the loaded packages from memory. The point: you will need to load the packages again (but you do not need to install them again).
+
+### Package management and `pacman`
+
+- While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
+- For instance, what if you want to load multiple packages?  ...
+- Or what if you think you’ve installed a package but you haven’t? ...
+- Meet: `p_load`
+- This feature is particularly helpful when you (1) collaborate with other people and/or (2) update your R system.
+
+## Data I/O
+
+- To loading data into R, you must
+  - tell R where to look for the file,
+  - tell R which function to use load the file, and
+  - tell R the file’s name.
+- Directories
+  - Defining directories: Special strings
+  - RStudio helps you complete (tab)
+- Navigating directories
+  - `getwd`, `setwd`, and `dir`
+  - Best practice: Define your directories to objects at the start of your script.
+  - Example:
+    - `main_dir <- “/Users/BlackPanther/Wakanda/NewData/”`
+    - `dir(main_dir)`
+    - `setwd(main_dir); getwd()`
+- When you want to input data in R, you want to the right function for your data’s file type. - For instance, we will use the `read_csv` function (from the `readr` package) to read .csv files, whereas we will use the `read_dta` function (from the `haven` package) to read Stata .dta files.
+- Assuming you know the name of the file that you want to load, we are now set!
+  - Put it all together... __TODO__
+  - Example... __TODO__
+
+## Finding help
+
+### R's help (`?` and `??`)
+
+If you hit a snag with a function, you can access the function’s help file using `?` in the console. For instance, if you want to know more about the function `read_xlsx` (from the `readxl` package), you can execute `?read_xlsx`—assuming you’ve already loaded the `readxl` package. If you have not already loaded the package, you can include the package’s name, two colons (`::`), and the function’s name, e.g., `?readxl::read_xlsx`. This little trick works in general—it is not restricted to looking up help files.
+
+### Google and online communities
+
+One of the best parts of R is the vibrant and (generally) helpful online community... __TODO__
+
+## DIY
+
+__TODO__
