@@ -162,6 +162,44 @@ One of the best parts of R is the vibrant and (generally) helpful online communi
 
 ## DIY
 
-Download, load, and plot publicly available solar array data from NIST’s Net Zero Energy House.
+### Solar Generation and the NIST Net Zero Energy House
 
-__TODO__
+Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost. 
+
+The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper efficient with energy. For example, the Net Zero Energy Residential Test Facility is a *house* that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
+
+The testbed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. We tap into one slice of its photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
+
+Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and an average day. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv()` to import a comma separated values (CSV) file stored at the location in the `url` object. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim()`; The data set has n = 8,737 with 32 columns.
+
+```{r}
+#Create string object with URL
+  url <- "https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv"
+
+#Read data direct from web
+  df <- read.csv(url)
+  
+#Check dimensions
+  dim(df)
+```
+
+We are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), which is in the variable `PV_PVInsolationHArray`. To take a sneak peek of the data, we can use `head()` to retrieve the first six observations.
+
+```{r}
+  head(df$PV_PVInsolationHArray)
+```
+
+To answer our questions, we can obtain a concise `summary()` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are ocassional periods with intense energy exposure.
+
+```{r}
+#Summary of statistical distribution
+  summary(df$PV_PVInsolationHArray)
+```
+
+Daily exposure is a quick calculation requiring the total exposure over the course of the year as calculated using `sum()`, the divided by 24 hours as the units are hourly.
+```{r}
+#Daily exposure
+  tot <- sum(df$PV_PVInsolationHArray)
+  print(tot / 24/365)
+```
+
