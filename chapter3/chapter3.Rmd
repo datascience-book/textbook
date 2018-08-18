@@ -7,7 +7,7 @@ __Gist:__  Bare-bone basics: Going deeper into the basics of R. Types of data an
 ## Data are everywhere—and they come in all types.
 
 - We see data everywhere, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37..."".
-  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, boolean, dates).
+  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, Boolean, dates).
   - "Dow Jones industrial average" references the name of a specific stock-market index.
   - "today" references a date (as does "earlier")
   - "56.97" and "21,865.37" are numbers (with units)
@@ -48,7 +48,7 @@ class(56.97)
 class(57)
 class(57L)
 class("Dow Jones")
-Sys.Date; class(Sys.Date())
+Sys.Date; class(Sys.Date)
 Date("2015-12-31"); class(Date("2015-12-31"))
 class(class) (Mind blows)
 ```
@@ -116,6 +116,7 @@ For example, imagine some crazy, hypothetical world where someone sends you an E
 
 ### Loading packages
 
+
 - Installing a package simply means that you now have access to the package and its functions—installing a package does not load the package into R.
 - To load a package, you use the `library` function in combination with the package's name. Note that `library` will only load one package at a time (more on this shortcoming later).
 - E.g., `library("readxl")` loads the `readxl` package that we previously installed.
@@ -144,7 +145,7 @@ For example, imagine some crazy, hypothetical world where someone sends you an E
   - Example:
     - `main_dir <- "/Users/BlackPanther/Wakanda/NewData/"`
     - `dir(main_dir)`
-    - `setwd(main_dir); getwd()`
+    - `setwd(main_dir); getwd`
 - When you want to input data in R, you want to the right function for your data's file type. - For instance, we will use the `read_csv` function (from the `readr` package) to read .csv files, whereas we will use the `read_dta` function (from the `haven` package) to read Stata .dta files.
 - Assuming you know the name of the file that you want to load, we are now set!
   - Put it all together... __TODO__
@@ -166,11 +167,11 @@ One of the best parts of R is the vibrant and (generally) helpful online communi
 
 Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost. 
 
-The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper efficient with energy. For example, the Net Zero Energy Residential Test Facility is a *house* that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
+The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper energy efficient. For example, the Net Zero Energy Residential Test Facility is a house that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
 
-The testbed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. We tap into one slice of its photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
+The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
 
-Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and an average day. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv()` to import a comma separated values (CSV) file stored at the location in the `url` object. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim()`; The data set has n = 8,737 with 32 columns.
+Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv` to import a comma separated values (CSV) file stored at the location in the `url` object, which is held in the R environment as a data frame. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim`: The data set has n = 8,737 with 32 columns.
 
 ```{r}
 #Create string object with URL
@@ -183,23 +184,24 @@ Suppose we wanted to know how much energy the solar arrays are exposed to in an 
   dim(df)
 ```
 
-We are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), which is in the variable `PV_PVInsolationHArray`. To take a sneak peek of the data, we can use `head()` to retrieve the first six observations.
+As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `df`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
 
 ```{r}
   head(df$PV_PVInsolationHArray)
 ```
 
-To answer our questions, we can obtain a concise `summary()` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are ocassional periods with intense energy exposure.
+To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure. 
 
 ```{r}
-#Summary of statistical distribution
   summary(df$PV_PVInsolationHArray)
 ```
 
-Daily exposure is a quick calculation requiring the total exposure over the course of the year as calculated using `sum()`, the divided by 24 hours as the units are hourly.
+This can be more concisely summarized as the coefficient of variation ($CV = \frac{\text{standard deviation}}{\text{mean}}$) -- the ratio of the standard deviation and the mean. Values of the CV that exceed $CV = 1$ indicate greater dispersion. Otherwise stated, the data may be *wider than it is tall*, therefore greater vales of CV indicate there may be more noise and less consistency in the data. We compute the `mean` and standard deviation `sd`. The resulting CV indicates that one standard deviation is 1.5-times as wide as the mean, suggesting some visible degree of variability in hourly sun exposure.
+
 ```{r}
-#Daily exposure
-  tot <- sum(df$PV_PVInsolationHArray)
-  print(tot / 24/365)
+  a <- mean(df$PV_PVInsolationHArray)
+  b <- sd(df$PV_PVInsolationHArray)
+  print(b/a)
 ```
 
+With only a few lines of code, we have shown how programming can make data analysis an efficient process. In the context of policy, programming removes the tedium of spreadsheeting, allowing an analysis to be delivered using only a few decisive actions.
