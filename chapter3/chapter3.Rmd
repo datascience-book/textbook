@@ -147,15 +147,35 @@ When a package is loaded, it is only temporarily help in the computer's memory. 
 ### Package management and `pacman`
 
 While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
-- For instance, what if you want to load multiple packages?  ...
-- Or what if you think you've installed a package but you haven't? ...
-- Meet: `p_load`
-- This feature is particularly helpful when you (1) collaborate with other people and/or (2) update your R system.
 
 
 (Maybe use this as an opportunity to install our base stack?)
 
-There are [X] packages that greatly expand the capabilities of R. And these packages will reappear again and again throughout this book. 
+
+There are [X] packages that greatly expand the capabilities of R. And these packages will reappear again and again throughout this book. What if we needed to load all [X] packages? The manual option is to embrace the tedium:
+
+```{r, eval = FALSE}
+  library(readxl)
+  library(tidytext)
+  library(dplyr)
+  library(ggplot2)
+  library(caret)
+  ...
+```
+
+Then, when the code is shared with a collaborator, they might not have all of the packages installed, meaning the script will *crash*, requiring them to read through the error log and find all of the missing packages. 
+
+Meet: `pacman`.
+
+Upon installing `pacman`, this simple package minimizes the mental overhead of keeping track of all packages into two lines of code:
+
+```{r, eval = FALSE}
+  library(pacman)
+  p_load(readxl, tidytext, dplyr, ggplot2, caret)
+```
+
+Not only does the `p_load` function install packages, it also loads packages. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+
 
 ## Data I/O
 
