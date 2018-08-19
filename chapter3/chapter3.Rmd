@@ -1,4 +1,4 @@
-# Chapter 3
+# Chapter 3: A Light Introduction to Statistical Programming
 
 __Main question of the chapter:__  How do I get started?
 
@@ -7,7 +7,7 @@ __Gist:__  Bare-bone basics: Going deeper into the basics of R. Types of data an
 ## Data are everywhere—and they come in all types.
 
 - We see data everywhere, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37..."".
-  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, boolean, dates).
+  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, Boolean, dates).
   - "Dow Jones industrial average" references the name of a specific stock-market index.
   - "today" references a date (as does "earlier")
   - "56.97" and "21,865.37" are numbers (with units)
@@ -48,7 +48,7 @@ class(56.97)
 class(57)
 class(57L)
 class("Dow Jones")
-Sys.Date; class(Sys.Date())
+Sys.Date; class(Sys.Date)
 Date("2015-12-31"); class(Date("2015-12-31"))
 class(class) (Mind blows)
 ```
@@ -97,37 +97,85 @@ __TODO__
 
 ### More classes
 
-R offers many other object classes. Many of the object classes are specific to an application (e.g., geographic data like rasters or shapefiles) or packages (e.g., when you run a regression with the function `lm`, the function produces a special `lm` object).
+R offers many other object classes. Many of the object classes are specific to an application (e.g., geographic data like rasters or shape files) or packages (e.g., when you run a regression with the function `lm`, the function produces a special `lm` object).
 
 ## Packages
 
 ### Base R and filling the need for more functions
 
-When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations, conduct statistical summaries, run a regression, plot a histogram—even make a map. This original set of functions that shipped with R is called base R—the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to do something that is not handled by any function in base R. Lucky for you, there is a whole universe of functions waiting for you on the Comprehensive R Archive Network (CRAN)—and on Github. Specifically, you download families of related functions from CRAN. These families of functions are formally called packages.
+When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations (addition `+`, division `/`), conduct statistical summaries (`mean`, `sd`), run a regression (e.g. `lm`), plot a histogram (`hist`) and even make a map (`plot`). This original set of functions that shipped with R is called *base R* -- the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to conduct more complex and specialized tasks that are not possible by any function in base R. 
 
-For example, imagine some crazy, hypothetical world where someone sends you an Excel spreadsheet that you then need to load into R. Herein lies the problem: base R does not have a function to read directly from a spreadsheet. But... as its name implies the `readxl` package on CRAN provides exactly the functionality you need.
+Some may have the adventurous itch to program specialized functions, which may sound daunting. But fear not, there is a whole universe of functions awaiting your use on the Comprehensive R Archive Network ([CRAN](https://cran.r-project.org/)) as well as on [Github](https://github.com/). Specifically, functions are available as families of functions, formally called *packages*.
+
+For example, imagine some crazy, hypothetical world (such as the one in which we live) where someone sends you an Excel spreadsheet that you then need to load into R. Herein lies the problem: *base R does not have a function to read directly from a spreadsheet*. But, as its name implies the `readxl` package on CRAN provides exactly the functionality you need.
 
 ### Installing packages
 
-- We need to add additional functionality. We need new functions. And thus, we need new packages.
-- Installing packages is quite easy. You need (A) an internet connection and (B) R's `install.packages` function.
-- Continuing our example, you can install the `readxl` package by executing `install.packages("readxl")` in your R console.
-- There are sources (e.g., METACRAN) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends are going to be your best bets.
+A large community of R users and developers contribute and maintain a (vast archive of packages)[https://cran.r-project.org/web/packages/available_packages_by_name.html]. And these package span computationally intensive tasks like reading satellite imagery to more visual tasks like creating interactive maps for websites. It is easy to tap into these vast resources, and to get started with a package like `readxl`, we only need two inputs: (A) an internet connection and (B) R's `install.packages` function.
+
+To install `readxl`, you can install the `readxl` package by executing the following line in the R console. To break it down, `install.packages` requires the name of a known package on CRAN in the form of a string value.
+
+```{r, eval = FALSE}
+  install.packages("readxl")
+```
+
+For some packages, R will also install package dependencies -- other packages on which the request package relies. This is one of the beautiful things about R: it is an extensible language that builds on existing functionality. Entire families of packages are dependent on common functions, ensuring that a common logic is employed in making the magic happen with data.
+
+There are sources (e.g., [METACRAN](https://www.r-pkg.org/)) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends and colleagues are going to be your best bets. 
 
 ### Loading packages
 
-- Installing a package simply means that you now have access to the package and its functions—installing a package does not load the package into R.
-- To load a package, you use the `library` function in combination with the package's name. Note that `library` will only load one package at a time (more on this shortcoming later).
-- E.g., `library("readxl")` loads the `readxl` package that we previously installed.
-- Whenever you close/restart R (or RStudio), your computer will remove the packages the loaded packages from memory. The point: you will need to load the packages again (but you do not need to install them again).
+Like installing a new air conditioning unit, the unit is only useful when it is plugged in and turned on. R packages follow the same logic. Installing a package simply means that you now have access to the package on your machine. To take advantage of the functionality,  packages need to be loaded into R environment during each session. 
+
+To load a package, you use the `library` function in combination with the package's name. Note that whereas `install.packages` expects the package name in string format, the `library` function can accommodate both strings (e.g. "readxl") or the package as a name  (e.g. readxl) as it is now an installed resource. 
+
+```{r, eval = FALSE}
+  library(readxl)
+```
+
+The `library` function will only load one package at a time, meaning that every package will need to be called individually. If we needed to load two installed packages -- `readxl` and a package for text manipulation known as `tidytext` --  we would need to do the following:
+
+```{r, eval = FALSE}
+  library(readxl)
+  library(tidytext)
+```
+
+For highly complex projects requiring many packages, this will be cumbersome. We will have a fix for this shortcoming later on.
+
+When a package is loaded, it is only temporarily help in the computer's memory. Whenever R and RStudio are closed or restarted, all loaded packages are removed from memory.  The point: you will need to load the packages again, but you do not need to install them again.
 
 ### Package management and `pacman`
 
-- While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
-- For instance, what if you want to load multiple packages?  ...
-- Or what if you think you've installed a package but you haven't? ...
-- Meet: `p_load`
-- This feature is particularly helpful when you (1) collaborate with other people and/or (2) update your R system.
+While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
+
+
+(Maybe use this as an opportunity to install our base stack?)
+
+
+There are [X] packages that greatly expand the capabilities of R. And these packages will reappear again and again throughout this book. What if we needed to load all [X] packages? The manual option is to embrace the tedium:
+
+```{r, eval = FALSE}
+  library(readxl)
+  library(tidytext)
+  library(dplyr)
+  library(ggplot2)
+  library(caret)
+  ...
+```
+
+Then, when the code is shared with a collaborator, they might not have all of the packages installed, meaning the script will *crash*, requiring them to read through the error log and find all of the missing packages. 
+
+Meet: `pacman`.
+
+Upon installing `pacman`, this simple package minimizes the mental overhead of keeping track of all packages into two lines of code:
+
+```{r, eval = FALSE}
+  library(pacman)
+  p_load(readxl, tidytext, dplyr, ggplot2, caret)
+```
+
+Not only does the `p_load` function install packages, it also loads packages. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+
 
 ## Data I/O
 
@@ -144,7 +192,7 @@ For example, imagine some crazy, hypothetical world where someone sends you an E
   - Example:
     - `main_dir <- "/Users/BlackPanther/Wakanda/NewData/"`
     - `dir(main_dir)`
-    - `setwd(main_dir); getwd()`
+    - `setwd(main_dir); getwd`
 - When you want to input data in R, you want to the right function for your data's file type. - For instance, we will use the `read_csv` function (from the `readr` package) to read .csv files, whereas we will use the `read_dta` function (from the `haven` package) to read Stata .dta files.
 - Assuming you know the name of the file that you want to load, we are now set!
   - Put it all together... __TODO__
@@ -166,11 +214,11 @@ One of the best parts of R is the vibrant and (generally) helpful online communi
 
 Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost. 
 
-The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper efficient with energy. For example, the Net Zero Energy Residential Test Facility is a *house* that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
+The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper energy efficient. For example, the Net Zero Energy Residential Test Facility is a house that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
 
-The testbed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. We tap into one slice of its photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
+The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
 
-Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and an average day. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv()` to import a comma separated values (CSV) file stored at the location in the `url` object. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim()`; The data set has n = 8,737 with 32 columns.
+Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv` to import a comma separated values (CSV) file stored at the location in the `url` object, which is held in the R environment as a data frame. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim`: The data set has n = 8,737 with 32 columns.
 
 ```{r}
 #Create string object with URL
@@ -183,23 +231,24 @@ Suppose we wanted to know how much energy the solar arrays are exposed to in an 
   dim(df)
 ```
 
-We are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), which is in the variable `PV_PVInsolationHArray`. To take a sneak peek of the data, we can use `head()` to retrieve the first six observations.
+As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `df`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
 
 ```{r}
   head(df$PV_PVInsolationHArray)
 ```
 
-To answer our questions, we can obtain a concise `summary()` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are ocassional periods with intense energy exposure.
+To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure. 
 
 ```{r}
-#Summary of statistical distribution
   summary(df$PV_PVInsolationHArray)
 ```
 
-Daily exposure is a quick calculation requiring the total exposure over the course of the year as calculated using `sum()`, the divided by 24 hours as the units are hourly.
+This can be more concisely summarized as the coefficient of variation ($CV = \frac{\text{standard deviation}}{\text{mean}}$) -- the ratio of the standard deviation and the mean. Values of the CV that exceed $CV = 1$ indicate greater dispersion. Otherwise stated, the data may be *wider than it is tall*, therefore greater vales of CV indicate there may be more noise and less consistency in the data. We compute the `mean` and standard deviation `sd`. The resulting CV indicates that one standard deviation is 1.5-times as wide as the mean, suggesting some visible degree of variability in hourly sun exposure.
+
 ```{r}
-#Daily exposure
-  tot <- sum(df$PV_PVInsolationHArray)
-  print(tot / 24/365)
+  a <- mean(df$PV_PVInsolationHArray)
+  b <- sd(df$PV_PVInsolationHArray)
+  print(b/a)
 ```
 
+With only a few lines of code, we have shown how programming can make data analysis an efficient process. In the context of policy, programming removes the tedium of spreadsheeting, allowing an analysis to be delivered using only a few decisive keystrokes.
