@@ -214,18 +214,37 @@ One of the best parts of R is the vibrant and (generally) helpful online communi
 
 As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
 ```{r, ch3 comment self, eval = F}
-  # Make sure the packages are installed and loaded
+  # Make sure the packages are installed and loaded.
   p_load(readxl, dplyr)
-  # Navigate to the data directory to load the data
+  # Navigate to the data directory to load the data.
   setwd("/Users/Someone/OnlyData")
   # Load the xlsx file (named 'fake_data.xlsx')
   fake_df <- read_xlsx("fake_data.xlsx")
 ```
 In the example above, each comment line briefly describes what we will do in the next line and why we want to do it. Often the _why_ is the most important part: with some experience, you will be able to figure out what each line of an R script does, but it is much more difficult to figure out _why_ the author wrote the 641 lines of code in the middle of a 1200-line R script.
 
-You can also use
+Another popular use of comments in R—and in many other languages—is to flag questions, issues, or unfinished items. The idea here is to start the comment with a quick flag, for instance `# TODO`. This flag helps you find the unfinished parts of your document—or the parts that you want your collaborators to finish for you. For instance, we might start a document
+```{R, ch3 flag ex, eval = F}
+  # Make sure the packages are installed and loaded
+  # FIXME: There are better packages for large datasets.
+  p_load(readxl, dplyr)
+  # Navigate to the data directory to load the data
+  setwd("/Users/Someone/OnlyData")
+  # Load the xlsx file (named 'fake_data.xlsx')
+  fake_df <- read_xlsx("fake_data.xlsx")
+  # TODO: Clean the dataset. Check out `stringr` and `data.table`
+```
 
-__TODO__ More?
+You can also use commenting (`#`) to tell R to ignore lines of code. This usage of the hash is called _commenting out_ your code, as it allows you to turn off a line of code, e.g.,
+```{R, ch3 comment out, eval = F}
+# Standard line of code
+two_plus_two <- 2 + 2
+# Commented out line of code
+# two_times_two <- 2 * 2
+```
+In general, commenting lines of code out is most helpful for temporary changes and/or testing code. If you really do not need a code, just delete it.
+
+Finally, it is worth saying that the style and amount of commenting, flagging, and commenting-out are highly subjective. If you find them burdensome, then you probably should cut back a bit or try a different strategy. That said, it's pretty rare for 0 comments to be an optimal number of comments in an R script.
 
 ## DIY
 
