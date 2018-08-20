@@ -4,11 +4,22 @@ This document sets up a style guide for our book. We can also use it for the a s
 
 ## Language
 
+### General language
+
 - When referencing R, do not use monospace or quotes or any other styling—just type R.
 - When entering commands into R's console, use "execute `command` in your/the R console".
 - Distinguish between _console_ and _command line_.
 - When referencing an R function, use the monospaced name, e.g., "The function `foo` is very generic."
-- __TODO__: Decision on e.g. and i.e. (italicized or not).
+- "e.g.," (or "E.g.," at the start of a sentence) and "i.e.," (or "I.e.," at a start of a sentence):
+  - Are not italicized.
+  - Always include a comma after the second period.
+  - "E.g.," is used in exchange for "for example".
+  - "I.e.," is used in exchange for "specifically".
+
+### Flagging
+
+- "TODO" flags a item that needs to be finished (and possibly started).
+- "FIXME" flags a topic that needs to be (wait for it...) fixed.
 
 ## Our style guide
 
