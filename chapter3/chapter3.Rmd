@@ -15,7 +15,7 @@ __Gist:__  Bare-bone basics: Going deeper into the basics of R. Types of data an
 
 ## Data types
 
-In R, you encode (often implicitly) your variables/data as having one of several types of data: numeric, logical, character, etc.
+In R, you encode (often implicitly) your variables/data as having one of several types of data, e.g., `numeric`, `logical`, `character`, `factor`, or `date`.
 
 ### `numeric`
 
@@ -27,15 +27,15 @@ If you want to test whether something is true or false, then you've found yourse
 
 ### `character`
 
-You will most often
+You will most often encounter `character` data (also strings as _strings_) in datasets of linguistic text—e.g., court transcripts, novels, text messages, or government audit reports.
 
 ### `factor`
 
-Factors are a bit of special data type in R, because they allow you to take one type of variable (e.g,. numeric or character) and add a few more layers of information. For instance, you can add labels to your data (so that the values "Sun" and "Mon" are labeled "Sunday" and "Monday") and you also have the option to indicate that the data are order (meaning Sunday precedes Monday). You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`.
+Factors are a bit of special data type in R, because they allow you to take one type of variable (e.g., `numeric` or `character`) and add a few more layers of information. For instance, you can add labels to your data (so that the values "Sun" and "Mon" are labeled "Sunday" and "Monday") and you also have the option to indicate that the data are order (meaning Sunday precedes Monday). You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`.
 
 ### `date`
 
-While there are many ways to think about dates—characters data like "January" or numbers like 1—dates are so common (and so strange to work with) that they get their own type of data, namely, the date type.
+While there are many ways to think about dates—`character` data like "January" or `numeric` data like `1`—dates are so common (and so strange to work with) that they get their own type of data, namely, the `date` type.
 
 ### The `class` function.
 
@@ -44,13 +44,16 @@ Just looking at a dataset does not always tell you the type of data. The questio
 Let's see `class` is action...
 
 ```{R, ch3 class type examples}
+
 class(56.97)
 class(57)
 class(57L)
+
 class("Dow Jones")
 Sys.Date; class(Sys.Date)
 Date("2015-12-31"); class(Date("2015-12-31"))
-class(class) (Mind blows)
+class(class)
+# <Mind blows>
 ```
 
 ## Objects in R
@@ -103,7 +106,7 @@ R offers many other object classes. Many of the object classes are specific to a
 
 ### Base R and filling the need for more functions
 
-When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations (addition `+`, division `/`), conduct statistical summaries (`mean`, `sd`), run a regression (e.g. `lm`), plot a histogram (`hist`) and even make a map (`plot`). This original set of functions that shipped with R is called *base R* -- the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to conduct more complex and specialized tasks that are not possible by any function in base R. 
+When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations (addition `+`, division `/`), conduct statistical summaries (`mean`, `sd`), run a regression (e.g. `lm`), plot a histogram (`hist`) and even make a map (`plot`). This original set of functions that shipped with R is called *base R* -- the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to conduct more complex and specialized tasks that are not possible by any function in base R.
 
 Some may have the adventurous itch to program specialized functions, which may sound daunting. But fear not, there is a whole universe of functions awaiting your use on the Comprehensive R Archive Network ([CRAN](https://cran.r-project.org/)) as well as on [Github](https://github.com/). Specifically, functions are available as families of functions, formally called *packages*.
 
@@ -121,13 +124,13 @@ To install `readxl`, you can install the `readxl` package by executing the follo
 
 For some packages, R will also install package dependencies -- other packages on which the request package relies. This is one of the beautiful things about R: it is an extensible language that builds on existing functionality. Entire families of packages are dependent on common functions, ensuring that a common logic is employed in making the magic happen with data.
 
-There are sources (e.g., [METACRAN](https://www.r-pkg.org/)) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends and colleagues are going to be your best bets. 
+There are sources (e.g., [METACRAN](https://www.r-pkg.org/)) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends and colleagues are going to be your best bets.
 
 ### Loading packages
 
-Like installing a new air conditioning unit, the unit is only useful when it is plugged in and turned on. R packages follow the same logic. Installing a package simply means that you now have access to the package on your machine. To take advantage of the functionality,  packages need to be loaded into R environment during each session. 
+Like installing a new air conditioning unit, the unit is only useful when it is plugged in and turned on. R packages follow the same logic. Installing a package simply means that you now have access to the package on your machine. To take advantage of the functionality,  packages need to be loaded into R environment during each session.
 
-To load a package, you use the `library` function in combination with the package's name. Note that whereas `install.packages` expects the package name in string format, the `library` function can accommodate both strings (e.g. "readxl") or the package as a name  (e.g. readxl) as it is now an installed resource. 
+To load a package, you use the `library` function in combination with the package's name. Note that whereas `install.packages` expects the package name in string format, the `library` function can accommodate both strings (e.g. "readxl") or the package as a name  (e.g. readxl) as it is now an installed resource.
 
 ```{r, eval = FALSE}
   library(readxl)
@@ -166,6 +169,7 @@ Upon installing `pacman`, the mental overhead of keeping track of all packages i
   p_load(readxl, tidytext, ggplot2)
 ```
 
+Ω
 The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
 
 #### Quick Exercise {-}
@@ -256,15 +260,51 @@ If you hit a snag with a function, you can access the function's help file using
 - User beware: R coders looking for an answer may copy and paste code from Stack Overflow without check what it does precisely. This may lead to unintended problems
 
 
+## Best practices: Commenting your scripts
+
+As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
+```{r, ch3 comment self, eval = F}
+  # Make sure the packages are installed and loaded.
+  p_load(readxl, dplyr)
+  # Navigate to the data directory to load the data.
+  setwd("/Users/Someone/OnlyData")
+  # Load the xlsx file (named 'fake_data.xlsx')
+  fake_df <- read_xlsx("fake_data.xlsx")
+```
+In the example above, each comment line briefly describes what we will do in the next line and why we want to do it. Often the _why_ is the most important part: with some experience, you will be able to figure out what each line of an R script does, but it is much more difficult to figure out _why_ the author wrote the 641 lines of code in the middle of a 1200-line R script.
+
+Another popular use of comments in R—and in many other languages—is to flag questions, issues, or unfinished items. The idea here is to start the comment with a quick flag, for instance `# TODO`. This flag helps you find the unfinished parts of your document—or the parts that you want your collaborators to finish for you. For instance, we might start a document
+```{R, ch3 flag ex, eval = F}
+  # Make sure the packages are installed and loaded
+  # FIXME: There are better packages for large datasets.
+  p_load(readxl, dplyr)
+  # Navigate to the data directory to load the data
+  setwd("/Users/Someone/OnlyData")
+  # Load the xlsx file (named 'fake_data.xlsx')
+  fake_df <- read_xlsx("fake_data.xlsx")
+  # TODO: Clean the dataset. Check out `stringr` and `data.table`
+```
+
+You can also use commenting (`#`) to tell R to ignore lines of code. This usage of the hash is called _commenting out_ your code, as it allows you to turn off a line of code, e.g.,
+```{R, ch3 comment out, eval = F}
+# Standard line of code
+two_plus_two <- 2 + 2
+# Commented out line of code
+# two_times_two <- 2 * 2
+```
+In general, commenting lines of code out is most helpful for temporary changes and/or testing code. If you really do not need a code, just delete it.
+
+Finally, it is worth saying that the style and amount of commenting, flagging, and commenting-out are highly subjective. If you find them burdensome, then you probably should cut back a bit or try a different strategy. That said, it's pretty rare for 0 comments to be an optimal number of comments in an R script.
+
 ## DIY
 
 ### Loading solar energy data from the web
 
-Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost. 
+Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost.
 
-The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper energy efficient. For example, the Net Zero Energy Residential Test Facility is a house that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles. 
+The increased affordability of solar among other advanced technologies opens the possibility for constructing buildings that are hyper energy efficient. For example, the Net Zero Energy Residential Test Facility is a house that produces as much energy as it uses over the course of a year. Engineered and constructed by the [National Institute of Standards and Technology (NIST)](https://pages.nist.gov/netzero), the lab home was designed to be approximately 60 percent more energy efficient than typical homes. In order to achieve net zero energy, the lab home needs to produce an energy surplus and overcome the energy consumption of a simulated family of four. In fact, within its first year, the facility produced an energy surplus that is enough to power an electric car for 1400 miles.
 
-The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
+The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels.
 
 Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we load the `pacman` package and use `p_load` to load the `readr` package.
 
@@ -293,7 +333,7 @@ As we are primarily interested in the total amount of sunlight hitting the solar
   head(solar$PV_PVInsolationHArray)
 ```
 
-To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure. 
+To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure.
 
 ```{r}
   summary(solar$PV_PVInsolationHArray)
