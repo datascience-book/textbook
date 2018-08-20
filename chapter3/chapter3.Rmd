@@ -146,57 +146,102 @@ When a package is loaded, it is only temporarily help in the computer's memory. 
 
 ### Package management and `pacman`
 
-While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
-
-
-(Maybe use this as an opportunity to install our base stack?)
-
-
-There are [X] packages that greatly expand the capabilities of R. And these packages will reappear again and again throughout this book. What if we needed to load all [X] packages? The manual option is to embrace the tedium:
+While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes). What if we needed to load these three packages? The manual option requires one to embrace the tedium:
 
 ```{r, eval = FALSE}
   library(readxl)
   library(tidytext)
-  library(dplyr)
   library(ggplot2)
-  library(caret)
   ...
 ```
 
-Then, when the code is shared with a collaborator, they might not have all of the packages installed, meaning the script will *crash*, requiring them to read through the error log and find all of the missing packages. 
+And the tedium does not end on your computer. When the code is shared with a collaborator, they may not have all of the packages installed, meaning the script will *crash*, requiring them to backtrack through the error log and install all of the missing packages. This scenario happens all too often, but it need not be the case.
 
 Meet: `pacman`.
 
-Upon installing `pacman`, this simple package minimizes the mental overhead of keeping track of all packages into two lines of code:
+Upon installing `pacman`, the mental overhead of keeping track of all packages is quickly minimized:
 
 ```{r, eval = FALSE}
   library(pacman)
-  p_load(readxl, tidytext, dplyr, ggplot2, caret)
+  p_load(readxl, tidytext, ggplot2)
 ```
 
-Not only does the `p_load` function install packages, it also loads packages. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+
+#### Quick Exercise {-}
+
+There are [X] packages that greatly expand the capabilities of R. And these packages will re-appear again and again throughout this book, namely:
+
+- *readxl*:
+- *tidytext*:
+- *data.table*:
+- *dplyr*: 
+- *ggplot2*:
+- *caret*: 
+
+Write a command to import these core R packages.
 
 
 ## Data I/O
 
-- To loading data into R, you must
-  - tell R where to look for the file,
-  - tell R which function to use load the file, and
-  - tell R the file's name.
-- Directories
+When Captain Jean Luc Picard says "Make it so, Number Two", he is giving the order to execute a command that he specified prior to his statement. All the necessary information needed by the starship's crew to act is embedded in that order, ensuring that a precise output is delivered according to Picard's input. Our interaction with computers is no different. At least at present,  computer programs cannot guess what we intend to do -- although not yet. Computers are designed to interact and respond to humans given specific rules and protocols, and importing data is no different. This is the fundamental idea that underlies data *Input/Output*.
+
+Suppose you need to analyze an Excel file of stock market data. In order to load the data, we need three pieces of information: 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+p_load(DiagrammeR)
+mermaid("graph LR
+        A[Directory] --> B[Function]
+        B --> C[File]",
+        height = 200)
+```
+
+R needs to know where to look for a file (*directory*), how to load the file (*function*), and the name of file (*file*). 
+
+#### Directories {-}
+
+R can import any file, so as long as it is told where to look. By default, the 
+
   - Defining directories: Special strings
+  - directory paths should have forward slashes
   - RStudio helps you complete (tab)
+  - Tips: Avoid using paths with spaces -- replace spaces with underscores "_"
+  - Name paths that are rememberable
+For example, 
+```{r, eval = FALSE}
+#Acceptable Path
+  main_dir <- "/Users/BlackPanther/Wakanda/NewData/"
+
+#Will lead to error
+  main_dir <- "\Users\BlackPanther\Wakanda\NewData\"
+
+# 
+
+```
+
 - Navigating directories
   - `getwd`, `setwd`, and `dir`
-  - Best practice: Define your directories to objects at the start of your script.
-  - Example:
-    - `main_dir <- "/Users/BlackPanther/Wakanda/NewData/"`
-    - `dir(main_dir)`
-    - `setwd(main_dir); getwd`
+
+Best practice: Define your directories to objects at the start of your script.
+
+```{r, eval = FALSE}
+#Set directory path
+  setwd(main_dir)
+  
+#Check path
+  getwd()
+
+#Get list of files in current directory 
+  dir()
+```
+
+#### Load Functions {-}
+
 - When you want to input data in R, you want to the right function for your data's file type. - For instance, we will use the `read_csv` function (from the `readr` package) to read .csv files, whereas we will use the `read_dta` function (from the `haven` package) to read Stata .dta files.
 - Assuming you know the name of the file that you want to load, we are now set!
   - Put it all together... __TODO__
-  - Example... __TODO__
+  - Example... [Question -- should the DIY be plopped in here?__TODO__
+
 
 ## Finding help
 
@@ -206,11 +251,14 @@ If you hit a snag with a function, you can access the function's help file using
 
 ### Google and online communities
 
-One of the best parts of R is the vibrant and (generally) helpful online community... __TODO__
+- One of the best parts of R is the vibrant and (generally) helpful online community...
+- More often than not, Stack Overflow will contain an answer, but it might not necessarily be to your question
+- User beware: R coders looking for an answer may copy and paste code from Stack Overflow without check what it does precisely. This may lead to unintended problems
+
 
 ## DIY
 
-### Solar Generation and the NIST Net Zero Energy House
+### Loading solar energy data from the web
 
 Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost. 
 
@@ -218,36 +266,44 @@ The increased affordability of solar among other advanced technologies opens the
 
 The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels. 
 
-Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv` to import a comma separated values (CSV) file stored at the location in the `url` object, which is held in the R environment as a data frame. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim`: The data set has n = 8,737 with 32 columns.
+Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we load the `pacman` package and use `p_load` to load the `readr` package.
+
+```{r}
+#Load libraries
+  library(pacman)
+  p_load(readr)
+```
+
+With the basic functions loaded, `read_csv` is used to import a comma separated values (CSV) file stored at the given `url`, which is then loaded into memory as a data frame labeled `solar`. We can check the dimensions of the data frame using `dim`: it has n = 8,737 with 32 columns.
 
 ```{r}
 #Create string object with URL
   url <- "https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv"
 
 #Read data direct from web
-  df <- read.csv(url)
+  solar <- read_csv(url)
   
 #Check dimensions
-  dim(df)
+  dim(solar)
 ```
 
-As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `df`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
+As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `solar`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
 
 ```{r}
-  head(df$PV_PVInsolationHArray)
+  head(solar$PV_PVInsolationHArray)
 ```
 
 To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure. 
 
 ```{r}
-  summary(df$PV_PVInsolationHArray)
+  summary(solar$PV_PVInsolationHArray)
 ```
 
 This can be more concisely summarized as the coefficient of variation ($CV = \frac{\text{standard deviation}}{\text{mean}}$) -- the ratio of the standard deviation and the mean. Values of the CV that exceed $CV = 1$ indicate greater dispersion. Otherwise stated, the data may be *wider than it is tall*, therefore greater vales of CV indicate there may be more noise and less consistency in the data. We compute the `mean` and standard deviation `sd`. The resulting CV indicates that one standard deviation is 1.5-times as wide as the mean, suggesting some visible degree of variability in hourly sun exposure.
 
 ```{r}
-  a <- mean(df$PV_PVInsolationHArray)
-  b <- sd(df$PV_PVInsolationHArray)
+  a <- mean(solar$PV_PVInsolationHArray)
+  b <- sd(solar$PV_PVInsolationHArray)
   print(b/a)
 ```
 
