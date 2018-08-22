@@ -105,7 +105,9 @@ While there are many ways to think about dates—`character` data like "January"
 
 ### The `class` function.
 
-Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as numeric, character, factor, or perhaps factor. The `class` function helps you here.
+Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function helps you here.
+
+<!-- TODO: This is the first time we introduce a function. Do we need to go deeper into what a function is and how it is used? -->
 
 Let's see `class` is action...
 
@@ -164,12 +166,32 @@ Looks great!
 
 ## R's object classes
 
+Just as data in R come in different _types_, objects in R come in different _classes_, e.g., a `vector`, a `matrix`, a `data.frame`, or a `list`. Each of the object classes presents a slightly different structure, making it better for some uses and worse for others. We'll review four of the most common data structures now and then will discuss others as they arise throughout the book.
+
 ### `vector`
 
-- Vectors are one of the simplest and most used classes of objects in R.
-- In R, a vector is a one-dimensional ‘list' of values. The values can be logical, numeric, factor, or character, but they must all be of the same type. If they are not, R will coerce them to the most conducive type.
-- The simplest way to create a vector is with the concatenate function: `c`. For instance, to create a vector out of the numbers 1, 2, and 3, we write `c(1, 2, 3)`.
-- __TODO__ Coercion example...  
+`vector` objects are one of the simplest and most used classes of objects in R. Specifically, (in R) a vector is a one-dimensional "list" of values. The values in a `vector` can be `logical`, `numeric`, `factor`, or `character`, but they must all be of the same type. If the objects are not all of the same type, R will _coerce_ them to the most conducive type.
+
+The simplest way to create a vector is with the concatenate function: `c`. To create a `vector` of values, you feed the `c` function your values, each separated by a comma (`,`). For instance, to make a vector out of the numbers 1, 2, and 3, we write `c(1, 2, 3)`. And to create a vector of the characters `"apple"` and `"banana"`, we write `c("apple", "banana")`.
+
+In action:
+```{R, ch3 basic vector}
+# Vector of numbers
+c(1, 2, 3)
+# Vector of characters
+c("apple", "banana")
+```
+
+What happens when we create a vector of a number and a character?
+```{R, ch3 vector mix}
+# Mixed vector
+c(1, "banana")
+```
+R coerces everything to character.
+
+### `vector` and logical operators
+
+__TODO__
 
 ### `matrix`
 
@@ -181,7 +203,7 @@ Looks great!
 
 __TODO__
 
-### `data frame`
+### `data.frame`
 
 __TODO__
 
