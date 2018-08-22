@@ -219,8 +219,6 @@ For example,
 #Will lead to error
   main_dir <- "\Users\BlackPanther\Wakanda\NewData\"
 
-# 
-
 ```
 
 - Navigating directories
@@ -249,20 +247,26 @@ Best practice: Define your directories to objects at the start of your script.
 
 ## Finding help
 
-### R's help (`?` and `??`)
+### Help function
 
-If you hit a snag with a function, you can access the function's help file using `?` in the console. For instance, if you want to know more about the function `read_xlsx` (from the `readxl` package), you can execute `?read_xlsx`—assuming you've already loaded the `readxl` package. If you have not already loaded the package, you can include the package's name, two colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. This little trick works in general—it is not restricted to looking up help files.
+Developers interested in driving adoption of their packages understand that ease of use and clear documentation win the day. Thus, each R function is equipped with documentation to illustrate its syntax and use. As a first line of support, you can access any function's help file using `?<package_name>` in the console. 
+
+For instance, suppose you are interested in importing a spreadsheet using the `read_xlsx` from the `readxl` package, but you would like to have a better understand how to use it. Assuming that `readxl` has been loaded, simply execute the following in the console `?read_xlsx`. If the package has not already been loaded,  include the package's name, double colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. The double colon trick essentially is short hand for obtaining a specific function from a library without importing the entire library and is not restricted to looking up help files.
 
 ### Google and online communities
 
-- One of the best parts of R is the vibrant and (generally) helpful online community...
-- More often than not, Stack Overflow will contain an answer, but it might not necessarily be to your question
-- User beware: R coders looking for an answer may copy and paste code from Stack Overflow without check what it does precisely. This may lead to unintended problems
+One of the best aspects of R is the vibrant and (generally) helpful online community. By simply searching "*R <issue goes here>*", you will likely discover that you are not the first to have faced the challenge at hand. To illustrate the point:
+
+- *Leading zeroes* often are required to convert a number to a certain format. One of the zipcodes for Somerville, MA is `02144`, which sometimes is erroneously converted into a number `2144`. To find a solution to this formatting issue, simply search "*R leading zeroes*".
+- *JSON* or JavaScript Object Notation is a data format that is increasingly used for web data. It requires a package to read and import. Search "*R import JSON*" to find a solution.
+
+It quickly becomes apparent that [Stack Overflow](https://stackoverflow.com/) is a key resource for programming and [Cross Validated](https://stats.stackexchange.com/) for statistics and machine learning. More often than not, these online communities will have an answer and R coders hunting for an answer will copy and paste code without checking what it does. User beware, the answer might not be to your question, be the most efficient, or accurate. Nonetheless, these online resources are a great starting point.
 
 
 ## Best practices: Commenting your scripts
 
 As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
+
 ```{r, ch3 comment self, eval = F}
   # Make sure the packages are installed and loaded.
   p_load(readxl, dplyr)
@@ -271,6 +275,7 @@ As you may have noticed, many of the code snippets in this chapter contained com
   # Load the xlsx file (named 'fake_data.xlsx')
   fake_df <- read_xlsx("fake_data.xlsx")
 ```
+
 In the example above, each comment line briefly describes what we will do in the next line and why we want to do it. Often the _why_ is the most important part: with some experience, you will be able to figure out what each line of an R script does, but it is much more difficult to figure out _why_ the author wrote the 641 lines of code in the middle of a 1200-line R script.
 
 Another popular use of comments in R—and in many other languages—is to flag questions, issues, or unfinished items. The idea here is to start the comment with a quick flag, for instance `# TODO`. This flag helps you find the unfinished parts of your document—or the parts that you want your collaborators to finish for you. For instance, we might start a document
