@@ -6,12 +6,13 @@ __Gist:__  Bare-bone basics: Going deeper into the basics of R. Types of data an
 
 ## Data are everywhere—and they come in all types.
 
-- We see data everywhere, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37..."".
-  - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, Boolean, dates).
-  - "Dow Jones industrial average" references the name of a specific stock-market index.
-  - "today" references a date (as does "earlier")
-  - "56.97" and "21,865.37" are numbers (with units)
-  - There are also data embedded in the phrases "erased", "earlier losses" and "higher".
+We encounter data everywhere we look, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37...".
+
+- Each piece of information corresponds to a different data type (e.g., numeric, string, factors, Boolean, dates).
+- "Dow Jones industrial average" references the name of a specific stock-market index.
+- "today" references a date (as does "earlier")
+- "56.97" and "21,865.37" are numbers (with units)
+- There are also data embedded in the phrases "erased", "earlier losses" and "higher".
 
 ## Data types
 
@@ -107,9 +108,9 @@ While there are many ways to think about dates—`character` data like "January"
 
 Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function helps you here.
 
-<!-- TODO: This is the first time we introduce a function. Do we need to go deeper into what a function is and how it is used? -->
+_A Quick aside on functions:_ This is the first time in this book that we officially use function. We will cover functions in much greater depth throughout the book, but let's cover a few of the basics now. Functions take __arguments__ (the data that you _feed_ the function) and produce __output__. For example, the class function can take on argument like the number `56.97` and will output a character that describes the class of whatever argument we inputted into the function—`"numeric"` in our case. Functions help us complete tasks/analyses that may be too difficult or time-consuming to code by ourselves. Functions also excel at repetitive tasks—you can easily tell R to do something a million times so you don't have to copy and paste a million times. You can also write your own functions in R—but that will come later.
 
-Let's see `class` is action...
+Aside complete. Let's see this `class` function in action.
 
 ```{R, ch3 class type examples}
 # numeric
@@ -182,21 +183,27 @@ c(1, 2, 3)
 c("apple", "banana")
 ```
 
-What happens when we create a vector of a number and a character?
+So what happens when we create a vector of a number and a character?
 ```{R, ch3 vector mix}
 # Mixed vector
 c(1, "banana")
 ```
 R coerces everything to character.
 
+This result may not be what you expected—you may have expected R to allow a vector to contain objects of different types.^[Wait a few sections for R's `list`.] At some point, the folks who developed R made this decision—and millions of other little decisions—that led to the current implementation of R. As you get deeper into R, you will find that there is a logic to these decisions (e.g., why R tells you it is `TRUE` that `"apple pie" < "banana cream pie"`), but R will still occasionally surprise you. And that is part of learning to program in R. So don't be afraid to dive into the rabbit holes that surprise you. You may lose a few hours in the short run, but in the long run you'll become an excellent data scientist.^[And R Wizard.]
+
 ### `vector` and logical operators
 
-__TODO__
+__TODO:__
+
+__TODO:__ Do we want to talk about vectorized operations here too?
 
 ### `matrix`
 
-- R's matrices are very close what your mathematics courses taught you: they are rows and columns filled with data. You can fill your R matrices with numbers, but you can also fill them with other types of data—just as you can with vectors.
-- The matrix function in R takes two arguments...
+The next class of objects we'll discuss is R's `matrix` class. In R, matrices are very similar to the matrices you met in your mathematics courses: they have rows and columns filled with data. However, in addition to filling your matrices with numbers, as you did in your math courses, in R You can also fill your `matrix` with other types of data—e.g., logical, character, factor (just as you can with vectors).
+
+The matrix function in R takes two arguments...
+
 - __TODO__ Example
 
 ### The `class` function again!
@@ -281,7 +288,7 @@ Upon installing `pacman`, the mental overhead of keeping track of all packages i
 ```
 
 Ω
-The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync.
 
 #### Quick Exercise {-}
 
@@ -290,9 +297,9 @@ There are [X] packages that greatly expand the capabilities of R. And these pack
 - *readxl*:
 - *tidytext*:
 - *data.table*:
-- *dplyr*: 
+- *dplyr*:
 - *ggplot2*:
-- *caret*: 
+- *caret*:
 
 Write a command to import these core R packages.
 
@@ -301,7 +308,7 @@ Write a command to import these core R packages.
 
 When Captain Jean Luc Picard says "Make it so, Number Two", he is giving the order to execute a command that he specified prior to his statement. All the necessary information needed by the starship's crew to act is embedded in that order, ensuring that a precise output is delivered according to Picard's input. Our interaction with computers is no different. Computer programs cannot guess what we intend to do -- although not yet. Computers are designed to interact and respond to humans given specific rules and protocols, and importing data is no different. This is the fundamental idea that underlies data *Input/Output*.
 
-Suppose you need to analyze an Excel file of stock market data. In order to load the data, we need three pieces of information: 
+Suppose you need to analyze an Excel file of stock market data. In order to load the data, we need three pieces of information:
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE}
 p_load(DiagrammeR)
@@ -311,11 +318,11 @@ mermaid("graph LR
         height = 200)
 ```
 
-R needs to know where to look for a file (*directory*), how to load the file (*function*), and the name of file (*file*). 
+R needs to know where to look for a file (*directory*), how to load the file (*function*), and the name of file (*file*).
 
 #### Directories {-}
 
-R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`. 
+R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`.
 
 *Rules and Tips with Paths*. There are basic rules and best practices that ensure that folder management is smooth. In R, each subfolder in a directory paths should be denoted with a forward slash. If one has a particular affinity for backslashes, then know that only Windows computers support backslashes, but there must be two backslashes for every slash. While it might not matter in R, it is generally good programming practice to avoid adding spaces to paths, like `Black Panther`. Spaces should be replaced with spaces with underscores "_".
 
@@ -326,12 +333,12 @@ Name paths that are rememberable
 - *Acceptable path on Mac and Windows Machines*: `/Users/Black_Panther/Tech_and_Travel/Bills/`
 - *Acceptable path in Windows*: `C:\\Users\\BlackPanther\\Tech_and_Travel\\Bills\\`
 
-Note that the erroneous path that begins with `\Users` conflates the combination `\U` with special characters rather than as strings representing paths. 
+Note that the erroneous path that begins with `\Users` conflates the combination `\U` with special characters rather than as strings representing paths.
 
-To put the paths in 
+To put the paths in
   - RStudio helps you complete (tab)
-  - 
-For example, 
+  -
+For example,
 
 
 
@@ -343,11 +350,11 @@ Best practice: Define your directories to objects at the start of your script.
 ```{r, eval = FALSE}
 #Set directory path
   setwd(main_dir)
-  
+
 #Check path
   getwd()
 
-#Get list of files in current directory 
+#Get list of files in current directory
   dir()
 ```
 
@@ -363,7 +370,7 @@ Best practice: Define your directories to objects at the start of your script.
 
 ### Help function
 
-Developers interested in driving adoption of their packages understand that ease of use and clear documentation win the day. Thus, each R function is equipped with documentation to illustrate its syntax and use. As a first line of support, you can access any function's help file using `?<package_name>` in the console. 
+Developers interested in driving adoption of their packages understand that ease of use and clear documentation win the day. Thus, each R function is equipped with documentation to illustrate its syntax and use. As a first line of support, you can access any function's help file using `?<package_name>` in the console.
 
 For instance, suppose you are interested in importing a spreadsheet using the `read_xlsx` from the `readxl` package, but you would like to have a better understand how to use it. Assuming that `readxl` has been loaded, simply execute the following in the console `?read_xlsx`. If the package has not already been loaded,  include the package's name, double colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. The double colon trick essentially is short hand for obtaining a specific function from a library without importing the entire library and is not restricted to looking up help files.
 
@@ -441,7 +448,7 @@ With the basic functions loaded, `read_csv` is used to import a comma separated 
 
 #Read data direct from web
   solar <- read_csv(url)
-  
+
 #Check dimensions
   dim(solar)
 ```
