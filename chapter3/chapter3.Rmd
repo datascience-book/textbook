@@ -341,6 +341,7 @@ class(c(T, F, T))
 # Coercion to character
 class(c(T, 3, "Hi"))
 ```
+The takeaway? R 'thinks' about different types of vectors as different classes of objects.
 
 In addition, each object class also has its own function to check whether an object belongs to the class. For instance, you can use the `is.matrix` to check whether an object is a `matrix`. Type `is.` into the RStudio console and then hit your tab key—you will get a glimpse of all of these `is.*` class functions.
 
