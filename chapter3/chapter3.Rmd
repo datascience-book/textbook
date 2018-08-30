@@ -287,6 +287,9 @@ data.frame(
 ```
 Notice that R's error message gives us a hint to what the problem is: `arguments imply differing number of rows: 4, 3`. Generally, error messages in R will contain a hint of the problem, but you have not know a bit about R to understand the hints (e.g., here we need to know the rules about column lengths in a `data.frame`). As a result, error messages can seem a bit cryptic while you are in the early stages of learning R.
 
+_Aside:_ In the `data.frame` examples above, we wrote `data.frame(` and then went to the next line to define the columns. R does not stop at the end of the line, because it 'knows' that the `data.frame` definition is unfinished. You don't have to define a `data.frame` over multiple lines^[You can do it in one line: `data.frame(some_letters = c("a", "A", "b", "B"), some_numbers = 1:3)
+`], but using multiple lines tends to make your code more legible and easier to troubleshoot.
+
 ### `list`
 
 R's `list` class of objects is exactly what its name implies—it lists things. Similar to the `vector`, a `list` has only one dimension—its length. Unlike the `vector`, a `list` can contain objects of many different types. The crazy part of `list` its elements can be _anything_. You are not stuck with simple objects like `1` or `T` or `"Some text"`. A single `list` can have `vector`s, `data.frame`s, and even other `list`s as its elements.
