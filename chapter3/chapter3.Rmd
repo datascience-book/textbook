@@ -232,7 +232,7 @@ matrix(data = 1:6, nrow = 2, byrow = TRUE)
 As we mentioned earlier: you can create matrices filled with essentially any type of data.
 ```{R, ch3 matrix ex types}
 # Character
-matrix(data = c("Six", "words", "can", "be", "a" "lot."), ncol = 3, byrow = T)
+matrix(data = c("Six", "words", "can", "be", "a", "lot."), ncol = 3, byrow = T)
 # Logical
 matrix(data = c(T, T, F, F, F, T), ncol = 3)
 ```
@@ -415,7 +415,7 @@ Meet: `pacman`.
 
 Upon installing `pacman`, the mental overhead of keeping track of all packages is quickly minimized:
 
-```{r, eval = FALSE}
+```{r, eval = T}
   library(pacman)
   p_load(readxl, tidytext, ggplot2)
 ```
