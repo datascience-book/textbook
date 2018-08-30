@@ -108,7 +108,7 @@ While there are many ways to think about dates—`character` data like "January"
 
 Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function helps you here.
 
-_A Quick aside on functions:_ This is the first time in this book that we officially use function. We will cover functions in much greater depth throughout the book, but let's cover a few of the basics now. Functions take __arguments__ (the data that you _feed_ the function) and produce __output__. For example, the class function can take on argument like the number `56.97` and will output a character that describes the class of whatever argument we inputted into the function—`"numeric"` in our case. Functions help us complete tasks/analyses that may be too difficult or time-consuming to code by ourselves. Functions also excel at repetitive tasks—you can easily tell R to do something a million times so you don't have to copy and paste a million times. You can also write your own functions in R—but that will come later.
+_A Quick aside on functions:_ This is the first time in this book that we officially use function. We will cover functions in much greater depth throughout the book, but let's cover a few of the basics now. Functions take __arguments__ (the data that you _feed_ the function) and produce __output__. For example, the class function takes one argument like the number `56.97` and will output a character that describes the class of whatever argument we inputted into the function—`"numeric"` in our case. Functions help us complete tasks/analyses that may be too difficult or time-consuming to code by ourselves. Functions also excel at repetitive tasks—you can easily tell R to do something a million times so you don't have to copy and paste a million times. You can also write your own functions in R—but that will come later.
 
 Aside complete. Let's see this `class` function in action.
 
@@ -136,6 +136,15 @@ class(as.Date("2015-12-31"))
 class(class)
 # <Mind blows>
 ```
+
+One more note on functions: Many functions in R take many arguments, and sometimes arguments are optional. To keep track of which values you are assigning to which arguments, it is often best to use the argument's name. In the `class` examples that we just covered, we implicitly assigned the various values that we fed to `class` to its sole argument `x`. We could have also used the argument's name.
+```{R, ch3 class argument naming}
+# Without the argument's name
+class(TRUE)
+# With the argument's name
+class(x = TRUE)
+```
+Both options produce the same output, but the second example—in which we explicitly use the argument's name—makes it a bit clearer what we are doing. We admit it doesn't really matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
 
 ## Objects in R
 
@@ -192,29 +201,149 @@ R coerces everything to character.
 
 This result may not be what you expected—you may have expected R to allow a vector to contain objects of different types.^[Wait a few sections for R's `list`.] At some point, the folks who developed R made this decision—and millions of other little decisions—that led to the current implementation of R. As you get deeper into R, you will find that there is a logic to these decisions (e.g., why R tells you it is `TRUE` that `"apple pie" < "banana cream pie"`), but R will still occasionally surprise you. And that is part of learning to program in R. So don't be afraid to dive into the rabbit holes that surprise you. You may lose a few hours in the short run, but in the long run you'll become an excellent data scientist.^[And R Wizard.]
 
-### `vector` and logical operators
-
-__TODO:__
-
-__TODO:__ Do we want to talk about vectorized operations here too?
-
 ### `matrix`
 
 The next class of objects we'll discuss is R's `matrix` class. In R, matrices are very similar to the matrices you met in your mathematics courses: they have rows and columns filled with data. However, in addition to filling your matrices with numbers, as you did in your math courses, in R You can also fill your `matrix` with other types of data—e.g., logical, character, factor (just as you can with vectors).
 
-The matrix function in R takes two arguments...
+You generally will need to feed two arguments to R's `matrix` function:
 
-- __TODO__ Example
+1. The `data` that you want placed into your matrix, as a `vector`
+2. The number of rows (`nrow`) in your matrix
 
-### The `class` function again!
+For example, let's imagine we want a matrix with 2 rows and 3 columns that contains the integers one through six. Then we need to feed `matrix` a (1) a vector containing the integers one through six, and (2) `nrow = 2`, telling R we want two rows.
 
-__TODO__
+_Aside on creating numeric sequences:_ As we covered before, you can easily create short numeric vectors using the `c` function, e.g., `c(1, 2, 3)`. But this construction quickly gets tedious for longer vectors—even creating a vector of the integers between 1 and 100 would be a nightmare with only the `c` function. Lucky for us, R's makers included a quick and easy fix: `a:b` generates a numeric vector containing the integers from `a` to `b` (inclusive of `a` and `b`). E.g., `1:100` will create a vector with the integers 1 to 100.^[For more complicated tasks, there's also the sequence function `seq`, which takes the starting value for the sequence (`from`), the stopping value for the sequence (`to`), and the _distance_ between each of the items in the sequence (`by`).]
+```{R, ch3 sequence example}
+# Old school
+c(1, 2, 3, 4, 5, 6)
+# New school
+1:6
+```
+
+Using our new sequence knowledge, we can create our 2$\times$3 matrix^[Two rows and three columns] with the integers one through six.
+```{R, ch3 matrix example}
+matrix(data = 1:6, nrow = 2)
+```
+And there we have it. Notice that because the `matrix` function takes two arguments, we explicitly named the arguments^[Not necessary but highly helpful.] and we separated the two arguments' assignments with a comma. Also notice that by default, R filled the matrix _by its columns_ (top to bottom and then left to right). If you would rather fill your matrix _by its rows_, you can add the optional argument `byrow = TRUE` to the `matrix` function:
+```{R, ch3 matrix ex by row}
+matrix(data = 1:6, nrow = 2, byrow = TRUE)
+```
+
+As we mentioned earlier: you can create matrices filled with essentially any type of data.
+```{R, ch3 matrix ex types}
+# Character
+matrix(data = c("Six", "words", "can", "be", "a" "lot."), ncol = 3, byrow = T)
+# Logical
+matrix(data = c(T,T,F,F,F,T, ncol = 3))
+```
+
+Finally, notice that you can force R to fill in a `matrix` by specifying both the number of rows (`nrow`) __and__ the number of columns (`ncol`) for a `matrix`.
+```{R, ch3 matrix ex fill}
+matrix(data = 1, nrow = 3, ncol = 2)
+```
 
 ### `data.frame`
 
-__TODO__
+As a budding data scientist, one day you will wake up and find yourself surrounded by `data.frame`s. The `data.frame` is the basic object for data entry and analysis in R—much like a table of data or a spreadsheet (but better). Just like a `matrix`, a `data.frame` has rows and columns. Unlike a `matrix`, a `data.frame` can have different types of data in each of its columns. In addition, you will name each of the columns in your `data.frame`.
+
+In general, you define a `data.frame` using the following conventions:
+```{R, data frame conventions, eval = F}
+data.frame(
+  column1 = values...,
+  column2 = values...,
+  ...
+  columnN = values
+)
+```
+
+More concretely, let's create a two-column `data.frame`. The first column will be called `some_letters` and will contain... some letters. The second column with be called `some_numbers`...
+```{R, ch3 data frame example}
+data.frame(
+  some_letters = c("a", "A", "b", "B"),
+  some_numbers = 1:4
+)
+```
+
+One of the main requirements for a `data.frame` is that R needs to be able to fill each of the `data.frame`'s columns. In practice this requirement means one of two things:
+
+1. The values you specify for each column have the same number of elements (as they do above).
+2. The numbers of elements you specify for each column are multiples of each other.
+
+For an example of the second option:
+```{R, ch3 data frame ex multiples}
+data.frame(
+  some_letters = c("a", "A", "b", "B"),
+  some_numbers = 1:2
+)
+```
+R repeats the shorter vector (the second column in this example) until the two columns are the same length.
+
+If the numbers of elements are not multiples (e.g., 4 and 3), R will refuse to construct the `data.frame`, and you will get an error. E.g.,
+```{R, ch3 data frame ex error, error = T}
+data.frame(
+  some_letters = c("a", "A", "b", "B"),
+  some_numbers = 1:3
+)
+```
+Notice that R's error message gives us a hint to what the problem is: `arguments imply differing number of rows: 4, 3`. Generally, error messages in R will contain a hint of the problem, but you have not know a bit about R to understand the hints (e.g., here we need to know the rules about column lengths in a `data.frame`). As a result, error messages can seem a bit cryptic while you are in the early stages of learning R.
 
 ### `list`
+
+R's `list` class of objects is exactly what its name implies—it lists things. Similar to the `vector`, a `list` has only one dimension—its length. Unlike the `vector`, a `list` can contain objects of many different types. The crazy part of `list` its elements can be _anything_. You are not stuck with simple objects like `1` or `T` or `"Some text"`. A single `list` can have `vector`s, `data.frame`s, and even other `list`s as its elements.
+
+The conventions for creating a `list` mirror what we've discussed so far—especially with the `vector`-creating `c` function: You simply pass the objects you want in the `list` as the arguments to the `list` function:
+```{R, ch3 list example}
+list(
+  "apples",
+  c(T, F, T),
+  matrix(data = 1:4, nrow = 2),
+  data.frame(var1 = 9:10, var2 = 11:12)
+)
+```
+Here we have a (very mixed) four-element `list`, whose individual elements are
+
+1. a one-element `character` vector,
+2. a three-element `logical` vector,
+3. a 2$\times$2 `matrix`, and
+4. a two-variable `data.frame`
+
+As with most objects in R—and just as we did with the columns of the `data.frame`—you can name the individual elements of the `list` when you create the `list`. Let's re-create the `list`, naming its elements with super-creative names.
+```{R, ch3 list ex naming}
+list(
+  el_1 = "apples",
+  el_2 = c(T, F, T),
+  el_3 = matrix(data = 1:4, nrow = 2),
+  el_4 = data.frame(var1 = 9:10, var2 = 11:12)
+)
+```
+Our knowledge and creativity are impressive, right?
+
+### The `class` function, v2
+
+Previously we used the `class` function to learn the data types of various objects (e.g., `class(3.1415)`). You can also use `class` to learn about an object's class. For example,
+```{R, ch3 object classes}
+# Check the class of a matrix
+class(matrix(data = 1:4, nrow = 2))
+# Check the class of a data.frame
+class(data.frame(a = 1:3, b = 1:6))
+# Check the class of a list
+class(list(a = 1:3, b = 1:6))
+```
+
+However, if you check the class of a `vector`, R will not tell you `"vector"`. Rather, R will tell you what type of vector you have—`numeric`, `logical`, `character`, etc.
+```{R, ch3 vector types}
+# Numeric vector class
+class(c(1, 2, 3))
+# Character vector class
+class(c("a", "b", "c"))
+# Logical vector class
+class(c(T, F, T))
+# Coercion to character
+class(c(T, 3, "Hi"))
+```
+
+In addition, each object class also has its own function to check whether an object belongs to the class. For instance, you can use the `is.matrix` to check whether an object is a `matrix`. Type `is.` into the RStudio console and then hit your tab key—you will get a glimpse of all of these `is.*` class functions.
+
 
 ### More classes
 
@@ -287,7 +416,6 @@ Upon installing `pacman`, the mental overhead of keeping track of all packages i
   p_load(readxl, tidytext, ggplot2)
 ```
 
-Ω
 The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync.
 
 #### Quick Exercise {-}
@@ -324,7 +452,7 @@ R needs to know where to look for a file (*directory*), how to load the file (*f
 
 R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`.
 
-*Rules and Tips with Paths*. There are basic rules and best practices that ensure that folder management is smooth. In R, each subfolder in a directory paths should be denoted with a forward slash. If one has a particular affinity for backslashes, then know that only Windows computers support backslashes, but there must be two backslashes for every slash. While it might not matter in R, it is generally good programming practice to avoid adding spaces to paths, like `Black Panther`. Spaces should be replaced with spaces with underscores "_".
+*Rules and Tips with Paths*. There are basic rules and best practices that ensure that folder management is smooth. In R, each subfolder in a directory paths should be denoted with a forward slash. If one has a particular affinity for backslashes, then know that only Windows computers support backslashes, but there must be two backslashes for every slash. While it might not matter in R, it is generally good programming practice to avoid adding spaces to paths, like `Black Panther`. Spaces should be replaced with spaces with underscores (`_`).
 
 Name paths that are rememberable
 
