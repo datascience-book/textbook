@@ -260,70 +260,127 @@ When a package is loaded, it is only temporarily help in the computer's memory. 
 
 ### Package management and `pacman`
 
-While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes).
-
-
-(Maybe use this as an opportunity to install our base stack?)
-
-
-There are [X] packages that greatly expand the capabilities of R. And these packages will reappear again and again throughout this book. What if we needed to load all [X] packages? The manual option is to embrace the tedium:
+While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes). What if we needed to load these three packages? The manual option requires one to embrace the tedium:
 
 ```{r, eval = FALSE}
   library(readxl)
   library(tidytext)
-  library(dplyr)
   library(ggplot2)
-  library(caret)
   ...
 ```
 
-Then, when the code is shared with a collaborator, they might not have all of the packages installed, meaning the script will *crash*, requiring them to read through the error log and find all of the missing packages.
+And the tedium does not end on your computer. When the code is shared with a collaborator, they may not have all of the packages installed, meaning the script will *crash*, requiring them to backtrack through the error log and install all of the missing packages. This scenario happens all too often, but it need not be the case.
 
 Meet: `pacman`.
 
-Upon installing `pacman`, this simple package minimizes the mental overhead of keeping track of all packages into two lines of code:
+Upon installing `pacman`, the mental overhead of keeping track of all packages is quickly minimized:
 
 ```{r, eval = FALSE}
   library(pacman)
-  p_load(readxl, tidytext, dplyr, ggplot2, caret)
+  p_load(readxl, tidytext, ggplot2)
 ```
 
-Not only does the `p_load` function install packages, it also loads packages. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync.
+Ω
+The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync. 
+
+#### Quick Exercise {-}
+
+There are [X] packages that greatly expand the capabilities of R. And these packages will re-appear again and again throughout this book, namely:
+
+- *readxl*:
+- *tidytext*:
+- *data.table*:
+- *dplyr*: 
+- *ggplot2*:
+- *caret*: 
+
+Write a command to import these core R packages.
+
 
 ## Data I/O
 
-- To loading data into R, you must
-  - tell R where to look for the file,
-  - tell R which function to use load the file, and
-  - tell R the file's name.
-- Directories
-  - Defining directories: Special strings
+When Captain Jean Luc Picard says "Make it so, Number Two", he is giving the order to execute a command that he specified prior to his statement. All the necessary information needed by the starship's crew to act is embedded in that order, ensuring that a precise output is delivered according to Picard's input. Our interaction with computers is no different. Computer programs cannot guess what we intend to do -- although not yet. Computers are designed to interact and respond to humans given specific rules and protocols, and importing data is no different. This is the fundamental idea that underlies data *Input/Output*.
+
+Suppose you need to analyze an Excel file of stock market data. In order to load the data, we need three pieces of information: 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+p_load(DiagrammeR)
+mermaid("graph LR
+        A[Directory] --> B[Function]
+        B --> C[File]",
+        height = 200)
+```
+
+R needs to know where to look for a file (*directory*), how to load the file (*function*), and the name of file (*file*). 
+
+#### Directories {-}
+
+R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`. 
+
+*Rules and Tips with Paths*. There are basic rules and best practices that ensure that folder management is smooth. In R, each subfolder in a directory paths should be denoted with a forward slash. If one has a particular affinity for backslashes, then know that only Windows computers support backslashes, but there must be two backslashes for every slash. While it might not matter in R, it is generally good programming practice to avoid adding spaces to paths, like `Black Panther`. Spaces should be replaced with spaces with underscores "_".
+
+Name paths that are rememberable
+
+- *Erroneous path*: `\Users\BlackPanther\Tech and Travel\Bills\`
+- *Acceptable path on Mac but could be better*: `/Users/Black Panther/Tech and Travel/Bills/`
+- *Acceptable path on Mac and Windows Machines*: `/Users/Black_Panther/Tech_and_Travel/Bills/`
+- *Acceptable path in Windows*: `C:\\Users\\BlackPanther\\Tech_and_Travel\\Bills\\`
+
+Note that the erroneous path that begins with `\Users` conflates the combination `\U` with special characters rather than as strings representing paths. 
+
+To put the paths in 
   - RStudio helps you complete (tab)
+  - 
+For example, 
+
+
+
 - Navigating directories
   - `getwd`, `setwd`, and `dir`
-  - Best practice: Define your directories to objects at the start of your script.
-  - Example:
-    - `main_dir <- "/Users/BlackPanther/Wakanda/NewData/"`
-    - `dir(main_dir)`
-    - `setwd(main_dir); getwd`
+
+Best practice: Define your directories to objects at the start of your script.
+
+```{r, eval = FALSE}
+#Set directory path
+  setwd(main_dir)
+  
+#Check path
+  getwd()
+
+#Get list of files in current directory 
+  dir()
+```
+
+#### Load Functions {-}
+
 - When you want to input data in R, you want to the right function for your data's file type. - For instance, we will use the `read_csv` function (from the `readr` package) to read .csv files, whereas we will use the `read_dta` function (from the `haven` package) to read Stata .dta files.
 - Assuming you know the name of the file that you want to load, we are now set!
   - Put it all together... __TODO__
-  - Example... __TODO__
+  - Example... [Question -- should the DIY be plopped in here?__TODO__
+
 
 ## Finding help
 
-### R's help (`?` and `??`)
+### Help function
 
-If you hit a snag with a function, you can access the function's help file using `?` in the console. For instance, if you want to know more about the function `read_xlsx` (from the `readxl` package), you can execute `?read_xlsx`—assuming you've already loaded the `readxl` package. If you have not already loaded the package, you can include the package's name, two colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. This little trick works in general—it is not restricted to looking up help files.
+Developers interested in driving adoption of their packages understand that ease of use and clear documentation win the day. Thus, each R function is equipped with documentation to illustrate its syntax and use. As a first line of support, you can access any function's help file using `?<package_name>` in the console. 
+
+For instance, suppose you are interested in importing a spreadsheet using the `read_xlsx` from the `readxl` package, but you would like to have a better understand how to use it. Assuming that `readxl` has been loaded, simply execute the following in the console `?read_xlsx`. If the package has not already been loaded,  include the package's name, double colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. The double colon trick essentially is short hand for obtaining a specific function from a library without importing the entire library and is not restricted to looking up help files.
 
 ### Google and online communities
 
-One of the best parts of R is the vibrant and (generally) helpful online community... __TODO__
+One of the best aspects of R is the vibrant and (generally) helpful online community. By simply searching "*R <issue goes here>*", you will likely discover that you are not the first to have faced the challenge at hand. To illustrate the point:
+
+- *Leading zeroes* often are required to convert a number to a certain format. One of the zipcodes for Somerville, MA is `02144`, which sometimes is erroneously converted into a number `2144`. To find a solution to this formatting issue, simply search "*R leading zeroes*".
+- *JSON* or JavaScript Object Notation is a data format that is increasingly used for web data. It requires a package to read and import. Search "*R import JSON*" to find a solution.
+
+It quickly becomes apparent that [Stack Overflow](https://stackoverflow.com/) is a key resource for programming and [Cross Validated](https://stats.stackexchange.com/) for statistics and machine learning. More often than not, these online communities will have an answer and R coders hunting for an answer will copy and paste code without checking what it does. User beware, the answer might not be to your question, be the most efficient, or accurate. Nonetheless, these online resources are a great starting point.
+
 
 ## Best practices: Commenting your scripts
 
 As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
+
 ```{r, ch3 comment self, eval = F}
   # Make sure the packages are installed and loaded.
   p_load(readxl, dplyr)
@@ -332,6 +389,7 @@ As you may have noticed, many of the code snippets in this chapter contained com
   # Load the xlsx file (named 'fake_data.xlsx')
   fake_df <- read_xlsx("fake_data.xlsx")
 ```
+
 In the example above, each comment line briefly describes what we will do in the next line and why we want to do it. Often the _why_ is the most important part: with some experience, you will be able to figure out what each line of an R script does, but it is much more difficult to figure out _why_ the author wrote the 641 lines of code in the middle of a 1200-line R script.
 
 Another popular use of comments in R—and in many other languages—is to flag questions, issues, or unfinished items. The idea here is to start the comment with a quick flag, for instance `# TODO`. This flag helps you find the unfinished parts of your document—or the parts that you want your collaborators to finish for you. For instance, we might start a document
@@ -359,7 +417,7 @@ Finally, it is worth saying that the style and amount of commenting, flagging, a
 
 ## DIY
 
-### Solar Generation and the NIST Net Zero Energy House
+### Loading solar energy data from the web
 
 Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost.
 
@@ -367,36 +425,44 @@ The increased affordability of solar among other advanced technologies opens the
 
 The test bed also generates an extraordinary amount of data that help engineers study how to make more energy efficient homes and may one day inform building standards and policies. As a first step with R, we tap into one slice of the net zero house's photovoltaic time series data, which is made available publicly at  [https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv](https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv). This data set contains hourly estimates of solar energy production and exposure on the Net Zero home's solar panels.
 
-Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we use `read.csv` to import a comma separated values (CSV) file stored at the location in the `url` object, which is held in the R environment as a data frame. Upon import, the CSV is held in a data frame labeled `df`. We can check the dimensions of the data frame using `dim`: The data set has n = 8,737 with 32 columns.
+Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we load the `pacman` package and use `p_load` to load the `readr` package.
+
+```{r}
+#Load libraries
+  library(pacman)
+  p_load(readr)
+```
+
+With the basic functions loaded, `read_csv` is used to import a comma separated values (CSV) file stored at the given `url`, which is then loaded into memory as a data frame labeled `solar`. We can check the dimensions of the data frame using `dim`: it has n = 8,737 with 32 columns.
 
 ```{r}
 #Create string object with URL
   url <- "https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv"
 
 #Read data direct from web
-  df <- read.csv(url)
-
+  solar <- read_csv(url)
+  
 #Check dimensions
-  dim(df)
+  dim(solar)
 ```
 
-As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `df`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
+As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `solar`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
 
 ```{r}
-  head(df$PV_PVInsolationHArray)
+  head(solar$PV_PVInsolationHArray)
 ```
 
 To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure.
 
 ```{r}
-  summary(df$PV_PVInsolationHArray)
+  summary(solar$PV_PVInsolationHArray)
 ```
 
 This can be more concisely summarized as the coefficient of variation ($CV = \frac{\text{standard deviation}}{\text{mean}}$) -- the ratio of the standard deviation and the mean. Values of the CV that exceed $CV = 1$ indicate greater dispersion. Otherwise stated, the data may be *wider than it is tall*, therefore greater vales of CV indicate there may be more noise and less consistency in the data. We compute the `mean` and standard deviation `sd`. The resulting CV indicates that one standard deviation is 1.5-times as wide as the mean, suggesting some visible degree of variability in hourly sun exposure.
 
 ```{r}
-  a <- mean(df$PV_PVInsolationHArray)
-  b <- sd(df$PV_PVInsolationHArray)
+  a <- mean(solar$PV_PVInsolationHArray)
+  b <- sd(solar$PV_PVInsolationHArray)
   print(b/a)
 ```
 
