@@ -234,7 +234,7 @@ As we mentioned earlier: you can create matrices filled with essentially any typ
 # Character
 matrix(data = c("Six", "words", "can", "be", "a" "lot."), ncol = 3, byrow = T)
 # Logical
-matrix(data = c(T,T,F,F,F,T, ncol = 3))
+matrix(data = c(T, T, F, F, F, T), ncol = 3)
 ```
 
 Finally, notice that you can force R to fill in a `matrix` by specifying both the number of rows (`nrow`) __and__ the number of columns (`ncol`) for a `matrix`.
