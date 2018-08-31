@@ -1,0 +1,27 @@
+# Chapter 8: Regression Methods
+
+__Main question of the chapter:__ How can we construct predictions of wages, sales prices, test scores, and other continuous outcomes using their associated underlying characteristics?
+
+__Gist:__ Decision makers often are missing information, which then requires one to use their gut. But this need not be the case in the information age. Suppose we would like to anticipate how wages are valued in the labor market. We can construct a statistical model that relates worker characteristics and skills to their wages. In other words, each characteristic is worth something in the marketplace and the average value of each characteristic can be assessed.  In application, constructing a regression model not only can fill in the blanks for missing cases, but show if someone is over- or undervalued relative to the market and identify disparities holding all else constant. Wage models are only one of a many forms of regression—techniques that predict the conditional expected value given some input attributes. Regression not only can support causal inference by measuring the average effect of an intervention, but also serve as scoring engines that help inform expectations. In this chapter, we introduce ordinary least squares (OLS)—the long standing workhorse of the sciences—and present it in the many contexts in which it is effective. We then extend regression to variants that are more flexible and are well-suited in big data environments.
+
+__Outline__
+
+- Opening Story Related To Policy or Public Affairs
+- Regression
+  - Basic formulation of OLS.
+  - Prediction problems
+  - Causal experiments
+    - Regression in the context of effect identification and parameterization
+    - ARIMAs for Interrupted Time Series?
+    - OLS and its implicit weighting of heterogeneous effects
+- Regularized Regression
+  - Although OLS is the long-standing workhorse in data analysis, it has shortcomings in the modern data age.
+  - LASSO and Ridge Regression.
+- k-Nearest Neighbors.
+  - In cases where we believe that features have equal weight or there is not a clear pattern as to how targets are related, kNN is useful.
+  - More...
+- DIY
+  - Housing sales price prediction (Data: NYC Housing Data)
+  - Wage attainment and Oaxaca Decomposition (Data: US Census Bureau ACS)
+  - An homage to Google Flu and a cautionary tale (Data: Google Trends and CDC)
+  - Imputation models for different types of data (Data: Landsat NDVI, employment data)
