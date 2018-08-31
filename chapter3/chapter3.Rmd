@@ -32,7 +32,7 @@ pi
 
 ### `character`
 
-You will most often encounter `character` data (also strings as _strings_) in datasets of linguistic text—e.g., court transcripts, novels, text messages, or government audit reports. You tell R that text is `character`-type data by wrapping the text in quotation marks, e.g., `"Text"`. Both single quotes (``) and double quotes (``) work, you just.
+You will most often encounter `character` data (also strings as _strings_) in datasets of linguistic text—e.g., court transcripts, novels, text messages, or government audit reports. You tell R that text is `character`-type data by wrapping the text in quotation marks, e.g., `"Text"`. Both single quotes (`'`) and double quotes (`"`) work, you just.
 
 Text examples:
 ```{R, ch3 chacter}
@@ -220,7 +220,7 @@ c(1, 2, 3, 4, 5, 6)
 1:6
 ```
 
-Using our new sequence knowledge, we can create our 2$\times$3 matrix^[Two rows and three columns] with the integers one through six.
+Using our new sequence knowledge, we can create our $2 \times 3$ matrix^[Two rows and three columns] with the integers one through six.
 ```{R, ch3 matrix example}
 matrix(data = 1:6, nrow = 2)
 ```
@@ -307,7 +307,7 @@ Here we have a (very mixed) four-element `list`, whose individual elements are
 
 1. a one-element `character` vector,
 2. a three-element `logical` vector,
-3. a 2$\times$2 `matrix`, and
+3. a $2 \times 2$ `matrix`, and
 4. a two-variable `data.frame`
 
 As with most objects in R—and just as we did with the columns of the `data.frame`—you can name the individual elements of the `list` when you create the `list`. Let's re-create the `list`, naming its elements with super-creative names.
