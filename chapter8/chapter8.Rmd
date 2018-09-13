@@ -1,5 +1,10 @@
 # Chapter 8: Regression Methods
 
+```{r, ch8 load packages silently, echo = F}
+invisible(library(pacman))
+invisible(p_load(ggplot2, data.table, magrittr, viridis, ggthemes))
+```
+
 __Main question of the chapter:__ How can we construct predictions of wages, sales prices, test scores, and other continuous outcomes using their associated underlying characteristics?
 
 __Gist:__ Decision makers often are missing information, which then requires one to use their gut. But this need not be the case in the information age. Suppose we would like to anticipate how wages are valued in the labor market. We can construct a statistical model that relates worker characteristics and skills to their wages. In other words, each characteristic is worth something in the marketplace and the average value of each characteristic can be assessed.  In application, constructing a regression model not only can fill in the blanks for missing cases, but show if someone is over- or undervalued relative to the market and identify disparities holding all else constant. Wage models are only one of a many forms of regression—techniques that predict the conditional expected value given some input attributes. Regression not only can support causal inference by measuring the average effect of an intervention, but also serve as scoring engines that help inform expectations. In this chapter, we introduce ordinary least squares (OLS)—the long standing workhorse of the sciences—and present it in the many contexts in which it is effective. We then extend regression to variants that are more flexible and are well-suited in big data environments.
@@ -25,3 +30,78 @@ __Outline__
   - Wage attainment and Oaxaca Decomposition (Data: US Census Bureau ACS)
   - An homage to Google Flu and a cautionary tale (Data: Google Trends and CDC)
   - Imputation models for different types of data (Data: Landsat NDVI, employment data)
+
+## A Story of Regression
+
+__TODO__
+
+## Opening
+
+In this chapter, we will focus on one of the classic workhorses of social science: linear regression. At its heart, linear regression is a fairly simple method for fitting a line (or a curve) through a set of data points. In other words: Linear regression helps you visualize and quantify how one variable (your _outcome_ or _dependent_ variable) tends to change as your other variables (the _explanatory_ or _independent_ variables) change. This linear regression setting will also bring up the age-old _correlation versus causation_ argument—just because your model says that $y$ (the dependent variable) depends upon $x$ (the independent variable) does not mean you've actually shown that changes in $x$ will __cause__ changes in $y$.
+
+In addition to helping you understand how variables change as other variables change, linear regression can often do a surprisingly nice job with prediction. This prediction/forecasting discussion inevitably brings up the challenges of extrapolation. And the issues of extrapolation and overfitting will lead us into questions of model fit, leading us deeper down the rabbit hole into regularized regression settings (i.e., LASSO and ridge regression), weighting, heterogeneity, and k-nearest neighbors.
+
+## Simple linear regression
+
+Because linear regression focuses on fitting a line through a set of points, it is helpful to recall the formula of a line:
+
+$$ y = mx + b $$
+
+where $m$ gives the slope of the line^[Recall the "classic" definition of slope: rise over run (or the change in $y$ divided by the change in $x$).] and $b$ gives the $y$-intercept. In the land of regression, we tend to write the equation slightly differently:
+
+$$ y = \beta_0 + \beta_1 x $$
+
+where $\beta_0$ denotes the $y$ intercept, and $beta_1$ refers to the slope. For instance, here's a line with an intercept^[Regression jargon: You will generally hear/see "intercept" rather than "$y$ intercept".] of 5 and a slope of 0.5, i.e., $y = 5 + 0.5 x$.
+
+```{r, ch8 line equation, echo = F}
+  # Set seed
+  set.seed(1)
+  # Sample size
+  n <- 30
+  # Parameters
+  b0 <- 5
+  b1 <- 0.5
+  # Create the data
+  reg_dt <- data.table(
+    x = runif(n = n, min = -10, max = 10),
+    v = rnorm(n = n, mean = 0, sd = 1)
+    )
+  reg_dt[, y := b0 + b1 * x + v]
+  # Plot best-fit line
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    stat_smooth(method = lm, se = F) +
+    theme_pander()
+```
+
+So you know what a line is. And you know that linear regression fits a line through a set of data points. But are infinite potential lines you could fit through a set of points. So how does linear regression pick one line out of all of these possible lines?
+
+Lets start with a set of points. For the moment, we're in the world of _simple linear regression_, which means we have one outcome variable ($y$), one explanatory variable ($x$) (and we're assuming the relationship between $y$ and $x$ can be explained by a simple line—i.e., an intercept and a slope). The points:
+```{r, ch8 points, echo = F}
+  # Plot the points
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    geom_point(size = 3, shape = 1, stroke = 1) +
+    theme_pander()
+```
+
+As we mentioned above, there are infinite possibilities when it comes to drawing lines through this (or any) set of points. Let's draw three.
+```{r, ch8 three lines, echo = F}
+  # Plot the points
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    geom_abline(
+      aes(intercept = 10/4, slope = 0.25, color = "line 1"),
+      size = 0.8
+    ) +
+    geom_abline(
+      aes(intercept = 7, slope = 0.05, color = "line 2"),
+      size = 0.8
+    ) +
+    geom_abline(
+      aes(intercept = 5, slope = -0.5, color = "line 3"),
+      size = 0.8
+    ) +
+    geom_point(size = 3, shape = 1, stroke = 1) +
+    labs(color = "") +
+    scale_color_viridis_d(end = 0.95) +
+    theme_pander()
+```
+How do we choose the _best_ line for a given dataset? Line 3 looks pretty clearly worse than the other two lines, but why? And how would we choose between line 1 and line 2? Is there a better line out there? All of these questions push us toward a bigger question: How can we formalize the concept of _fit_ so that we can choose a line in a repeatable^[Replication!], objective, reasonable, and transparent manner?
