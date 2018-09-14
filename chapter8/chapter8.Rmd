@@ -1,6 +1,6 @@
 # Chapter 8: Regression Methods
 
-```{r, ch8 load packages silently, echo = F}
+```{r ch8 load packages silently, echo = F}
 invisible(library(pacman))
 invisible(p_load(ggplot2, data.table, magrittr, viridis, ggthemes))
 ```
@@ -19,6 +19,7 @@ __Outline__
     - Regression in the context of effect identification and parameterization
     - ARIMAs for Interrupted Time Series?
     - OLS and its implicit weighting of heterogeneous effects
+    - Sensitivity to outliers
 - Regularized Regression
   - Although OLS is the long-standing workhorse in data analysis, it has shortcomings in the modern data age.
   - LASSO and Ridge Regression.
@@ -53,11 +54,11 @@ $$ y = \beta_0 + \beta_1 x $$
 
 where $\beta_0$ denotes the $y$ intercept, and $beta_1$ refers to the slope. For instance, here's a line with an intercept^[Regression jargon: You will generally hear/see "intercept" rather than "$y$ intercept".] of 5 and a slope of 0.5, i.e., $y = 5 + 0.5 x$.
 
-```{r, ch8 line equation, echo = F}
+```{r ch8 line equation, echo = F, fig.cap = "A line"}
   # Set seed
   set.seed(1)
   # Sample size
-  n <- 30
+  n <- 25
   # Parameters
   b0 <- 5
   b1 <- 0.5
@@ -73,18 +74,22 @@ where $\beta_0$ denotes the $y$ intercept, and $beta_1$ refers to the slope. For
     theme_pander()
 ```
 
+### Choosing a line
+
 So you know what a line is. And you know that linear regression fits a line through a set of data points. But are infinite potential lines you could fit through a set of points. So how does linear regression pick one line out of all of these possible lines?
 
 Lets start with a set of points. For the moment, we're in the world of _simple linear regression_, which means we have one outcome variable ($y$), one explanatory variable ($x$) (and we're assuming the relationship between $y$ and $x$ can be explained by a simple line—i.e., an intercept and a slope). The points:
-```{r, ch8 points, echo = F}
+
+```{r ch8 points, echo = F, fig.cap = "Some data"}
   # Plot the points
   ggplot(data = reg_dt, aes(x = x, y = y)) +
-    geom_point(size = 3, shape = 1, stroke = 1) +
+    geom_point() +
     theme_pander()
 ```
 
 As we mentioned above, there are infinite possibilities when it comes to drawing lines through this (or any) set of points. Let's draw three.
-```{r, ch8 three lines, echo = F}
+
+```{r ch8 three lines, echo = F, fig.cap = "Diagnosing fit: Three candidate lines"}
   # Plot the points
   ggplot(data = reg_dt, aes(x = x, y = y)) +
     geom_abline(
@@ -99,9 +104,76 @@ As we mentioned above, there are infinite possibilities when it comes to drawing
       aes(intercept = 5, slope = -0.5, color = "line 3"),
       size = 0.8
     ) +
-    geom_point(size = 3, shape = 1, stroke = 1) +
+    geom_point() +
     labs(color = "") +
     scale_color_viridis_d(end = 0.95) +
     theme_pander()
 ```
-How do we choose the _best_ line for a given dataset? Line 3 looks pretty clearly worse than the other two lines, but why? And how would we choose between line 1 and line 2? Is there a better line out there? All of these questions push us toward a bigger question: How can we formalize the concept of _fit_ so that we can choose a line in a repeatable^[Replication!], objective, reasonable, and transparent manner?
+
+How do we choose the _best_ line for a given dataset? Line 3 looks pretty clearly worse than the other two lines, but why? And how would we choose between line 1 and line 2? Is there a better line out there? All of these questions push us toward a bigger question: How can we formalize the concept of _fit_ so that we can choose a line in a reasonable, repeatable^[Replication!], objective, and transparent manner?
+
+The simple answer to this (big) question: Use the data. For any line that we draw, we can see how well it fits each point in the data but checking how _close_ the line gets to each point. If you think of the line as a prediction, then the distance between our proposed line and the actual data point gives us the _error_ based upon the prediction. Let's draw each of these _errors_ for line 1:
+
+```{r ch8 line1 residuals, echo = F, fig.cap = "Diagnosing fit: Errors from line 1"}
+  # Add the predictions from line 1 to the data table
+  reg_dt[, y_hat1 := 10/4 + 0.25 * x]
+  # Plot the points
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    geom_segment(
+      aes(xend = x, yend = y_hat1),
+      color = "grey70", size = 0.3
+    ) +
+    geom_abline(
+      aes(intercept = 10/4, slope = 0.25, color = "line 1"),
+      size = 0.8
+    ) +
+    geom_point() +
+    labs(color = "") +
+    scale_color_manual("", values = viridis(3, end = 0.95)[1]) +
+    theme_pander()
+```
+
+Each of the vertical grey lines connecting _line 1_ to a black point from the dataset illustrates the error from predicting that data point with the line. In regression land, this error gets a special name: the _residual_. Formally, we define the residual as the difference between the observed value ($y$) and the predicted value ($\widehat{y}$), i.e.,
+
+$$ e = y - \widehat{y} $$
+
+where $e$ refers to the residual. The predicted value for $y$ (i.e., $\widehat{y}$) comes from plugging in the associate value of $x$ into the line's equation. For example, the equation underlying line 1 is $\widehat{y} = 2.5 + 0.25 x$. So to get a prediction for observation $(x = 0, y = 3.75)$, we plug in $x = 0$ (and get $\widehat{y} = 2.5$).
+
+Looking at the residuals from line 1, it seems pretty clear that we could do better. For instance, if we shifted the whole line up a bit, we would reduce all of the residuals. In addition, if we increased the slope---making it steeper---we would also reduce nearly all of the residuals. This type of reasoning is essentially what is going on in the background when linear regression methods choose the line that best fits a dataset: these methods attempt to minimize some measure of error.
+
+### Mean squared error
+
+In the classical linear regression model, the measure of error that we minimize is called _mean squared error_. Mean squared error (or MSE) is essentially what the name implies: it is the mean of the squared errors (the squared residuals), i.e.,
+
+$$ \text{Mean squared error (MSE)} = \frac{1}{n} \sum_{i = 1}^{n} e_{i}^2 $$
+
+So why are we squaring the error term? You might have thought we would just minimize the total (summed) error (or take the mean of the residuals), but there are a few reasons we tend to use MSE instead of mean error:
+
+1. When you sum a positive and negative residual, they effectively cancel out each other. You might have many, many positive errors with one huge negative error, and your sum (or mean) could be very close to zero. To get around this issue, people will occasionally use mean (or total) absolute error—replacing the square of the residual with the absolute value of the residual (i.e., $|e|$).
+2. Square errors turn out to be very mathematically tractable—meaning they are easy to work with in matrices. Summed absolute value does not have this advantage.
+3. MSE is extra sensitive to values farther from the center of the data (for the explanatory variables). For some people, this sensitivity to outliers is a problem. For others, it is a selling point. We'll let you decide (and we'll discuss in depth later in the chapter).
+
+So for now, minimizing MSE will be our objective.
+
+### Ordinary least squares
+
+We've revealed the secret hiding beneath most linear regression models that you will encounter: they choose the "best fit" line by finding the line that minimizes the mean squared error. The method that gives you this best-fitting line (from the perspective of minimizing the mean squared error) is called _ordinary least squares_ (or _OLS_ for short). In other words: OLS provides you with the line that minimizes the mean squared error for your dataset. Go out and find any other line; OLS will provide a smaller MSE.^[If your goal is to minimize the mean absolute error, then OLS is not best. Change your objective, and you will find a new winner.]
+
+Let's see how OLS fits our data:
+
+```{r ch8 ols fit, echo = F, fig.cap = "Diagnosing fit: OLS is best (for minimizing MSE)"}
+  # OLS regression
+  reg_lm <- lm(y ~ x, data = reg_dt)
+  b <- reg_lm$coefficients
+  # Plot the points
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    geom_abline(
+      aes(intercept = b[1], slope = b[2], color = "OLS"),
+      size = 0.8
+    ) +
+    geom_point() +
+    labs(color = "") +
+    theme_pander()
+```
+
+But how does OLS come up with the line?
