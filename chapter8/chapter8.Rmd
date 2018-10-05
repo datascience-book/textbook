@@ -13,7 +13,10 @@ __Outline__
 
 - Opening Story Related To Policy or Public Affairs
 - Regression
-  - Basic formulation of OLS.
+  - Basic formulation of OLS
+    - Dummy variables ('hot encodings' and other names)
+    - Hierarchical/categorical variables (LHS and RHS)
+    - Make a joke: Things that look like numbers are not always numbers.
   - Prediction problems
   - Causal experiments
     - Regression in the context of effect identification and parameterization
@@ -176,4 +179,30 @@ Let's see how OLS fits our data:
     theme_pander()
 ```
 
-But how does OLS come up with the line?
+Alright, so OLS does a nice job of fitting a line between though a dataset, but how does OLS actually come up with this line? Where do the numbers come from?
+
+While you will rarely need to calculate the OLS intercept and slope coefficient by hand, in the case of one dependent variable and one independent variable, writing out the math actually offers some insights into the magic behind OLS.
+
+But first: a bit of notation. It is standard notation to use Greek letters as the unknown parameters in our model. If we have a simple linear regression, then the model takes the form
+
+$$ y = \beta_0 + \beta_1 x + \varepsilon $$
+
+where $y$ denotes our outcome (or dependent) variable, $\beta_0$ references the (unknown) intercept, $x$ refers to our single explanatory (or independent) variable, $\beta_1$ gives the slope of the line, and $\varepsilon$ represents unobserved errors in the model. We want to know/estimate $\beta_0$ and $\beta_1$. We observe $y$ and $x$. So our task is to estimate $\beta_0$ and $\beta_1$ using only what we "know" (i.e., our data: $y$ and $x$). Finally, we will refer to estimators by adding a hat to the parameter that the estimator estimates. For instance, $\widehat{\beta_1}$ estimates $\beta_0$.
+
+Now for the good stuff.
+
+OLS estimates the slope coefficient $\beta_1$ using the correlation between $y$ and $x$ (recall that _correlation_ measures the strength and direction of the linear relationship between two variables), the standard deviation of $y$, and the standard deviation of $x$. Specifically,
+
+$$ \widehat{\beta_1} = \text{Cor}(x,y) \dfrac{s_y}{s_x} $$
+
+which says that the OLS estimate for the slope coefficient comes from multiplying the correlation between $x$ and $y$ by the ratio of the their standard deviations.
+
+Let's think about the intuition of this formula for a minute. First, the coefficient is based upon the correlation between the two variables, which makes a lot of sense. When the correlation (the strength of the linear relationship) is strong (close to -1 or 1), the coefficient will be larger. When the correlation is small (a weak linear relationship with correlation near zero), this estimated coefficient moves closer to zero. Furthermore, the sign of the coefficient will match the sign of the correlation between $y$ and $x$. This part also makes a lot of sense, as the correlation indicates whether $y$ tends to increase or decrease as $x$ increases—we want the estimated slope coefficient to match the correlation. Finally, the ratio of the standard deviations tells us how much $y$ relative to $x$. If $y$ covers a lot of distance, relative to a small distance in $x$, then we want a steeper line. If $y$ barely changes (a small standard deviation) relative to the variation in $x$, then the slope should be approximately zero.
+
+The formula for the OLS estimator of the intercept is simpler
+
+$$ \widehat{\beta_0} = \overline{y} - \widehat{\beta_1} \overline{x} $$
+
+where $\overline{y}$ and $\overline{x}$ denote the mean of $y$ and $x$, respectively.
+
+TODO: Explain this OLS formula.
