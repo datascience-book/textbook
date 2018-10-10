@@ -1,8 +1,11 @@
 # Chapter 8: Regression Methods
 
 ```{r ch8 load packages silently, echo = F}
-invisible(library(pacman))
-invisible(p_load(ggplot2, data.table, magrittr, viridis, ggthemes))
+  # Packages
+  invisible(library(pacman))
+  invisible(p_load(ggplot2, latex2exp, data.table, magrittr, viridis, ggthemes))
+  # Change directory to Chapter 8
+  setwd("/Users/edwardarubin/Dropbox/Research/MyBooks/DataScience/Textbook/chapter8")
 ```
 
 __Main question of the chapter:__ How can we construct predictions of wages, sales prices, test scores, and other continuous outcomes using their associated underlying characteristics?
@@ -205,4 +208,89 @@ $$ \widehat{\beta_0} = \overline{y} - \widehat{\beta_1} \overline{x} $$
 
 where $\overline{y}$ and $\overline{x}$ denote the mean of $y$ and $x$, respectively.
 
-TODO: Explain this OLS formula.
+One way to interpret this equation is that OLS will run its line (with slope $\beta_1$) through the point $(\overline{x},\, \overline{y})$—a point that sits at the means of the two variables. We can calculate the $y$-intercept of the OLS regression line by starting at this point of the two means and following the line for $\overline{x}$ units until we hit the $y$ axis.
+
+```{r ch8 ols intercept, echo = F, fig.cap = "The OLS regression line passes through a point at the means of the two variables"}
+  # OLS regression
+  reg_lm <- lm(y ~ x, data = reg_dt)
+  b <- reg_lm$coefficients
+  # Plot the points
+  ggplot(data = reg_dt, aes(x = x, y = y)) +
+    geom_abline(
+      aes(intercept = b[1], slope = b[2], color = "OLS"),
+      size = 0.8
+    ) +
+    geom_point(alpha = 0.2) +
+    geom_point(
+      data = reg_dt[, .(x = mean(x), y = mean(y))],
+      size = 2
+    ) +
+    geom_text(
+      aes(
+        x = mean(reg_dt[,x]),
+        y = mean(reg_dt[,y]),
+        label = TeX("$\\left(\\bar{x},\\,\\bar{y}\\right)$", output = "character")
+      ),
+      hjust = 0.5, vjust = -1, nudge_y = -0.1, nudge_x = 0.1,
+      parse = T
+    ) +
+    labs(color = "") +
+    theme_pander()
+```
+
+### Our first regression in R
+
+You now have a sense of how OLS creates its "best fit" regression line. Now let's run a regression in R. The basic^[And `base`.] linear regression function in R is `lm`, which stands for _linear model_. To run a regression with the `lm` function, you need to give `lm` a formula where the outcome variable (on the LHS) is separated from the explanatory variables (on the RHS) by a tilde (i.e., `~`). If the variables are part of an `data.frame` or similar object, then you also need to tell R the name of the object using the `data` argument in `lm`. For example,
+
+```{R ch8 ex lm, eval = F}
+  lm(y ~ x, data = my_data)
+```
+
+will regress the variable `y` from the data frame `my_data` on the variable `x` (also from `my_data`).
+
+Now that we're ready to run a regression, we need some data. For this example, we will use 12,687 residential property sales from 2017 and 2018 in NYC.
+
+```{R ch8 read sales data, warning = F, message = F, results = 'hide'}
+  # Load 'readr' package
+  library(readr)
+  # Read in .csv of property sales
+  sale_df <- read_csv("home_sales_nyc.csv")
+```
+
+While the dataset (`home_sales_nyc.csv`) contains a number of interesting variables, we are going to estimate the relationship between a property's sales price (the aptly named `sale_price` variable in the dataset) and the property's size (measured in square feet, i.e., the variable `gross_square_feet`). Before running any analysis, you should always plot your data to see if everything looks right.
+
+```{r ch8 nyc sales plot, echo = T, fig.cap = "Residential property sales and property size, 2017-2018"}
+  ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price)) +
+  geom_point(alpha = 0.3, size = 1.2) +
+  scale_x_continuous("Property size (gross square feet)", labels = scales::comma) +
+  scale_y_continuous("Sale price (USD)", labels = scales::comma) +
+  theme_pander()
+```
+
+In NYC's (crazy) housing market, it looks like bigger properties cost more (unsurprisingly), but the relationship is not as strong as you might have guessed. Let's actually run the regression now. Our outcome variable is `sale_price`, and our sole explanatory variable is `gross_square_feet`—both of which are contained in the data frame `sale_df`. We feed all of this information to the `lm` function, which we assign to an object named `reg_est`
+
+```{R, ch8 nyc sales lm}
+  reg_est <- lm(sale_price ~ gross_square_feet, data = sale_df)
+```
+
+The object that `lm` returns (which we've cleverly stored as `reg_est`) has its own class—`lm`. If you enter the name of the object into the console, R will return the estimates for the intercept and the slope coefficient on `gross_square_feet`—but that's about it:
+```{R, ch8 lm console}
+  reg_est
+```
+The real magic happens when you apply the `summary` function to the `lm` object, i.e.,
+```{R, ch8 lm summary}
+  summary(reg_est)
+```
+
+No we have some information to digest.
+
+First, R kindly reminds you of the actual call to `lm` that produced the estimates. That's nice, R.
+
+Next, R prints a basic summary of the residuals—the error we make for each of the points in the dataset when we predict sale price with an intercept and gross square feet. We're missing some property sales by quite a lot. We can (and will) do better. Just wait.
+
+After the residuals, are gives the coefficient estimates and several other important statistics. Within the `Coefficients` section, R first prints the intercept (i.e., `(Intercept)`). Wait! We never asked for an intercept... or did we? Because intercepts are standard in statistics, econometrics, data science, and essentially every other empirical field, R defaults to using an intercept—it assumes you want an intercept. If you do not want an intercept, then you need to put a `-1` in your `lm` equation.^[For example, you would write `lm(sale_price ~ -1 + gross_square_feet, data = sale_df)` if you wanted to estimate the relationship between sale price and property size without an intercept.] You will often hear an intercept interpreted as the predicted value for the outcome variable when the explanatory variable takes on a value of zero. However, this interpretation can often be misleading. For instance, this interpretation would say that a property in NYC with approximately zero square feet would be worth negative 46,000 dollars. This interpretation is obviously absurd but what about the statistics makes this interpretation so absurd? The problem is that this interpretation of the intercept generally ignores the fact that we only observe data for a certain set of values for the outcome and explanatory variables—we do not observe properties smaller than 120 square feet^[Which is still amazingly small.], and we do not observe any sales below $10,000.^[When assembling these data, we restricted the sample to sales between $10,000 and $10,000,000 so as to avoid gifted properties and extreme values.] Making predictions/interpretations outside of the range of your data is called _extrapolation_. Extrapolation is not necessarily bad—sometimes you have to make an educated guess about a data point that is unlike any data you have previously seen. However, when you extrapolate, you should be aware that you are moving outside of the range of data on which you fit your model—and the relationships between your outcome variable and explanatory variable(s) may look very different in different ranges of the data.
+
+Next: The estimate slope coefficient on `gross_square_feet`.
+
+
+So why might we care about the relationship between price and property size? You'll often run into measures like _price per square foot_, but the idea behind _price per square foot_ is that there is some constant dollar per square foot paid in the market. If the relationship between sale price and size is not exactly linear—meaning that larger properties cost more (or less) per square foot than
