@@ -38,6 +38,10 @@ __Outline__
   - An homage to Google Flu and a cautionary tale (Data: Google Trends and CDC)
   - Imputation models for different types of data (Data: Landsat NDVI, employment data)
 
+__Questions__
+
+- Do we want to include R^2^?
+
 ## A Story of Regression
 
 __TODO__
@@ -194,7 +198,7 @@ where $y$ denotes our outcome (or dependent) variable, $\beta_0$ references the 
 
 Now for the good stuff.
 
-OLS estimates the slope coefficient $\beta_1$ using the correlation between $y$ and $x$ (recall that _correlation_ measures the strength and direction of the linear relationship between two variables), the standard deviation of $y$, and the standard deviation of $x$. Specifically,
+OLS estimates the slope coefficient $\beta_1$ using the correlation between $y$ and $x$ (recall that _correlation_ measures the strength and direction of the linear relationship between two variables), the standard deviation of $y$, and the standard deviation of $x$.^[Also recall that the standard deviation is simply the square root of the variance. The (sample) variance of a variable $x = \{x_1,\, \ldots,\, x_n\}$ is $s^2_x = \text{Var}(x) = \frac{1}{n-1}\sum_{i=1}^{n}(x_i - \overline{x})$ (where $\overline{x} = \frac{1}{n}\sum_{i=1}^n x_i$, i.e., the mean of $x$). Thus, the standard deviation of $x$ = s_x = \sqrt{\text{Var}(x)}. The correlation between two variables $x$ and $y$ is given by $\text{Cor}(x,\,y) = \frac{\text{Cov}(x,\,y)}{s_x s_y}$, where $\text{Cov}(x,\,y) = \frac{\sum_{i = 1}^n (x_i - \overline{x})(y_i - \overline{y})}{n-1}$ is the covariance of the two variables. It is also worth remembering that correlation is bounded between $-1$ (a strongly linear negative relationship) and $1$ (strongly linear positive relationship), whereas covariance is unbounded.] Specifically,
 
 $$ \widehat{\beta_1} = \text{Cor}(x,y) \dfrac{s_y}{s_x} $$
 
@@ -261,10 +265,10 @@ While the dataset (`home_sales_nyc.csv`) contains a number of interesting variab
 
 ```{r ch8 nyc sales plot, echo = T, fig.cap = "Residential property sales and property size, 2017-2018"}
   ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price)) +
-  geom_point(alpha = 0.3, size = 1.2) +
-  scale_x_continuous("Property size (gross square feet)", labels = scales::comma) +
-  scale_y_continuous("Sale price (USD)", labels = scales::comma) +
-  theme_pander()
+    geom_point(alpha = 0.15, size = 1.2) +
+    scale_x_continuous("Property size (gross square feet)", labels = scales::comma) +
+    scale_y_continuous("Sale price (USD)", labels = scales::comma) +
+    theme_pander()
 ```
 
 In NYC's (crazy) housing market, it looks like bigger properties cost more (unsurprisingly), but the relationship is not as strong as you might have guessed. Let's actually run the regression now. Our outcome variable is `sale_price`, and our sole explanatory variable is `gross_square_feet`—both of which are contained in the data frame `sale_df`. We feed all of this information to the `lm` function, which we assign to an object named `reg_est`
@@ -282,7 +286,7 @@ The real magic happens when you apply the `summary` function to the `lm` object,
   summary(reg_est)
 ```
 
-No we have some information to digest.
+Now we have some information to digest.
 
 First, R kindly reminds you of the actual call to `lm` that produced the estimates. That's nice, R.
 
@@ -290,7 +294,94 @@ Next, R prints a basic summary of the residuals—the error we make for each of 
 
 After the residuals, are gives the coefficient estimates and several other important statistics. Within the `Coefficients` section, R first prints the intercept (i.e., `(Intercept)`). Wait! We never asked for an intercept... or did we? Because intercepts are standard in statistics, econometrics, data science, and essentially every other empirical field, R defaults to using an intercept—it assumes you want an intercept. If you do not want an intercept, then you need to put a `-1` in your `lm` equation.^[For example, you would write `lm(sale_price ~ -1 + gross_square_feet, data = sale_df)` if you wanted to estimate the relationship between sale price and property size without an intercept.] You will often hear an intercept interpreted as the predicted value for the outcome variable when the explanatory variable takes on a value of zero. However, this interpretation can often be misleading. For instance, this interpretation would say that a property in NYC with approximately zero square feet would be worth negative 46,000 dollars. This interpretation is obviously absurd but what about the statistics makes this interpretation so absurd? The problem is that this interpretation of the intercept generally ignores the fact that we only observe data for a certain set of values for the outcome and explanatory variables—we do not observe properties smaller than 120 square feet^[Which is still amazingly small.], and we do not observe any sales below $10,000.^[When assembling these data, we restricted the sample to sales between $10,000 and $10,000,000 so as to avoid gifted properties and extreme values.] Making predictions/interpretations outside of the range of your data is called _extrapolation_. Extrapolation is not necessarily bad—sometimes you have to make an educated guess about a data point that is unlike any data you have previously seen. However, when you extrapolate, you should be aware that you are moving outside of the range of data on which you fit your model—and the relationships between your outcome variable and explanatory variable(s) may look very different in different ranges of the data.
 
-Next: The estimate slope coefficient on `gross_square_feet`.
+Next: The estimate slope coefficient on `gross_square_feet`. The estimated coefficient on square feet is approximately `r coef(reg_est)[2] %>% round(1)`. First, consider the _sign_ of the coefficient. The fact that this coefficient is positive indicates that properties with more gross square feet (bigger properties) tend to sell for more money. No surprises here. The actual value of the coefficient tells us that _in this dataset_ each additional gross square foot correlates with an increase in sales price of approximately `r coef(reg_est)[2] %>% round(0)` dollars.
+
+But how confident should we be in this estimate? The next three columns provide us with tools for statistical inference—telling how precise our estimate is. The column labeled `Std. Error` gives the _standard error_, the column labeled `t value` gives the (Student's) t statistic for testing whether the coefficient is different from zero, and the column `Pr(>|t|)` gives the p-value for a two-sided hypothesis test that tests whether there is statistically significant evidence that our estimated coefficient differs from zero (i.e., testing the null hypothesis $\beta_1 = 0$). Common practices within statistics and social sciences suggests that p-values below 0.05 indicate sufficient statistical evidence to reject the null hypothesis. Here, because our p-value is (much) less than 0.05, we would say that we find statistically significant evidence of a non-zero relationship between a property's sales price and its gross square feet at the five-percent level.
+
+__TODO:__ How much do we assume/teach about hypothesis testing?
+
+## Forming and testing hypotheses with regression
+
+So why might we care about the relationship between price and property size? You'll often run into measures like _price per square foot_, but the idea behind _price per square foot_ is that there is some constant dollar per square foot paid within the market. If the relationship between sale price and square footage is not exactly linear—meaning that larger properties cost more (or less) per square foot than smaller properties—then this _price per square foot_ measure is flawed. It's probably important to know whether this measure is indeed flawed, but how do we test this hypothesis?
+
+As is frequently the case both in policy analysis and in data science, there are several approaches we could take in testing this idea.
+
+### Transforming the outcome variable
+
+__TODO__
+
+At the heart of our hypothesis is the question whether _price per square foot_ is indeed constant across property sizes.
+
+### Quadratic explanatory variables
+
+One interpretation of our hypothesis is whether the relationship between sales price and square footage is indeed a straight line. And one relationship that is not a simple, straight line is a quadratic relationship, i.e., a relationship where the outcome variable ($y$) depends on a squared explanatory variable ($x^2$)—not just the linear term ($x$).
+
+A linear regression^[Notice that we're still using the term _linear regression_ even when the relationship between the outcome variable and explanatory variable is not strictly a straight line. Why? The _linear_ in _linear regression_ refers to the fact that the right-hand side of the regression equation can be written as a _linear combination_ of the unknown parameters (the $\beta$s) and the explanatory variables. In other words, _linear_ means that the $\beta$s are multiplied by the explanatory variables.] that allows for a quadratic relationship between $y$ and $x$ takes the form
+$$ y = \beta_0 + \beta_1 x + \beta_2 x^2 + \varepsilon $$
+
+In our case, we can want to know whether there is statistically significant evidence of a quadratic relationship between sale price and gross square feet. Or in other words, we want to run the regression
+$$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Footage}^2 + \varepsilon $$
+and then want to test the statistical evidence that $\beta_2$ differs significantly from zero.
+
+The only thing we need to add to our previous regression in R is a squared `gross_square_feet` term. You could create a new variable in your dataset, squaring the variable `gross_square_feet`, but R has a simpler way: add the squared variable inside your regression. We can add `+ I(gross_square_feet^2)` to our regression, and R will know that we want to include the square of the variable `gross_square_feet`.
+
+Let's do it.
+
+First, we estimate the regression model (saving the estimated model as `reg_est2`):
+```{R, ch8 nyc sales lm quad}
+  reg_est2 <- lm(sale_price ~ gross_square_feet + I(gross_square_feet^2), data = sale_df)
+```
+
+And now we check the results:
+```{R, ch8 lm summary quad}
+  summary(reg_est2)
+```
+
+A hypothesis test of the coefficient on the quadratic term ($\beta_2$ above) indicates rejects the null hypothesis ($\beta_2 = 0$, meaning there is no quadratic relationship) at the five-percent level. What does all of this mean? There is statistically significant evidence supporting the hypothesis that sales prices are not constant across
+
+That said, it can be hard to mentally visualize this estimated regression. Lucky for us: R does visualization. Let's plot the data, along with first model (with only linear footage) and the second model (with linear footage and quadratic footage).
+
+```{r ch8 ny prop quad plot, echo = F, fig.cap = "Comparing linear and quadratic models"}
+  # Plot the points
+  ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price)) +
+    geom_point(alpha = 0.15, size = 1.2) +
+    geom_smooth(
+      aes(color = "Model 1: Linear footage"),
+      method = lm, formula = y ~ x,
+      se = F, size = 0.8
+    ) +
+    geom_smooth(
+      aes(color = "Model 2: Quadratic footage"),
+      method = lm, formula = y ~ x + I(x^2),
+      se = F, size = 0.8
+    ) +
+    scale_x_continuous("Property size (gross square feet)", labels = scales::comma) +
+    scale_y_continuous("Sale price (USD)", labels = scales::comma) +
+    labs(color = "") +
+    scale_color_viridis_d(begin = 0.3, end = 0.8) +
+    theme_pander() +
+    theme(legend.position = "bottom")
+```
+
+It's hard to say which line _looks_ to be doing a better job explaining the price at which a property sales—maybe there is more going on than just size...
 
 
-So why might we care about the relationship between price and property size? You'll often run into measures like _price per square foot_, but the idea behind _price per square foot_ is that there is some constant dollar per square foot paid in the market. If the relationship between sale price and size is not exactly linear—meaning that larger properties cost more (or less) per square foot than
+## Multivariate regression (means more variables)
+
+What if we are missing something? Maybe it's not just about size... maybe Manhattan is more expensive than Queens . Or maybe apartments are different than non-apartments.
+
+### Indicator (dummy) variables
+
+What happens when you have a
+
+### Categorical variables
+
+Categorical variables are dummy variables.
+
+__Public-service announcement:__ This is a (dire) warning: not all things that look like numbers are actually numerical variables:^[And may not be cardinal at all.] many categorical variables are _coded_ with numbers, for instance, zip codes, area codes, interstates, serial numbers, NAICS codes (for classifying industries in North America). Fight the temptation to use all numbers as numeric. It helps to think about your data—and you'll avoid some very embarrassing moments.
+
+### Interactions
+
+## Prediction?
+
+## Causality
