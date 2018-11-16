@@ -4,7 +4,7 @@
 options(stringsAsFactors = F)
 # Load desired packages
 library(pacman)
-p_load(data.table, magrittr, readxl, stringr)
+p_load(data.table, lubridate, magrittr, readxl, stringr)
 # Set directory
 setwd("/Users/edwardarubin/Dropbox/Research/MyBooks/DataScience/Textbook/chapter8")
 # Load data and join data
@@ -43,6 +43,13 @@ full_dt <- lapply(
     return(tmp)
   }
 ) %>% rbindlist()
+# Add: year-of-sale and age
+full_dt[, sale_year := sale_date %>% ymd() %>% year()]
+full_dt[, age := sale_year - year_built]
+# Drop year_build == 0
+full_dt <- full_dt[year_built != 0]
+# Drop age > 120
+full_dt <- full_dt[between(age, 0, 120)]
 # Save
 fwrite(
   x = full_dt,

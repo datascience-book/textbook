@@ -250,7 +250,7 @@ You now have a sense of how OLS creates its "best fit" regression line. Now let'
   lm(y ~ x, data = my_data)
 ```
 
-will regress the variable `y` from the data frame `my_data` on the variable `x` (also from `my_data`).
+will regress the variable `y` from the data frame `my_data` on the variable `x` (also from `my_data`).^[This phrase "regression $y$ on $x$" is the standard way to refer to your outcome and explanatory variables: you regress your outcome variable on your explanatory variable(s).]
 
 Now that we're ready to run a regression, we need some data. For this example, we will use 12,687 residential property sales from 2017 and 2018 in NYC.
 
@@ -298,7 +298,7 @@ Next: The estimate slope coefficient on `gross_square_feet`. The estimated coeff
 
 But how confident should we be in this estimate? The next three columns provide us with tools for statistical inference—telling how precise our estimate is. The column labeled `Std. Error` gives the _standard error_, the column labeled `t value` gives the (Student's) t statistic for testing whether the coefficient is different from zero, and the column `Pr(>|t|)` gives the p-value for a two-sided hypothesis test that tests whether there is statistically significant evidence that our estimated coefficient differs from zero (i.e., testing the null hypothesis $\beta_1 = 0$). Common practices within statistics and social sciences suggests that p-values below 0.05 indicate sufficient statistical evidence to reject the null hypothesis. Here, because our p-value is (much) less than 0.05, we would say that we find statistically significant evidence of a non-zero relationship between a property's sales price and its gross square feet at the five-percent level.
 
-__TODO:__ How much do we assume/teach about hypothesis testing?
+__TODO__ How much do we assume/teach about hypothesis testing?
 
 ## Forming and testing hypotheses with regression
 
@@ -308,13 +308,38 @@ As is frequently the case both in policy analysis and in data science, there are
 
 ### Transforming the outcome variable
 
-__TODO__
+At the heart of our hypothesis is the question whether _price per square foot_ is indeed constant across property sizes—so let's try to directly test this! This hypothesis has _price per square foot_ as the outcome variable, so we need to transform our outcome variable. We then want to determine whether _price per square foot_ is correlated with the variable `gross_square_feet`. If the coefficient on the `gross_square_feet` differst (statistically) significantly from zero, then we can reject the hypothesis that price per square is constant across property sizes.
 
-At the heart of our hypothesis is the question whether _price per square foot_ is indeed constant across property sizes.
+Our new outcome variable is price per square foot, which does not currently exist in the dataset. We _could_ create a new variable, but R's `lm` function allows us to create combinations of other variables as our outcome variable using the variables' names and mathematical operators. Thus, for our outcome variable, we will have `sale_price / gross_square_feet`. The explanatory variable will still be `gross_square_feet`.
+
+__TODO__ Regression and plot.
+```{R, ch8 nyc sales new reg}
+  # Estimate the model
+  reg_tran <- lm(sale_price / gross_square_feet ~ gross_square_feet, data = sale_df)
+  # Summary of results
+  summary(reg_tran)
+```
+
+```{r ch8 ny prop tran plot, echo = F, fig.cap = "Testing whether price per square foot is constant in footage"}
+  ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price / gross_square_feet)) +
+    geom_point(alpha = 0.15, size = 1.2) +
+    geom_smooth(
+      color = "orange",
+      method = lm, formula = y ~ x,
+      se = F, size = 0.8
+    ) +
+    scale_x_continuous("Property size (gross square feet)", labels = scales::comma) +
+    scale_y_continuous("Dollars per square foot (USD)", labels = scales::dollar) +
+    scale_color_viridis_d(begin = 0.3, end = 0.8) +
+    theme_pander()
+```
+
+
+__TODO__ We can also plot a flexible "smoothed" line...
 
 ### Quadratic explanatory variables
 
-One interpretation of our hypothesis is whether the relationship between sales price and square footage is indeed a straight line. And one relationship that is not a simple, straight line is a quadratic relationship, i.e., a relationship where the outcome variable ($y$) depends on a squared explanatory variable ($x^2$)—not just the linear term ($x$).
+Another interpretation of our hypothesis is whether the relationship between sales price and square footage is indeed a straight line. And one relationship that is not a simple, straight line is a quadratic relationship, i.e., a relationship where the outcome variable ($y$) depends on a squared explanatory variable ($x^2$)—not just the linear term ($x$).
 
 A linear regression^[Notice that we're still using the term _linear regression_ even when the relationship between the outcome variable and explanatory variable is not strictly a straight line. Why? The _linear_ in _linear regression_ refers to the fact that the right-hand side of the regression equation can be written as a _linear combination_ of the unknown parameters (the $\beta$s) and the explanatory variables. In other words, _linear_ means that the $\beta$s are multiplied by the explanatory variables.] that allows for a quadratic relationship between $y$ and $x$ takes the form
 $$ y = \beta_0 + \beta_1 x + \beta_2 x^2 + \varepsilon $$
@@ -342,7 +367,6 @@ A hypothesis test of the coefficient on the quadratic term ($\beta_2$ above) ind
 That said, it can be hard to mentally visualize this estimated regression. Lucky for us: R does visualization. Let's plot the data, along with first model (with only linear footage) and the second model (with linear footage and quadratic footage).
 
 ```{r ch8 ny prop quad plot, echo = F, fig.cap = "Comparing linear and quadratic models"}
-  # Plot the points
   ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price)) +
     geom_point(alpha = 0.15, size = 1.2) +
     geom_smooth(
@@ -365,10 +389,52 @@ That said, it can be hard to mentally visualize this estimated regression. Lucky
 
 It's hard to say which line _looks_ to be doing a better job explaining the price at which a property sales—maybe there is more going on than just size...
 
+## Multiple regression (means more variables)
 
-## Multivariate regression (means more variables)
+What if we are missing something? Maybe it's not just about size... maybe there are certain parts of NYC that are categorically more expensive than other parts of NYC... maybe Manhattan is just more expensive than Queens. Or maybe apartments are different than non-apartments.
 
-What if we are missing something? Maybe it's not just about size... maybe Manhattan is more expensive than Queens . Or maybe apartments are different than non-apartments.
+In many cases, several—likely _many_—factors affect/predict the outcome variable. Whether the goal is to accurately predict the outcome variable (e.g., predicting property values) or explain the variation in the outcome variable (e.g., why some houses are worth much more than other houses), it is often helpful to bring in multiple explanatory variables—a concept you will hear people refer to as __multiple regression__.
+
+Aside from having more explanatory (right-hand side) variables, multiple regression is pretty much the same thing as the simple-linear regression framework we just covered: you have a single variable as your outcome variable, and you estimate a set of parameters ($\beta$) by minimizing the sum of the squared residuals. The multiple linear regression model—now with $k$ explanatory variables—looks like
+
+$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3 \cdots + \beta_{k-1} x_{k-1} + \beta_k x_k + \varepsilon $$
+
+where $y$ still represents our outcome variable, $\beta_0$ still gives the intercept, and $\varepsilon$ still denotes the unexplained error in the model. We now have $k$ explanatory variables ($x_1$ through $x_k$) and $k+1$ unknown parameters ($\beta_0$ through $\beta_k$).
+
+Now that we've laid out our expanded framework for multiple linear regression, let's estimate expand our NYC property-value regression model.^[We actually already ran a multiple regression model when we regressed the price on footage and footage squared.] Specifically, let's estimate the model
+
+$$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Age} + \beta_3 \text{Year} + \varepsilon $$
+
+which says that the sale price depends upon an intercept $\beta_0$, 
+
+```{R, }
+  lm(
+    sale_price ~
+    gross_square_feet + age + sale_year,
+    data = sale_df
+  )
+```
+
+The interpretation of the estimated coefficients changes a bit when you are in a multiple linear regression setting. We now interpret the coefficients as the relationship between $y$ and $x_i$, _conditional_ on the other variables. What do we mean by 'conditional'? The estimate of the relationship comes from a model that includes a specific set of other variables. Thus, _conditional_ means we've estimated the relationship between $y$ and $x_i$ _controlling for_ the variables.
+
+### Functional form matters
+
+The multiple regression model that we've been discussing makes several important assumptions.
+
+$$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Age} + \beta_3 \text{Year} + \varepsilon $$
+
+- Linear effects of footage, age, and year
+  - What about effects that are not explained by a simple line? Some effects may be a polynomial
+  - What if the effect of one variable depends upon the levels of other variables? Interactions...
+  - Other effects may be
+- How do we know which model/functional form is better?
+
+### Measures of fit
+
+- Common/classic: R^2^ (adjusted and unadjusted)
+- AICC/BIC
+- Key: You need to penalize models with more variables, because you will always see a reduction in the MSE when you add an additional variable.
+- R^2^ w/ cross validation?
 
 ### Indicator (dummy) variables
 
@@ -381,6 +447,16 @@ Categorical variables are dummy variables.
 __Public-service announcement:__ This is a (dire) warning: not all things that look like numbers are actually numerical variables:^[And may not be cardinal at all.] many categorical variables are _coded_ with numbers, for instance, zip codes, area codes, interstates, serial numbers, NAICS codes (for classifying industries in North America). Fight the temptation to use all numbers as numeric. It helps to think about your data—and you'll avoid some very embarrassing moments.
 
 ### Interactions
+
+```{R, }
+  ggplot(data = sale_df,
+    aes(x = gross_square_feet, y = sale_price, color = as.character(borough))
+  ) +
+  geom_point(alpha = 0.25) +
+  geom_smooth(method = lm, formula = y ~ poly(x,2), se = F) +
+  theme_pander() +
+  theme(legend.position = "bottom")
+```
 
 ## Prediction?
 
