@@ -16,13 +16,37 @@ p_load(scatterplot3d, ggplot2, gridExtra, raster)
 
 ## Opening Story
 
-Lorem ipsum dolor amet pug pop-up authentic seitan brunch. Health goth +1 wayfarers glossier blog knausgaard stumptown green juice neutra williamsburg jianbing ethical. Leggings blue bottle meditation, organic intelligentsia offal knausgaard craft beer tacos butcher cred shoreditch semiotics. Blue bottle deep v VHS skateboard, vaporware pug glossier. Cardigan pitchfork taiyaki plaid art party quinoa. Tattooed vice kickstarter, jianbing woke la croix humblebrag ethical disrupt 8-bit whatever vape lo-fi selvage.
+predictive market segmentation
 
-Bushwick poutine offal, lyft roof party asymmetrical next level edison bulb cloud bread. Brunch deep v echo park raw denim synth XOXO disrupt migas. Health goth yuccie taxidermy, pitchfork artisan kogi af deep v wayfarers coloring book farm-to-table austin twee. Sriracha raclette hexagon, selvage scenester small batch intelligentsia retro salvia vice dreamcatcher poutine flexitarian health goth. Trust fund kogi tacos freegan. Keffiyeh chillwave subway tile selfies kombucha hot chicken swag jianbing blue bottle pop-up pork belly williamsburg chartreuse vegan la croix. Offal pickled DIY, normcore af bespoke activated charcoal health goth.
+demographics -- play a huge role
+surveys would help
 
-Asymmetrical slow-carb hell of lomo live-edge kinfolk jean shorts synth 3 wolf moon gochujang la croix tattooed pork belly. Prism enamel pin hella shabby chic meditation stumptown, actually artisan. Polaroid meggings small batch tote bag green juice waistcoat meh banh mi. Authentic flannel put a bird on it, dreamcatcher tousled vegan pabst.
 
-Pitchfork pinterest occupy, PBR&B jianbing subway tile activated charcoal live-edge scenester fam church-key iceland disrupt etsy freegan. Asymmetrical drinking vinegar schlitz pop-up farm-to-table brooklyn live-edge tbh squid trust fund microdosing selvage gluten-free. Tacos semiotics palo santo activated charcoal pabst biodiesel kogi you probably haven't heard of them wolf tumeric woke kickstarter snackwave. Taiyaki mustache artisan etsy yr listicle viral umami. Synth blue bottle migas, echo park stumptown man braid hexagon enamel pin umami sartorial pitchfork.
+'Flag and Family Republicans' might receive literature on a flag-burning amendment from its sponsor, while 'Tax and Terrorism Moderates' get an automated call from [former New York mayor] Rudy Giuliani talking about the war on terror, even if they lived right next door to one another," Alex Lundry, the senior research director of TargetPoint -- the firm Gage founded in 2003 -- wrote recently in Winning Campaigns magazine."^[http://www.washingtonpost.com/wp-dyn/content/article/2007/07/04/AR2007070401423.html]
+
+"For the general public, there was no way to know that the idea for the Parker contest had come from a data-mining discovery about some supporters: affection for contests, small dinners and celebrity. But from the beginning, campaign manager Jim Messina had promised a totally different, metric-driven kind of campaign in which politics was the goal but political instincts might not be the means. “We are going to measure every single thing in this campaign,” he said after taking the job. He hired an analytics department five times as large as that of the 2008 operation, with an official “chief scientist” for the Chicago headquarters named Rayid Ghani, who in a previous life crunched huge data sets to, among other things, maximize the efficiency of supermarket sales promotions."^[http://swampland.time.com/2012/11/07/inside-the-secret-world-of-quants-and-data-crunchers-who-helped-obama-win/]
+
+
+Question is how to find people on the political spectrum and deliver ads to them to open their wallets. tiny little clusters of targeted voters and then sending highly customized ads to them
+https://fivethirtyeight.com/features/a-history-of-data-in-american-politics-part-2-obama-2008-to-the-present/
+
+
+It turns out their brand preferences matter. ^[https://www.bloomberg.com/news/articles/2016-03-24/-wheel-of-fortune-cashes-in-on-2016-political-ads]
+
+
+
+
+
+"Parties search through voter file with voting history, consumer data (car owner or not, home owner or renter, gun owner, Sierra Club member, etc) to identify likely target voters. Parties conduct large sample survey of its universe of targeted voters to see what issues are bothering them, motivating them, angering them. Based on this survey, campaigns “cluster” sub-groups of voters in terms of profile of interests and concerns: middle-income Democratic blue-collar gun owners in rural Michigan, for example."^[http://www.nbcnews.com/id/15292903/ns/politics-tom_curry/t/mechanics-micro-targeting/#.XANCoZNKgxc]
+
+
+"The more information he has, the better he can group people into "target clusters" with names such as "Flag and Family Republicans" or "Tax and Terrorism Moderates." Once a person is defined, finding the right message from the campaign becomes fairly simple.
+
+Goal: Find new patterns via clustering and latent features
+Data: Only input features
+Eval: Many evaluation measures or techniques, but none that are standard
+Complexity: Statistical techniques tend to be simple and iterative
+
 
 ## Clustering is Natural
 
@@ -123,8 +147,7 @@ par(mfrow = c(2,2), mar = c(1,1,1,1))
 To classify each pixel as either light or dark, we can use a simple dissimilarity measure. For continuous values, dissimilarity can be as Euclidean Distance:
 
 $$d(x_1,x_2) = \sqrt{\sum_{i=1}^n|z_1-z_2|^2}$$
-
-And calculate distance between each point and each peak, assigning each pixel to the closest peak.  While this simplistic example is effective, it can be automated and scaled using one of the many commonly used clustering algorithms. 
+Alternatively, Manhattan or binary distances could be used for discrete variables or Gower distances for mixed variable types. Regardless of distance measure, we can then calculate distance between each point and each peak, assigning each pixel to the closest peak.  While this simplistic example is effective, it can be automated and scaled using one of the many commonly used clustering algorithms. 
 
 In this chapter, we explore two of the most commonly employed clustering algorithms: K-means clustering and hierarchical clustering. Each clustering technique is computationally intensive, constructed on different assumptions that help it  accomplish this task, but the core differences between the techniques enable very different use cases.  
 
@@ -214,16 +237,21 @@ An alternative but far more computationally intensive approach involves calculat
 
 $$s(i) = \frac{b_i-a_i}{max(a_i,b_i)}$$
 
-where $a_i$ is the Euclidean distance between a point $i$ to other points in the same cluster, $b_i$ is the minimum distance between $i$ and any other cluster the sample. The values of $s(i)$ fall between -1 and 1, where 1 indicates that an observation is well-matched with its cluster and -1 indicates that fewer or more clusters may be required to achieve a better match. Note that silhouettes do not scale well with very large data sets as a $n \times n$ similarity matrix (e.g. distance between all points to all points). Often times, a smaller sample should be used to enable the use of this method.
+where $a_i$ is the Euclidean distance between a point $i$ to other points in the same cluster, $b_i$ is the minimum distance between $i$ and any other cluster the sample. The values of $s(i)$ fall between -1 and 1, where 1 indicates that an observation is well-matched with its cluster and -1 indicates that fewer or more clusters may be required to achieve a better match. Note that silhouettes do not scale well with very large data sets as a $n \times n$ similarity matrix (e.g. distance between all points to all points). 
+
+(TO DO)
+
+- K-mediods can be a useful alternative to k-means if input variables are of mixed type
+- Also helpful to know that k-means yields "flat" clusters: We only know which observations fall into which cluster, but we do not know which observations are more related than others.
 
 
 ### DIY: Clustering for Economic Development
 
 Economic development corporations and chambers of commerce support local communities by attracting jobs and investment. Given the need for more jobs around the country grows, economic development is a fierce affair, sometimes pitting one community against another in bidding wars on tax benefits. In recent memory, Amazon.com announced new secondary headquarters in New York City and Arlington, VA after an exhaustive 20 city search.^[https://blog.aboutamazon.com/company-news/amazon-selects-new-york-city-and-northern-virginia-for-new-headquarters] The global manufacturer Foxxconn announced it will bring high tech manufacturing to Racine, WS.^[https://www.jsonline.com/story/money/business/2018/10/02/foxconn-develop-downtown-racine-site/1499783002/] And a long-standing 'border war' between Kansas City, MO and Kansas City, KS has seen a number of high profile companies like AMC Theaters move headquarters a mere miles, chasing economic benefits.^[https://www.economist.com/united-states/2014/03/22/the-new-border-war]
 
-Beyond the bidding war spectacle, there are other issues that factor into these siting decisions. Also, not all companies are as high profile as the ones described above, but are nonetheless important due to their contributions to the economy. For one thing, the prospective host region of new jobs should have the right economic conditions to sustain and foster the new opportunity. Suppose a tech CEO in Santa Clara or Alameda in the Bay Area in California wanted to find another county with similar conditions. *Based on available data, how would one find a list of comparables?* The same question could be asked in reverse for economic developers: *what are other areas that are in direct competition?*
+Beyond the bidding war spectacle, there are other issues that factor into these siting decisions. Also, not all companies are as high profile as the ones described above, but are nonetheless important due to their contributions to the economy. For one thing, the prospective host region of new jobs should have the right economic conditions to sustain and foster the new opportunity. Suppose a tech executive in Santa Clara or Alameda in the Bay Area in California wanted to find another county with similar socioeconomic conditions. *Based on available data, how would one find a list of comparables?* The same question could be asked in reverse for economic developers: *what are other areas that are in direct competition?*
 
-It begins by first considering what observable variables are selling points for prospective businesses. Is it the size of the labor force? Is it the relative size of the target industry? Or perhaps it is related to education of the labor force or the local cost of employment? In any of these cases, publicly available economic data can be clustered using the k-means technique. Below, we illustrate a simple process of finding clusters of comparable economic activity, focusing on finding clusters associated with online tech industries.^[For simplicity, we define online tech industries using NAICS codes 5182, 5112, 5179, 5415, 5417, and 454111 although we recognize this may exclude subindustries that are rapidly growing in importancein tech.]
+An analysis begins by first considering what observable variables are selling points for prospective businesses. Is it the size of the labor force? Is it the relative size of the target industry? Or perhaps it is related to education of the labor force or the local cost of employment? In any of these cases, publicly available economic data can be clustered using the k-means technique. Below, we illustrate a simple process of finding clusters of comparable economic activity, focusing on finding clusters associated with online tech industries.^[For simplicity, we define online tech industries using NAICS codes 5182, 5112, 5179, 5415, 5417, and 454111 although we recognize this may exclude subindustries that are rapidly growing in importancein tech.]
 
 __Set up__. We start by loading the `cluster` library that has utilities for evaluating clustering results, then import a county-level data set that contains information for over 3,100 US counties.
 
@@ -307,9 +335,9 @@ __Optimizing k__. To optimize k-means, we compute the mean silhouette width for 
 
 A couple points of practice. First, the optimal break is $k=2$ -- indicating that the data most naturally can be broken into pieces if need be. But this does not mean the clusters are optimal. Second, the peak mean silhouette should be somewhere to the left with declining values as $k$ increases. This is an indication that clusters are naturally occurring in this data set. If the average silhouette grows with $k$, we would want to test $k$ until a maximum is found. But there is always the chance that the maximum is reached at $k = n$ in which case the problem may not lend itself to a meaningful cluster analysis.  
 
-Upon plotting bivariate plots of each input variable, we can see that there are not natural occurring clusters, but rather the kmeans algorithm provided an efficient means to partition affluent and better resourced communties from ones that are less well-off.  
+Upon plotting bivariate plots of each input variable, we can see that some characteristics have more power in separating counties than others. Larger employment centers tend also to have some tech and greater incomes as well -- not surprising given the trend towards urbanization. In effect, the k-means algorithm provided an efficient strategy to partition affluent and better resourced communties from ones that are less well-off.  
 
-```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = "(1) Grid search for optimal k with respect to Mean Silhouette Width, (2) and (3) Clusters for select input variables bivariate plots.", fig.height = 3}
+```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = "(1) Grid search for optimal k with respect to Mean Silhouette Width, (2) and (3) Clusters for select input variables bivariate plots - scaled by total employment.", fig.height = 3}
   
 #And breaks the country into one small partition and one large partition
   set.seed(9999)
@@ -320,27 +348,30 @@ Upon plotting bivariate plots of each input variable, we can see that there are 
   
 #4 square
   par(mfrow = c(1,3))
-  plot(opt, col = "red", pch = 16, ylab = "Mean Silhouette Width",
+  plot(opt, col = rgb(0,0,1,0.5), 
+       pch = 16, 
+       ylab = "Mean Silhouette Width",
        xlab = "k", bty = "n", main ="(1)")
   
-  plot((cty1$pct.tech), (cty1$ba),
-        ylab = "% College Educated", 
-       xlab = "% Tech Emp.",
+  plot(log(cty1$ba),log(cty1$pct.tech), 
+        ylab = "log(% Emp. in Tech)", 
+       xlab = "log(% with BA)",
        main = "(2)", cex.main = 0.9,
-       col = cty1$clusters+2, 
-       pch = 16, cex = 0.5, bty = "n")
+       col = alpha(cty1$clusters+2, 0.4),
+       cex = 0.3 + 3*cty1$all.emp/max(cty1$all.emp),
+       pch = 16,  bty = "n")
  
-  plot((cty1$pct.tech), (cty1$pov),
-           ylab = "% Tech Emp.", 
-       xlab = "% Poverty",
+  plot(log(cty1$inc),log(cty1$pct.tech), 
+           ylab = "log(% Emp. in Tech)", 
+       xlab = "log(Median Income)",
        main = "(3)", cex.main = 0.9,
-       col = cty1$clusters+2, 
-       pch = 16, cex = 0.5, bty = "n")
+       col = alpha(cty1$clusters+2, 0.4),
+       cex =0.3 + 3*cty1$all.emp/max(cty1$all.emp),
+       pch = 16, bty = "n")
   
 ```
 
-The smaller of the two clusters contains $n = 404$ counties, which contains most of the nation's high-tech counties including San Francisco and Santa Clara in California as well as large cities such as New York City (New York City) and Seattle (King County, WA). But we also are able to see that less densely populated areas like Durham, NC and Arlington, VA also make the list of comparables. By identifying these likely competing areas, economic developers can better do their research on the competition and further differentiate their offerings.  The same exercise could likewise be applied to understand customer behavior, by clustering their behavior in order to produce profiles. In either case, k-means is very much an exploratory tool that helps inform initial hypotheses when targets are not yet available.
-
+The smaller of the two clusters contains $n = 404$ counties, which contains most of the nation's high-tech counties including San Francisco and Santa Clara in California as well as large cities such as New York City (New York City) and Seattle (King County, WA). But we also are able to see that less densely populated areas like Durham, NC and Arlington, VA also make the list of comparables. By identifying these likely competing areas, economic developers can better do their research on the competition and further differentiate their offerings.  The same exercise could likewise be applied to understand customer behavior, by clustering their behavior in order to produce profiles.  In either case, k-means is very much an exploratory technique that helps inform initial hypotheses. In policy setting, the choice of input variables may be more a matter of the objective of the priority than the math itself. Nonetheless, treat the data gently.
 
 ```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = ""}
 side <- cty1[cty1$clusters==2,]
@@ -352,24 +383,89 @@ knitr::kable(side[1:10, 1:4], booktabs = TRUE, row.names = FALSE, digits = 5)
 
 ## Hierarchical clustering 
 
-Whereas k-means initializes on random centroids, hierarchical clustering take a more computationally costly ground-up approach:
+An alternative to k-means is hierarchical clustering, which captures cluster relationships  in a tree-like structure. Unlike k-means, hierarchical clustering is maps the relationship between all observations, which has a number of notable technical benefits: 
 
+- Visual analysis of the tree structure through *dendrograms* can help build an understanding of how clusters are formed and if clusters are meaningful.
+- Unlike k-means, hierarchical clustering provides context of the interrelationships amongst observations and allows cluster selection a more flexible process.
+- Lastly, hierarchical clusters do not suffer from the inconsistent cluster assignments that are common among k-means clusters. 
+
+Why would k-means be used given these advantages? *Time*. As we will see later in this section, hierarchical clustering is so computationally intensive that it requires a significantly longer run time and greater memory storage to cluster even a moderate sized sample.^[ref required]
+
+```{r, echo = FALSE, fig.cap = "An example dendrogram"}
+dis.mat <- dist(inputs, method = "euclidean")  
+hc <- hclust(dis.mat, method = "ward.D")  
+plot(hc, cex = 0.001, col = "grey", main = "Dendrogram") 
 ```
-Calculate distance d between all points
 
-All points are start as their own clusters (singletons)
-Do until there is only one cluster:
-  Find the closest pair of clusters in terms of linkage distance
-  Merge into a single cluster 
-  Recalculate distances from new cluster to all other clusters
-Stop when all points are in one cluster
+### How It Works
 
+Hierarchical clustering is comprised of two forms: divisive and agglomerative. Hierarchical Divisive Clustering takes a top-down approach and is reminiscent of decision tree learning. It identifies clusters by recursively splitting a sample into smaller partitions.^[] Hierarchical Agglomerative Clustering (HAC) in contrast takes a bottom-up approach, clustering individual observations by distance until all observations are part of one mega cluster. In this section, we focus on HAC given its popularity in the R programming language.
+
+__Process__. How HAC clusters observations is simple, but computationally intensive:
+
+1. Calculate distance $d$ between all points using a linkage method $m$. Each point is its own cluster known as a *singleton*. 
+2. Do until there is only one cluster:
+
+- Find the closest pair of clusters.
+- Merge the pair into a single cluster.
+- Recalculate distances from new cluster to all other clusters.
+
+At each step in the clustering algorithm, the similarity measure between each pair of clusters is recorded. This nifty feature means that an arbitrary number of $k$ clusters can be identified by simply finding the value of the similarity measure that horizontally cuts across $k$ edges in the dendrogram.
+
+__Linkage Methods__. A key input into this process is the linkage method $m$, which dictates which observations are used in calculating distance between clusters. The choice of linkage method not only changes the composition of clusters, but also influences the processing time -- more exhaustive the linkage, more computationally intensive the process, the longer it will require to complete. 
+
+The simplest is the *single linkage* or nearest neighbor in which the closest pair of two points, $x_i$ and $y_i$, from two different clusters are merge together. 
+
+$$min(d(x_i, y_j))$$
+
+*Complete Linkage*,  Distance between the two farthest points in two clusters
+
+$$max(d(x_i, y_j))$$
+
+*Average Linkage*. Average distance between all points
+
+$$\sum_i^k \sum_j^l d(x_i, y_j)$$
+
+*Centroid distance*. Distance between cluster centroids
+
+$$max(d(x,y))$$
+*Ward's Distance*. Clusters that minimize variance increase by using an ANOVA sum of squares overall all partitions
+
+$$\frac{||\bar{x_k}-x_i||^2}{\frac{1}{N_k} \frac{1}{N_t}}$$
+
+
+
+
+```{r, echo = FALSE, fig.cap = "Comparison of linkage methods."}
+dis.mat <- dist(inputs, method = "euclidean")  
+hc <- hclust(dis.mat, method = "ward.D")  
+plot(hc, cex = 0.001, col = "grey", main = "Dendrogram") 
 ```
 
+```{r, eval = F}
 
-### DIY: Clustering on Terrorism Incidents
+library(dendextend)
+
+dis.mat <- dist(inputs, method = "euclidean")  
+dend <- hcd_ward10
+labels(dend) <- rep("", length(labels(dend) ))
+
+dend <- color_branches(dend, k = 3)
+dend <- color_labels(dend, k = 3)
+plot(dend)
 
 
+hc <- hclust(dis.mat, method = "ward.D")  
+plot(hc, cex = 0.001, col = "grey", main = "Dendrogram") 
+```
+-	When to apply
+
+
+
+
+### DIY: Clustering of 311
+
+311 paper ^[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5645100/]
 Understanding relationships
 
 
