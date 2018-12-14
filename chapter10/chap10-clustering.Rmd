@@ -395,8 +395,10 @@ Why would k-means be used given these advantages? *Time*. As we will see later i
   dis.mat <- dist(inputs, method = "euclidean")  
   hc <- hclust(dis.mat, method = "ward.D")  
   dend <- as.dendrogram(hc)
-  labels(dend) <- ""
-  require(dendextend)
+  
+    require(dendextend)
+  labels(dend) <-""
+
   dend <- color_branches(dend, k = 3)
   plot(dend) 
 ```
@@ -444,7 +446,7 @@ where $n_i$ and $n_j$ are the sample sizes of a pair of clusters $i$ and $j$. $\
 Each of these linkage strategies have different effects on the shape of the dendrograms -- some resulting more distinct clusters than others. Using a random subset of the economic development data, we find that single, centroid and average linkages do a relatively inadequate job in separating observations into clean clusters at $k=4$ -- one cluster contains the majority of observations. In contrast Ward's method and complete linkage are able to break the sample into more equally sized clusters. Ultimately, the choice of linkage is a matter of trial and error, but Ward's will generally provide the more robust solution.
 
 
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Effect of Linkage Methods on Clustering Results. Number of clusters set to k = 4.", fig.height=3.5}
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Effect of Linkage Methods on Clustering Results. Number of clusters set to k = 4.", fig.height=2.5}
 #Load library
 library(dendextend)
 
