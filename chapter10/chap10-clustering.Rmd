@@ -1,4 +1,5 @@
 ---
+title: "Chapter 10: Clustering"
 output:
   pdf_document: 
       number_sections: true
@@ -7,14 +8,12 @@ output:
 ---
 
 
-# Chapter 10: Clustering
-
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 library(pacman)
 p_load(scatterplot3d, ggplot2, gridExtra, raster)
 ```
 
-## Opening Story
+# Opening Story
 
 "Flag and Family Republicans" and "Tax and Terrorism Moderates" sound like names that fall along the American political spectrum.  In fact, these are labels assigned to two clusters of American voters that have been empirically identified by political campaigns.^[http://www.winningcampaigns.org/Winning-Campaigns-Archive-Articles/Microtargeting-Knowing-Voter-Intimately.html] Some set of voter characteristics lend themselves to discovering naturally occurring groups, or clusters.  As these clusters are quantifiable, the implications are profound for the tactics and strategies employed in swaying voters. Imagine a scenario in which campaigns needs to get the word out without data on voters. This would mean a random call placed to a "Flag and Family Republic" touting the message of a liberal democrat candidate is unlikely to be successful. However, if data on voters is available and each individual can be mapped to a cluster, then campaigns can develop customized ads through relevant channels and influence votes and contributions.^[https://fivethirtyeight.com/features/a-history-of-data-in-american-politics-part-2-obama-2008-to-the-present/] This is the core idea behind *micro-targeting* --  campaigns are tailored to distinct groups and even specific people.^[https://www.cnn.com/2012/11/05/politics/voters-microtargeting/index.html]
 
@@ -23,10 +22,10 @@ Now in the information age, the possible data-driven strategies are also associa
 
 The interest and investment in micro-targeting in campaigns has only been growing with each successive election cycle. During the 2012 Obama campaign, for example, the analytics team was five times as large as the 2008 campaign.^[http://swampland.time.com/2012/11/07/inside-the-secret-world-of-quants-and-data-crunchers-who-helped-obama-win/] In the 2016 cycle, the campaign of libertarian candidate Gary Johnson relied on Facebook's political ideology clusters to bolster his vote share.^[https://www.cnbc.com/2018/02/21/facebook-targeting-tools-helped-libertarian-candidate-gary-johnson.html] Granted, with the revelations of the Cambridge Analytica scandal, criticism is mounting with some calling the microtargetted "dark advertising" on Facebook a threat to democracy.
 
-Nonetheless, clustering is just a statistical technique. Not only is it used for political campaigns and marketing, but it can help extract visual patterns in photographs and detect anomalous activity in web traffic. It is not a tool that helps identify "truth", but rather should be viewed as an exploratory technique that brings structure to otherwise unlabeled data.
+Nonetheless, clustering is an effective statistical technique that brings natural structure to data, enabling a broad range of use cases from political campaigns to classifying web traffic.
 
 
-## Concepts
+# Concepts
 
 *How exactly does clustering work?* Perhaps the most tangible example is a matter of human sight. Below are visible nighttime imagery taken by the Suomi NPP satellite when flying over six major U.S. cities. Can you identify where are the likely inhabited areas?  It does not take much to realize that the human eye is drawn to areas of contrast in which the average difference in light between two areas is large. Contrast is basically a measure of dissimilarity.
 
@@ -38,7 +37,7 @@ plotRGB(brick("img/npp.png"))
 
 ```
 
-Unfortunately, harnessing the human eye on a large scale is not an easy or convenient task -- it can be labor intensive and costly. If we think of each pixel as an element in a vector representing light intensity, we can treat satellite imagery as data and apply statistical techniques to approximate the process of visual analysis.  In the San Francisco and the Bay Area, for example, the bulk of human activity is located along two strips of land. The *radiances*, or emitted light, are visualized in a kernel density plot showing that there may be a way to separate the dark pixels (the peak to the left) from brighter pixels (the tail to the right).  The distribution can be color quantized, meaning that clustering can be used to reduce the radiance distribution into two or more distinct classes. In this case, we cluster pixels into light and dark. Each pixel is compared against a pair of centroids that represent a typical light pixel and dark pixel. We do not know for certain the location of the true centroids, but we can approximate it as the average radiances of the left peak and the long tail.
+Unfortunately, harnessing the human eye on a large scale is not an easy or convenient task -- it can be labor intensive to hire an army of people to manually inspect imagery. Instead, what if we treated each pixel as data? A pixel is an element in a vector representing light intensity, on top of which statistical techniques can be applied to scalably approximate the process of visual analysis.  In the San Francisco and the Bay Area, for example, the bulk of human activity is located along two strips of land. The *radiances*, or emitted light, are visualized in a kernel density plot showing that there may be a way to separate the dark pixels (the peak to the left) from brighter pixels (the tail to the right).  The distribution can be color quantized, meaning that clustering can naturally reduce the radiance distribution into a few distinct groups of light intensity or color. In this case, we cluster pixels into two groups, light and dark. We do not know the true demarcation between light and dark, but we can pick two radiance values that approximate the average radiance on the left and right side of the distribution. For simplicity, let's assume they happen to be the "right" values.
 
 ```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.height = 4, fig.cap = "Applying clustering to extract likely inhabited areas in the area around San Francisco: (1) False color night-time imagery, (2) Kernel density of radiances, (3) Clustered or color quantized distribution, (4) Imagery classified into light and dark areas."}
 
@@ -71,6 +70,8 @@ par(mfrow = c(2,2), mar = c(1,1,1,1))
         cex.main = 0.9,
        main = "(2) Radiance Distribution")
   polygon(density(vec), col = "#0066FF")
+  abline(v = 60,lty = "dashed")
+  abline(v = 175,lty = "dashed")
   
 #(3) Get two clusters
     sampled <- vec
@@ -97,7 +98,8 @@ par(mfrow = c(2,2), mar = c(1,1,1,1))
        bty = 'n')
     polygon(density(right$sampled),  col = "#0066FF")
     polygon(density(left$sampled),  col = "yellow")
-    
+      abline(v = 60,lty = "dashed")
+  abline(v = 175,lty = "dashed")
     
 #(4) Classify
       #Plot map
@@ -118,20 +120,21 @@ par(mfrow = c(2,2), mar = c(1,1,1,1))
 
 ```
  
-The comparison between pixels and centroids is facilitated using a dissimilarity measure. For continuous values like radiances, dissimilarity can be defined as a simple Euclidean Distance:
+Each pixel is compared with the reference points using a dissimilarity measure.  For continuous values like radiances, dissimilarity can be defined as a simple Euclidean Distance:
 
 $$d(x_1,x_2) = \sqrt{\sum_{i=1}^n|z_1-z_2|^2}$$
-For discrete variables, a Manhattan or binary distances would be appropriate. Mixed variable types can be accommodated using a Gower distances. Regardless of distance measure, each pixel is assigned to the same cluster as the closest reference point. In the case of San Francisco and the Bay Area, we can infer that 76%  of pixels are likely inhabited. 
+Manhattan or binary distances would be appropriate for binary or discrete variables. Regardless of distance measure, each pixel is assigned to the same cluster as the closest reference point. In the case of San Francisco and the Bay Area, we can infer that 76% of pixels are likely inhabited by people with ocean and wilderness covering the remainder 
 
-There are many clustering techniques that can be applied to everyday problems. In this chapter, we explore two of the most commonly employed clustering algorithms: K-means clustering and hierarchical clustering. Each clustering technique is computationally intensive, constructed on different assumptions that help it  accomplish this task, but the core differences between the techniques enable very different use cases.  
+There are many clustering techniques that can be applied to simple everyday problems to complex strategic endeavors. We explore two of the most commonly employed clustering algorithms: K-means clustering and hierarchical clustering. Each clustering technique is computationally intensive, constructed on different assumptions that help it accomplish this task, but the core differences between the techniques enable very different use cases.  
 
 
 
-## K-Means
+# K-Means
 
 K-means clustering identifies observations that belong to an unlabeled latent group by treating variables as coordinates. The coordinates can then be used to calculate distance between points. The *k* in *k-means* is a number of clusters that the analysts is interested. Without definition the value of *k*, the algorithm cannot run. 
 
-### How It Works
+
+## How It Works
 
 The San Francisco example resembles the k-means process. Given *k*, the goal is to assign each observation to a cluster *C*. Each cluster *C* is defined by a set of centroids that are the means of input variables X for each cluster set. The optimal set of clusters minimizes the total cluster variance:
 
@@ -151,7 +154,7 @@ To identify clusters, the algorithm is a simple iterative procedure:
 
 The first step is initialization in which *k* centroids are randomly generated. For each observation, calculate the Euclidean distance from each point to each centroid and assign to the closest centroid. This is known as the *assignment* step -- all points take the label of its closest centroid. It is unlikely that this initial assignment is the "right" cluster, thus the algorithm will *update* the centroid coordinates by calculating the mean of each variable for each cluster.  Upon doing so, this assignment-update procedure is iteratively repeated until the centroid coordinates no longer change between iterations. 
 
-### Assumptions
+## Assumptions
 
 While k-means is a simple algorithm, its performance and effectiveness is guided by a number of key assumptions at each step of computation.
 
@@ -228,7 +231,7 @@ where $a_i$ is the Euclidean distance between a point $i$ and other points in th
 In some regards, k-means can be viewed as a *quick and dirty* technique for if a set of clusters are needed right away. It is surefire, processes quickly, and gets the job done. However, the random initialization may lead to inconsistent results. Also, the cluster results are devoid of context: which points are more associated than others? Are there subclusters that are more similar? Some of these shortcomings are overcome using Hierarchical Clustering.
 
 
-### DIY: Clustering for Economic Development
+## DIY: Clustering for Economic Development
 
 K-means can be used to segment the economic development market. Economic development corporations and chambers of commerce support local communities by attracting jobs and investment. Given the need for more jobs around the country grows, economic development initiatives are fierce affairs, sometimes pitting one community against another in bidding wars over tax benefits. In recent memory, Amazon.com announced new secondary headquarters in New York City and Arlington, VA after an exhaustive 20 city search.^[https://blog.aboutamazon.com/company-news/amazon-selects-new-york-city-and-northern-virginia-for-new-headquarters] The global manufacturer Foxxconn announced it will bring high tech manufacturing to Racine, WS.^[https://www.jsonline.com/story/money/business/2018/10/02/foxconn-develop-downtown-racine-site/1499783002/] And a long-standing 'border war' between Kansas City, MO and Kansas City, KS has seen a number of high profile companies like AMC Theaters move headquarters a mere miles, chasing economic benefits.^[https://www.economist.com/united-states/2014/03/22/the-new-border-war]
 
@@ -306,7 +309,7 @@ __Optimizing k__. To optimize k-means, we compute the mean silhouette width for 
   }
 ```
 
-Then, we loop through each value of `k` in hopes of finding the optimum $k$, and plot the result.  
+Then, we loop through each value of `k` in hopes of finding the optimum $k$, and plot the result. Ideally, the resulting silhouette curve will have (1) a global maximum, and (2) is not monotonically increasing. If the curve is monotonically increasing, this signals that the range of the $k$ parameter is not wide enough and requires further testing. If the mean silhouette width is largest at values of $k \approx n$, then we can reasonably conclude that the problem is not well-suited for clustering as no two points are well-matched.
 
 ```{r, message = FALSE, warning=FALSE}
   opt <- data.frame()
@@ -315,7 +318,7 @@ Then, we loop through each value of `k` in hopes of finding the optimum $k$, and
   }
 ```
 
-Before analyzing the results, it is a good idea to plot the mean silhouette width against values of *k* as this will reveal the shape of the silhouette curve. Ideally, the curve will have a global maximum and is not monotonically increasing. In this case, the global maximum is $k=2$, separating the country into two relatievly distinct groups of $n = 526$ and $n - 2611$. Next, use bivariate plots for an assortment of input variables, color coding the points by their cluster assignment. This will help identify which variables have more power in separating observations.  Larger employment centers tend also to have higher concentration of tech employment and greater incomes as well -- not surprising given the trend towards urbanization. In effect, the k-means algorithm provided an efficient strategy to partition affluent and better resourced communties from ones that are less well-off.  
+By plotting the silhouette curve, we find the global maximum at $k=2$, separating the country into two relatively distinct groups. Bivariate plots can be used to tease out how clusters were formed. We see that higher income, better educated, high tech employment, large employment centers are clustered into one smaller group of $n = 526$ with the remainder of the country in another cluster of $n - 2611$.  This is not surprising given the trend towards urbanization. In effect, the k-means algorithm was able to develop a multivariate strategy to partition affluent and better resourced communties from ones that are less well-off.  
 
 ```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = "(1) Grid search for optimal k with respect to mean silhouette width, (2) and (3) Clusters for select input variables bivariate plots - scaled by total employment.", fig.height = 3}
   
@@ -352,7 +355,8 @@ Before analyzing the results, it is a good idea to plot the mean silhouette widt
   
 ```
 
-__Usage__. One of the biggest challenge for economic developers is that unlike other fields, they do not have microdata on what every company is looking for when locating its headquarters. Thus, k-means is a way to bring structure to competitiveness analysis. The smaller of the two clusters contains $n = 526$ counties, which is comprised of some of the nation's highest-tech counties such as San Francisco and Santa Clara in California as well as large cities such as New York City (New York City) and Seattle (King County, WA). But we also find  less densely populated areas like Durham, NC and Arlington, VA. By identifying similar competing areas, economic developers can research the competition and develop strategies to differentiate their offerings. The same exercise could likewise be applied to understand customer behavior, by clustering their behavior in order to produce profiles.  
+__Usage__. The real question is how one can use these clusters. An economic developer in a more affluent area may be able to use the clusters to find comparable competitors. The smaller of the two clusters contains $n = 526$ counties, which is comprised of some of the nation's highest-tech counties such as San Francisco and Santa Clara in California as well as large cities such as New York City (New York City) and Seattle (King County, WA). But we also find less densely populated areas like Durham, NC and Arlington, VA -- areas that in recent memory have been targeted by tech companies for new offices. By identifying similar competing areas, economic developers can research the competition and develop strategies to differentiate their offerings. Alternatively, an economic developer in the less developed cluster can use counties from the more affluent list as performance benchmarks to inform if policies are improving their economy.  
+
 
 ```{r, message = FALSE, warning=FALSE, echo = FALSE}
 side <- cty1[cty1$clusters==1,]
@@ -363,54 +367,69 @@ side <- side[1:10, c(3,4)]
 colnames(side) <- c("State", "County")
 knitr::kable(cbind(side[1:5, ],side[6:10, ]), 
              booktabs = TRUE, row.names = FALSE, digits = 5, 
-             caption = "Top 10 highest tech cities with total employment greater than 100,000.")
+             caption = "Counties with high tech concentrations and total employment greater than 100,000.")
 ```
 
-## Hierarchical clustering 
+# Hierarchical clustering 
 
-An alternative to k-means is hierarchical clustering, which represents cluster relationships  in a tree-like structure. Unlike k-means, hierarchical clustering is maps the relationship between all observations. This has a number of benefits: 
+While k-means is an easy to use clustering algorithm, it can be improved upon using hierarchical clustering that captures relationships between observations in a tree-like structure. This has a number of notable advantages: 
 
-- Visual analysis of the tree structure using *dendrograms* can inform an understanding of how clusters are formed and if clusters are meaningful.
-- Unlike k-means, hierarchical clustering provides context of the interrelationships amongst observations.
-- Hierarchical clusters do not randomly initiative, thus the risk of inconsistent cluster assignments is not a concern.
+- The tree structure can be visualized in the form of *dendrograms* as well as provide context on how clusters are formed and if clusters are meaningful.  
+- Hierarchical clustering captures the interrelationships amongst observations in addition to cluster assignments.  
+- Hierarchical clustering is not initiated with random assignment, thus reducing the risk of inconsistent cluster assignments.  
 
-Why would k-means be used given these advantages? *Compute time*. As we will see later in this section, hierarchical clustering is so computationally intensive that it requires a significantly longer run time and greater memory storage to cluster even a moderate sized sample.^[ref required]
+Why would k-means be used given these advantages? *Compute time*. As we will see later in this section, hierarchical clustering is not scalable as it requires a significantly longer run time and more memory storage to cluster even a moderate sized sample.^[ref required]
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "An example dendrogram"}
 
-#Calculate dismat
-  dis.mat <- dist(inputs, method = "euclidean")  
+## How It Works
 
-#Hclust
-  hc <- hclust(dis.mat, method = "ward.D")  
-  
-#Edit dendrogram
+Hierarchical clustering comes in two forms: divisive and agglomerative. Hierarchical Divisive Clustering (HDC) takes a top-down approach and is reminiscent of decision tree learning. The class of techniques identifies clusters by recursively splitting a sample into smaller partitions.^[ref needed] Hierarchical Agglomerative Clustering (HAC) in contrast takes a bottom-up approach, grouping together individual observations by distance until all observations are part of one large cluster. In this section, we focus on HAC given its popularity in the R programming language.
+
+__Process__. HAC groups together observations is a simple but computationally intensive process:
+
+1. Calculate a similarity measure $s$ between all observations using a linkage method $m$. Each observation is initially its own cluster known as a *singleton*.  
+2. Do the following until there is only one cluster:  
+
+- Find the closest pair of clusters.  
+- Merge the pair into a single cluster.  
+- Recalculate distances from new cluster to all other clusters.  
+
+We can see that the process is quite computationally intensive. A sample of $n$ observations requires $n-1$ iterations in which similarities $s$ are recalculated between all clusters then grouping only the closest pair of clusters. The newly formed subclusters from each iteration are recorded, serving as a sort of paper trail of how all points are related to one another. When plotted, the paper trail resembles an inverted tree known as a dendrogram and has a striking similarity to decision trees as covered in the previous chapter. Each node in the tree is a distinct set of observations that are more similar to one another. The vertical axis indicates how similar clusters are to one another -- if two or more nodes join together near the bottom of the chart, those clusters are more similar than clusters that merge closer to the top. 
+
+What if we would like to find $k = 4$ (or any number) clusters? Whereas k-means requires a value of $k$ before executing the algorithm, HAC allows for selection after the algorithm converges. We identify clusters by finding the similarity value $s$ that yields $k=4$ -- or drawing a horizontal line across each value of $s$ that intersects exactly four edges in the dendrogram. Similar to k-means, the optimal value of $k$ can be selected using the Elbow method or optimizing the mean silhouette width.
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "A Dendrogram.", fig.height=3.5}
+#Get library
   require(dendextend)
-  dend <- as.dendrogram(hc)
-  labels(dend) <-""
 
-#Plot dendrogram
-  dend <- color_branches(dend, k = 3)
-  plot(dend) 
+#Prep coordinates
+  input2 <- cty[,4:ncol(cty)]
+  set.seed(1)
+  input2 <- input2[order(runif(nrow(input2))),]
+  input2 <- input2[1:70,]
+  for(i in 1:ncol(input2)){
+    input2[,i] <- (input2[,i])^0.5
+  }
+  input2 <- scale(input2)
+  
+#Calculate euclidean
+  dis.mat <- dist(input2, method = "euclidean")  
+
+#Clustering
+  types <- data.frame(cmd = c( "ward.D"),
+             option = c( "Ward's"))
+  hc <- hclust(dis.mat, method = types$cmd[1])  
+  dend <- as.dendrogram(hc)
+  labels(dend) <- rep("", length(labels(dend) ))
+  
+#Plot
+    plot(dend, edgePar = list(col = c("grey"), lwd = 1))
+    rect.hclust(hc, k = 4, border = 2:5)
 ```
 
-### How It Works
 
-Hierarchical clustering is comprised of two forms: divisive and agglomerative. Hierarchical Divisive Clustering takes a top-down approach and is reminiscent of decision tree learning. It identifies clusters by recursively splitting a sample into smaller partitions.^[] Hierarchical Agglomerative Clustering (HAC) in contrast takes a bottom-up approach, clustering individual observations by distance until all observations are part of one mega cluster. In this section, we focus on HAC given its popularity in the R programming language.
-
-__Process__. How HAC groups together observations is a simple but computationally intensive process:
-
-1. Calculate distance $d$ between all points using a linkage method $m$. Each point is its own cluster known as a *singleton*. 
-2. Do until there is only one cluster:
-
-- Find the closest pair of clusters.
-- Merge the pair into a single cluster.
-- Recalculate distances from new cluster to all other clusters.
-
-Details of each intermediate cluster is retained, keeping a paper trail of how all points were related to one another. 
-
-
-__Linkage Methods__. A key input is the linkage method $m$ that produces similarity measure $s$ by guiding  which observations are used in calculating distance between clusters. The choice of linkage method not only changes the composition of clusters, but has a direct influence on the processing time.
+__Linkage Methods__. How is similarity measured between two potential clusters? Should a pair of points be used to  to measure distance or should there be a group of points? The linkage method defines how the similarity measure $s$ is calculated, choosing which points to use include in the calculation. The choice of linkage method not only changes the composition of clusters, but has a direct influence on the processing time.
 
 The simplest is the *single linkage* or nearest neighbor linkage in which the closest pair of points, $X_i$ and $X_j$, from two different clusters are merged together. 
 
@@ -420,21 +439,23 @@ A close cousin is *complete linkage*, which measures distance as the two farthes
 
 $$s_{ik} = max(d(X_i, X_j))$$
 
-Single and complete linkage place a large amount of weight on two observations. In contrast, *Average Linkage* places more support on more observations and comes in three different varieties. Most commonly, average linkage refers to calculating similar as the mean of distances between all points in two clusters.
+Single and complete linkage place a greater weight on two observations and at times yield dendrograms that are not informative -- the results might not capture the spirit of each cluster. In contrast, *Average Linkage* relies on more observations and comes in three varieties. Most commonly, the term average linkage refers to calculating similarity based on the average distances between all points in a pair of clusters. 
 
 $$s_{ik} = \sum_i^k \sum_j^l d(X_i, X_j)$$
 
-A slight modification to the calculation can result in *centroid linkage*, in which a centroid is defined as the coordinate set that results from taking the mean of each variable within a cluster. Distance is then calculated from the resulting centroids, $\bar{x_i}$ and $\bar{x_i}$, rather than directly from individual observations.
+A slight modification to the calculation results in *centroid linkage*, in which a centroid is defined as the set of means of each variable within a cluster. Distance is then calculated from using the centroid coordinates, $\bar{x_i}$ and $\bar{x_i}$, rather than directly from individual observations.
 
 $$s_{ik} = d(\bar{x_i}, \bar{x_j})$$
 
-Arguably, the most sophisticated and statistically-grounded linkage is *Ward's Method*. Rather than using direct measures of distance, Ward's approaches clustering from the lens of an analysis of variance (ANOVA). From among all the prospective merges, two clusters are merged if it minimizes the increase in the sum of squares. This *merge cost* can is concisely summarized as:
+Arguably, the most sophisticated and statistically-grounded linkage is *Ward's Method*. Rather than using direct measures of distance, Ward's approaches clustering from the lens of an analysis of variance (ANOVA). Two clusters are merged if it minimizes the increase in the sum of squares when compared to alternative candidate merges. This *merge cost* is concisely summarized as:
 
 $$\Delta(x_i, x_j) = \frac{n_i n_j}{n_i+n_j} ||\bar{x_i}- \bar{x_j}||^2$$
 
 where $n_i$ and $n_j$ are the sample sizes of a pair of clusters $i$ and $j$. $\bar{x_i}$ and $\bar{x_j}$ are the centers. 
 
-Each of these linkage strategies have different effects on the shape of the dendrograms -- some resulting more distinct clusters than others. Using a random subset of the economic development data, we find that single, centroid and average linkages do a relatively inadequate job in separating observations into clean clusters at $k=4$ -- one cluster contains the majority of observations. In contrast Ward's method and complete linkage are able to break the sample into more equally sized clusters. Ultimately, the choice of linkage is a matter of trial and error, but Ward's will generally provide the more robust statistically-grounded solution.
+Each of these linkage strategies have different effects on the shape of the dendrograms -- some with clusters with more equal number of observations while others with one large cluster and many smaller clusters. Using the economic development data, we plot the dendrogram for each type of linkage. Single, centroid and average linkages are unable to separate observations into clean clusters when $k=4$ -- one cluster contains the majority of observations. In contrast, Ward's method and complete linkage are able to break the sample into more equal-sized, more organic clusters. 
+
+Ultimately, the choice of linkage method is a matter of trial and error, but Ward's generally is a sound choice with a more robust statistically-grounded solution.
 
 
 ```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Effect of Linkage Methods on Clustering Results. Number of clusters set to k = 4.", fig.height=2.5}
@@ -474,13 +495,14 @@ Each of these linkage strategies have different effects on the shape of the dend
 ```
 
 
-### DIY: Clustering of 311 Service Requests
 
-311 is a public non-emergency hotline service that is offered in dozens of United States cities, allowing for residents to file complaints, report issues, and request information from their local government.^[http://www.govtech.com/dc/What-is-311.html] Originally an experiment implemented by the City of Baltimore in 1996^[https://www.citylab.com/city-makers-connections/311/], the service has evolved over time to meet the needs of citizens, scaling up via web-based versions of the service and in some cases scaling down depending on demand for services. 
+## DIY: Clustering of 311 Service Requests
+
+To see the benefit of HAC, we apply it to data from NYC's 311 service -- a public non-emergency hotline service that is offered in dozens of United States cities, allowing for residents to file complaints, report issues, and request information from their local government.^[http://www.govtech.com/dc/What-is-311.html] Originally an experiment implemented by the City of Baltimore in 1996^[https://www.citylab.com/city-makers-connections/311/], the service has evolved over time to meet the needs of citizens, scaling up via web-based versions of the service and in some cases scaling down depending on demand for services. 
 
 The multitude of 311 systems are a rich source of data that enable detailed analyses of sociodemographics of neighborhoods.^[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5645100/] In New York City, for example, the 311 system has received over 200 million calls by 2015. A proportion of these calls result in a formal service request, giving a glimpse into what local residents experience as published via open data portals.^[https://nycopendata.socrata.com/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9] It is easy to imagine that residents in tree-lined suburban neighborhoods are concerned with different issues than those who live in high rise apartments. Using NYC's 311 data, we can cluster the population into segments of similar concern, which in turn can form the basis of how to communicate on key issues to local constituencies as well as targeting issues that may matter most. In addition, by establishing a baseline of concerns, we can track if certain types of resident concerns are trending or evolving.
 
-We begin by loading in NYC 311 service request data for 2016 that has been processed into 0.005 degree grid cells. In total, there are $n=3770$ grid cells and 31 complaint types. Each variable contains the number of service requests logged in each grid cell. Note that we have omitted any complaint type with 1000 service requests in a 2016 and have consolidated similar complaint types. For example, *dead tree* and *fallen tree* have been rolled into an aggregate *tree* category.
+__Prepping the data__. We begin by loading in NYC 311 service request data for 2016 that has been processed into 0.005 degree grid cells. In total, there are $n=3770$ grid cells and 31 complaint types. Each variable contains the number of service requests logged in each grid cell. Note that we have omitted any complaint type with 1000 service requests in a 2016 and have consolidated similar complaint types. For example, *dead tree* and *fallen tree* have been rolled into an aggregate *tree* category.
 
 ```{r}
 #Load in pre-processed data
@@ -493,7 +515,7 @@ We begin by loading in NYC 311 service request data for 2016 that has been proce
   colnames(nyc311)[1:10]
 ```
 
-Per usual, we scale the complaint types to be mean-centered with unit variance, excluding the latitude and longitude fields. The resulting matrix `input311` is then converted into dissimilarity matrix using the `dist` function that maps the *Euclidean* distance between all points.  This step is critical as it is the core ingredients on which linkage methods are applied. Note that hierarchical clustering can also be run on different types of distances such as *binary* that is more common when working with discrete variables.
+We scale the complaint types to be mean-centered with unit variance, excluding the latitude and longitude fields. The resulting matrix `input311` is then converted into dissimilarity matrix using the `dist` function that maps the *Euclidean* distance between all points.  This step is critical as it is the core ingredients on which linkage methods are applied. Note that hierarchical clustering can also be run on different types of distances such as *binary* that is more common when working with discrete variables.
 
 ```{r}
 #Extract necessary variables and scale them
@@ -503,7 +525,7 @@ Per usual, we scale the complaint types to be mean-centered with unit variance, 
   d <- dist(input311, method = "euclidean")  
 ```
 
-The HAC procedure is neatly packaged into the `hclust` function, which is flexible in accommodating different linkage methods. The `hclust` function requires at minimum two arguments:
+__Clustering__. The HAC procedure is neatly packaged into the `hclust` function, which is flexible in accommodating different linkage methods. The `hclust` function requires at minimum two arguments:
 
 - *d* is a dissimilarity matrix from the `dist` function
 - *method* is the type of linkage method that guides agglomeration, such as "single", "complete", "average", "centroid", "ward.D", among others. In this example, we apply the *ward.D* method.
@@ -514,7 +536,7 @@ The resulting tree and all its intricate relationships are stored in the object 
 hc <- hclust(d, method = "ward.D")              
 ```
 
-With the tree grown, we can now visualize the dendrogram. Normally, the HCA object can be directly plotted using `plot(hc)`, but given the large number of singletons, we will take the liberty to tidy up the dendrogram. First, we convert `hc` into a dendrogram object `dend` and remove each singleton's labels, which would otherwise densely line the x-axis. Using the `dendextend` package, we can stylize the dendrogram so that an arbitrary group of $k = 4$ tree branches can be neatly identified and visualized. The resulting `dend` object is then plotted.
+With the tree grown, we can now visualize the dendrogram. Normally, the HCA object can be directly plotted using `plot(hc)`, but given the large number of singletons, it would be prudent to tidy the dendrogram. First, we convert `hc` into a dendrogram object `dend` and remove each singleton's labels, which would otherwise densely occupy the horizontal axis. Using the `dendextend` package, we can stylize the dendrogram so that an arbitrary group of $k = 4$ clusters are distinctly highlighted. The resulting `dend` object is then plotted.
 
 ```{r, warning=FALSE, message = FALSE, echo = FALSE, fig.cap = "Dendrogram of 311 service requests by grid cell."}
   
@@ -529,30 +551,76 @@ With the tree grown, we can now visualize the dendrogram. Normally, the HCA obje
   
 #Render dendrogram
   plot(dend)
-
 ```
  
 
-The number of clusters $k$ can be easily optimized using the sihouette method described in the k-means section. For brevity, we arbitrarily select a value of $k=4$ and dissect how each cluster differs.
+__Contexualizing clusters__. As each observation is linked to a specific location in New York City, we can contexualize and better understand what complaints are captured within each cluster. The first step involves obtaining cluster assignments using the `cutree` function that relies on the HCA object `hc` and a desired number of clusters $k=4$. The function returns a vector of cluster assignments.
 
-((Fix))Dissect top 10 request types
 ```{r}
-#Label groups
-  groups <- cutree(hc, k = 4)
+  nyc311$groups <- cutree(hc, k = 4)
 ```
 
-It turns out that HAC does a reasonable job at identifying distinct patterns in the NYC service request landscape: Purple are high rise areas in Manhattan, Light Orange indicates multistory apartment areas, Light Blue are more suburban and Green correspond to coastal and parkland areas.
+In order to geographically visualize the clusters, we will need to convert each cluster assignment in `groups` into a color. Fortunately, R comes standard witha number of readily available aesthetically color palettes such as `raindow()` that produces a divergent color spectrum, `heat.colors()` that produces a red-blue spectrum, among others. We rely on a togographic color spectrum `topo.colors` and produce a vector of colors with the same length as `groups` and `nyc311`. 
+
+When wondering the map, we find that the types of service requests are also spatially clustered: each type of neighborhood has different concerns: Yellow areas are high rise areas zones, green generally aligns with multistory apartments, dark blue are more suburban areas, and light blue correspond to coastal and parkland areas.
 
 ```{r, message = FALSE, warning = FALSE}
+#Color code each assignment
+  col.vector <- topo.colors(4)[nyc311$groups]
+
+#Plot grid cells
   plot(nyc311$lon, nyc311$lat, 
-       col = groups, 
+       col = col.vector, 
        pch = 15, cex = 0.5, 
        ylab = "Latitude", xlab = "Longitude",
        frame.plot = FALSE, asp = 1)
 ```
 
-Commentary on how this could be used
 
-- finding ways to be more proactive if certain types of services happen jointly
-- 
+Some additional data manipulation is required to extract the most frequently occurring service requests for each group. First, the `aggregate` function summarizes the average number of requests per service request type by cluster group and record. The output  `nyc.sum` is a $4 \times 72$ matrix. To narrow down the results to the top 10 requests per cluster, we need to rank requests in each cluster. To obtain a ranks matrix, we transpose `nyc.sum` and use the `rank` function in descending order (`-x`), doing so by column using the `apply` function.
+```{r}
+#Get average volume of calls
+  nyc.sum <- aggregate(. ~ groups,
+                      data = nyc311[, -c(1:2)],
+                      FUN = mean)
+
+#Transpose so that each column is a cluster
+  nyc.sum <- t(nyc.sum)
+  
+#Obtain descending rank for each column
+  nyc.ranks <- apply(nyc.sum, 2, 
+                     function(x){
+                       rank(-x, ties.method = "first")
+                       })
+```
+
+We bring together the two tables in order to construct a $10 \times 4$ table: each column contains the top 10 service requests in rank sorted order with a label. The priorities of each group are similar, but the relative share and quantities of each service requests are different. Whereas suburban and coastal areas have relatively more tree-related complaints, multi-story and high-rise areas have far more noise and heat/hot water issues. From a policy perspective, cluster mapping is a simple way of segmenting constituencies and determine which city operations issues matter most for each community.
+
+
+```{r}
+#Compile the top 10 ranks
+  out <- lapply(1:4, FUN = function(x){
+     top <- nyc.ranks[,x] <= 10
+     res <- sort(nyc.sum[top,x], decreasing =  TRUE)
+     res <- paste0(names(res), ": ", round(res))
+     return(res)
+  })
+
+#Convert into table
+  out <- do.call(cbind, out)
+```
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+knitr::kable(out, booktabs = T, col.names = c("1 - Suburban", "2 - Coastal", "3 - Multi-story", "4 - High-rise"),
+             caption = "Top 10 Service Requests by Cluster")
+```
+
+#Best Practices
+
+In this chapter, we illustrated how two clustering techniques can be used to structure otherwise amorphous data  problems. K-means and hierarchical clustering are simple techniques, but ultimately, they are best suited for exploratory problems -- ones in which we need to data to speak for themselves. Unliked supervised learning problems in which a target is known, the insights drawn from clustering can be rather fickle and prone to manipulation due to the absense of a target. Nonetheless, these techniques are popular for informing hypotheses and narratives from microtargeting to agriculture.
+
+We conclude this chapter by highlighting best practices that allow clustering projects to play an active and operational role in policy problems. First, be clear about the use case. Crafting a narrative about market segments and trends is a different focus than micro-targeting subgroups. The use case, in turn, has different implications for modeling choices. For example, the choice of $k$ is dependent on the use case. Lower value of $k$ lend themselves to more concise narratives. Optimized values of $k$ through the Elbow method or Silhouette method are helpful for establishing baselines for more precise market segments. Second, as clustering treats input variables with equal weight, each variable should be standardized though we should note that there are varieties of clustering that allow inputs to have different weights. But perhaps more importantly, be cognizant of the variable types as those will dictate the type of similarity measure that can be employed. Third, while we do not cover the following, it is a logical extension to the classification chapter: clusters can support monitoring and contextualizing trends. Cluster assignments can serve as a baseline against which new data can be mapped using *1-nearest neighbor* classification. The implications are many. For political campaigns, clusters can be defined in one election cycle, then new data for subsequent election cycles can be contexualized relative to the baseline. This allows for tracking how trends evolve over time. For finance and economics, clustering of series based on their seasonal patterns can establish a baseline of consumer behavior. New information can be mapped to clusters to find similarities in behavior. 
+
+
+
 
