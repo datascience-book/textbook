@@ -3,9 +3,9 @@ title: "Data Science + Public Policy"
 author: "Jeffrey Chen"
 date: '`r Sys.Date()`'
 output:
-  html_document: default
-  latex_engine: xelatex
   pdf_document: null
+  latex_engine: xelatex
+  html_document: default
 description: Chapter 5 - cell level
 documentclass: book
 link-citations: yes

@@ -1,5 +1,5 @@
 ---
-title: "Chapter 10: Clustering"
+title: "Chapter 4: Readying the Data"
 output:
   pdf_document: 
       number_sections: true
@@ -7,620 +7,628 @@ output:
   geometry: margin=1in
 ---
 
+# Introduction
 
-```{r, echo = FALSE, message = FALSE, warning = FALSE}
-library(pacman)
-p_load(scatterplot3d, ggplot2, gridExtra, raster)
-```
+Speeches contains a wealth of information. As humans, we are taught to understand verbal and written communication -- pick out the nouns, verbs, and adjectives, then combine the information to decipher meaing. Take the following excerpt from the 2010 State of the Union:
 
-# Opening Story
+> Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. 
+We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy.
 
-"Flag and Family Republicans" and "Tax and Terrorism Moderates" sound like names that fall along the American political spectrum.  In fact, these are labels assigned to two clusters of American voters that have been empirically identified by political campaigns.^[http://www.winningcampaigns.org/Winning-Campaigns-Archive-Articles/Microtargeting-Knowing-Voter-Intimately.html] Some set of voter characteristics lend themselves to discovering naturally occurring groups, or clusters.  As these clusters are quantifiable, the implications are profound for the tactics and strategies employed in swaying voters. Imagine a scenario in which campaigns needs to get the word out without data on voters. This would mean a random call placed to a "Flag and Family Republic" touting the message of a liberal democrat candidate is unlikely to be successful. However, if data on voters is available and each individual can be mapped to a cluster, then campaigns can develop customized ads through relevant channels and influence votes and contributions.^[https://fivethirtyeight.com/features/a-history-of-data-in-american-politics-part-2-obama-2008-to-the-present/] This is the core idea behind *micro-targeting* --  campaigns are tailored to distinct groups and even specific people.^[https://www.cnn.com/2012/11/05/politics/voters-microtargeting/index.html]
+To many, text might not be considered data despite the fact that any analytical mind with a command of the English language can identify key terms:
 
-The idea of voter micro-targeting is not new, however. A rudimentary form of targeting was used as early as Jimmy Carter's 1976 Presidential campaign in which the country was segmented by issue and geography.^[http://www.washingtonpost.com/wp-dyn/content/article/2007/07/04/AR2007070401423.html]  Surveying played a notable part in understanding which issues matter to which demographics -- what emotions are associated with different social and fiscal matters. ^[http://www.nbcnews.com/id/15292903/ns/politics-tom_curry/t/mechanics-micro-targeting/#.XANCoZNKgxc]
-Now in the information age, the possible data-driven strategies are also associated with a "creepy" factor. As it turns out, individual level data such as brand preferences are correlated with which candidate a voter is likely to vote. According to a survey conducted by a brand consultant in 2016, Bernie Sanders supporters are 82% more likely to eat at Chipotle than the average American and Donald Trump supporters are 111% more likely to eat a Sonic.^[https://www.bloomberg.com/news/articles/2016-02-18/sanders-supporters-like-chipotle-while-trump-fans-prefer-sonic] Thus, using data that is common in marketing databases enable campaigns to define hyper-local, finely tuned clusters for highly customized messaging.
+> ~~Now, one place to start is serious~~ financial reform.  ~~Look, I am not interested in~~ punishing banks.  ~~I'm interested in~~ protecting our economy.  ~~A~~ strong, healthy financial market ~~makes it possible for~~ businesses ~~to access~~ credit ~~and~~ create new jobs. ~~It channels the~~ savings of families ~~into~~ investments ~~that~~ raise incomes.  ~~But that can only happen if we guard against the same~~ recklessness ~~that nearly brought down our entire~~ economy. 
+~~We need to make sure~~ consumers ~~and~~ middle-class families ~~have the information they need to make~~financial decisions. ~~We can't allow~~ financial institutions, ~~including those that take your~~ deposits,~~to take risks that threaten the whole~~ economy.
 
-The interest and investment in micro-targeting in campaigns has only been growing with each successive election cycle. During the 2012 Obama campaign, for example, the analytics team was five times as large as the 2008 campaign.^[http://swampland.time.com/2012/11/07/inside-the-secret-world-of-quants-and-data-crunchers-who-helped-obama-win/] In the 2016 cycle, the campaign of libertarian candidate Gary Johnson relied on Facebook's political ideology clusters to bolster his vote share.^[https://www.cnbc.com/2018/02/21/facebook-targeting-tools-helped-libertarian-candidate-gary-johnson.html] Granted, with the revelations of the Cambridge Analytica scandal, criticism is mounting with some calling the microtargetted "dark advertising" on Facebook a threat to democracy.
+Much like the logic that guides keyword identification, text can be shaped from an unstructured dataset into a well-defined, structured dataset: 
 
-Nonetheless, clustering is an effective statistical technique that brings natural structure to data, enabling a broad range of use cases from political campaigns to classifying web traffic.
-
-
-# Concepts
-
-*How exactly does clustering work?* Perhaps the most tangible example is a matter of human sight. Below are visible nighttime imagery taken by the Suomi NPP satellite when flying over six major U.S. cities. Can you identify where are the likely inhabited areas?  It does not take much to realize that the human eye is drawn to areas of contrast in which the average difference in light between two areas is large. Contrast is basically a measure of dissimilarity.
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.cap = "Night time imagery from the NOAA-NASA Suomi NPP Satellite's Visible Infrared Imaging Radiometer Suite (VIIRS)"}
-
-library(raster)
-plotRGB(brick("img/npp.png"))
-
-
-```
-
-Unfortunately, harnessing the human eye on a large scale is not an easy or convenient task -- it can be labor intensive to hire an army of people to manually inspect imagery. Instead, what if we treated each pixel as data? A pixel is an element in a vector representing light intensity, on top of which statistical techniques can be applied to scalably approximate the process of visual analysis.  In the San Francisco and the Bay Area, for example, the bulk of human activity is located along two strips of land. The *radiances*, or emitted light, are visualized in a kernel density plot showing that there may be a way to separate the dark pixels (the peak to the left) from brighter pixels (the tail to the right).  The distribution can be color quantized, meaning that clustering can naturally reduce the radiance distribution into a few distinct groups of light intensity or color. In this case, we cluster pixels into two groups, light and dark. We do not know the true demarcation between light and dark, but we can pick two radiance values that approximate the average radiance on the left and right side of the distribution. For simplicity, let's assume they happen to be the "right" values.
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.height = 4, fig.cap = "Applying clustering to extract likely inhabited areas in the area around San Francisco: (1) False color night-time imagery, (2) Kernel density of radiances, (3) Clustered or color quantized distribution, (4) Imagery classified into light and dark areas."}
-
-par(mfrow = c(2,2), mar = c(1,1,1,1))
-
-#Get SF Raster
-   
-  sf <- brick("img/sf.png")
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+  library(knitr)
+  library(kableExtra)
+  library(rvest)
+  library(plyr)
+  library(DT)
+  speech <- "Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy. "
+   stripped <- gsub("[[:punct:]]","",speech)
+  stripped <- gsub("[[:digit:]]","",stripped)
+  stripped <- gsub("[^[:graph:]]"," ",stripped)
+  bag <- strsplit(stripped," ")
+  bag <- tolower(trimws(unlist(bag)))
   
-  #Set colors
-    set.seed(222)
-    sampled <- as.vector(sf)
-    clusters <- 20
-    clust <- kmeans(sampled,clusters)$cluster
-    combined <- as.data.frame(cbind(sampled,clust))
-    brk <- sort(aggregate(combined[,1], list(combined[,2]), max)[,2])
-    
-  #(1) Plot map
-   plot(sf[[3]], breaks=brk, 
-        main = "(1) Night-Time Imagery",
-        cex.main = 0.9,
-        col=colorRampPalette(c("darkblue","#0066FF", "yellow"))(clusters), 
-        legend=F,yaxt='n',xaxt='n',frame.plot=F, box = FALSE)
-      
-
-#(2) Plot histogram
-  vec <- as.vector(sf[[3]])
-  plot(density(vec), col = NA, xaxt='n', yaxt='n', xlab="Dark                  Light", ylab="",
-       frame.plot = FALSE, 
-        cex.main = 0.9,
-       main = "(2) Radiance Distribution")
-  polygon(density(vec), col = "#0066FF")
-  abline(v = 60,lty = "dashed")
-  abline(v = 175,lty = "dashed")
+#Stopwords
+  library(digIt)
+  stoplist <- digIt("stopwords")
+  stoplist <- as.vector(stoplist[,1])
   
-#(3) Get two clusters
-    sampled <- vec
-    clusters <- 2
-    set.seed(222)
-    clust <- kmeans(sampled,clusters)$cluster
-    combined <- as.data.frame(cbind(sampled,clust))
-    combined$colors <-  "#0066FF"
-    combined$colors[combined$clust==1] <- "yellow"
-    
-    left <- combined[combined$clust == 1,]
-    left <- left[order(left$sampled),]
-    right <- combined[combined$clust == 2,]
-    right <- right[order(right$sampled),]
-
- 
-    plot(density(as.vector(left$sampled)), 
-         col = NA, xlim = c(0,255), ylim = c(0,0.15),
-        xaxt='n', yaxt='n', 
-        xlab="Dark                  Light", 
-       ylab="", 
-       main = "(3) Color Quantized", 
-      cex.main = 0.9,
-       bty = 'n')
-    polygon(density(right$sampled),  col = "#0066FF")
-    polygon(density(left$sampled),  col = "yellow")
-      abline(v = 60,lty = "dashed")
-  abline(v = 175,lty = "dashed")
-    
-#(4) Classify
-      #Plot map
-    mat <- matrix(combined$clust,
-                     ncol = nrow(sf[[3]]))
-    mat <- t(mat)
-    
-    col_mat <- matrix(combined$colors,
-                     ncol = nrow(sf[[3]]))
-    col_mat <- t(col_mat)
-    
-   plot((raster((mat))), 
-        main = "(4) Clustered",
-        cex.main = 0.9, col = c("yellow","#0066FF"),
-        legend=F,yaxt='n',xaxt='n',frame.plot=F,
-        box = FALSE, asp = 0.6)
-      
-
-```
- 
-Each pixel is compared with the reference points using a dissimilarity measure.  For continuous values like radiances, dissimilarity can be defined as a simple Euclidean Distance:
-
-$$d(x_1,x_2) = \sqrt{\sum_{i=1}^n|z_1-z_2|^2}$$
-Manhattan or binary distances would be appropriate for binary or discrete variables. Regardless of distance measure, each pixel is assigned to the same cluster as the closest reference point. In the case of San Francisco and the Bay Area, we can infer that 76% of pixels are likely inhabited by people with ocean and wilderness covering the remainder 
-
-There are many clustering techniques that can be applied to simple everyday problems to complex strategic endeavors. We explore two of the most commonly employed clustering algorithms: K-means clustering and hierarchical clustering. Each clustering technique is computationally intensive, constructed on different assumptions that help it accomplish this task, but the core differences between the techniques enable very different use cases.  
-
-
-
-# K-Means
-
-K-means clustering identifies observations that belong to an unlabeled latent group by treating variables as coordinates. The coordinates can then be used to calculate distance between points. The *k* in *k-means* is a number of clusters that the analysts is interested. Without definition the value of *k*, the algorithm cannot run. 
-
-
-## How It Works
-
-The San Francisco example resembles the k-means process. Given *k*, the goal is to assign each observation to a cluster *C*. Each cluster *C* is defined by a set of centroids that are the means of input variables X for each cluster set. The optimal set of clusters minimizes the total cluster variance:
-
-$$arg min \sum_{j=1}^k\sum_{i=1}^n ||X_{i,j} - \mu_j||^2$$
-
-
-where the sum of the distance $X$ of each point $i$ in cluster $j$ to its corresponding centroid of $j$. Distance is calculated in terms of input variables $X$ and the $j^{th}$ cluster centroid $\mu$. 
-
-To identify clusters, the algorithm is a simple iterative procedure: 
-	
-1. Initialize by randomly generating k-centroids.
-2. Assign each point *i* to the closest cluster *C*.
-
-- Recalculate the centroid coordinates for each *C*.
-- Repeat step 2 until each point's cluster assignment no longer changes.
-
-
-The first step is initialization in which *k* centroids are randomly generated. For each observation, calculate the Euclidean distance from each point to each centroid and assign to the closest centroid. This is known as the *assignment* step -- all points take the label of its closest centroid. It is unlikely that this initial assignment is the "right" cluster, thus the algorithm will *update* the centroid coordinates by calculating the mean of each variable for each cluster.  Upon doing so, this assignment-update procedure is iteratively repeated until the centroid coordinates no longer change between iterations. 
-
-## Assumptions
-
-While k-means is a simple algorithm, its performance and effectiveness is guided by a number of key assumptions at each step of computation.
-
-- _Scale_. Similar to k-nearest neighbors, k-means treats sets of variables as coordinates. Each variable is assumed to have equal importance, which is unlikely to be the case with most data. To remedy this problem for cases where only continuous values are considered, input variables should be mean-centered and standardized ($\frac{x_i-\mu}{\sigma}$) to minimized unwanted biases due to scale. In cases with only discrete and categorical variables, each variable can be converted into a dummy variable matrix. In scenarios with mixed variable types, the authors recommend discretizing continuous values, then convert all variables into a dummy variable matrix so that all inputs are in a binary scale.
-
-- _Missing Values_. K-means are unable to accommodate missing values as every coordinate is a necessary input. Thus, often times k-means models are usually reserved for complete data sets.
-
-- _Stability of Clusters_. The initialization step creates $k$ centroids at random, which can result in suboptimal and unstable clusters. The instability can be observed when comparing two sequential runs of the same algorithm with the same data -- the points in each cluster may be entirely different! For example, a cluster that is visible to the eye may actually be divided among two or more clusters. While a number of factors influence unstable outcomes, we cover two key issues. First, the choice of $k$ needs to be tuned, requiring a search for the value of $k$ that optimizes some measure of quality. Second, as all variables have equal weight, highly dimensional training sets can have many local optima -- there may simply be more nooks and cranieson the optimization surface into which the model may fall. 
-
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.cap = "Comparison of a suboptimal result and optimal result", fig.height = 3}
-
-library(raster)
-plotRGB(brick("img/kmeans_example_error.jpg"))
-
-```
-
-
-- _Choice of K_. Selecting the best value of $k$ is arguably a subjective affair: there is a lack of consensus regarding how to identify $k$. In some cases, analysts choose an arbitrarily small value of $k$ so that each cluster can inform a storyline. While this is convenient, it is quite subjective and some audiences may be more amenable than others. The _Elbow method_ is a more technical approach in which $k$ is chosen at the inflection point where an additional cluster does not significantly reduce the variance explained or reduction of error. By testing values a range of values of $k$, the elbow is the inflection point along the total sum of squares curve. While the Elbow method sounds like a reasonable rule of thoumb, a clear inflection point is not always present.
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.height = 2.5, fig.cap = "Elbow method: Choose k at the inflection point. (1) Inflection point identified at k = 3, (2) No inflection point identified."}
-library(ggplot2)
-library(gridExtra)
-distro <- data.frame(x = c(rnorm(100000, 300, 20), rnorm(100000, 400, 30), rnorm(100000, 350, 40), rnorm(100000, 500, 30)) , fill = 1)
-
-
-a0 <- ggplot(distro, aes(x = x, fill = "red")) + ggtitle("Distribution") + 
-      geom_density(stat= "density",adjust = 2) + xlab("")  + ylab("") + 
-      theme(plot.title = element_text(size = 10, hjust = 0.5), 
-            legend.position="none", axis.title.x=element_blank(),
-            axis.text.x=element_blank(), axis.ticks.x=element_blank(),
-            axis.text.y=element_blank(), axis.ticks.y=element_blank(),
-          panel.grid.major = element_blank(),
-          panel.grid.minor = element_blank(),
-          panel.border = element_blank(),
-          panel.background = element_blank())
-
-placeholder <- data.frame()
-for(i in 1:10){
-  cluster <- kmeans(distro$x, i)
-  placeholder <- rbind(placeholder, data.frame(k = i, wss =   cluster$tot.withinss/cluster$totss))
-}
-
-placeholder$fake <- 1-(1:nrow(placeholder))/10 + runif(10)/20 - runif(10)/10
-
-a1 <- ggplot(placeholder, aes(x = k, y = wss)) +
-  geom_vline(aes(xintercept= 3), colour = "grey") + 
-  geom_line(colour = "red") + ggtitle("(1) Elbow Present") +
-  geom_point(colour = "red") + ylab("%WSS") + 
-  xlab("Value of k")+ 
-  scale_x_continuous(breaks = (seq(1, 10, by = 1))) +
-      theme(plot.title = element_text(size = 10, hjust = 0.5), 
-            legend.position="none",panel.border = element_blank(),
-          panel.background = element_blank()) 
-
-a2 <- ggplot(placeholder, aes(x = k, y = fake)) +
-  geom_line(colour = "red") + ggtitle("(1) No elbow Present") +
-  geom_point(colour = "red") + ylab("%WSS") + 
-  xlab("Value of k")+ 
-  scale_x_continuous(breaks = (seq(1, 10, by = 1))) +
-      theme(plot.title = element_text(size = 10, hjust = 0.5), 
-            legend.position="none",panel.border = element_blank(),
-          panel.background = element_blank()) 
-
-grid.arrange(a1, a2, ncol = 2)
-```
-
-An far more computationally intensive alternative relies on the *silhouette value*, which compares the similarity of a given observation $i$ to observations within and outside its cluster. The silhouette $s(i)$ is defined as:
-
-$$s(i) = \frac{b_i-a_i}{max(a_i,b_i)}$$
-
-where $a_i$ is the Euclidean distance between a point $i$ and other points in the same cluster, $b_i$ is the minimum distance between $i$ and any other cluster the sample. The values of $s(i)$ fall between -1 and 1, where 1 indicates that an observation is well-matched with its cluster and -1 indicates that fewer or more clusters may be required to achieve a better match. 
-
-In some regards, k-means can be viewed as a *quick and dirty* technique for if a set of clusters are needed right away. It is surefire, processes quickly, and gets the job done. However, the random initialization may lead to inconsistent results. Also, the cluster results are devoid of context: which points are more associated than others? Are there subclusters that are more similar? Some of these shortcomings are overcome using Hierarchical Clustering.
-
-
-## DIY: Clustering for Economic Development
-
-K-means can be used to segment the economic development market. Economic development corporations and chambers of commerce support local communities by attracting jobs and investment. Given the need for more jobs around the country grows, economic development initiatives are fierce affairs, sometimes pitting one community against another in bidding wars over tax benefits. In recent memory, Amazon.com announced new secondary headquarters in New York City and Arlington, VA after an exhaustive 20 city search.^[https://blog.aboutamazon.com/company-news/amazon-selects-new-york-city-and-northern-virginia-for-new-headquarters] The global manufacturer Foxxconn announced it will bring high tech manufacturing to Racine, WS.^[https://www.jsonline.com/story/money/business/2018/10/02/foxconn-develop-downtown-racine-site/1499783002/] And a long-standing 'border war' between Kansas City, MO and Kansas City, KS has seen a number of high profile companies like AMC Theaters move headquarters a mere miles, chasing economic benefits.^[https://www.economist.com/united-states/2014/03/22/the-new-border-war]
-
-Beyond the bidding war spectacle, there are other issues that factor into these siting decisions. Also, not all companies are as high profile as the ones described above, but are nonetheless important due to their contributions to the economy. For one thing, the prospective host region of new jobs should have the right economic conditions to sustain and foster the new opportunity. Suppose a tech executive in Santa Clara or Alameda in the Bay Area in California wanted to find another county with similar socioeconomic conditions. *Based on available data, how would one find a list of comparables?* The same question could be asked in reverse for economic developers: *what are other areas that are in direct competition?*
-
-An analysis begins by first considering what observable variables are selling points for prospective businesses. Is it the size of the labor force? Is it the relative size of the target industry? Or perhaps it is related to education of the labor force or the local cost of employment? In any of these cases, publicly available economic data can be clustered using the k-means technique. Below, we illustrate a simple process of finding clusters of comparable economic activity, focusing on finding clusters associated with online tech industries.^[For simplicity, we define online tech industries using NAICS codes 5182, 5112, 5179, 5415, 5417, and 454111 although we recognize this may exclude subindustries that are rapidly growing in importancein tech.]
-
-__Set up__. We start by loading the `cluster` library that has utilities for evaluating clustering results, then import a county-level data set that contains information for over 3,100 US counties.
-
-
-```{r, message = FALSE, warning=FALSE}
-  library(cluster)
-  load("data/county_compare.Rda")
-
-```
-
-The underlying data is constructed from a variety of U.S. Census Bureau programs, in particular the American Community Survey, County Business Patterns, and the Small Area Income & Poverty Estimates.
-
-- `fips`: Federal Information Processing System code that assigns a unique ID to each county
-- `all.emp`: total employment^[https://www.census.gov/programs-surveys/cbp.html]
-- `pct.tech`: percent of the employed population in tech industry
-- `est`: percent of company establishments in that industry
-- `pov`: the poverty rate^[U.S. Census Bureau, Model-based Small Area Income & Poverty Estimates (SAIPE) -   https://www.census.gov/programs-surveys/saipe.html]
-- `inc`: median household income^[U.S. Census Bureau, Model-based Small Area Income & Poverty Estimates (SAIPE) -   https://www.census.gov/programs-surveys/saipe.html]
-- `ba`: percent that is college educated
-
-To take a quick peek, we use the `head` function to extract the first three rows.
-
-```{r, message = FALSE, warning=FALSE, eval = FALSE}
-  head(cty, 3)
-```
-
-```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = ""}
-side <- cty
-row.names(side) <-NULL
-knitr::kable(side[c(1:2),], booktabs = TRUE, row.names = FALSE, digits = 3)
-```
-
-__Clustering__. Before we apply k-means to the data, the data should be mean-centered and standardized so that all inputs are on the same scale. This can be easily done by using the `scale` function, the assigning the output to a new data frame `inputs`.
-
-```{r, message = FALSE, warning=FALSE}
-  inputs <- scale(cty[,4:ncol(cty)], center = TRUE, scale = TRUE)
-```
-
-Let's get comfortable with the clustering process. As a dry run, we apply the `kmeans` function to the scaled inputs, specifying $k = 5$ for five clusters, and setting the seed to a constant so the analysis is replicable. The resulting object `cl` contains diagnostics about the clustering process, but also the coordinates of the centroids and the cluster assignment for each county (`cl$cluster`). When we tabulate `cl$cluster`, we find that each cluster is of a different size, suggesting that some counties do indeed cluster together more than others. We should ask *Why five clusters? Why not two or 50?*
-
-```{r, message = FALSE, warning=FALSE}
-#Dry run
-  set.seed(123)
-  cl <- kmeans(inputs, centers = 5)
-  table(cl$cluster)
-```
-
-We identify the optimal value of $k$ by comparing mean silhouette widths as calculated using the `silhouette` function in the `cluster` library. It requires two inputs: the cluster assignment and a dissimilarity matrix that shows the distances between each observation. The former is an output of `kmeans` and the latter is obtained using the `dist` function applied to the scaled input variables. The silhouette function calculates the silhouette width for each observation in the `sil` object. To compute the mean silhouette width, we simply take the mean of the third column of `sil`. For this dry run example, we can infer that the points are relatively well matched to their cluster given the positive value. As the value is closer to zero than one, some points are at the borderline between two clusters, thus we should test other values of $k$ to optimize.
-
-```{r, message = FALSE, warning=FALSE}
-#Calculate dissimilarity matrix
-  dis <- dist(inputs)
-
-#Calculate silhouette widths
-  sil <- silhouette(cl$cluster, dis)
+#Read through text
+  vals <- as.data.frame(table(unlist(bag)))
+  vals <- vals[!(vals$Var1 %in% stoplist),]
+  vals$len <- nchar(as.character(vals$Var1))
+  vals <- vals[vals$len > 2,]
+  vals <- vals[order(-vals$Freq),]
+  colnames(vals) <- c("Terms", "Frequency of Term","Number of Characters")
+  row.names(vals) <- 1:nrow(vals)
   
-#Calculate mean silhouette width
-  mean(sil[,3])
+  kable(head(vals,4), booktabs = TRUE,
+  caption = 'Most frequent terms found in excerpt.')  %>%
+            kable_styling(latex_options = c("hold_position"))
 ```
 
 
-__Optimizing k__. To optimize k-means, we compute the mean silhouette width for values of $k \in \{2,30\}$. For good measure, we combine the kmeans and silhouette functions into a function `km` that returns diagnostics given values of inputs `x`, desired number of clusters `k`, and dissimilarity matrix `d`. 
+Of course, this process could be done manually, but imagine sorting through all 7,304 words in the 2010 address or scaling the process to the roughly [_1.9 million words_](http://www.presidency.ucsb.edu/sou_words.php) in addresses State of the Union addresses between 1790 and 2016. All the steps required to convert unstructured text into usable data can be done with a little bit of planning, technical imagination and data manipulation. Every little detail about the data needs to be considered and meticulously converted into a usable form. From a data format perspective, capitalized characters are not the same as lower case. Contractions are not the same as terms that are spelled out. Punctuation affect spacing. Carriage returns and new line markers, while not visible in reading mode, are recorded. 
 
-```{r, message = FALSE, warning=FALSE}
-  km <- function(x, k, d){
-      cl <- kmeans(x, centers = k)
-      sil <- silhouette(cl$cluster, d)
-      return(data.frame(k = k, sil = mean(sil[,3])))
+Let's take one line from above and dissect the changes that need to be made:
+
+> "We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+
+We then turn everything into lower case so all letters of the alphabet are read the same.
+
+> "we need to make sure consumers and middle-class families have the information they need to make financial decisions. we can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+
+Then, we get rid of punctuation by substituting values with empty quotations (`""`).
+
+> "we need to make sure consumers and middleclass families have the information they need to make financial decisions  we cant allow financial institutions including those that take your deposits to take risks that threaten the whole economy"
+
+Each space between each word can be used as a _delimiter_ that can be used as a symbol for a program to  break apart words into elements in a list. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+example <- "We need to make sure consumers and middle-class families have the information they need to make financial decisions. We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+example <- gsub("[[:punct:]]","",tolower(example))
+example <- as.character(unlist(strsplit(trimws(example), " ")))
+  kable(matrix( c(example, rep("",3)), nrow = 8,ncol = 5), booktabs = TRUE,
+  caption = 'Terms')  %>% kable_styling(latex_options = c("hold_position"))
+```
+
+There are words in there that don't add much value as they are commonplace and filler. In text processing, these words are known as *stop words*. In each domain, the list of stop words likely differs, thus data scientists may need to  build a customized list. For simplicity, we've used a stop words list that is used in the mySQL -- an open source relational database management system. The result is the list of remaining words. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+  example <- example[!(example %in% gsub("[[:punct:]]","", stoplist))]
+  
+  knitr::kable(matrix(c(example, rep("",1)), nrow = 4,ncol = 4), booktabs = TRUE,
+  caption = 'Terms after removing stop words')  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+From that data, we can aggregate the data into a form that is meaningful to answer a research question. For example, the frequency of words may provide a clue as to what the text is about. In this case, each "financial" and "make" appear twice in the text, perhaps indicating that there is an orientation towards action (make) for financial considerations. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+  examp <- as.data.frame(table(example))
+  examp <- examp[order(-examp$Freq), ]
+  end <- cbind(examp[1:7,], rbind(examp[8:13,],data.frame(example = "", Freq = "")))
+  colnames(end) <- c("Term", "Freq", "Term", "Freq")
+  
+  
+  knitr::kable(end, caption = "Term Frequencies", booktabs = TRUE, row.names = FALSE)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+This is just the tip of the iceberg. Text processing is just one aspect of readying your data for use. Much of a data scientist's time is spent retrieving, assembling, manipulating, and transforming data so that it is useful. While there are entire texts dedicated to engineering data, this chapter offers a brief review of programming paradigms that are necessary to bring to bear data in the public and social sectors. 
+
+# Retrieval and Assembly
+
+
+Retrieving and loading data 
+Read files locally
+Read_csv, read_json, 
+Combine files
+Rbind
+plyr rbind.fill
+Cbind
+DIY: 
+
+# Manipulating data
+
+## Working with Dates
+
+Working dates can be challenging. Most programming languages do not automatically recognize a date variable, requiring coders to specify the format using a set of date symbols. The `lubridate` [package](https://lubridate.tidyverse.org/) significantly lowers the bar for R users, making the process of working and manipulating dates more seamless and less prone to error. 
+
+```{r, message=FALSE, warning = FALSE}
+require(lubridate)
+```
+
+Upon loading lubridate, we can convert string and numeric objects with values that represent dates into date objects. The `as_date` function is most intuitive, automatically detecting the date format and assumes that the date is recorded in UTC. 
+
+```{r}
+d0 <- as_date("2010-08-20")
+```
+
+In case `as_date` is unable to detect the date, the user can more formally define the date format using functions such as `mdy` and `ymd`. Both are able to accommodate both string and numeric formats.
+
+```{r}
+d1 <- mdy("01/20/2010")
+d2 <- mdy_hm("01/20/2010 00:00 AM")
+d3 <- ymd(20100101)
+```
+
+Once data are converted into date objects, it is easy to process derivative information. To calculate duration between two dates is as simple as subtraction. 
+
+```{r}
+d1 - d3
+```
+
+
+Often times will need to extract parts of the date. With lubridate, each `year`, `month`, `quarter`, `day`, `hour`, `minute`, and `second` can be extracted using a dedicated function.  For example, we can extract the `year` and `quarter` and concatenate into a string using `paste0`.
+
+```{r}
+  y1 <- year(d0)
+  q1 <- quarter(d0)
+  paste0(y1, "Q", q1)
+```
+
+In base R, we can alternatively use the `format` function to specify an output format using date symbols. The example below outputs a concatenation of year and month.
+
+```{r}
+  format(d0, "%Y-%m")
+```
+
+## Working with Strings
+More often than not, data cleansing involves finding, extracting, and replacing the contents of string values. For example, below is a vector of four string values: 
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  budget <- c("Captain's Log, Stardate 1511.8. I have $10.20 for a big galactic mac.",
+            "The ensign has $1,20 in her pocket.", 
+            "The ExO spent has $0.25 left after paying for overpriced warp core fuel.",
+            "Chief medical officer is the high roller with $53,13.")
+```
+\vspace{12pt} 
+
+What if we need to extract the total available funds available to buy galactic big macs? All four elements contain dollar values, which can benefit from feature engineering. To do so, we use a combination of text manipulation functions and _regular expressions_ or _regex_ --  a series of characters that describe a regularly occurring text pattern.
+  
+First, commas should be replaced with a period using `gsub()`, assigning the result to a new object `new`.  Note that in some regions, such as Europe, commas are used as decimals rather than periods.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  new <- gsub(",", "\\.", budget)
+```
+\vspace{12pt} 
+
+Second, find the elements that contain the following pattern: a dollar sign followed by one to two digits, followed by a period, then another two digits (`\\$\\d{1,2}\\.\\d{2}`). The pattern can be used with the functions `regexpr()` to find the positions of the matching patterns in the text, then `regmatches()` is used to extract.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  indices <- regexpr("\\$\\d{1,2}\\.\\d{2}", new)
+  numbers <- regmatches(new, indices)
+  print(numbers)
+```
+\vspace{12pt} 
+
+Third, we should replace dollar sign with blank and strip out any leading white space using `trimws()`.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  numbers <- trimws(gsub("\\$","", numbers))
+  print(numbers)
+```
+\vspace{12pt}   
+
+Lastly, convert the character vector to numeric, then sum the vector.
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+  money <- as.numeric(numbers)
+  print(paste0("Total galactic big mac funds = $", sum(money)))
+```
+\vspace{12pt} 
+  
+A number of observations. In steps one through three, you will have noticed that the characters `"$"`, `"."`, and `"d"` were preceded by double backslash. These are known as _escaped characters_ as the double backslash preceding the characters changes their meanings. In step two, a sequence of unusual characters (`\\$\\d{1,2}\\.\\d{2}`) was used to find the `$x.xx` pattern, which can be broken into specific commands:
+  
+  - `\\$` is a dollar sign.
+  - `\\d{1,2}` is a series of numerical characters that is between one to two digits long.
+  - `\\.` is a period.
+  - `\\d{2}` is a series of numerical characters that is exactly two digits long.
+  
+Mastering _regex_ is a productivity multiplier, opening the possibility of ultra-precise text replacement, extraction, and other manipulation. Imagine scenarios where raw data is not quality controlled and mass errors plague the usefulness of the data. An analyst may spend days if not weeks or months cleaning data by hand (or rather through find and replace). With regex, haphazard cleaning is no longer an issue. To make the most of regex requires a command of both _text manipulation functions_ that are designed to interpret regex as well as _regex_ itself.
+
+
+### Text manipulation functions
+Find and replace are useful functions in most word processing and spreadsheet softwares. But what does it take to do find and replace at scale. The following seven text manipulation functions are commonly implemented in programming languages. Each searches for a user-defined pattern and returns a result in a well-defined format.
+  
+  - `grep()`: Returns either the index position of a matched string or the string containing the matched portion.
+  
+  - `grepl()`: Returns a logical vector -- a vector of TRUE/FALSE for whether a matched string was found. 
+  
+  - `gsub()`: Searches and replaces patterns in strings.
+  
+  
+  - `regexpr()`: Returns the character position of a pattern in a string.
+  
+  
+  - `strsplit()`: Splits strings into a list of values based on a delimiter.
+  
+  
+  - `regmatches()`: Extract substring using information from `regexpr()`
+  
+  
+  - `substr()`: Extract substring from a string based on string positions.
+  
+  
+Traditionally, functions like `grep()` are available through command line interfaces and are a core offering of the R programming language. On their own, some basic tasks can be accomplished such as exact matches of specific text. As will be seen later, these functions combined with regex are quite powerful. To illustrate the basic functionality, let's assume we have four sentences that indicate when four US laws were signed. 
+
+\vspace{12pt}  
+```{r}
+  laws <- c(". Dodd-Frank Act was signed into federal law on July 21, 2010.", 
+      "Glass-Steagall Act was signed into federal law by FDR on June 16, 1933", 
+      "Hatch Act went into effect on August 2, 1939", 
+      "Sarbanes-Oxley Act was signed into law on July 30, 2002")
+```
+\vspace{12pt} 
+
+#### Example Task: I need to find all sentences about laws that were sponsored by two congressmen. {-}
+  
+Suppose we need to find acts that are named for two congressmen. The `grep()` function can be used to find the index positions of elements in a vector that contain `"-"`. Otherwise stated, return the row number for each sentence that contains a hyphen. In this case, the 1st, 2nd, and 4th elements in the `laws` vector contain hyphens.
+
+\vspace{12pt}   
+```{r}
+  grep("-", laws)
+```
+\vspace{12pt} 
+
+`grep()` can also return the matched value when the option `value` is set to `TRUE`. This is handy for inspecting the accuracy of matches. In practice, with large data sets that contain variable names that follow a common convention, column names can be efficiently searched.
+
+\vspace{12pt}   
+```{r}
+  grep("-", laws, value = TRUE)
+```
+\vspace{12pt} 
+
+This can also be expressed in a different way. The `grepl()` function can be used to obtain a vector of logical values (`TRUE`/`FALSE`) that is the same length as the input vector `laws`.  
+```{r}
+  grepl("-", laws)
+```
+  
+
+## Stringr
+Trim whitespace 
+str_subset: Replace strings
+str_detect: Create binary variable from text:
+str_count: Number of matches
+str_replace: Replace matching substrings
+
+## Missing values (0.5 page)
+
+Missing values: is.na
+Complete observations only: complete.cases
+
+# Manipulating structures
+The "tidy" paradigm (`tidyr`): variables get columns, observations get rows
+`dplyr`
+Extracting rows, columns, and specific elements from a data frame
+Basic R: Index notation, etc.
+
+## Basic math 
+Arithmetic operations: Sum, mean, etc.
+
+| Operation | General |   Row-Wise   | Column-wise |
+|:---------|:---------------|:-------------|:---------|
+| Sum      | `sum`  | `rowSums` | `colSums` |
+| Mean      | `mean`  | `rowMeans` | `colMeans` |
+| Minimum | `min` | | |
+| Maximum | `max` | | |
+
+
+Distance measures: dist() - L1/L2
+String distance: adist() - Levenshtein, stringdist() - soundex
+Similarity measures: cor(), `coop` library
+
+
+##Control Structures
+Much of data science requires developing specialized code to handle the eccentricities of a dataset. Re-running blocks of code is required, often times on multiple data samples and subpopulations. It's simply not scalable to manually change variables and assumptions of the code everytime. 
+
+Variables are typically treated differently based on their quality and characteristics. In order to accomplish analytical and programming tasks, control structures are used to determine how a program will treat a given variable given conditions and parameters. In this section, we will cover two commonly used control structures: if...else statements and for loops.
+
+###If and If...Else Statement
+If statements evaluate a logical statement, then execute a script based on whether the evaluated statement is true or false. If the statement is `TRUE`, then the code block is executed.
+
+```{r}
+  budget <- 450
+  if(budget > 400){
+    #If statement true, run script goes here
+    print("You're over budget. Cut back.")
   }
 ```
 
-Then, we loop through each value of `k` in hopes of finding the optimum $k$, and plot the result. Ideally, the resulting silhouette curve will have (1) a global maximum, and (2) is not monotonically increasing. If the curve is monotonically increasing, this signals that the range of the $k$ parameter is not wide enough and requires further testing. If the mean silhouette width is largest at values of $k \approx n$, then we can reasonably conclude that the problem is not well-suited for clustering as no two points are well-matched.
+In cases where there are two or more choices, if...else statements would be appropriate. In addition to the `if()` statement, an `else` statement is included to handle cases where the logical statement is `FALSE`.
 
-```{r, message = FALSE, warning=FALSE}
-  opt <- data.frame()
-  for(k in 2:30){
-    opt <- rbind(opt, km(inputs, k, dis))
+
+```{r, eval=FALSE}
+  budget <- 399  
+  if(budget >= 400){
+    #If statement true, run script goes here
+    print("You're over budget. Cut back.")
+  } else {
+    #else, run script goes here
+    print("You're under budget, but watch it.")
   }
 ```
 
-By plotting the silhouette curve, we find the global maximum at $k=2$, separating the country into two relatively distinct groups. Bivariate plots can be used to tease out how clusters were formed. We see that higher income, better educated, high tech employment, large employment centers are clustered into one smaller group of $n = 526$ with the remainder of the country in another cluster of $n - 2611$.  This is not surprising given the trend towards urbanization. In effect, the k-means algorithm was able to develop a multivariate strategy to partition affluent and better resourced communties from ones that are less well-off.  
+The complexity of these statements can be as simple as `if(x > 10){ print("Hello")}` more complex trees:
 
-```{r, message = FALSE, warning=FALSE, echo = FALSE, fig.cap = "(1) Grid search for optimal k with respect to mean silhouette width, (2) and (3) Clusters for select input variables bivariate plots - scaled by total employment.", fig.height = 3}
-  
-#And breaks the country into one small partition and one large partition
-  set.seed(123)
-  cl <- kmeans(inputs, centers = 2)
-
-#Compare
-  cty1 <- cbind(clusters = cl$cluster, cty)
-  
-#4 square
-  par(mfrow = c(1,3))
-  plot(opt, col = rgb(0,0,1,0.5), 
-       pch = 16, 
-       ylab = "Mean Silhouette Width",
-       xlab = "k", bty = "n", main ="(1)")
-  lines(opt, col = "grey")
-  
-  plot(log(cty1$ba),log(cty1$pct.tech), 
-        ylab = "log(% Emp. in Tech)", 
-       xlab = "log(% with BA)",
-       main = "(2)", cex.main = 0.9,
-       col = alpha(cty1$clusters+2, 0.4),
-       cex = 0.3 + 3*cty1$all.emp/max(cty1$all.emp),
-       pch = 16,  bty = "n")
- 
-  plot(log(cty1$inc),log(cty1$pct.tech), 
-           ylab = "log(% Emp. in Tech)", 
-       xlab = "log(Median Income)",
-       main = "(3)", cex.main = 0.9,
-       col = alpha(cty1$clusters+2, 0.4),
-       cex =0.3 + 3*cty1$all.emp/max(cty1$all.emp),
-       pch = 16, bty = "n")
-  
-```
-
-__Usage__. The real question is how one can use these clusters. An economic developer in a more affluent area may be able to use the clusters to find comparable competitors. The smaller of the two clusters contains $n = 526$ counties, which is comprised of some of the nation's highest-tech counties such as San Francisco and Santa Clara in California as well as large cities such as New York City (New York City) and Seattle (King County, WA). But we also find less densely populated areas like Durham, NC and Arlington, VA -- areas that in recent memory have been targeted by tech companies for new offices. By identifying similar competing areas, economic developers can research the competition and develop strategies to differentiate their offerings. Alternatively, an economic developer in the less developed cluster can use counties from the more affluent list as performance benchmarks to inform if policies are improving their economy.  
-
-
-```{r, message = FALSE, warning=FALSE, echo = FALSE}
-side <- cty1[cty1$clusters==1,]
-row.names(side) <-NULL
-side <- side[order(-side$pct.tech),]
-side <- side[side$all.emp > 100000,]
-side <- side[1:10, c(3,4)]
-colnames(side) <- c("State", "County")
-knitr::kable(cbind(side[1:5, ],side[6:10, ]), 
-             booktabs = TRUE, row.names = FALSE, digits = 5, 
-             caption = "Counties with high tech concentrations and total employment greater than 100,000.")
-```
-
-# Hierarchical clustering 
-
-While k-means is an easy to use clustering algorithm, it can be improved upon using hierarchical clustering that captures relationships between observations in a tree-like structure. This has a number of notable advantages: 
-
-- The tree structure can be visualized in the form of *dendrograms* as well as provide context on how clusters are formed and if clusters are meaningful.  
-- Hierarchical clustering captures the interrelationships amongst observations in addition to cluster assignments.  
-- Hierarchical clustering is not initiated with random assignment, thus reducing the risk of inconsistent cluster assignments.  
-
-Why would k-means be used given these advantages? *Compute time*. As we will see later in this section, hierarchical clustering is not scalable as it requires a significantly longer run time and more memory storage to cluster even a moderate sized sample.^[ref required]
-
-
-## How It Works
-
-Hierarchical clustering comes in two forms: divisive and agglomerative. Hierarchical Divisive Clustering (HDC) takes a top-down approach and is reminiscent of decision tree learning. The class of techniques identifies clusters by recursively splitting a sample into smaller partitions.^[ref needed] Hierarchical Agglomerative Clustering (HAC) in contrast takes a bottom-up approach, grouping together individual observations by distance until all observations are part of one large cluster. In this section, we focus on HAC given its popularity in the R programming language.
-
-__Process__. HAC groups together observations is a simple but computationally intensive process:
-
-1. Calculate a similarity measure $s$ between all observations using a linkage method $m$. Each observation is initially its own cluster known as a *singleton*.  
-2. Do the following until there is only one cluster:  
-
-- Find the closest pair of clusters.  
-- Merge the pair into a single cluster.  
-- Recalculate distances from new cluster to all other clusters.  
-
-We can see that the process is quite computationally intensive. A sample of $n$ observations requires $n-1$ iterations in which similarities $s$ are recalculated between all clusters then grouping only the closest pair of clusters. The newly formed subclusters from each iteration are recorded, serving as a sort of paper trail of how all points are related to one another. When plotted, the paper trail resembles an inverted tree known as a dendrogram and has a striking similarity to decision trees as covered in the previous chapter. Each node in the tree is a distinct set of observations that are more similar to one another. The vertical axis indicates how similar clusters are to one another -- if two or more nodes join together near the bottom of the chart, those clusters are more similar than clusters that merge closer to the top. 
-
-What if we would like to find $k = 4$ (or any number) clusters? Whereas k-means requires a value of $k$ before executing the algorithm, HAC allows for selection after the algorithm converges. We identify clusters by finding the similarity value $s$ that yields $k=4$ -- or drawing a horizontal line across each value of $s$ that intersects exactly four edges in the dendrogram. Similar to k-means, the optimal value of $k$ can be selected using the Elbow method or optimizing the mean silhouette width.
-
-
-```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = "A Dendrogram.", fig.height=3.5}
-#Get library
-  require(dendextend)
-
-#Prep coordinates
-  input2 <- cty[,4:ncol(cty)]
-  set.seed(1)
-  input2 <- input2[order(runif(nrow(input2))),]
-  input2 <- input2[1:70,]
-  for(i in 1:ncol(input2)){
-    input2[,i] <- (input2[,i])^0.5
-  }
-  input2 <- scale(input2)
-  
-#Calculate euclidean
-  dis.mat <- dist(input2, method = "euclidean")  
-
-#Clustering
-  types <- data.frame(cmd = c( "ward.D"),
-             option = c( "Ward's"))
-  hc <- hclust(dis.mat, method = types$cmd[1])  
-  dend <- as.dendrogram(hc)
-  labels(dend) <- rep("", length(labels(dend) ))
-  
-#Plot
-    plot(dend, edgePar = list(col = c("grey"), lwd = 1))
-    rect.hclust(hc, k = 4, border = 2:5)
-```
-
-
-__Linkage Methods__. How is similarity measured between two potential clusters? Should a pair of points be used to  to measure distance or should there be a group of points? The linkage method defines how the similarity measure $s$ is calculated, choosing which points to use include in the calculation. The choice of linkage method not only changes the composition of clusters, but has a direct influence on the processing time.
-
-The simplest is the *single linkage* or nearest neighbor linkage in which the closest pair of points, $X_i$ and $X_j$, from two different clusters are merged together. 
-
-$$s_{ik} = min(d(X_i, X_j))$$
-
-A close cousin is *complete linkage*, which measures distance as the two farthest points in two different clusters. 
-
-$$s_{ik} = max(d(X_i, X_j))$$
-
-Single and complete linkage place a greater weight on two observations and at times yield dendrograms that are not informative -- the results might not capture the spirit of each cluster. In contrast, *Average Linkage* relies on more observations and comes in three varieties. Most commonly, the term average linkage refers to calculating similarity based on the average distances between all points in a pair of clusters. 
-
-$$s_{ik} = \sum_i^k \sum_j^l d(X_i, X_j)$$
-
-A slight modification to the calculation results in *centroid linkage*, in which a centroid is defined as the set of means of each variable within a cluster. Distance is then calculated from using the centroid coordinates, $\bar{x_i}$ and $\bar{x_i}$, rather than directly from individual observations.
-
-$$s_{ik} = d(\bar{x_i}, \bar{x_j})$$
-
-Arguably, the most sophisticated and statistically-grounded linkage is *Ward's Method*. Rather than using direct measures of distance, Ward's approaches clustering from the lens of an analysis of variance (ANOVA). Two clusters are merged if it minimizes the increase in the sum of squares when compared to alternative candidate merges. This *merge cost* is concisely summarized as:
-
-$$\Delta(x_i, x_j) = \frac{n_i n_j}{n_i+n_j} ||\bar{x_i}- \bar{x_j}||^2$$
-
-where $n_i$ and $n_j$ are the sample sizes of a pair of clusters $i$ and $j$. $\bar{x_i}$ and $\bar{x_j}$ are the centers. 
-
-Each of these linkage strategies have different effects on the shape of the dendrograms -- some with clusters with more equal number of observations while others with one large cluster and many smaller clusters. Using the economic development data, we plot the dendrogram for each type of linkage. Single, centroid and average linkages are unable to separate observations into clean clusters when $k=4$ -- one cluster contains the majority of observations. In contrast, Ward's method and complete linkage are able to break the sample into more equal-sized, more organic clusters. 
-
-Ultimately, the choice of linkage method is a matter of trial and error, but Ward's generally is a sound choice with a more robust statistically-grounded solution.
-
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Effect of Linkage Methods on Clustering Results. Number of clusters set to k = 4.", fig.height=2.5}
-#Load library
-  library(dendextend)
-
-#Prep coordinates
-  input2 <- cty[,4:ncol(cty)]
-  set.seed(1)
-  input2 <- input2[order(runif(nrow(input2))),]
-  input2 <- input2[1:70,]
-  for(i in 1:ncol(input2)){
-    input2[,i] <- (input2[,i])^0.5
-  }
-  input2 <- scale(input2)
-  
-#Calculate euclidean
-  dis.mat <- dist(input2, method = "euclidean")  
-
-#Clustering
-  types <- data.frame(cmd = c("single", "complete", "centroid", "average", "ward.D"),
-             option = c("Single", "Complete", "Centroid", "Average", "Ward's"))
-  
-  par(mfrow = c(1,5), mar = c(1,1,1,1))
-  
-  for(i in 1:nrow(types)){
-    hc <- hclust(dis.mat, method = types$cmd[i])  
-    dend <- as.dendrogram(hc)
-    labels(dend) <- rep("", length(labels(dend) ))
+```{r}
+  age <- 23
     
-    dend <- color_branches(dend, k = 4)
-    dend <- color_labels(dend, k = 4)
-    plot(dend, main = types$option[i])
+  if(age <= 12){
+      print("kid")
+    } else if(age >12 && age <20) {
+      print("teenager")
+    } else if(age >=20 && age <65) {
+      print("adult")
+    } else{
+      print("senior")
+    }
+```
+
+
+###For-loops
+Loops can be used to run the a given statement of code multiple times for a specified number of times or a list of index value. This is a functionality that is available in most programming languages, but the programming syntax will be different. Conceptually, for loops can be likened to an assembly line in a car factory. In order to build a car, a series of well-defined, well-timed processes need to coordinated in a serial fashion. To build 500 cars, the process needs to be executed 500 times. For-loops are essentially the same: Given a well-defined, self-contained process, a process can be be iterativelyapplied to address repetive tasks.
+
+Let's take the following example. The code block essentially says "print values for the range of 1 through 5", where `i` is an *index value*. When executing the statement, R will push the first value in the sequence of 1:5 into the index (in this case, it's the number 1), then the code block in between the `{}` (curly brackets) will be executed, treating `i` as if it's the number 1. Upon executing the code without error, R will advance to the next value in the sequence and repeat the process until all values in the sequence have been completed.
+
+```{r}
+  for(i in 1:5){
+    print(paste0("Car #", i))
   }
-  
-
 ```
 
-
-
-## DIY: Clustering of 311 Service Requests
-
-To see the benefit of HAC, we apply it to data from NYC's 311 service -- a public non-emergency hotline service that is offered in dozens of United States cities, allowing for residents to file complaints, report issues, and request information from their local government.^[http://www.govtech.com/dc/What-is-311.html] Originally an experiment implemented by the City of Baltimore in 1996^[https://www.citylab.com/city-makers-connections/311/], the service has evolved over time to meet the needs of citizens, scaling up via web-based versions of the service and in some cases scaling down depending on demand for services. 
-
-The multitude of 311 systems are a rich source of data that enable detailed analyses of sociodemographics of neighborhoods.^[https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5645100/] In New York City, for example, the 311 system has received over 200 million calls by 2015. A proportion of these calls result in a formal service request, giving a glimpse into what local residents experience as published via open data portals.^[https://nycopendata.socrata.com/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9] It is easy to imagine that residents in tree-lined suburban neighborhoods are concerned with different issues than those who live in high rise apartments. Using NYC's 311 data, we can cluster the population into segments of similar concern, which in turn can form the basis of how to communicate on key issues to local constituencies as well as targeting issues that may matter most. In addition, by establishing a baseline of concerns, we can track if certain types of resident concerns are trending or evolving.
-
-__Prepping the data__. We begin by loading in NYC 311 service request data for 2016 that has been processed into 0.005 degree grid cells. In total, there are $n=3770$ grid cells and 31 complaint types. Each variable contains the number of service requests logged in each grid cell. Note that we have omitted any complaint type with 1000 service requests in a 2016 and have consolidated similar complaint types. For example, *dead tree* and *fallen tree* have been rolled into an aggregate *tree* category.
+We can do the same for a vector or list of values. In the example below, the vector `news` contains six terms. Using a for-loop, we can print out each word in the vector. 
 
 ```{r}
-#Load in pre-processed data
-  load("data/nyc311.Rda")
-
-#Check what's in the data
-  dim(nyc311)
-  
-#Check column names
-  colnames(nyc311)[1:10]
+  news <- c("The","Dow","Is","Up","By","400pts")
+  for(i in news){
+    print(i)
+  }
 ```
 
-We scale the complaint types to be mean-centered with unit variance, excluding the latitude and longitude fields. The resulting matrix `input311` is then converted into dissimilarity matrix using the `dist` function that maps the *Euclidean* distance between all points.  This step is critical as it is the core ingredients on which linkage methods are applied. Note that hierarchical clustering can also be run on different types of distances such as *binary* that is more common when working with discrete variables.
+For-loops has a few qualities that users should be aware. First, what happens within the for-loop is written to the R environment as _global variables_. That means that any object (e.g. calculations, models) that is created in the loop will be accessible in the programming enviromment even after the loop ends. This may be a good or bad, depending on the use case: Good if one wants to keep copies of the intermediate results of a loop iteration, but bad if the user is not careful to take note of the potential floor of extraneous objects that may effect downstream calculations.  Second, one of the most common mistakes when using loops is failing to record the result of the loop. There are functions in R that are designed to log and package results from loops, but in plain vanilla loops, this is not the case. 
 
-```{r}
-#Extract necessary variables and scale them
-  input311 <- scale(nyc311[,c(3:ncol(nyc311))])
+__A common paradigm__ with for-loops is to iteratively execute repetitive tasks. For example, if a calculation needed to be applied to each of one million files and the results need to be logged, then for-loops are a good option. Typically, the paradigm proceeds as follows:
 
-#Calculate Euclidean distance matrix
-  d <- dist(input311, method = "euclidean")  
-```
+1. Create placeholder object (e.g. a vector, matrix, or data frame);
+2. Initialize loop; and
+3. Add outputs to placeholder at the end of each loop iteration. 
 
-__Clustering__. The HAC procedure is neatly packaged into the `hclust` function, which is flexible in accommodating different linkage methods. The `hclust` function requires at minimum two arguments:
+This may be applied in a broad variety of cases such as processes each data set in a repository of many large data sets, calculating complex statistics for various strata and subsets within the data, among others. Best practices with loops start with initializing new placeholder objects to full length before the loop rather than increasing the object size within the loop^[https://www.r-project.org/doc/Rnews/Rnews_2008-1.pdf]. In R, this is particularly important issue for efficient data processing. 
 
-- *d* is a dissimilarity matrix from the `dist` function
-- *method* is the type of linkage method that guides agglomeration, such as "single", "complete", "average", "centroid", "ward.D", among others. In this example, we apply the *ward.D* method.
-
-The resulting tree and all its intricate relationships are stored in the object `hc` on which we rely quite a bit.
-
-```{r}
-hc <- hclust(d, method = "ward.D")              
-```
-
-With the tree grown, we can now visualize the dendrogram. Normally, the HCA object can be directly plotted using `plot(hc)`, but given the large number of singletons, it would be prudent to tidy the dendrogram. First, we convert `hc` into a dendrogram object `dend` and remove each singleton's labels, which would otherwise densely occupy the horizontal axis. Using the `dendextend` package, we can stylize the dendrogram so that an arbitrary group of $k = 4$ clusters are distinctly highlighted. The resulting `dend` object is then plotted.
-
-```{r, warning=FALSE, message = FALSE, echo = FALSE, fig.cap = "Dendrogram of 311 service requests by grid cell."}
-  
-#Set as dendrogram for plotting
-  dend <- as.dendrogram(hc)
-  labels(dend) <- ""
-
-#Color each branch
-  require(dendextend)
-  dend <- dend %>% 
-          color_branches(dend, k = 4)
-  
-#Render dendrogram
-  plot(dend)
-```
- 
-
-__Contexualizing clusters__. As each observation is linked to a specific location in New York City, we can contexualize and better understand what complaints are captured within each cluster. The first step involves obtaining cluster assignments using the `cutree` function that relies on the HCA object `hc` and a desired number of clusters $k=4$. The function returns a vector of cluster assignments.
-
-```{r}
-  nyc311$groups <- cutree(hc, k = 4)
-```
-
-In order to geographically visualize the clusters, we will need to convert each cluster assignment in `groups` into a color. Fortunately, R comes standard witha number of readily available aesthetically color palettes such as `raindow()` that produces a divergent color spectrum, `heat.colors()` that produces a red-blue spectrum, among others. We rely on a togographic color spectrum `topo.colors` and produce a vector of colors with the same length as `groups` and `nyc311`. 
-
-When wondering the map, we find that the types of service requests are also spatially clustered: each type of neighborhood has different concerns: Yellow areas are high rise areas zones, green generally aligns with multistory apartments, dark blue are more suburban areas, and light blue correspond to coastal and parkland areas.
-
-```{r, message = FALSE, warning = FALSE}
-#Color code each assignment
-  col.vector <- topo.colors(4)[nyc311$groups]
-
-#Plot grid cells
-  plot(nyc311$lon, nyc311$lat, 
-       col = col.vector, 
-       pch = 15, cex = 0.5, 
-       ylab = "Latitude", xlab = "Longitude",
-       frame.plot = FALSE, asp = 1)
-```
-
-
-Some additional data manipulation is required to extract the most frequently occurring service requests for each group. First, the `aggregate` function summarizes the average number of requests per service request type by cluster group and record. The output  `nyc.sum` is a $4 \times 72$ matrix. To narrow down the results to the top 10 requests per cluster, we need to rank requests in each cluster. To obtain a ranks matrix, we transpose `nyc.sum` and use the `rank` function in descending order (`-x`), doing so by column using the `apply` function.
-```{r}
-#Get average volume of calls
-  nyc.sum <- aggregate(. ~ groups,
-                      data = nyc311[, -c(1:2)],
-                      FUN = mean)
-
-#Transpose so that each column is a cluster
-  nyc.sum <- t(nyc.sum)
-  
-#Obtain descending rank for each column
-  nyc.ranks <- apply(nyc.sum, 2, 
-                     function(x){
-                       rank(-x, ties.method = "first")
-                       })
-```
-
-We bring together the two tables in order to construct a $10 \times 4$ table: each column contains the top 10 service requests in rank sorted order with a label. The priorities of each group are similar, but the relative share and quantities of each service requests are different. Whereas suburban and coastal areas have relatively more tree-related complaints, multi-story and high-rise areas have far more noise and heat/hot water issues. From a policy perspective, cluster mapping is a simple way of segmenting constituencies and determine which city operations issues matter most for each community.
+In the example below, we would like to calculate the minimum and maximum of each of 1000 randomly generated normal distributions with $\mu = 1000$ and $\sigma = 10$. To do this, a placeholder data frame `x` with three columns (iteration, min and max) is created with $n = 1000$ rows for each of the random distributions to be generated. Then, we use `Sys.time()` to capture when the loop starts and end -- a common practice for optimizing code. The loop is initiated for 1 to 1000 iterations to calculate the mininum and maximum. At the end of each iteration, the min and max results are overwritten to the row that corresponds to the iteration in the placeholder `x`. 
 
 
 ```{r}
-#Compile the top 10 ranks
-  out <- lapply(1:4, FUN = function(x){
-     top <- nyc.ranks[,x] <= 10
-     res <- sort(nyc.sum[top,x], decreasing =  TRUE)
-     res <- paste0(names(res), ": ", round(res))
-     return(res)
+#Set placeholder data frame with n rows
+  n <- 1000
+  x <- data.frame(iteration = 1:n, 
+                  min = numeric(n), 
+                  max = numeric(n))
+
+#Loop
+  start <- Sys.time()
+  for(i in 1:n){
+    y <- rnorm(10000, 1000, 10)
+    x$min[i] <- min(y)
+    x$max[i] <- max(y)
+  }
+  Sys.time() - start
+
+```
+
+The above process required roughly 0.8 seconds to process. _What happens if the placeholder length were not pre-specified?_ For the given parameters, the task normally may last between 1.2 and 1.5 seconds. This may not seem to be much time, but at scale with millions if not billions of records and iterations, the time does tend to add up.
+
+```{r}
+#Set placeholder data frame without dimensions
+  n <- 1000
+  x <- data.frame()
+
+#Loop
+  start <- Sys.time()
+  for(i in 1:n){
+    set.seed(i)
+    y <- rnorm(10000, 1000, 10)
+    x <- rbind(x, cbind(iteration = i, 
+                  min = min(y), 
+                  max = max(y)))
+  }
+  Sys.time() - start
+
+```
+
+
+#### R-specific: `apply`
+
+For-loops are common across all languages, but the efficiency of their implementation will vary. As was described in the previous chapter, R is an interpretted language optimized for mathematical and statistical calculation -- quite different than other languages. This means that programming in R is most optimal when vectorizing calculation -- linear algebra calculations of vectors and matrices using operations such as `+`, `-`, `*`, `%*%`, among others.
+
+In R, the speed of for-loops may be improved using `lapply()` under certain circumstances.  `lapply()`, or _list apply_ Whereas the intermediate objects in for-loops are global variables, `lapply()` creates temporary _local variables_. 
+
+
+```{r}
+#Set n
+  n <- 1000
+
+#Loop
+  start <- Sys.time()
+  x <- lapply(1:n, function(i){
+     y <- rnorm(10000, 1000, 10)
+     return(cbind(iteration = i, 
+                  min = min(y), 
+                  max = max(y)))
   })
-
-#Convert into table
-  out <- do.call(cbind, out)
+  x <- do.call(rbind, x)
+  Sys.time() - start
 ```
 
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-knitr::kable(out, booktabs = T, col.names = c("1 - Suburban", "2 - Coastal", "3 - Multi-story", "4 - High-rise"),
-             caption = "Top 10 Service Requests by Cluster")
+
+###While
+Whereas for loops require a range or list of values through which to iterate, `while()` statements keep iterating until some condition is met. The `while()` statement is formulated as follows:
+
+```{r, eval=FALSE}
+  while([condition is true]){
+    
+    [execute this statement]
+    
+  }
 ```
 
-#Best Practices
+A simple case may involve drawing a random value $x$ from a normal distribution ($\mu = 1.0$, $\sigma = 0.5$) while $x$ is greater than 0.01. 
+1
+```{r, echo = FALSE}
+set.seed(1)
+```
+```{r}
+  x <- 1
+  while(x > 0.01){
+    x <- rnorm(1, 1, 0.5)
+    print(x)
+  }
+  print("done!")
+```
 
-In this chapter, we illustrated how two clustering techniques can be used to structure otherwise amorphous data  problems. K-means and hierarchical clustering are simple techniques, but ultimately, they are best suited for exploratory problems -- ones in which we need to data to speak for themselves. Unliked supervised learning problems in which a target is known, the insights drawn from clustering can be rather fickle and prone to manipulation due to the absense of a target. Nonetheless, these techniques are popular for informing hypotheses and narratives from microtargeting to agriculture.
 
-We conclude this chapter by highlighting best practices that allow clustering projects to play an active and operational role in policy problems. First, be clear about the use case. Crafting a narrative about market segments and trends is a different focus than micro-targeting subgroups. The use case, in turn, has different implications for modeling choices. For example, the choice of $k$ is dependent on the use case. Lower value of $k$ lend themselves to more concise narratives. Optimized values of $k$ through the Elbow method or Silhouette method are helpful for establishing baselines for more precise market segments. Second, as clustering treats input variables with equal weight, each variable should be standardized though we should note that there are varieties of clustering that allow inputs to have different weights. But perhaps more importantly, be cognizant of the variable types as those will dictate the type of similarity measure that can be employed. Third, while we do not cover the following, it is a logical extension to the classification chapter: clusters can support monitoring and contextualizing trends. Cluster assignments can serve as a baseline against which new data can be mapped using *1-nearest neighbor* classification. The implications are many. For political campaigns, clusters can be defined in one election cycle, then new data for subsequent election cycles can be contexualized relative to the baseline. This allows for tracking how trends evolve over time. For finance and economics, clustering of series based on their seasonal patterns can establish a baseline of consumer behavior. New information can be mapped to clusters to find similarities in behavior. 
+## Functions
+
+Data manipulation tasks are often repeated for many different projects and it is not uncommon for two or more scripts to contain the same exact steps, but the code is hardcoded. Same logic and different variables names equates to a significant amount of time spent editing and modifying programs. 
+
+Rather than tediously modifying programs, try to write your code once, then never again. Each set of code can serve as re-usable tools that can be re-applied to similar problems, but only if it is standardized with well-laid logic. This is the basis of *user-defined functions*: a coder can define some set of standard required inputs on which a set of steps can be applied to produce a standard output.
+
+A typical function is constructed as follows. Using `function`, a set of input parameters are specified as placeholders for any kind of object. For example, `df1` represents a data frame and `var1` is a variable name in string format. Within the curley brackets, we insert code treating the parameters of actual data. In the example below, we calculate the mean of `var1` in data frame `df1`, then assign it to a `temp.mean`. These calculations are executed in a *local environment*, meaning that any calculations steps within the function are temporary. Thus, `temp.mean` is wiped once the function finishes. The `temp.mean` object can be extracted by passing it to `return`. All of the above steps are assigned to the `meanToo` object that is treated like any other function. 
+
+It is good form to include commentary about how to use the function. At a minimum, there should be comments containing what the function is, the arguments, and the output. In the open source tradition, you should be writing the code as if others will read and use it. 
+
+```{r, eval = FALSE}
+meanToo <- function(df1, var1, ...){
+  #
+  # Calculate mean of a variable in a data frame
+  #
+  # Args: 
+  #   df1 = data frame
+  #   var1 = variable name (character)
+  #
+  # Returns:
+  #   A numeric value 
+  
+  #Code goes here
+  temp <- mean(df1[[var1]])
+  
+  #Return desired result
+  return(temp)
+}
+```
+
+To execute the function, we will simply need to call the function with a data frame and a variable name. Basically any script can be genericized into a standardized function. 
+
+```{r, eval=FALSE}
+  meanToo(data, "x1")
+```
+
+### DIY: Tracking the supply of online content
+
+Services like Google Trends illustrate the demand for online content, giving a sense of what the public are interested in and what people are reacting to at a given moment. But how about the supply of online content? The supply provides a sense if content producers feel it is worth spending any time on creating new materials. 
+
+The opioid epidemic has been a social issue that has long been brewing, but has only become the centered of public attention in recent years. As the crisis deepens, we'd expect more content to be generated. For each year, we could tediously use the web browser to manually copy the number of search results from a platform like [Bing](https://www.bing.com/), but what if we need to track a large number of search terms. We can package searches on Bing into a simple function that serves as a wrapper that extracts the number of search results. For example, the search query below yields approximately 18,000 search results for the year 2010 (the number may change as this is only an estimate):
+
+`https://www.bing.com/search?q=opioid%20epidemic&filters=ex1%3a%22ez5_12810_13893%22`
+
+Breaking down the URL, we see that `q=opioid%20epidemic` is the search query `q=` where spaces are encoded as `%20`. Next, `filters=ex1%3a%22ez5_12810_13893%22` indicates a time range filter is applied, specifically `12810_13893` are indexes that represent the range 1/27/2005 to 1/15/2008. 
+
+To make this a seamless process, we should construct a function `bingCounts` that will retrieve the number of search results for a given `search.term` in a specified calendar year (`year.filter`). First, we will need to load packages using `require`, which is specifically designed for within-function package loading. In particular, we will use: 
+
+- To convert the year into indexes, we use the `lubridate` package to work with date objects.
+- To efficiently construct a search URL, we rely on the `stringr` package.
+- `RCurl` is used to make use of the Client URL package to make a request to the web for a webpage.
+- As the webpage is in HTML format, we use the `XML` package to parse the information.
 
 
+```{r, warning = FALSE, message=FALSE}
+
+bingCounts <- function(search.term, year.filter){
+  #
+  # Retrieve number of search results for exact query
+  #
+  # Args: 
+  #   search.term = search query (character)
+  #   year.term = search year.term (int)
+  #
+  # Returns:
+  #   A numeric value 
+
+  #Load package
+    require(lubridate)
+    require(stringr)
+    require(RCurl)
+    require(XML)
+
+  #Get date indexes
+    origin <- as_date("1970-01-01")
+    start.index <- as_date(paste0(year.filter, "01-01")) - origin
+    end.index <- as_date(paste0(year.filter, "12-31")) - origin
+    
+  #Construct search URL by replacing placeholder terms
+    search.url <- "https://www.bing.com/search?q=term&filters=ex1%3a%22ez5_tstart_tend%22"
+    search.url <- str_replace(search.url, "term", gsub(" ", "%20", search.term))
+    search.url <- str_replace_all(search.url, "tstart", as.character(start.index))
+    search.url <- str_replace_all(search.url, "tend", as.character(end.index))
+    
+  #Get URL content as HTML
+    search.html <- getURL(search.url)
+  
+  #Parse HTML
+    parse.search <- htmlTreeParse(search.html, useInternalNodes = TRUE)
+  
+  #Extract result statistics
+    nodes <- getNodeSet(parse.search, "//*[@id='b_tween']/span[1]")
+    value <- strsplit(xmlValue(nodes[[1]])," ", fixed = TRUE)[[1]][1]
+    return(as.numeric(gsub(",", "", value, fixed = TRUE)))
+
+}
+```
+
+Rather than copying the above function multiple times, the resulting function can then be neatly wrapped into a loop to extract the number of search results for each year in a nine-year period between 2009 and 2017. We find the number of search results has grown 44-times over the period. Based on CDC data, the number of opioid-related deaths increased 2.4-times from approximately 20,400 to 49,000.^[https://www.drugabuse.gov/related-topics/trends-statistics/overdose-death-rates] Thus, we can see the search queries give a measure of direction of growth, but are misleading in their magnitude. 
+
+```{r}
+#Set parameters
+  term <- "opioid epidemic"
+  results <- data.frame() 
+
+#Loop through 
+  for(i in 2009:2017){
+    results <- rbind(results,
+                     data.frame(year = i, 
+                                cnt = bingCounts(term, i)))
+  }
+```
+
+
+```{r, echo = FALSE, fig.cap = "Search "}
+#Plot
+  plot(results, type = "l", ylab = "Number of Search Results", xlab = "Year", col = "red")
+  points(results, pch = 16, col = "red")
+  
+```
+
+
+## Style
+Every coder approaches coding differently. Thus, each person’s code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 
+
+
+
+# Feature engineering
+Define: Feature engineering is the process of transforming data to create new variables that provide potentially more insight about the phenomenon of interest. deeper insight. As we’ll see later in the book, feature engineering is critical for optimizing the accuracy of machine learning applications -- the models are only as good as the available data 
+Feature engineering typically depend on domain knowledge to construct new variables. Examples:
+Continuous values can be summarized as counts, minimum, maximum, average, percentile among others. 
+Example: Prevailing weather conditions -- give a benchmark of what has happened
+Continuous values can also be interacted with one another to mix the signal. 
+Example: Spending per capita
+In Text data, create a count or binary variable for each keyword
+Example: “One hot encoding” for keywords
+Among discrete variables, combine sparse classes into aggregate classes that are more meaningful.  
+Example: For example, NYC 311 service has 1,700+ complaint + descriptor combinations
+Flavors of feature engineering
+Feature engineering is important but expensive due to the time cost
+Automated methods like FeatureTools (https://www.featuretools.com/) can construct a large number of new variables for prediction problems.
+DIY: Augment a US Senate Roll Call 
+Goal is to produce additional features that are correlated with the likely outcome of each vote.
+Get data from senate site -- 101st to 115th for sessions 1 and 2
+https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_1.xml
+https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_2.xml
+Clean up dates 
+For each record
+we’ll calculate a number of additional variables on a 90 day moving window
+Extract a matrix of key words
+We can see that a simple data set can give way to thousands of new variables
 
 

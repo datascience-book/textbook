@@ -9,7 +9,8 @@ google.counts <- function(search.term){
   # Args:
   
   #Construct search url
-  search.url <- paste("http://www.google.com/search?q=",  
+  g.url <- "http://www.google.com/search?q="
+  search.url <- paste(g.url,  
                       '"',  gsub(" ", "+", search.term), '"',
                       sep = "")
   

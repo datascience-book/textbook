@@ -1,0 +1,117 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeffrey Chen"
+date: '`r Sys.Date()`'
+output:
+  pdf_document: 
+      number_sections: true
+  html_document: default
+  geometry: margin=1in
+---
+
+
+## Functions
+
+Data manipulation tasks are often repeated for many different projects and it is not uncommon for two or more scripts to contain the same exact steps, but the code is hardcoded. Same logic and different variables names equates to a significant amount of time spent editing and modifying programs. 
+
+Rather than tediously modifying programs, try to write your code once, then never again. Each set of code can serve as re-usable tools that can be re-applied to similar problems, but only if it is standardized with well-laid logic. This is the basis of *user-defined functions*: a coder can define some set of standard required inputs on which a set of steps can be applied to produce a standard output.
+
+A typical function is constructed as follows. Using `function`, a set of input parameters are specified as placeholders for any kind of object. For example, `df1` represents a data frame and `var1` is a variable name in string format. Within the curley brackets, we insert code treating the parameters of actual data. In the example below, we calculate the mean of `var1` in data frame `df1`, then assign it to a `temp.mean`. These calculations are executed in a *local environment*, meaning that any calculations steps within the function are temporary. Thus, `temp.mean` is wiped once the function finishes. The `temp.mean` object can be extracted by passing it to `return`. All of the above steps are assigned to the `meanToo` object that is treated like any other function. 
+
+It is good form to include commentary about how to use the function. At a minimum, there should be comments containing what the function is, the arguments, and the output. In the open source tradition, you should be writing the code as if others will read and use it. 
+
+```{r, eval = FALSE}
+meanToo <- function(df1, var1, ...){
+  #
+  # Calculate mean of a variable in a data frame
+  #
+  # Args: 
+  #   df1 = data frame
+  #   var1 = variable name (character)
+  #
+  # Returns:
+  #   A numeric value 
+  
+  #Code goes here
+  temp <- mean(df1[[var1]])
+  
+  #Return desired result
+  return(temp)
+}
+```
+
+To execute the function, we will simply need to call the function with a data frame and a variable name. Basically any script can be genericized into a standardized function. 
+
+```{r, eval=FALSE}
+  meanToo(data, "x1")
+```
+
+### DIY: How much online attention is paid to the opioid epidemic?
+
+The opioid epidemic has become a public health crisis in the United States. [Background]
+
+Services like Google Trends shows the demand for online content. But how about the supply? A simple way to understand the online content is to record the number of search results for each search query. This is a tedious task. Instead, it may be more effective to scrape
+
+1/27/2005 = 12810
+1/15/2008 = 13893
+
+https://www.bing.com/search?q=opioid&filters=ex1%3a%22ez5_12810_13893%22
+q = term
+filters = time
+```{r, warning = FALSE, message=FALSE}
+
+googleCounts <- function(search.term, year.term){
+  #
+  # Retrieve number of search results for exact query
+  #
+  # Args: 
+  #   search.term = search query (character)
+  #   year.term = search year.term (int)
+  #
+  # Returns:
+  #   A numeric value 
+
+  #Load package
+    require(RCurl)
+    require(XML)
+    require(stringr)
+      
+  #Construct search url
+    g.url <- "http://www.google.com/search?q=term&tbs=cdr%3A1%2Ccd_min%3Atime%2Ccd_max%3Atime"
+    search.url <- str_replace(g.url, "term", gsub(" ", "+", search.term))
+    search.url <- str_replace_all(search.url, "time", as.character(year.term))
+    
+  #Get URL from Google
+    search.html <- getURL(search.url)
+  
+  #Parse HTML
+    parse.search <- htmlTreeParse(search.html, useInternalNodes = TRUE)
+  
+  #Extract result statistics
+    nodes <- getNodeSet(parse.search, "//div[@id='resultStats']")
+    value <- strsplit(xmlValue(nodes[[1]])," ", fixed = TRUE)[[1]][2]
+    return(as.numeric(gsub(",", "", value, fixed = TRUE)))
+
+}
+```
+
+
+```{r}
+#Set Terms
+  term <- "opioid"
+  results <- data.frame() #log for the results
+
+#Loop through 
+  for( i in 2005:2018){
+    results <- rbind(results,
+                     data.frame(year = i, 
+                                cnt = googleCounts(term, i)))
+  }
+```
+
+```{r, echo = FALSE}
+#Plot
+  plot(results, type = "l", ylab = "Number of Queries", xlab = "Year", col = "red")
+  points(results, pch = 16, col = "red")
+  
+```
