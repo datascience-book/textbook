@@ -1,0 +1,9 @@
+﻿Description,Base R,stringr
+Returns either the index position of a matched string or the string containing the matched portion.,grep,
+Returns a logical vector indicating if a matched string was found. ,grepl,str_detect
+Searches and replaces patterns in strings.,gsub,
+Returns the character position of a pattern in a string.,regexpr,
+Extract substring using positions,regmatches,
+Splits strings into a list of values based on a delimiter.,strsplit,
+Extract substring from a string based on string positions.,substr,str_extract
+Trim whitespace (excess spaces),trimws,str_trim

@@ -103,64 +103,115 @@ From that data, we can aggregate the data into a form that is meaningful to answ
 
 This is just the tip of the iceberg. Text processing is just one aspect of readying your data for use. Much of a data scientist's time is spent retrieving, assembling, manipulating, and transforming data so that it is useful. While there are entire texts dedicated to engineering data, this chapter offers a brief review of programming paradigms that are necessary to bring to bear data in the public and social sectors. 
 
+# The Ideal Data Set
+
+Concept of tidy data goes here
+
 # Retrieval and Assembly
 
+While we briefly covered loading of data in the previous chapter, the retrieval and assembly of a data set  can be one of the largest barriers to getting a project off the ground. Here, we lay out a few practices that make the process far simpler. 
 
-Retrieving and loading data 
-Read files locally
-Read_csv, read_json, 
-Combine files
-Rbind
-plyr rbind.fill
-Cbind
-DIY: 
+There are a multitude of data storage formats in use. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
+
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
+require(knitr)
+require(kableExtra)
+temp.table <- read.csv("data/loading_functions.csv")
+#pander::pander(temp.table, split.cell = 80, split.table = Inf)
+
+kable(temp.table, booktab = T, 
+              col.names = c("Format", "Function", "Package", "Description"), 
+              caption = "Recommended functions to load an assortment of files.")%>%
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T, border_right = T) %>%
+  column_spec(2) %>% 
+  column_spec(3) %>% 
+  column_spec(4, width = "30em")
+```
+ 
+ 
+ 
+In the course of writing this text, the authors have come across a number of misconceptions about loading data that introduce manual editing to data files. In particular, we have found that: 
+
+- Analysts will often manually open files and delete unnecessary rows at the top of a file as functions may not be able to read in files. 
+- The number of columns will differ, requiring columns to be deleted or empty columns added before loading.
+- Column names differ, requiring manual editing of headers.
+
+These manual steps become tedious step when presented with hundreds of files. In this section, we illustrate a simple efficient workflow that reduces the amount of effort required to load data. Through this workflow, we read in gasoline spot price data from the US Energy Information Administration (EIA): two worksheets in an Excel file (gas prices from NY Harbor) and a CSV (Gas Prices from the US Gulf Coast). The goal is to combine the data int one data frame with daily spot prices.
+
+__An easy file to load__. Before loading any file, it is generally a good idea to open the file in a code editor to take a peek at the structure. Otherwise, blindly loading can also give a clue as well. Let's start with the CSV `doe_usgulf.csv` using the `readr` package, then inspect the first few rows.
+
+```{r, warning = FALSE, message = FALSE}
+library(readr)
+gulf <- read_csv("data/doe_usgulf.csv")
+head(gulf, 3)
+```
+
+ It appears that the data was successfully loaded, but requires cosmetic changes to the column headers. To practice good data hygiene, we would keep column names lower case and replace all spaces and punctuation with periods. 
+ 
+ \vspace{12pt} 
+```{r, eval = FALSE}
+colnames(gulf) <- tolower(gsub("[[:space:][:punct:]]", ".", colnames(gulf)))
+```
+ \vspace{12pt} 
+ 
+However, as these column names are quite long, we can otherwise opt to overwrite them with something more concise. Notice that we did not need to open the CSV and manually edit the column names.
+ 
+ \vspace{12pt} 
+```{r}
+colnames(gulf) <- c("date", "gulf.price")
+```
+\vspace{12pt} 
+
+__A more challenging file to load__. Excel files tend to have a few more curve balls as there are often rows included to enhance readability, but making parsing more challenging. To take a first look at the first sheet of our Excel file `doe_ny.xlsx`, we need to specify `sheet = 1`, then we use `head` to examine what was loaded. We can see that the wrong row was assumed to be the header. 
+
+\vspace{12pt} 
+```{r, message = FALSE, warning = FALSE}
+library(readxl)
+attempt1 <- read_excel("data/doe_ny.xlsx", sheet = 1)
+head(attempt1, 3)
+```
+\vspace{12pt} 
+
+Fortunately, we can skip rows when using most loading functions. In this case, we only need to skip one row using the `skip` argument. Below, we read in the first and second sheets of `doe_ny.xlsx`, then rename the headers
+
+\vspace{12pt} 
+```{r, message = FALSE, warning = FALSE}
+#Load first two sheets
+sheet1 <- read_excel("data/doe_ny.xlsx", sheet = 1, skip = 1)
+sheet2 <- read_excel("data/doe_ny.xlsx", sheet = 2, skip = 1)
+
+#Rename columns
+colnames(sheet1) <- c("date", "ny.price")
+colnames(sheet2) <- c("date", "ny.price")
+```
+\vspace{12pt} 
+
+It turns out that *sheet1* and *sheet2* are from the same time series of spot prices. To append one data frame to the other, we use the `rbind` function and create a new, longer data frame:
+
+\vspace{12pt} 
+```{r}
+  ny <- rbind(sheet1, sheet2)
+```
+\vspace{12pt} 
+
+The two data frames `gulf` and `ny` contain the same number of rows. If they are in the same exact order and have the same length, we can use the `cbind` function to join the datasets by rows. The `cbind` function will join  all columns in both data frames together, including the dates. To ensure the data is neatly organized, we keep all columns from the `gulf` dataset and only the second column from the `ny` data set.
+
+\vspace{12pt} 
+```{r}
+  prices <- cbind(gulf, ny[,2])
+```
+\vspace{12pt} 
+
+The resulting data frame contains three columns containing daily spot prices from two sources. When working with thousands of files, writing the read statement is not practical. As we will cover later in this chapter, control structures like for loops can be an efficient solution.
+
 
 # Manipulating data
 
-## Working with Dates
+## Strings
 
-Working dates can be challenging. Most programming languages do not automatically recognize a date variable, requiring coders to specify the format using a set of date symbols. The `lubridate` [package](https://lubridate.tidyverse.org/) significantly lowers the bar for R users, making the process of working and manipulating dates more seamless and less prone to error. 
+### An Overview{-}
 
-```{r, message=FALSE, warning = FALSE}
-require(lubridate)
-```
-
-Upon loading lubridate, we can convert string and numeric objects with values that represent dates into date objects. The `as_date` function is most intuitive, automatically detecting the date format and assumes that the date is recorded in UTC. 
-
-```{r}
-d0 <- as_date("2010-08-20")
-```
-
-In case `as_date` is unable to detect the date, the user can more formally define the date format using functions such as `mdy` and `ymd`. Both are able to accommodate both string and numeric formats.
-
-```{r}
-d1 <- mdy("01/20/2010")
-d2 <- mdy_hm("01/20/2010 00:00 AM")
-d3 <- ymd(20100101)
-```
-
-Once data are converted into date objects, it is easy to process derivative information. To calculate duration between two dates is as simple as subtraction. 
-
-```{r}
-d1 - d3
-```
-
-
-Often times will need to extract parts of the date. With lubridate, each `year`, `month`, `quarter`, `day`, `hour`, `minute`, and `second` can be extracted using a dedicated function.  For example, we can extract the `year` and `quarter` and concatenate into a string using `paste0`.
-
-```{r}
-  y1 <- year(d0)
-  q1 <- quarter(d0)
-  paste0(y1, "Q", q1)
-```
-
-In base R, we can alternatively use the `format` function to specify an output format using date symbols. The example below outputs a concatenation of year and month.
-
-```{r}
-  format(d0, "%Y-%m")
-```
-
-## Working with Strings
 More often than not, data cleansing involves finding, extracting, and replacing the contents of string values. For example, below is a vector of four string values: 
 
 \vspace{12pt} 
@@ -219,26 +270,15 @@ A number of observations. In steps one through three, you will have noticed that
 Mastering _regex_ is a productivity multiplier, opening the possibility of ultra-precise text replacement, extraction, and other manipulation. Imagine scenarios where raw data is not quality controlled and mass errors plague the usefulness of the data. An analyst may spend days if not weeks or months cleaning data by hand (or rather through find and replace). With regex, haphazard cleaning is no longer an issue. To make the most of regex requires a command of both _text manipulation functions_ that are designed to interpret regex as well as _regex_ itself.
 
 
-### Text manipulation functions
+### Text manipulation functions {-}
 Find and replace are useful functions in most word processing and spreadsheet softwares. But what does it take to do find and replace at scale. The following seven text manipulation functions are commonly implemented in programming languages. Each searches for a user-defined pattern and returns a result in a well-defined format.
   
-  - `grep()`: Returns either the index position of a matched string or the string containing the matched portion.
-  
-  - `grepl()`: Returns a logical vector -- a vector of TRUE/FALSE for whether a matched string was found. 
-  
-  - `gsub()`: Searches and replaces patterns in strings.
-  
-  
-  - `regexpr()`: Returns the character position of a pattern in a string.
-  
-  
-  - `strsplit()`: Splits strings into a list of values based on a delimiter.
-  
-  
-  - `regmatches()`: Extract substring using information from `regexpr()`
-  
-  
-  - `substr()`: Extract substring from a string based on string positions.
+
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
+temp.table <- read.csv("data/string-manip.csv")
+knitr::kable(temp.table, booktab = T, col.names = c("Description", "Base R", "stringr"), 
+             caption = "Text manipulation functions")
+```
   
   
 Traditionally, functions like `grep()` are available through command line interfaces and are a core offering of the R programming language. On their own, some basic tasks can be accomplished such as exact matches of specific text. As will be seen later, these functions combined with regex are quite powerful. To illustrate the basic functionality, let's assume we have four sentences that indicate when four US laws were signed. 
@@ -252,8 +292,6 @@ Traditionally, functions like `grep()` are available through command line interf
 ```
 \vspace{12pt} 
 
-#### Example Task: I need to find all sentences about laws that were sponsored by two congressmen. {-}
-  
 Suppose we need to find acts that are named for two congressmen. The `grep()` function can be used to find the index positions of elements in a vector that contain `"-"`. Otherwise stated, return the row number for each sentence that contains a hyphen. In this case, the 1st, 2nd, and 4th elements in the `laws` vector contain hyphens.
 
 \vspace{12pt}   
@@ -276,12 +314,205 @@ This can also be expressed in a different way. The `grepl()` function can be use
 ```
   
 
+### Regular Expressions {-}
+Regular Expressions (regex) are powerful commands that give coders the flexibility to search data and surface results following a pattern. Before proceeding into more complex string combinations, knowledge of a few cleverly designed capabilities may go a long way: 
+  
+(1) Alternatives (e.g. "OR" searches) can be surfaced by using a pipe "`|`". For example, a string search for "Bob or Moe" would be represented as "Bob|Moe".
+  
+(2) The extent of a search should be denoted by parentheses `()`. For example, a string search for "Jenny" or an alternative spelling like Jenny would be represented as "Jenn(y|i)"."
+  
+(3) A search for one specific character should be placed between square brackets `[]`. 
+  
+(4) The number of characters is placed between curly brackets `{}`. 
+  
+In New York City, the famed avenue _Broadway_ is may be written and abbreciated in a number of ways. The vector `streets` contains a few instances of spellings of Broadway mixed in with other streets that start with the letter `B`.
+
+\vspace{12pt}   
+```{r}
+#A sampling of street names
+  streets <- c("Bruckner Blvd", "Bowery", "Broadway", "Bway", "Bdway", 
+        "Broad Street", "Bridge Street", "B'way")
+  
+#Search for two specific options
+  grep("Broadway|Bdway", streets, value = TRUE)
+  
+#Search for two variations of Broadway
+  grep("B(road|')way", streets, value = TRUE)
+  
+#Search for cases where either d or apostrophe are between B and way
+  grep("B[d']way", streets, value = TRUE)
+  
+```
+\vspace{12pt} 
+
+  
+#### Escaped characters {-}
+Quite a few single characters hold a special meaning in addition to the literal meaning. To disambiguate their meaning, a backslash precedes these characters to denote the alternative meaning. A few include:
+  
+  - `\n`: new line
+  
+  - `\r`: carriage return
+  
+  - `\t`: tab
+  
+  - `\'`: single quote when in a string enclosed in single quotes (`'Nay, I can\'t'`)
+  
+  - `\"`: double quote when in a string enclosed in double quotes  (`"I have a \"guy\"."`)
+  
+In other cases, double backslashes should be used:
+  
+  - `\\.`: period. Otherwise, un-escaped periods indicate searches for _any_ single character.
+  
+  - `\\$`: dollar sign. A dollar sign without backslashes indicates to find patterns at the end of a string.
+  
+#### Character Classes {-}
+  
+A _character class_ or _character set_ is used to identify specific characters within a string. How would one represent "12.301.1034" or "?!?!?!"?  One or more of the following character classes can do the job:
+  
+  - `[:punct:]`: Any and all punctuation such as periods, commas, semicolons, etc. For specific specific punctuation, simply enclose the characters between two brackets. For example, to find only commas and carrots, use `[<>,]`.
+  
+  
+  - `[:alpha:]`: Alphabetic characters such as a, b, c, etc. With other languages including R, it is commonly written as `[a-z]` for lower case and `[A-Z]` for upper case.
+  
+  
+  - `[:digit:]`: Numerical values.  With other languages including R, it is commonly written as `\\d` or `[0-9]`. For any non-digit, write `\\D`.
+  
+  
+  - `[:alnum:]`: Alphanumeric characters (mix of letters and numbers). With other languages including R, it is indicated using to as `[0-9A-Za-z]` or `\\w`. For any non-alphanumeric character, use `\\W`.
+  
+  
+  - `[:space:]`: Spaces such as tabs, carriage returns, etc. For any white space, use `\\s`. For any non-whitespace character, use `\\S`.
+  
+  
+  - `[:graph:]`: Human readable characters including `[:alnum:]` and `[:punct:]`.
+  
+  - `\\b`: Used to denote "whole words". `\\b` should be placed before and after a regex pattern. For example, `\\b\\w{10}\\b` indicates a 10 letter word.
+  
+  
+There are quite a few character classes not listed above, but for these constitute the lion's share. It is worth keeping in mind that the implementation of character classes may differ between programming languages. A number of the above are extensions that have been implemented in R in a specific manner.
+  
+#### Quantifiers  {-}
+
+Each character class on its own indicates a search for _one and only one character_. In practice, most character searches will involve a search for more than just one character. To indicate such a search, regex relies on _quantifiers_ to indicate the length of patterns. For example, a search for a year between the year 1980 and 2000 will require exactly four digits, but a search for the speed of a gust of wind will likely vary between 1 and 3 digits. The following six quantifiers provide a degree of both flexibility and specificity to accomplish search tasks:
+  
+  - `{n}`: match pattern n times for a preceding character class. For example `"\\d{4}"` looks for a four digit number.
+  
+  - `{n, m}`: match pattern at least n-times and not more than m times for a preceding character class. For example `"\\d{1,4}"` looks for one to four digit number.
+  
+  - `{n, }`: match at least n times for a preceding character class. For example `"\\d{4,}"` looks for a number that has at least four digits.
+  
+  - `*`: Wildcard, or match at least 0 times. 
+  
+  - `+`: Match at least once. 
+  
+  - `?`: Match at most once. 
+  
+
+In the example below, quantifiers are used to extract specific number patterns with a high degree of accuracy.
+\vspace{12pt} 
+
+```{r}
+  dates <- c("Octavian became Augustus on 16 Jan 27 BCE", 
+             "In the year 2000, a computer bug was expected to topple society.", 
+             "In the 5400000000 years, our sun will become a red dwarf.")
+  
+#Match an element with a 9 digit number
+  grep("\\d{9}", dates, value = TRUE)
+
+#Match an element with a 9 digit number
+  grep("\\b\\d{4}\\b", dates, value = TRUE)
+  
+#Match a date that follows 16 January 27 BCE
+  grep("\\d{2}\\s\\w{3}\\s\\d{2}\\s\\w{3}", dates, value = TRUE)
+```
+\vspace{12pt} 
+
+
+#### Position matching {-}
+
+Regex builds in functionality to search for patterns based on position of a substring in a string, such as at the start or end of a string. There are quite a few other position matching patterns, but the following two are the workhorses.
+  
+  - `$`: Search at the end of a string.
+  
+  - `^`: Start of string when placed at the beginning of a regex pattern. 
+  
+To demonstrate these patterns, we'll apply `grep()` to three headlines from the BBC.
+
+\vspace{12pt}   
+```{r, warning = FALSE, message=FALSE}
+  headlines <- c("May to deliver speech on Brexit", 
+           "Pound falls with May's comments", 
+           "May: Brexit plans to be laid out in new year")
+  print(headlines)
+  
+#Find elements that contain May at the beginning of the string
+  grep("^May", headlines, value = TRUE)
+  
+#Find elements that contain Brexit at the beginning of the string
+  grep("Brexit$", headlines, value = TRUE)
+
+```
+\vspace{12pt}   
+  
+### DIY: Redact
+  
+Personally identifiable information or PII is often a barrier to sharing information For the following financial record, anonymize records by removing age and name using `gsub()` and `regmatches()` to extract the amount of money John owes the bank.
+
+\vspace{12pt}  
+```{r}
+  statement <- "John (SSN: 012-34-5678) owes $1004 to the bank at 49-29 Pewter Street."
+```
+\vspace{12pt}   
+
 ## Stringr
 Trim whitespace 
 str_subset: Replace strings
 str_detect: Create binary variable from text:
 str_count: Number of matches
 str_replace: Replace matching substrings
+
+## Working with Dates
+
+Working dates can be challenging. Most programming languages do not automatically recognize a date variable, requiring coders to specify the format using a set of date symbols. The `lubridate` [package](https://lubridate.tidyverse.org/) significantly lowers the bar for R users, making the process of working and manipulating dates more seamless and less prone to error. 
+
+```{r, message=FALSE, warning = FALSE}
+require(lubridate)
+```
+
+Upon loading lubridate, we can convert string and numeric objects with values that represent dates into date objects. The `as_date` function is most intuitive, automatically detecting the date format and assumes that the date is recorded in UTC. 
+
+```{r}
+d0 <- as_date("2010-08-20")
+```
+
+In case `as_date` is unable to detect the date, the user can more formally define the date format using functions such as `mdy` and `ymd`. Both are able to accommodate both string and numeric formats.
+
+```{r}
+d1 <- mdy("01/20/2010")
+d2 <- mdy_hm("01/20/2010 00:00 AM")
+d3 <- ymd(20100101)
+```
+
+Once data are converted into date objects, it is easy to process derivative information. To calculate duration between two dates is as simple as subtraction. 
+
+```{r}
+d1 - d3
+```
+
+
+Often times will need to extract parts of the date. With lubridate, each `year`, `month`, `quarter`, `day`, `hour`, `minute`, and `second` can be extracted using a dedicated function.  For example, we can extract the `year` and `quarter` and concatenate into a string using `paste0`.
+
+```{r}
+  y1 <- year(d0)
+  q1 <- quarter(d0)
+  paste0(y1, "Q", q1)
+```
+
+In base R, we can alternatively use the `format` function to specify an output format using date symbols. The example below outputs a concatenation of year and month.
+
+```{r}
+  format(d0, "%Y-%m")
+```
 
 ## Missing values (0.5 page)
 
@@ -523,7 +754,7 @@ The opioid epidemic has been a social issue that has long been brewing, but has 
 
 `https://www.bing.com/search?q=opioid%20epidemic&filters=ex1%3a%22ez5_12810_13893%22`
 
-Breaking down the URL, we see that `q=opioid%20epidemic` is the search query `q=` where spaces are encoded as `%20`. Next, `filters=ex1%3a%22ez5_12810_13893%22` indicates a time range filter is applied, specifically `12810_13893` are indexes that represent the range 1/27/2005 to 1/15/2008. 
+Breaking down the URL, we see that the substring `q=opioid%20epidemic` indicates that the search `q=` will be based on the terms that follow `q=` and spaces are encoded as `%20`. Next, the substring `filters=ex1%3a%22ez5_12810_13893%22` indicates a time range filter is applied, specifically `12810_13893` are indexes that represent the range 1/27/2005 to 1/15/2008. 
 
 To make this a seamless process, we should construct a function `bingCounts` that will retrieve the number of search results for a given `search.term` in a specified calendar year (`year.filter`). First, we will need to load packages using `require`, which is specifically designed for within-function package loading. In particular, we will use: 
 
@@ -579,7 +810,7 @@ bingCounts <- function(search.term, year.filter){
 
 Rather than copying the above function multiple times, the resulting function can then be neatly wrapped into a loop to extract the number of search results for each year in a nine-year period between 2009 and 2017. We find the number of search results has grown 44-times over the period. Based on CDC data, the number of opioid-related deaths increased 2.4-times from approximately 20,400 to 49,000.^[https://www.drugabuse.gov/related-topics/trends-statistics/overdose-death-rates] Thus, we can see the search queries give a measure of direction of growth, but are misleading in their magnitude. 
 
-```{r}
+```{r, message = FALSE, warning=FALSE}
 #Set parameters
   term <- "opioid epidemic"
   results <- data.frame() 
@@ -593,7 +824,7 @@ Rather than copying the above function multiple times, the resulting function ca
 ```
 
 
-```{r, echo = FALSE, fig.cap = "Search "}
+```{r, echo = FALSE, fig.cap = "Number of search result by year"}
 #Plot
   plot(results, type = "l", ylab = "Number of Search Results", xlab = "Year", col = "red")
   points(results, pch = 16, col = "red")
@@ -602,33 +833,39 @@ Rather than copying the above function multiple times, the resulting function ca
 
 
 ## Style
-Every coder approaches coding differently. Thus, each person’s code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 
+Every coder approaches coding differently. Thus, each person's code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 
 
 
 
 # Feature engineering
-Define: Feature engineering is the process of transforming data to create new variables that provide potentially more insight about the phenomenon of interest. deeper insight. As we’ll see later in the book, feature engineering is critical for optimizing the accuracy of machine learning applications -- the models are only as good as the available data 
+Define: Feature engineering is the process of transforming data to create new variables that provide potentially more insight about the phenomenon of interest. deeper insight. As we'll see later in the book, feature engineering is critical for optimizing the accuracy of machine learning applications -- the models are only as good as the available data 
+
 Feature engineering typically depend on domain knowledge to construct new variables. Examples:
 Continuous values can be summarized as counts, minimum, maximum, average, percentile among others. 
+
 Example: Prevailing weather conditions -- give a benchmark of what has happened
+
 Continuous values can also be interacted with one another to mix the signal. 
+
 Example: Spending per capita
+
 In Text data, create a count or binary variable for each keyword
-Example: “One hot encoding” for keywords
+Example: "One hot encoding" for keywords
+
 Among discrete variables, combine sparse classes into aggregate classes that are more meaningful.  
 Example: For example, NYC 311 service has 1,700+ complaint + descriptor combinations
-Flavors of feature engineering
-Feature engineering is important but expensive due to the time cost
+
+- Flavors of feature engineering. Feature engineering is important but expensive due to the time cost
 Automated methods like FeatureTools (https://www.featuretools.com/) can construct a large number of new variables for prediction problems.
-DIY: Augment a US Senate Roll Call 
-Goal is to produce additional features that are correlated with the likely outcome of each vote.
-Get data from senate site -- 101st to 115th for sessions 1 and 2
+
+- DIY: Augment a US Senate Roll Call 
+- Goal is to produce additional features that are correlated with the likely outcome of each vote.
+- Get data from senate site -- 101st to 115th for sessions 1 and 2
 https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_1.xml
 https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_2.xml
-Clean up dates 
-For each record
-we’ll calculate a number of additional variables on a 90 day moving window
-Extract a matrix of key words
-We can see that a simple data set can give way to thousands of new variables
+- Clean up dates 
+- For each record, we'll calculate a number of additional variables on a 90 day moving window
+- Extract a matrix of key words
+- We can see that a simple data set can give way to thousands of new variables
 
 
