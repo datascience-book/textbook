@@ -7,7 +7,9 @@ output:
   geometry: margin=1in
 ---
 
-# Introduction
+# Concepts
+
+## Text is data
 
 Speeches contains a wealth of information. As humans, we are taught to understand verbal and written communication -- pick out the nouns, verbs, and adjectives, then combine the information to decipher meaing. Take the following excerpt from the 2010 State of the Union:
 
@@ -101,11 +103,37 @@ From that data, we can aggregate the data into a form that is meaningful to answ
             kable_styling(latex_options = c("hold_position"))
 ```
 
-This is just the tip of the iceberg. Text processing is just one aspect of readying your data for use. Much of a data scientist's time is spent retrieving, assembling, manipulating, and transforming data so that it is useful. While there are entire texts dedicated to engineering data, this chapter offers a brief review of programming paradigms that are necessary to bring to bear data in the public and social sectors. 
+This is just the tip of the iceberg. Text processing is just one aspect of readying data for use
 
-# The Ideal Data Set
+__Tidy Data__.  The ultimate goal of data retrieval and processing is to construct a data set that is ready for analysis, modeling and visualization.Tthis process, however, can occupy between 50% to 80% of a data scientist's time [(@lohr2014)]. Data needs to be processed into different forms depending on the use case. The number of tools available to *wrangle* data are many. But what if a standard framework could be applied to reduce the time burden and make data more actionable sooner. For one thing, we could follow the principles of *tidy data* laid out in @wickham2014: 
 
-Concept of tidy data goes here
+- Each variable forms a column.
+- Each observation forms a row.
+- Each type of observational unit forms a table. 
+
+A *messy* data set is one that does not follow the previously described structure. For example, a hypothetical company's financial data may contain each month's data as columns with each row representing a different financial concept. Working with this data in the current form to produce a time series forecast would prove to be a challenge. The data should be a multivariate time series, thus the ideal is to store months as rows and each financial concept as a column. 
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+temp.table <- read.csv("data/examp_messy.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Example of a messy data set.")
+
+
+```
+
+Fortunately, this is a relatively simple task in this case -- we simply need to transpose the data into tidy form. Once the data are in tidy form, the data can be more easily manipulated and used for data science purposes. The table below, for example, can not only be used for time series and cross sectional regression analysis, but visualized in a variety of ways. For the remainder of this book, we will tend towards tidy data and use them as the fundamental data form that will drive analyses. 
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+temp.table <- read.csv("data/examp_tidy.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Example of a tidy data set.")
+
+
+```
+
+We should point out that a suite of packages such as `tidyr` that make tidying data simpler and there are entire texts dedicated to data engineering and manipulating data. This chapter is intended to be a primer, providing a brief review of programming paradigms that are necessary to shape data into usable form so it can be the engine that drives impact in the public and social sectors. The chapter begins with illustrating a workflow for retrieving and assembling data, then explores common methods of manipulating data values and formats, then closes with manipulating data structures.
+
+
 
 # Retrieval and Assembly
 
@@ -113,22 +141,15 @@ While we briefly covered loading of data in the previous chapter, the retrieval 
 
 There are a multitude of data storage formats in use. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
 
-```{r, echo = FALSE, warning=FALSE, message = FALSE}
+ \vspace{12pt} 
+```{r, echo = FALSE, warning=FALSE, message = FALSE, fig.cap = "Recommended functions to load an assortment of files."}
 require(knitr)
-require(kableExtra)
-temp.table <- read.csv("data/loading_functions.csv")
-#pander::pander(temp.table, split.cell = 80, split.table = Inf)
 
-kable(temp.table, booktab = T, 
-              col.names = c("Format", "Function", "Package", "Description"), 
-              caption = "Recommended functions to load an assortment of files.")%>%
-  kable_styling(full_width = T) %>%
-  column_spec(1, bold = T, border_right = T) %>%
-  column_spec(2) %>% 
-  column_spec(3) %>% 
-  column_spec(4, width = "30em")
+temp.table <- read.csv("data/loading_functions.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Recommended functions to load an assortment of files.")
 ```
- 
+ \vspace{12pt} 
  
  
 In the course of writing this text, the authors have come across a number of misconceptions about loading data that introduce manual editing to data files. In particular, we have found that: 
@@ -137,16 +158,29 @@ In the course of writing this text, the authors have come across a number of mis
 - The number of columns will differ, requiring columns to be deleted or empty columns added before loading.
 - Column names differ, requiring manual editing of headers.
 
-These manual steps become tedious step when presented with hundreds of files. In this section, we illustrate a simple efficient workflow that reduces the amount of effort required to load data. Through this workflow, we read in gasoline spot price data from the US Energy Information Administration (EIA): two worksheets in an Excel file (gas prices from NY Harbor) and a CSV (Gas Prices from the US Gulf Coast). The goal is to combine the data int one data frame with daily spot prices.
+These manual steps become tedious step when presented with hundreds of files. In this section, we illustrate a simple efficient workflow that reduces the amount of effort required to load data. Through this workflow, we read in gasoline spot price data from the US Energy Information Administration (EIA): two worksheets in an Excel file (gas prices from NY Harbor) and a CSV (Gas Prices from the US Gulf Coast). The goal is to combine the data into one data frame with daily spot prices, then calculate the correlation between the two sets of spot prices as shown below.
 
-__An easy file to load__. Before loading any file, it is generally a good idea to open the file in a code editor to take a peek at the structure. Otherwise, blindly loading can also give a clue as well. Let's start with the CSV `doe_usgulf.csv` using the `readr` package, then inspect the first few rows.
+ \vspace{12pt} 
+```{r, echo = FALSE, warning=FALSE, message = FALSE}
+require(knitr)
 
+temp.table <- read.csv("data/gas_target.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Target format")
+```
+ \vspace{12pt} 
+ 
+
+__Loading CSVs__. Before loading any file, it is generally a good idea to open the file in a code editor to take a peek at the structure. Otherwise, blindly loading can also give a clue as well. Let's start with the CSV `doe_usgulf.csv` using the `readr` package, then inspect the first few rows.
+
+ \vspace{12pt} 
 ```{r, warning = FALSE, message = FALSE}
 library(readr)
 gulf <- read_csv("data/doe_usgulf.csv")
 head(gulf, 3)
 ```
-
+ \vspace{12pt} 
+ 
  It appears that the data was successfully loaded, but requires cosmetic changes to the column headers. To practice good data hygiene, we would keep column names lower case and replace all spaces and punctuation with periods. 
  
  \vspace{12pt} 
@@ -163,7 +197,7 @@ colnames(gulf) <- c("date", "gulf.price")
 ```
 \vspace{12pt} 
 
-__A more challenging file to load__. Excel files tend to have a few more curve balls as there are often rows included to enhance readability, but making parsing more challenging. To take a first look at the first sheet of our Excel file `doe_ny.xlsx`, we need to specify `sheet = 1`, then we use `head` to examine what was loaded. We can see that the wrong row was assumed to be the header. 
+__Loading an Excel file__. Excel files tend to have a few more curve balls than CSVs as there are often rows included to enhance readability, but making parsing more challenging. To take a first look at the first sheet of our Excel file `doe_ny.xlsx`, we need to specify `sheet = 1`, then we use `head` to examine what was loaded. We can see that the wrong row was assumed to be the header. 
 
 \vspace{12pt} 
 ```{r, message = FALSE, warning = FALSE}
@@ -187,30 +221,40 @@ colnames(sheet2) <- c("date", "ny.price")
 ```
 \vspace{12pt} 
 
-It turns out that *sheet1* and *sheet2* are from the same time series of spot prices. To append one data frame to the other, we use the `rbind` function and create a new, longer data frame:
-
+__Appending data__. It turns out that *sheet1* and *sheet2* are from the same time series of spot prices. We can construct a new, more complete data frame by appending one data frame to the other using the `rbind` function.
 \vspace{12pt} 
 ```{r}
   ny <- rbind(sheet1, sheet2)
 ```
 \vspace{12pt} 
 
-The two data frames `gulf` and `ny` contain the same number of rows. If they are in the same exact order and have the same length, we can use the `cbind` function to join the datasets by rows. The `cbind` function will join  all columns in both data frames together, including the dates. To ensure the data is neatly organized, we keep all columns from the `gulf` dataset and only the second column from the `ny` data set.
+The above situation is the ideal: two data frames with the same number of columns and the same column names. But what if one data frame has at least one more column than the other? The `rbind.fill` function in the `plyr` package appends the two data frames together, filling any additional missing columns with `NA` values. Below, rather than loading the entire `plyr` library, we can selectively use the `rbind.fill` using the double colon operator `::`.
 
 \vspace{12pt} 
 ```{r}
-  prices <- cbind(gulf, ny[,2])
+  ny <- plyr::rbind.fill(sheet1, sheet2)
 ```
 \vspace{12pt} 
 
-The resulting data frame contains three columns containing daily spot prices from two sources. When working with thousands of files, writing the read statement is not practical. As we will cover later in this chapter, control structures like for loops can be an efficient solution.
+
+__Combining data by rows__. The two data frames `gulf` and `ny` contain the same number of rows. If they are in the same exact desired order and have the same number of rows, we can use the `cbind` function to join the datasets by rows. The `cbind` function will join  all columns in both data frames together, including the dates. To ensure the data is neatly organized, we keep all columns from the `gulf` dataset and only the second column from the `ny` data set. The resulting data frame contains three columns containing daily spot prices from two sources. 
+
+To calculate the correlation between the two sets of prices, we use the `cor` function finding that $\rho = 0.989617$ -- the two sets of prices are highly correlated. Note that `cor` only accepts numeric values, thus the date column is temporarily dropped.  
+
+\vspace{12pt} 
+```{r}
+#Combine data
+  prices <- cbind(gulf, ny[,2])
+
+#Calculate correlation
+  cor(prices[,-1])
+```
+\vspace{12pt} 
 
 
-# Manipulating data
+# Manipulating values
 
 ## Strings
-
-### An Overview{-}
 
 More often than not, data cleansing involves finding, extracting, and replacing the contents of string values. For example, below is a vector of four string values: 
 
@@ -276,8 +320,10 @@ Find and replace are useful functions in most word processing and spreadsheet so
 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
 temp.table <- read.csv("data/string-manip.csv")
-knitr::kable(temp.table, booktab = T, col.names = c("Description", "Base R", "stringr"), 
-             caption = "Text manipulation functions")
+colnames(temp.table) <- c("Description", "Base R", "stringr")
+
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Recommended text manipulation functions")
 ```
   
   
@@ -456,13 +502,40 @@ To demonstrate these patterns, we'll apply `grep()` to three headlines from the 
   
 ### DIY: Redact
   
-Personally identifiable information or PII is often a barrier to sharing information For the following financial record, anonymize records by removing age and name using `gsub()` and `regmatches()` to extract the amount of money John owes the bank.
+In an increasingly digital world, data privacy is a sensitive issue that has taken center stage. At the center of it is the safeguarding of Personally identifiable information (PII). Legislation in the European Union, namely the General Data Protection Regulation or GDPR, requires companies to protect the personal data of European Union (EU) citizens  associated with transactions conducted in the EU [(@gdpr)]. The US Census Bureau, which administers the decennial census, must apply disclosure avoidance practices in order so that individuals cannot be identified [(@censusavoidance)]. Anonymization has become a common task when working with sensitive PII data, spanning complex probabilistic methods to simple redaction. We focus here on the latter.
+
+The following sentence, for example, contains hypothetical PII and sensiive information -- John's social security number and balance in his savings account are shown. When presented with many lines of sensitive information, one could review each sentence and manually redact sensitive information, but given thousands if not millions of sensitive information, this is simply not feasible.
 
 \vspace{12pt}  
 ```{r}
-  statement <- "John (SSN: 012-34-5678) owes $1004 to the bank at 49-29 Pewter Street."
+  statement <- "John Doe (SSN: 012-34-5678) has $2303 in savings in his bank account."
 ```
 \vspace{12pt}   
+
+Using a combination of regex and `stringr` we can redact sensitive information with placeholders. To remove the SSN, we need a regex pattern that captures a pattern with three digits (`\\d{3}`), a hyphen, two digits (`\\d{2}`), a hyphen, then four digits (`\\d{4}`), or when combined: `\\d{3}-\\d{2}-\\d{4}`. The matched pattern is then replaced with `XXXXX`.
+
+\vspace{12pt}  
+```{r}
+  library(stringr)
+  new_statement <- str_replace(statement,"\\d{3}-\\d{2}-\\d{4}", "XXXXX")
+  print(new_statement)
+```
+\vspace{12pt}   
+
+Next, we replace the dollar value by matching a string that starts with the dollar sign (`\\$`) followed by at least one digit (`\\d{1,}`). And finally, the John Doe's first and last name are replaced by looking for two substrings that each have at least one uppercase letter with an unspecified length (`[A-z]{1,} [A-z]{1,}`) and are found at the beginning of the string (`^`). The resulting sentence has little to no information about the individual in question.
+
+\vspace{12pt}  
+```{r}
+#Find a replace dollar amount
+  new_statement <- str_replace(new_statement,"\\$(\\d{1,})", "XXXXX")
+
+#Find and replace first and last name
+  new_statement <- str_replace(new_statement,"^[A-z]{1,} [A-z]{1,}", "XXXXX")
+  
+  print(new_statement)
+```
+\vspace{12pt}   
+
 
 ## Stringr
 Trim whitespace 
@@ -514,13 +587,16 @@ In base R, we can alternatively use the `format` function to specify an output f
   format(d0, "%Y-%m")
 ```
 
-## Missing values (0.5 page)
+
+# Manipulating structures
+
+
+## Missing values 
 
 Missing values: is.na
 Complete observations only: complete.cases
 
-# Manipulating structures
-The "tidy" paradigm (`tidyr`): variables get columns, observations get rows
+
 `dplyr`
 Extracting rows, columns, and specific elements from a data frame
 Basic R: Index notation, etc.
