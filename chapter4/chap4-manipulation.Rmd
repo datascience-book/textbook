@@ -103,43 +103,16 @@ From that data, we can aggregate the data into a form that is meaningful to answ
             kable_styling(latex_options = c("hold_position"))
 ```
 
-This is just the tip of the iceberg. Text processing is just one aspect of readying data for use
+This is just the tip of the iceberg. Text processing is just one aspect of readying data for use. 
 
-__Tidy Data__.  The ultimate goal of data retrieval and processing is to construct a data set that is ready for analysis, modeling and visualization.Tthis process, however, can occupy between 50% to 80% of a data scientist's time [(@lohr2014)]. Data needs to be processed into different forms depending on the use case. The number of tools available to *wrangle* data are many. But what if a standard framework could be applied to reduce the time burden and make data more actionable sooner. For one thing, we could follow the principles of *tidy data* laid out in @wickham2014: 
-
-- Each variable forms a column.
-- Each observation forms a row.
-- Each type of observational unit forms a table. 
-
-A *messy* data set is one that does not follow the previously described structure. For example, a hypothetical company's financial data may contain each month's data as columns with each row representing a different financial concept. Working with this data in the current form to produce a time series forecast would prove to be a challenge. The data should be a multivariate time series, thus the ideal is to store months as rows and each financial concept as a column. 
-
-```{r, echo = FALSE, warning=FALSE, message=FALSE}
-temp.table <- read.csv("data/examp_messy.csv")
-pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
-               caption = "Example of a messy data set.")
-
-
-```
-
-Fortunately, this is a relatively simple task in this case -- we simply need to transpose the data into tidy form. Once the data are in tidy form, the data can be more easily manipulated and used for data science purposes. The table below, for example, can not only be used for time series and cross sectional regression analysis, but visualized in a variety of ways. For the remainder of this book, we will tend towards tidy data and use them as the fundamental data form that will drive analyses. 
-
-```{r, echo = FALSE, warning = FALSE, message = FALSE}
-temp.table <- read.csv("data/examp_tidy.csv")
-pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
-               caption = "Example of a tidy data set.")
-
-
-```
-
-We should point out that a suite of packages such as `tidyr` that make tidying data simpler and there are entire texts dedicated to data engineering and manipulating data. This chapter is intended to be a primer, providing a brief review of programming paradigms that are necessary to shape data into usable form so it can be the engine that drives impact in the public and social sectors. The chapter begins with illustrating a workflow for retrieving and assembling data, then explores common methods of manipulating data values and formats, then closes with manipulating data structures.
-
+There are entire texts dedicated to data engineering and manipulating data. This chapter is intended to be a simple primer, providing a brief review of programming paradigms that are necessary to shape data into usable form so it can be the engine that drives impact in the public and social sectors. The chapter begins with illustrating a workflow for retrieving and assembling data, then explores common methods of manipulating data values and formats, then closes with manipulating data structures.
 
 
 # Retrieval and Assembly
 
-While we briefly covered loading of data in the previous chapter, the retrieval and assembly of a data set  can be one of the largest barriers to getting a project off the ground. Here, we lay out a few practices that make the process far simpler. 
+The retrieval and assembly of a data set  can be one of the largest barriers to getting a project off the ground. Here, we lay out a few practices that make the process far simpler. 
 
-There are a multitude of data storage formats in use. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
+There are a multitude of data storage formats in use such as extensible markup language (XML), comma separated values (CSV), Excel files among others. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
 
  \vspace{12pt} 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE, fig.cap = "Recommended functions to load an assortment of files."}
@@ -252,9 +225,62 @@ To calculate the correlation between the two sets of prices, we use the `cor` fu
 \vspace{12pt} 
 
 
-# Manipulating values
+# Sculpting the data
 
-## Strings
+The ultimate goal of data retrieval and processing is to construct a data set that is ready for analysis, modeling and visualization.This process, however, can occupy between 50% to 80% of a data scientist's time [(@lohr2014)]. Data needs to be processed into different forms depending on the use case. The number of tools available to *wrangle* data are many. But what if a standard framework could be applied to reduce the time burden and make data more actionable sooner. For one thing, we could follow the principles of *tidy data* laid out in @wickham2014: 
+
+- Each variable forms a column.
+- Each observation forms a row.
+- Each type of observational unit forms a table. 
+
+A *messy* data set is one that does not follow the previously described structure. For example, a hypothetical company's financial data may contain each month's data as columns with each row representing a different financial concept. Working with this data in the current form to produce a time series forecast would prove to be a challenge. The data should be a multivariate time series, thus the ideal is to store months as rows and each financial concept as a column. 
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+temp.table <- read.csv("data/examp_messy.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Example of a messy data set.")
+
+
+```
+
+Fortunately, this is a relatively simple task in this case -- we simply need to transpose the data into tidy form so the data can be more easily manipulated and used for data science purposes. The table below, for example, can not only be used for time series and cross sectional regression analysis, but visualized in a variety of ways. For the remainder of this book, we will tend towards tidy data and use them as the fundamental data form that will drive analyses. 
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+temp.table <- read.csv("data/examp_tidy.csv")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Example of a tidy data set.")
+
+
+```
+
+Much of tidying involves structuring a data set into the form, moving columns, slicing, deleting -- all tasks that change the shape of the data. 
+
+<segue needed>
+
+## Row and column indexes
+
+Use prices data
+
+
+```{r, eval = FALSE}
+prices[]
+```
+
+
+## 
+
+
+## Working with missing values 
+
+Missing values: is.na
+Complete observations only: complete.cases
+
+
+`dplyr`
+Extracting rows, columns, and specific elements from a data frame
+Basic R: Index notation, etc.
+
+# Manipulating values
 
 More often than not, data cleansing involves finding, extracting, and replacing the contents of string values. For example, below is a vector of four string values: 
 
@@ -314,7 +340,7 @@ A number of observations. In steps one through three, you will have noticed that
 Mastering _regex_ is a productivity multiplier, opening the possibility of ultra-precise text replacement, extraction, and other manipulation. Imagine scenarios where raw data is not quality controlled and mass errors plague the usefulness of the data. An analyst may spend days if not weeks or months cleaning data by hand (or rather through find and replace). With regex, haphazard cleaning is no longer an issue. To make the most of regex requires a command of both _text manipulation functions_ that are designed to interpret regex as well as _regex_ itself.
 
 
-### Text manipulation functions {-}
+## Text manipulation functions
 Find and replace are useful functions in most word processing and spreadsheet softwares. But what does it take to do find and replace at scale. The following seven text manipulation functions are commonly implemented in programming languages. Each searches for a user-defined pattern and returns a result in a well-defined format.
   
 
@@ -360,7 +386,7 @@ This can also be expressed in a different way. The `grepl()` function can be use
 ```
   
 
-### Regular Expressions {-}
+## Regular Expressions
 Regular Expressions (regex) are powerful commands that give coders the flexibility to search data and surface results following a pattern. Before proceeding into more complex string combinations, knowledge of a few cleverly designed capabilities may go a long way: 
   
 (1) Alternatives (e.g. "OR" searches) can be surfaced by using a pipe "`|`". For example, a string search for "Bob or Moe" would be represented as "Bob|Moe".
@@ -392,7 +418,7 @@ In New York City, the famed avenue _Broadway_ is may be written and abbreciated 
 \vspace{12pt} 
 
   
-#### Escaped characters {-}
+### Escaped characters
 Quite a few single characters hold a special meaning in addition to the literal meaning. To disambiguate their meaning, a backslash precedes these characters to denote the alternative meaning. A few include:
   
   - `\n`: new line
@@ -411,7 +437,7 @@ In other cases, double backslashes should be used:
   
   - `\\$`: dollar sign. A dollar sign without backslashes indicates to find patterns at the end of a string.
   
-#### Character Classes {-}
+### Character Classes 
   
 A _character class_ or _character set_ is used to identify specific characters within a string. How would one represent "12.301.1034" or "?!?!?!"?  One or more of the following character classes can do the job:
   
@@ -437,7 +463,7 @@ A _character class_ or _character set_ is used to identify specific characters w
   
 There are quite a few character classes not listed above, but for these constitute the lion's share. It is worth keeping in mind that the implementation of character classes may differ between programming languages. A number of the above are extensions that have been implemented in R in a specific manner.
   
-#### Quantifiers  {-}
+### Quantifiers  
 
 Each character class on its own indicates a search for _one and only one character_. In practice, most character searches will involve a search for more than just one character. To indicate such a search, regex relies on _quantifiers_ to indicate the length of patterns. For example, a search for a year between the year 1980 and 2000 will require exactly four digits, but a search for the speed of a gust of wind will likely vary between 1 and 3 digits. The following six quantifiers provide a degree of both flexibility and specificity to accomplish search tasks:
   
@@ -474,7 +500,7 @@ In the example below, quantifiers are used to extract specific number patterns w
 \vspace{12pt} 
 
 
-#### Position matching {-}
+### Position matching 
 
 Regex builds in functionality to search for patterns based on position of a substring in a string, such as at the start or end of a string. There are quite a few other position matching patterns, but the following two are the workhorses.
   
@@ -587,19 +613,6 @@ In base R, we can alternatively use the `format` function to specify an output f
   format(d0, "%Y-%m")
 ```
 
-
-# Manipulating structures
-
-
-## Missing values 
-
-Missing values: is.na
-Complete observations only: complete.cases
-
-
-`dplyr`
-Extracting rows, columns, and specific elements from a data frame
-Basic R: Index notation, etc.
 
 ## Basic math 
 Arithmetic operations: Sum, mean, etc.
