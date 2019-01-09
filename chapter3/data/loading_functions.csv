@@ -1,0 +1,13 @@
+﻿Function,Package,Description
+read_excel,readxl,"Load Excel files into a data frame. Note that with excel files, generally need to specify which sheet to load using the *sheet* argument and may need to skip a number of rows at the beginning of worksheet to indicate the header row using *skip*."
+read_csv,readr,Load any comma separated file into data frame format. 
+read_delim,readr,"Load delimited file using any delimiter such as tab delimited (""\\\t"") using the *sep* argument."
+readLines,base R,"Read a text file, line by line. This is helpful for working with free form text."
+xmlToDataFrame,XML,Read XML into a data frame if the structure is simple and flat. Note that XML files tend to have a more complex hierarchical structure.
+xmlToList,XML,"If the XML is complicated, read each element as a list."
+fromJSON,rjson,"Read JSON into list. If JSON is a flat, non-hierarchical file, then the resulting object can be simply converted into a data frame."
+read_dta,haven,Load Stata data file.
+read_sas,haven,Load SAS data files.
+read_spss,haven,Load SPSS data files.
+load,base R,Load saved R data set that can contain multiple objects. Note that this does not need to be assigned to another object.
+readRDS,base R,Read individually saved R object.

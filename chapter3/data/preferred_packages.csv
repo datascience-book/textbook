@@ -1,0 +1,14 @@
+﻿Package,Description
+readxl,<description>
+readr,<description>
+haven,<description>
+XML,<description>
+rjson,<description>
+tidyr,<description>
+reshape2,<description>
+tidytext,<description>
+data.table,<description>
+lubridate,<description>
+dplyr,<description>
+ggplot2,<description>
+caret,<description>
