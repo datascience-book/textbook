@@ -1,0 +1,119 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeffrey Chen"
+date: '`r Sys.Date()`'
+output:
+  html_document: default
+  latex_engine: xelatex
+  pdf_document: null
+description: Chapter 5
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalikex
+---
+# Data Manipulation / Wrangling / Processing
+
+## Motivation
+
+Speech contains a wealth of information. As humans, we are taught to understand verbal and written communication -- pick out the nouns, verbs, and adjectives, then combine the information to decipher meaing. Take the following excerpt from the 2010 State of the Union:
+
+> Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. 
+We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy.
+
+To many, text might not be considered data despite the fact that any analytical mind with a command of the English language can identify key terms:
+
+> ~~Now, one place to start is serious~~ financial reform.  ~~Look, I am not interested in~~ punishing banks.  ~~I'm interested in~~ protecting our economy.  ~~A~~ strong, healthy financial market ~~makes it possible for~~ businesses ~~to access~~ credit ~~and~~ create new jobs. ~~It channels the~~ savings of families ~~into~~ investments ~~that~~ raise incomes.  ~~But that can only happen if we guard against the same~~ recklessness ~~that nearly brought down our entire~~ economy. 
+~~We need to make sure~~ consumers ~~and~~ middle-class families ~~have the information they need to make~~financial decisions. ~~We can't allow~~ financial institutions, ~~including those that take your~~ deposits,~~to take risks that threaten the whole~~ economy.
+
+Much like the logic that guides keyword identification, text can be shaped from an unstructured dataset into a well-defined, structured dataset: 
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+  library(knitr)
+  library(kableExtra)
+  library(rvest)
+  library(plyr)
+  library(DT)
+  speech <- "Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy. "
+   stripped <- gsub("[[:punct:]]","",speech)
+  stripped <- gsub("[[:digit:]]","",stripped)
+  stripped <- gsub("[^[:graph:]]"," ",stripped)
+  bag <- strsplit(stripped," ")
+  bag <- tolower(trimws(unlist(bag)))
+  
+#Stopwords
+  library(digIt)
+  stoplist <- digIt("stopwords")
+  stoplist <- as.vector(stoplist[,1])
+  
+#Read through text
+  vals <- as.data.frame(table(unlist(bag)))
+  vals <- vals[!(vals$Var1 %in% stoplist),]
+  vals$len <- nchar(as.character(vals$Var1))
+  vals <- vals[vals$len > 2,]
+  vals <- vals[order(-vals$Freq),]
+  colnames(vals) <- c("Terms", "Frequency of Term","Number of Characters")
+  row.names(vals) <- 1:nrow(vals)
+  
+  kable(head(vals,4), booktabs = TRUE,
+  caption = 'Most frequent terms found in excerpt.')  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+
+Of course, this process could be done manually, but imagine sorting through all 7,304 words in the 2010 address or scaling the process to the roughly [_1.9 million words_](http://www.presidency.ucsb.edu/sou_words.php) in addresses State of the Union addresses between 1790 and 2016. All the steps required to convert unstructured text into usable data can be done with a little bit of planning, technical imagination and data manipulation. Every little detail about the data needs to be considered and meticulously converted into a usable form. From a data format perspective, capitalized characters are not the same as lower case. Contractions are not the same as terms that are spelled out. Punctuation affect spacing. Carriage returns and new line markers, while not visible in reading mode, are recorded. 
+
+Let's take one line from above and dissect the changes that need to be made:
+
+> "We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+
+We then turn everything into lower case so all letters of the alphabet are read the same.
+
+> "we need to make sure consumers and middle-class families have the information they need to make financial decisions. we can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+
+Then, we get rid of punctuation by substituting values with empty quotations (`""`).
+
+> "we need to make sure consumers and middleclass families have the information they need to make financial decisions  we cant allow financial institutions including those that take your deposits to take risks that threaten the whole economy"
+
+Each space between each word can be used as a _delimiter_ that can be used as a symbol for a program to  break apart words into elements in a list. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+example <- "We need to make sure consumers and middle-class families have the information they need to make financial decisions. We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy."
+example <- gsub("[[:punct:]]","",tolower(example))
+example <- as.character(unlist(strsplit(trimws(example), " ")))
+  kable(matrix( c(example, rep("",3)), nrow = 8,ncol = 5), booktabs = TRUE,
+  caption = 'Terms')  %>% kable_styling(latex_options = c("hold_position"))
+```
+
+There are words in there that don't add much value as they are commonplace and filler. In text processing, these words are known as *stop words*. In each domain, the list of stop words likely differs, thus data scientists may need to  build a customized list. For simplicity, we've used a stop words list that is used in the mySQL -- an open source relational database management system. The result is the list of remaining words. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+  example <- example[!(example %in% gsub("[[:punct:]]","", stoplist))]
+  
+  knitr::kable(matrix(c(example, rep("",1)), nrow = 4,ncol = 4), booktabs = TRUE,
+  caption = 'Terms after removing stop words')  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+From that data, we can aggregate the data into a form that is meaningful to answer a research question. For example, the frequency of words may provide a clue as to what the text is about. In this case, each "financial" and "make" appear twice in the text, perhaps indicating that there is an orientation towards action (make) for financial considerations. 
+
+```{r, warning=FALSE, echo=FALSE, message=FALSE}
+  examp <- as.data.frame(table(example))
+  examp <- examp[order(-examp$Freq), ]
+  end <- cbind(examp[1:7,], rbind(examp[8:13,],data.frame(example = "", Freq = "")))
+  colnames(end) <- c("Term", "Freq", "Term", "Freq")
+  
+  
+  knitr::kable(end, caption = "Term Frequencies", booktabs = TRUE, row.names = FALSE)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+This is just the tip of the iceberg. Text processing is just one example of _feature engineering_ -- or the creation and derivation of new information from data that is not in the best of formats. There is often information hidden within information and mastering feature engineering and data manipulation more generally unlocks new possibilities and insights.
+
+Much of a data scientist's time is spent extracting, cleaning, and transforming data for use. In database circles, this process is sometimes referred to as Extract-Transform-Load. In general data circles, it is referred to as data wrangling or data munging. Regardless of the term, without a reputable study to cite, the author supposes based on his and colleagues' experiences that as much of 80% of a data project is spent manipulating information. Thus, it is evermore important to master the basic skills. Stronger one's command of programming data manipulations, the faster one can code, the soon one can get to the more interest aspects of using data as a strategy.
+
+This chapter is dedicated to building the fundamental skills on which all data projects rely. We begin by highlighting introducing the mechanics of cell level (e.g. text operations, formats) and structural level (e.g. sorting, subsetting, merging) data manipulation. We then proceed to introducing programming paradigms, namely control structures and functions, that vastly improve the efficiency when handling data. The chapter ends on a number of DIY cases.  
+

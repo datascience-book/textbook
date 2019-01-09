@@ -1,0 +1,132 @@
+---
+title: "Chapter 5. DIY: Aggregation"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+
+### What do I do find patterns in event-level data? 
+
+#### Motivation {-}
+
+Before entering the world of statistical models and algorithms, cursory analysis of data is reliant on _aggregation_. Patterns emerge when the most granular records are aggregated, ^[Source needed] meaning that as information is summed and averaged by some unit of analysis, some aggregated units will be unambiguously higher than others -- a sustained deviation away from random. But how exactly are records aggregated into summary statistics?
+
+- _Investment analysts_ and in the _earth scientists_ employ rolling averages -- averaging data over a longer time window. The size of the window depends on what the data is being used for and the frequency of the data. Stock trades are refreshed in real-time, thus the rolling average window may be only minutes or hours. Satellite imagery on vegetation may be as frequent as daily or every two weeks, meaning the rolling average may be quite a bit wider such as a monthly-level average. For measures concerning the atmosphere, earth scientists will calculate a 30-year average that is known as a *climate normal* that shows the historically prevailing conditions.
+
+
+- _Demographers_ and _economists_ count the number of people in the United States at the address of residence every 10 years. Since the data is _personally identifiable information_ or _PII_, it is aggregated by discrete units of geography known as Census blocks, which is defined as a boundary that contains "at least 30,000 square feet (0.69 acre) for polygons bounded entirely by roads or 40,000 square feet (0.92 acres) for other polygons".^[https://www2.census.gov/geo/pdfs/reference/GARM/Ch11GARM.pdf] These blocks neatly roll up into higher units of analysis such as Census Block Groups, Census Tracts, Counties and States. 
+
+It is easy to aggregate data in a way that emphasizes a misleading pattern. Perhaps the best known example is *gerrymandering*, which is the act of "drawing political boundaries to give your party a numeric advantage over an opposing party".^[https://www.washingtonpost.com/news/wonk/wp/2015/03/01/this-is-the-best-explanation-of-gerrymandering-you-will-ever-see/?utm_term=.f820bf35a620] In theory in a representative democratic model, the proportion of the popular vote that is for a given party should be approximately equal to the number of elected congresspeople in the US House of Representatives. In 2012, while democrats had won roughly 49 percent of the House vote compared to 48.2 percent for Republicans, the scales swung in the favor of the Republicans winning a 234 seats and the Democrats with only 201 seats.^[http://history.house.gov/Institution/Election-Statistics/Election-Statistics/] 
+
+We will thus be vigilant in ensuring that data analytics is free of gerrymandered insights. 
+
+#### Questions this answers {-}
+
+By aggregating data into more meaningful units, we can begin to answer sim
+- When is the most busy period of the year?
+- Which units move together?
+- 
+
+#### Principles {-}
+
+- Better to obtain raw transactional data so that you have more control and options for aggregating data
+- Keep in mind that when sample is not randomly sampled or is not the entire potential universe, aggregation can be misleading 
+- How you aggregate depends on the use of the data and the methods that one is comfortable with using.
+
+#### A Worked example {-}
+
+The Washington Area Transit Authority (WMATA or colloquially known as "The Metro") reported that its 2017Q1 performance attained a train arrival on-time rate of 69%. This is a cursory, high-level measure that does not provide much insight. What data underlies those estimates?
+
+![Washington Metropolitan Area Transit Authority 2017Q1 Performance Report - Source: https://www.wmata.com/about/records/scorecard/index.cfm](assets/manipulation/img/wmata.png)
+
+By scraping the WMATA website, it is possible to dive deeper into the delay patterns to develop a better understanding of delay patterns across the metro system, which in turn can help riders of the Metro gain insight about smart planning. The data set that has been assembled for this exercise was scraped for the period of July 2016 to July 2017.
+
+What answers should we attempt to answer through simple aggregation?
+
+- How long are delays?
+- When are delays most likely to occur?
+- Is there a time of year when delays are likely?
+- Which line has the longest delays
+
+To start, we load in the data from the `digIt` library.
+\vspace{12pt}  
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+library(knitr)
+library(kableExtra)
+library(ggplot2)
+```
+
+```{r, warning= FALSE, message=FALSE}
+library(digIt)
+wmata <- digIt("wmata")
+```
+
+\vspace{12pt}  
+
+First we'll take a cursory glance at the data. To answer the questions, we will need only a few fields,
+
+\vspace{12pt}  
+```{r, warning= FALSE, message=FALSE, echo = FALSE}
+#Take a look at data
+example <- as.data.frame(t(wmata[c(1,1000,3000),]))
+example$field <- row.names(example)
+row.names(example) <- NULL
+example <- example[,c(4,1,2,3)]
+
+for(i in 1:4){
+  example[,i] <- substr(example[,i], 1,18)
+  example[,i][is.na(example[,i])] <- ""
+}
+
+knitr::kable(example, caption = "Example delay records", booktab = TRUE)
+```
+\vspace{12pt}  
+
+
+We'll now create a date-time object. To do so, we'll use `paste()` to concatenate date and time separated by a space and assign to a new vector.
+\vspace{12pt}  
+```{r, warning= FALSE, message=FALSE}
+date.time <- paste(wmata$date, wmata$time.occur)
+date.time[1]
+```
+
+This new vector `date.time` is then processed using `strptime()` to convert strings into what is known as _POSIXlt_, a class of data objects that represent the number of seconds relative to the beginning of 1970 UTC.^[DateTimeClasses. https://stat.ethz.ch/R-manual/R-devel/library/base/html/DateTimeClasses.html] This makes it easier to keep track and calculate time at a granular level. The tricky part of this process is to accurately representing the time using conversion specifications. For the date above, the following specification is most appropriate: 
+```{r, warning= FALSE, message=FALSE}
+spec <-  "%B %d,%Y %I:%M%p"
+wmata$datetime <- strptime(date.time, spec)
+```
+
+From the new date-time object, we can use `format()` to extract parts elements from _POSIXlt_, such as months (`%m`) and hours (`%H`).
+
+```{r, warning= FALSE, message=FALSE}
+wmata$month <- as.numeric(format(wmata$datetime, "%m"))
+wmata$hour <- as.numeric(format(wmata$datetime, "%H"))
+```
+\vspace{12pt}  
+
+With the data prepped, we can proceed to roll up data by different dimensions. To start, 
+
+We'll calculate the average, standard deviation and sample size for each station. 
+
+\vspace{12pt}  
+```{r, warning= FALSE, message=FALSE}
+wmata.line <- aggregate(wmata$delay, 
+                   by = list(hour = wmata$hour),
+                   FUN = mean, na.rm = TRUE)
+colnames(wmata.line) <- c("station","avg")
+
+
+options(knitr.kable.NA = '')
+knitr::kable(wmata.line, caption = "Average delay", digits = 1, row.names = FALSE, booktab = TRUE)
+```
+
+
+#### Exericse {-}
+
+In 10 or fewer lines of code, write a function to extract the time at which train delays occurred and how long they lasted. The function should accept a string vector and return a data frame with two fields: a string field that contains the hour, minute, and time of day (AM or PM) time and a numeric field for the delay in minutes.
+
+Include standard annotation in the function to indicate how to use it. Test your function on the 'text' field in the wmata data set, then check the accuracy of results against the time and delay fields.  
+
+Tip: _Use regular expressions!_
+

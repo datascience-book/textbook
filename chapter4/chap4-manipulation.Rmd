@@ -24,11 +24,9 @@ To many, text might not be considered data, but they are. Our minds analyze the 
 Much like the logic that guides keyword identification, text can be shaped from an unstructured dataset into a well-defined, structured dataset: 
 
 ```{r, echo=FALSE, message=FALSE, warning=FALSE}
-  library(knitr)
-  library(kableExtra)
-  library(rvest)
-  library(plyr)
-  library(DT)
+  library(pacman)
+  p_load(knitr, kableExtra, rvest, plyr, DT)
+
   speech <- "Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy. "
    stripped <- gsub("[[:punct:]]","",speech)
   stripped <- gsub("[[:digit:]]","",stripped)
@@ -156,7 +154,7 @@ __Loading CSVs__. Before reading in a file, it is generally a good idea to open 
 
  \vspace{12pt} 
 ```{r, warning = FALSE, message = FALSE}
-library(readr)
+pacman::p_load(readr)
 gulf <- read_csv("data/doe_usgulf.csv")
 head(gulf, 3)
 ```
@@ -182,7 +180,7 @@ __Loading an Excel file__. Excel files tend to have a few more curve balls than 
 
 \vspace{12pt} 
 ```{r, message = FALSE, warning = FALSE}
-library(readxl)
+pacman::p_load(readxl)
 attempt1 <- read_excel("data/doe_ny.xlsx", sheet = 1)
 head(attempt1, 3)
 ```
@@ -498,7 +496,7 @@ Using a combination of regex and `stringr` we can redact sensitive information w
 
 \vspace{12pt}  
 ```{r}
-  library(stringr)
+  pacman::p_load(stringr)
   new_statement <- str_replace(statement,"\\d{3}-\\d{2}-\\d{4}", "XXXXX")
   print(new_statement)
 ```
@@ -561,12 +559,14 @@ d1 - d3
 
 Often times will need to extract parts of the date. With lubridate, each `year`, `month`, `quarter`, `day`, `hour`, `minute`, and `second` can be extracted using a dedicated function.  For example, we can extract the `year` and `quarter` and concatenate into a string using `paste0`.
 
+ \vspace{12pt} 
 ```{r}
   y1 <- year(d0)
   q1 <- quarter(d0)
   paste0(y1, "Q", q1)
 ```
-
+ \vspace{12pt} 
+ 
 In base R, we can alternatively use the `format` function to specify an output format using date symbols. The example below outputs a concatenation of year and month.
 
 ```{r}
@@ -627,319 +627,384 @@ pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
 
 For the much of this text, we will tend towards tidy data and use them as the preferred data structure that to enable analysis and modeling. Tidying involves moving columns, rotating, slicing, deleting -- all tasks that change the shape of the data, requiring analysts to become intimately familiar with data structures. In the remainder of this section, we introduce core concepts for sculpting data into the right shape.
 
-
 ## Matrix or Data Frame?
 
-Last chapter, we introduced data structures. 
+Last chapter, we introduced matrices and data frames as options for storing multivariate data. Matrices are vectors of the same variable type, but in two dimensions ($n \times m$ dimensions). Data frames are a generalization of matrices that allow for each column of data to hold different data types as well as refer to individual columns by a user-specified name.
 
-matrices are vectors but in two dimensions ($n \times m$ dimensions). Data frames are a generalization of matrices that allow for each column of data to hold different data types as well as refer to individual columns by a user-specified name.
+_When should each matrices and data frames be used?_ From a pure logistical perspective, data frames are more flexible with respect to its ability to store multiple data types. Some code libraries are built specifically for matrices and others for data frames. Ultimately, data frames are generally a safe bet.  They can be subsetted, sorted, reshaped, collapsed, and merged, retaining the variable types.  
 
-_When should each matrices and data frames be used?_ From a pure logistical perspective, data frames are more flexible with respect to its ability to store multiple data types. Some code libraries are built specifically for matrices and others for data frames. Ultimately, it is up to the data scientist to choose.
 
-| | Matrices | Data Frames |
-|---------|-------------------------------|----------------------------------|
-| Pros | Memory efficient. Good for advanced mathematical operations. |  Store mixed types of data types. Allows user to refer to columns by an explicit name. | 
-| Cons | Able to store one data type at a time -- leads to slightly more work required to manage multiple matrices. Columns can only be referred to by index number. | Not as memory efficient. |
+\vspace{12pt} 
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+temp.table <- read.csv("data/df_v_matrix.csv")
+colnames(temp.table) <-c(" ", "Matrix", "Data Frame")
+pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
+               caption = "Matrices versus Data Frames.")
 
-In this section, we review among the most powerful functions for data manipulation: `sort`, `reshape`, `collapse`, and `merge`.  A mastery of the logic and operations that guide matrix and data frame processing opens the possibilities to work with virtually any kind of data. To illustrate this, consider a data frame with a list of the top 25 male long jumpers and top 25 female long jumpers as found on [Wikipedia](https://en.wikipedia.org/wiki/Long_jump#All-time_top_25_athletes).  Each row contains information about one athlete such as with their record-setting longest jump, date of jump, location of jump among other features. Imagine the sort of tasks that one could do to munged the data into a usable shape.
+```
+\vspace{12pt} 
 
-Note that data can be obtained directly from this URL (https://s3.amazonaws.com/dspp/long_jump_top25.csv):
+
+To illustrate data in action, we consider a data set containing all reported thefts, burglaries and robberies in Chicago between 2014 through 2018. The data are available on the [Chicago Open Data Portal](https://data.cityofchicago.org/Public-Safety/Crimes-2001-to-present/ijzp-q8t2/data). A cleaned version in .Rda is available at [link goes here](link goes here). The file contains a data frame `crimes` with $n = 428,250$ with 17 variables.
 
 ```{r, warning = FALSE, message=FALSE}
-  jumps <- read.csv("https://s3.amazonaws.com/dspp/long_jump_top25.csv")
+  load("data/chicago_crime.Rda")
 ```
 
 
 ```{r, warning = FALSE, message=FALSE, echo = FALSE}
   
-  library(kableExtra)
-  rownames(jumps) <- NULL
-  blank <- jumps[1:2,]
-  blank$sex <- "."
-  blank[,1:6] <- "."
-  knitr::kable(rbind(jumps[1:2,], blank,jumps[40:41,]), row.names = FALSE, 
-               booktabs = TRUE, caption = "Example records from long jump data set")  %>%
+  pacman::p_load(kableExtra)
+  rownames(crimes) <- NULL
+  blank <- crimes[1:3, c(2,3,6,7)]
+  knitr::kable(blank, 
+               row.names = FALSE, 
+               booktabs = TRUE, 
+               caption = "Example from crimes data set.")  %>%
             kable_styling(latex_options = c("hold_position"))
 ```
 
 
-## Indices and Subsetting 
+## Array Indexes
 
-In both matrices and data frames, individual and ranges of rows and columns can be extracted by calling their index number. The jumps data contains $n = 51$ rows and $k = 6$ features for a total of $306$ data elements. Each row and each feature has a unique index number that starts from $1$ and increases sequentially. In other programming languages, index numbers start from $0$. 
+We can think of data frames and matrices as data organized along a grid -- essentially a spreadsheet. Each cell in a data frame can be located using a coordinate set of *array indexes*, or a number that indicate the location along a row or column. The first, fifth, and millionth rows have index values of 1, 5, and 1000000. The second, ninth and one-thousandth columns have values of 2, 9, 1000. This is similar to languages like FORTRAN, MATLAB, and Julia. Note that array indexes in programming languages such as Python, Perl, C, Java and Ruby start with $0$ -- often a point of confusion when transitioning between languages.
 
-__*To extract the second row*__ from `jumps`, we simply type the number `2` before the commaa in square brackets. The line below essentially indicates that given a matrix or data frame, extract the second row and all columns.
+*Why do array indexes matter?* Understanding this is the gateway to subsetting data, or slicing and dicing as one pleases. To extract any part of the data frame requires referring to the array indexes in a specific format: 
 
 \vspace{12pt} 
-```{r, warning = FALSE, message=FALSE}
-  jumps[2,]
+```{r}
+  crimes[7, 6]
 ```
 \vspace{12pt} 
 
-To __*extract multiple records by row index*__ depends on whether the request is sequential or piecemeal. Below, the first line extracts a range of rows from the 2nd through 4th rows in `jumps`, whereas the second extracts two non-overlapping ranges that are included in a vector. 
+where `crimes` is the name of a data frame.  $7$ is a row index and $6$ is a column index, both of which are sandwiched in square brackets and separated by a comma. Executing the above state will extract the value in the seventh row and sixth column. 
+
+
+*What if we want to extract an entire row?* Simply specify the row index of interest and leave the column blank. The result is a single row data frame describing a robbery that occurred on March 18, 2015 at 11:55 PM.
+
+\vspace{12pt} 
+```{r, eval = FALSE}
+  crimes[7, ]
+```
+\vspace{12pt} 
+
+To *extract multiple records by row index* depends on whether the request is sequential or piecemeal. Below, the first line extracts a range of rows from the 2nd through 4th rows in `crimes`, whereas the second extracts two non-overlapping ranges that are included in a vector. 
 
 \vspace{12pt} 
 ```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps[2:4, ] # apply the index range to extract rows
-  jumps[c(1:2,10:11), ] # specific indices
+  crimes[2:4, ] # apply the index range to extract rows
+  crimes[c(1:2, 10:11), ] # specific indexes
 ```
 \vspace{12pt} 
 
-The same notation can be used __*to extract all athlete names for all records*__ by typing the number `3` after the comma in square brackets. The number 3 is the column index that contains `athlete` names. _Keep in mind that extracting one column from a matrix or data frame results in a vector -- the data structure is not retained_.
+The same notation can be used *to extract all street blocks that had a crime reported* by typing the number `4` after the comma in square brackets. The number 4 is the column index that contains `block` names. Rather than returning a data frame, the result is a vector containing the partially redacted street block. 
 
 \vspace{12pt} 
-
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps[, 3] 
-```
-
-\vspace{12pt} 
-
-In addition, data frames provide a few additional methods of extracting the `athlete` column. 
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps[, "athlete"] # extract column with "athlete" label
-  jumps[["athlete"]] # list syntax to extract column from data frame
-  jumps$athlete #compact version of data column manipulation
-```
-
-To __*extract two or more columns*__ follows a familiar pattern, making use of either a range of column indices or a vector of column names.
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps[, 3:4] # extract multiple columns
-  jumps[, c("athlete", "mark.meters")] # multiple column labels
+```{r, eval = FALSE}
+  crimes[,4]
 ```
 \vspace{12pt} 
 
-To __*extract rows that meet one specific criterion*__ requires the creation of either a vector of booleans than indicate if the criterion is `TRUE` or `FALSE` for each row (logical vector has the same number of rows as the data), or a list of row index numbers that meet the criterion. The example below performs operations on a data frame.
-\vspace{12pt}   
-
-__*Example 1*__: Create a vector of booleans over 8.8 meters, then select rows based on whether a row contains a `TRUE` value.
+In addition, data frames provide a few additional options for extracting the `block` column. 
 
 \vspace{12pt} 
 ```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  group1 <- jumps$mark.meters > 8.8 # return vector of booleans for jumps over 8.8 meters
-  jumps[group1, ] # select the indices
-```
-\vspace{12pt} 
-
-__*Example 2*__: Find row indices that contain the place "Eugene", then use the vector of matching row indices to extract rows from `jumps`. 
-
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  group2 <- grep("Eugene", jumps$place)
-  jumps[group2, ] 
-```
-\vspace{12pt} 
-
-__*Example 3*__: Find record setting jumps in Tokyo, Mexico City and New York City using the `%in%` operator.
-
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-#Find place in vector of cities
-  group3 <- jumps$place %in% c("New York City", "Mexico City", "Tokyo")
-
-#Return matching entries 
-  jumps[group3, ]
-  
-#Return non-matching entries
-  jumps[!group3, ]
-```
-\vspace{12pt} 
-
-
-__*Extract rows that meet two criteria*__ is as simple as using logical operators. To search for two non-overlapping criteria, the pipe operator `"|"` should be used to represent _OR_, whereas `"&"` represents _AND_.
-
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-#Find athletes who jumped beyond 8.9m or below 7.2m
-  group2 <- (jumps$mark.meters > 8.8) | (jumps$mark.meters < 7.2)
-  jumps[group2, ] # select the indices
-```
-\vspace{12pt} 
-
-
-__*Rows and columns can be re-ordered*__ simply by enumerating indices in a specified order. For example, columns can be re-ordered by passing a vector of column indices into a data frame.
-
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE}
-#Original order
-  colnames(jumps)
-
-#Reorder according vector of column indices
-  jumps <- jumps[, c(2, 4, 3, 6, 1, 5)]
-  
-#Check new order
-  colnames(jumps)
+  crimes[, "block"] # extract column with "block" label
+  crimes[["block"]] # list syntax to extract column from data frame
+  crimes$block # compact version of data column manipulation
 ```
 \vspace{12pt} 
  
-To __*sort a column*__ can be done using `order()`, which returns a vector of row indicies in ascending order.
-
-\vspace{12pt} 
-```{r, warning = FALSE, message=FALSE}
-  order(jumps$mark.meters)
-```
-\vspace{12pt} 
-
-This simple function can be included in the rows index to sort a entire data frame. To sort descending, add a `"-"` before the feature to be sorted.
+To __*extract two or more columns*__ follows a familiar pattern, making use of either a range of column indexes or a vector of column names.
 
 \vspace{12pt} 
 ```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps[order(jumps$mark.meters), ] # order records by mark.meters
-  jumps[order(-jumps$mark.meters), ] # order records by mark.meters, decreasing
-  jumps[order(jumps$mark.meters, decreasing=TRUE), ]# order records by mark.meters, decreasing
+  crimes[, 3:4] # extract multiple columns
+  crimes[, c("date", "block")] # multiple column labels
 ```
 \vspace{12pt} 
 
-To __*sort on multiple columns*__ is a matter of adding additional fields separated by commas.
+
+## Subsetting
+
+Extracting specific *subsets* is perhaps one of the most essential skills of data processing as it allows one to focus on specific aspects of the data. In addition to referring to specific array indexes to subset data, we can extract specific rows based on user-specified criteria, such as "crimes that happened in 2015" or "robberies that involved a handgun". Here, we describe three approaches using logical vectors, the `which` command and the `filter` command in the `dplyr` library. The first two options are possible using the pre-built functionality of R. 
+
+The __logical vector__ approach involves creating a vector that describes some comparison, then passing the resulting logical vector to the data frame. 
 
 \vspace{12pt} 
 ```{r, warning = FALSE, message=FALSE, eval = FALSE}
-# first by rank, then sex, then place
-  jumps[order(jumps$rank, jumps$sex, jumps$place), ] 
+#Logical vector 
+  group1 <- crimes$year == 2015
 
- # first desc. by rank, then sex, then place
-  jumps[order(-jumps$rank, jumps$sex,  jumps$place), ]
+#Select based on vector
+  out <- crimes[group1, ]
+```
+\vspace{12pt} 
+
+The __which__ approach is largely the same as above, but uses the `which` function to retrieve the row index of each `TRUE` value in the logical vector. The relevant row indexes are then passed to the data frame, returning a result far faster than the first option.
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+#Logical vector 
+  group1 <- which(crimes$year == 2015)
+
+#Select based on vector
+  out <- crimes[group1, ]
+```
+\vspace{12pt} 
+
+Lastly, and perhaps more convenient, is the `filter` function in the `dplyr` package.  Not only is the syntax concise, the processing time is fast. The command only requires the data frame to be specified once and variables can be specified without the dollar sign notation.
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
+  pacman::p_load(dplyr)
+```
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+  pacman::p_load(dplyr)
+  out <- filter(crimes, year == 2015)
+```
+\vspace{12pt} 
+
+The `dplyr` allows for *piping* of operations, meaning that multiple steps can be combined into one function call. The pipe operator `%>%` allows the output of one step to be input into another, thereby creating a pipeline. For example, the statement below is the same as the above. 
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+  out <- crimes %>% filter(year == 2015)
+```
+\vspace{12pt} 
+
+
+To get comfortable, let's walk through a few different scenarios.
+
+__*Example 1*__: Find all crimes that were armed. To do this, we use `str_detect` function from `stringr` to search for the term `ARMED` from the `description` field in `crimes`, then use the result to subset using `filter`. 
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+  out <- filter(crimes, str_detect(crimes$description, "ARMED"))
+```
+\vspace{12pt} 
+
+__*Example 2*__: Find all cases that where the `primary.type` of crime was either a `THEFT` or `BURGLARY`. So that the statement can be one compact line, we use the `%in%` operator to search if any the elements in the vector `c("THEFT", "BURGLARY")` are found in `primary.type`.
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+  out <- filter(crimes, primary.type %in% c("THEFT", "BURGLARY"))
+```
+\vspace{12pt} 
+
+
+__*Extract rows that meet two criteria*__ is as simple as using logical operators. The pipe operator `"|"` should be used to represent _OR_, whereas `"&"` represents _AND_. To find all cases where an `arrest` occurred after the `year` 2016 :
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+  out <- filter(crimes, arrest == TRUE & year > 2016)
+```
+\vspace{12pt} 
+
+## Sorting and Re-ordering
+
+At times, data frames need to be re-arranged to make it easier to navigate the data. 
+
+__*Re-arranging rows and columns*__. For one thing, columns and rows can be re-arranged or event removed by listing column indexes in a desired order. By passing a vector of column indexes to a data frame, we can not only reorder columns but also remove them. In the example below, we first re-order columns, moving columns 10 through 17 to the beginning of the data set and moving one through nine to the end. Then, we create a new data set `crime_new` dropping columns 10 and 13 by placing a negative (`-`) before the column indexes.
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+#Re-order
+  crimes <- crimes[, c(10:17, 1:9)]
+
+#Drop columns
+  crime_new <- crimes[, -c(10, 13)]
+```
+\vspace{12pt} 
+ 
+It is more likely that we would organize our data calling specific columns by name. The standard approach is to pass a string vector of column names, requiring each name to be placed in quotations. A more concise approach using the `select` function from  `dplyr` lists the names of desired columns without quotations. Below, we illustrate how to create a data frame of geographic coordinates.
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE}
+#base R
+  crimes_geo <- crimes[, c("latitude", "longitude")]
+
+#dplyr approach
+  crimes_geo <- dplyr::select(crimes, latitude, longitude)
+
+```
+\vspace{12pt} 
+ 
+ 
+To __*sort a data set*__ can be done using `order`, which returns a vector of row indicies in ascending order based on the variable of interest. To sort descending, add we can either `"-"` before the variable if it is a numeric or specify `decreasing = T`. The `order` function should not be confused with its cousin the `sort` function, which is designed to order and return a vector of values.
+
+\vspace{12pt} 
+```{r, warning = FALSE, message=FALSE, eval = FALSE}
+#base R - sort ascending
+  crimes[order(crimes$latitude, crimes$longitude), ]
+
+#base R - sort descending (2 options)
+  crimes[order(crimes$latitude, crimes$longitude, decreasing = TRUE), ] 
+    crimes[order(-crimes$latitude, -crimes$longitude), ] 
+```
+
+The base R options are somewhat clunky, requiring repetition of the data frame name if many variables are to be sorted. The `arrange` function in `dplyr` is more concise. Similar to `order`,  the `arrange` function sorts ascending by default.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message=FALSE}
+#dplyr
+  crimes <- arrange(crimes, latitude, longitude)
+  crimes <- arrange(crimes, desc(latitude), desc(longitude))
 ```
 \vspace{12pt} 
 
 
 
-### Exercises {-}
+## Aggregating data
   
-  1. Extract records with female athletes who are ranked greater than rank #10.
-  2. Extract records with jump marks greater than 7.250 meters and less than 8.625 meters.
-  
-  
-## Reshape
-  
-Data usually takes on two basic _shapes_: **wide** and **long**.  The data frame in the previous section is in **long** format in which each row represents an individual that is ranked among the top 25 within each sex. Each row has a value (`mark.meters`) associated with the characteristics that make that row unique (`athlete`, `place`, `rank`, `sex`, `date`). 
-  
-We will find that the **wide** form is also useful. For those who have familiarity with spreadsheet software, reshaping data essentially is the functionality behind a pivot table.  Some features can be used to identify rows and others features can be used to stratify the data by discrete bins. The `reshape()` function can be used to convert a data frame such that each row contains values for each rank (1 to 25) placing the distance jumped by each sex in separate columns. 
+Seeing the pattern in the data can be challenging when the units are too granular. Aggregating data into coarser units is a common strategy to see the forest rather than the individual tree. For example, it is only possible to determine if crime has become more prevalent by aggregating events.
 
-\vspace{12pt}  
+Here, we introduce the `summarise` and `group_by` functions from `dplyr`. The former `summarise` is used to calculate summary statistics on a set of variables, such as the count of crimes or the average latitude of crimes. The latter `group_by` indicates that manipulations will be applied to each level of a variable. By applying these functions, we can convert a highly granular data set into a more compacted summarized set.
+
+Suppose we would like to see the total number of each type of crime for each ward of Chicago. We can easily send the `crimes` data set into a pipeline like the one below. A `group_by` is specified up immediately after the data set, indicating that all subsequent calculations will be applied groupwise for each type of crime (`primary.type`) and ward of the city (`ward`). The data is then summarized by calculating two variables: the number of crimes `num.crimes` using the count function `n` and the `arrest.rate` by taking the `mean` of the `arrest` variable. The result of this process is a new data frame with only $n = 151$ and $k = 4$. It is clear how this can be used -- turning raw data into aggregate, communicable insights.
+
+\vspace{12pt}   
 ```{r, warning = FALSE, message = FALSE, eval = FALSE}
-  reshape(<data>, 
-          idvar = <ID variables>,
-          timevar = <column variables>,
-          direction = <direction>)
-```
-\vspace{12pt}  
-
-- `<data>` is the data set
-- `<ID variables>` is a variable or a combination of variables that serves as a unique identifier for each row
-- `<column variables>` is a variable that will be used to define multiple measurements per row
-- `<direction>` indicates if the data will be converted into long or wide form.
-
-To illustrate `reshape()`, the data is whittled down to a three feature set containing `rank`, `sex` and `mark.meters`. These features are then input into the `reshape()` to convert a long form data set into wide form.
-
-\vspace{12pt}   
-```{r, warning = FALSE, message=FALSE}
-  example <-  jumps[, c("rank", "sex", "mark.meters")]
-  wide <- reshape(example, 
-          idvar = "rank", timevar = "sex", direction = "wide")
-  head(wide, 5)
+  crimes  %>% 
+    group_by(primary.type, ward) %>% 
+    summarise(num.crimes = n(), 
+              arrest.rate = 100 * mean(arrest))
 ```
 \vspace{12pt} 
 
+Any variable can be used in the `group_by` statement, separating each dimension by a comma. The `summarise` function is quite flexible encompassing a large number of summary statistics:
 
-There are now 21 rows, where there were previously 51.  Returning to the original **long** format is straightforward; but we aren't left with the exact same data table.  There are artifacts of the change-in-shape for both the column and row names.  Sort of like data manipulation breadcrumbs.  This will be cleaned up in the next subsection.
+- *Central tendency*: `mean`, `median`
+- *Dispersion*: `sd`, `IQR`, `mad`
+- *Range*: `min`, `max`, `quantile`
+- *Position*: `first`, `last`, `nth`,
+- *Count*: `n`, `n_distinct`
+- *Logical*: `any`, `all`
 
-### Rename row and column headers {-}
-  
-The newly assigned column or row names may not match the meaning in the data.  It is good practice to maintain the column headers at each stage of analysis, even if you don't immediately use the intermediate data table.  Otherwise editing code gets confusing, quickly.  The column names are stored in an attribute of the data frame:
+__Constructing Time Series__. Using these functions, we can aggregate the events data into a __*time series*__ to uncover patterns and trends over time. Are crimes increasing? Do they follow a predictable seasonal pattern?  Suppose we would like to visualize arrest rates in Chicago.  We will follow a simple three discrete step:
 
-\vspace{12pt}   
-```{r, warning = FALSE, message=FALSE}
-#Two ways of obtaining data frame field names
-  names(wide)
-  colnames(wide)
-```
-\vspace{12pt} 
+- *Create quarterly time variables* using a combination of `mdy_hms` and `quarter` functions from `lubridate`. The resulting time variable will be used in `group_by`.
+- *Summarize the data* into a new data frame.
+- *Plot the new time series*.
 
-Renaming column headers using the built-in, base functions in `R` looks confusing.  In words, the following code identifies the positions in `names(wide)` where the values are `mark.meters.male` and `mark.meters.female`.  At the specified positions, the values is reassigned with new values `male.mark` and `female.mark`, respectively.
-
-\vspace{12pt}   
-```{r, warning = FALSE, message=FALSE}
-  names(wide)[names(wide) == "mark.meters.male"] <- "male.mark"
-  names(wide)[names(wide) == "mark.meters.female"] <- "female.mark"
-  head(wide, 5)
-```
-\vspace{12pt} 
-
-Alternatively, groups of fields can be renamed based on the index position in the names list. 
-
-\vspace{12pt}  
-```{r eval = FALSE}
-  colnames(wide)[c(1,3)] <- c("rank.num", "female.mark")
-```
-\vspace{12pt} 
-
-
-
-## Collapse
-  
-Reshape and collapse are often used in conjunction in order to calculate summary statistics by group.  The `aggregate()` function is the workhorse for summarizing data. It accepts three arguments:
-
-\vspace{12pt}   
-```{r, warning = FALSE, message = FALSE, eval = FALSE}
-  aggregate(<x>, by = list(<groups>), FUN = <function>))
-```
-\vspace{12pt} 
-
-- `<function>` is the specific function that will be applied to the data. Commonly used functions included `mean`, `sum`, `length` (count), `sd` (standard deviation), among others.
-- `<x>` is the R object on which the function will be applied. This generally should be a numerical value.
-- `<groups>` is a variable that contains groups for which the mathematical function will be calculated. This needs to be provided as a `list()`.
-  
-Consider this function to __*estimate the jump distance average by sex*__. To arrive at the answer, we will collapse the data frame by `sex` to create a new data frame with the average jump distance by sex. Notice that the group variable can be named within the list and the number of observations is reduced to only two.
+This process, as illustrated below, creates a 20-observation data frame `crimes_qtr` that shows that arrest rates have fallen over time. Tasks such as these are core processing steps that underlie most data science projects.
 
 \vspace{12pt}   
 ```{r, warning = FALSE, message = FALSE}
-(out <- aggregate(jumps$mark.meters, by = list(athlete.sex = jumps$sex), FUN = mean))
+#Convert to date form and extract the the quarter
+  crimes$date1 <- mdy_hms(crimes$date)
+  crimes$qtr <- quarter(crimes$date1, with_year = TRUE)
+  
+#Summarized data
+  crimes_qtr <- crimes  %>% 
+                group_by(qtr) %>% 
+                summarise(arrest.rate = 100 * mean(arrest))
+
+#Plot a line chart
+  plot(crimes_qtr$arrest.rate, type = "l")
 ```
 \vspace{12pt} 
-
-How about tabulations?  __*count medals by country*__ 
-
-Note that data can be obtained directly from this [URL](https://s3.amazonaws.com/whoa-data/long_jump_olympics.csv):
-
-\vspace{12pt}  
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  jumps <- read.csv("https://s3.amazonaws.com/whoa-data/long_jump_olympics.csv")
-  print(jumps)
-```
-
-or alternatively using the `digIt()` function designed for this textbook.
-```{r, warning = FALSE, message=FALSE, eval = FALSE}
-  olympics <- digIt("long_jump_olympics")
-  head(olympics,3)
-```
-
-
-```{r, warning = FALSE, message=FALSE, echo = FALSE}
-  olympics <- digIt("long_jump_olympics")
-  knitr::kable(head(olympics,3), row.names = FALSE, 
-            booktabs = TRUE, format = "latex",
-            caption = "Example records from Olympic long jump medalists data set") %>%
-            kable_styling(latex_options = c("hold_position"))
-```
-
-The USA had won 56 olympic long jump medals through 2017.
-
-\vspace{12pt}  
-```{r, warning = FALSE, message=FALSE}
-  cty_medals <- aggregate(olympics$country, by = list(country = olympics$country), FUN = length)
-  head(cty_medals[order(-cty_medals$x),], 3)
-```
-\vspace{12pt}  
-
-The built-in `R` functions are effective, but new, memory efficient libraries have arisen to augment `R`'s capabilites. 
 
 ### Exercises {-}
   
   1. Load the [`iris`](http://stat.ethz.ch/R-manual/R-devel/library/datasets/html/iris.html) dataset using the `datasets` package. Calculate the average and maximum sepal length for each Iris species. (**Bonus**: Write the commands without error messages.) 
-  2. Use the `aggregate()` function to count the number of observations of sepal width for each species.
-  3. (*Difficult*) Create a data frame with the 35th observation of sepal width for each species.
+  2. Use the `summarise()` function to count the number of observations of sepal width for each species.
+  3. Create a data frame with the 35th observation of sepal width for each species.
   
+## Reshape
+  
+Data are generally stored in either *long* form and *wide* form. Long form represents each subject (or individual unit of analysis) at one point in time as a row and each variable as a column. This format also is the most analytically convenient format.  In the social sciences, long format is analogous to panel data or stacked data. For example, the following is a long format data set with arrest rates associated with burglary, robberies and thefts for each ward and quarter.
+
+\vspace{12pt} 
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+  crimes_long <- crimes  %>% 
+                group_by(qtr, ward) %>% 
+                summarise(arrest.rate = 100 * mean(arrest))
+
+  knitr::kable(crimes_long[c(1,13,25, 37, 49),1:3], booktabs = TRUE,
+        caption = 'Example of long data.', digits = 2, row.names = FALSE)
+```
+\vspace{12pt} 
+
+Wide format, in contrast, represents each subject as one row and each column is a variable. If there are multiple dimensions such as time, a variable is spread across multiple time columns. This format is more common when presenting data as it is easier to visually inspect data in a single viewport or sheet of paper. The long format crime data above can be restructured into wide form, as shown below. 
+
+The shape of data has a direct implications for how analyses can be conducted and depend on the use case. Panel analyses, or analyses using data for each subject over time, require data in long form. Cross sectional analyses may require data to be in wide form. The process of converting data from one form to another is known as *reshaping*. For those who have familiarity with spreadsheet software, reshaping data essentially is the same as working with a pivot table. 
+  
+\vspace{12pt} 
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+  crimes_long$ward <- paste("ward.", crimes_long$ward)
+  knitr::kable(reshape2::dcast(crimes_long, qtr ~ ward)[1:5,1:5], booktabs = TRUE,
+        caption = 'Example of wide data.', digits = 2,
+        row.names = FALSE)
+```
+\vspace{12pt} 
+
+To reshape data, we rely on a package called `reshape2`, which simplifies the process of reshaping into two functions: `melt` and `dcast`. The former `melt` is used to convert data into long form, whereas the latter `dcast` converts data into wide form. 
+
+\vspace{12pt} 
+```{r, message = FALSE, warning = FALSE}
+  pacman::p_load(reshape2)
+```
+\vspace{12pt} 
+
+__*Long to Wide*__. Suppose we summarized the crimes data into a quarterly data set of arrest rates by type of crime and wward. This data would be returned in long form.
+
+\vspace{12pt} 
+```{r, message = FALSE, warning=FALSE}
+  crimes_long <- crimes  %>% 
+                group_by(qtr, ward, primary.type) %>% 
+                summarise(arrest.rate = 100 * mean(arrest),
+                          num.crimes = n())
+```
+\vspace{12pt} 
+
+The `dcast` function in `reshape2` converts data from long form to wide form. The function expects a data frame, a formula, and at least one value variable. Let's walk through the example below that produces a new data frame where each row is a type of crime in a ward and each column is the arrest rate for each time period. 
+
+- The formula dictates the desired structure. In the formula `ward + primary.type ~ period`, for example, variables to the left of the tilda `~` are treated as row identifiers and variables to the right are dimensions that will be spread across the columns. Multiple dimensions can be specified, each separated by an addition symbol `+`. 
+- The value variable  `value.var`, which in this case is the `arrest.rate`, will fill the new data structure. 
+
+The resulting data frame has $n=150$ rows and $k=22$ columns.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message=FALSE}
+crimes_wide <- dcast(crimes_long, 
+                     ward + primary.type ~ qtr,
+                      value.var = "arrest.rate")
+```
+\vspace{12pt} 
+
+Suppose we would like to reshape both the `arrest.rate` as well as the `num.crimes`. This requires two modifications to the above code:
+
+- First, we will need to install and load the `data.table` package, which converts data frames into a class of objects for memory efficient and speedy data manipulation. From that package, we will need to use `setDT` to convert our data frame into the appropriate format.
+- Second, specify a string vector of variable names for the `value.var`.
+
+The resulting data frame has $n=150$ rows and $k=42$ columns. 
+
+\vspace{12pt} 
+```{r, warning=FALSE, message=FALSE}
+pacman::p_load(data.table)
+crimes_widetoo <- dcast(setDT(crimes_long), 
+                     ward + primary.type ~ qtr,
+                      value.var = c("arrest.rate", "num.crimes"))
+```
+\vspace{12pt} 
+
+__*Wide to Long*__. It is just as simple to roll the data back into long form using the `melt` function. The example below re-converts the `crimes_wide` data frame into long form. Remember that all but two variables contain `arrest.rate` for a each quarter. Moving from wide to long means that all the arrest.rate columns will be consolidated into two variables: column headers will be captured as a new time variable and column values will be arrest rates. The function expects: 
+
+- a data frame (`crimes_wide`).
+- `id.vars`: a vector of variable names or column indexes that indicate row identifiers. 
+- `variable.name`: a name of a new variable to which the wide column names will be stored.
+- `value.var`: a name of a new variable to store the values.
+
+\vspace{12pt} 
+```{r, warning=FALSE, message = FALSE}
+
+  crimes_longtoo <-   melt(crimes_wide, 
+                        id.vars = c("ward", "primary.type"),
+                        variable.name = "qtr", 
+                        value.name = "arrest.rate")
+```
+\vspace{12pt} 
 
 # Control Structures
 Much of data science requires developing specialized code to handle the eccentricities of a dataset. Re-running blocks of code is required, often times on multiple data samples and subpopulations. It's simply not scalable to manually change variables and assumptions of the code everytime. 
@@ -1100,7 +1165,7 @@ A simple case may involve drawing a random value $x$ from a normal distribution 
 ```{r, echo = FALSE}
 set.seed(1)
 ```
-```{r}
+```{r, eval = F}
   x <- 1
   while(x > 0.01){
     x <- rnorm(1, 1, 0.5)
@@ -1146,9 +1211,6 @@ To execute the function, we will simply need to call the function with a data fr
   meanToo(data, "x1")
 ```
 
-
-## Style
-Every coder approaches coding differently. Thus, each person's code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 
 
 
 ## DIY: Tracking the supply of online content
@@ -1237,37 +1299,7 @@ Rather than copying the above function multiple times, the resulting function ca
 ```
 
 
+# Best Practices
 
-
-# Feature engineering
-Define: Feature engineering is the process of transforming data to create new variables that provide potentially more insight about the phenomenon of interest. deeper insight. As we'll see later in the book, feature engineering is critical for optimizing the accuracy of machine learning applications -- the models are only as good as the available data 
-
-Feature engineering typically depend on domain knowledge to construct new variables. Examples:
-Continuous values can be summarized as counts, minimum, maximum, average, percentile among others. 
-
-Example: Prevailing weather conditions -- give a benchmark of what has happened
-
-Continuous values can also be interacted with one another to mix the signal. 
-
-Example: Spending per capita
-
-In Text data, create a count or binary variable for each keyword
-Example: "One hot encoding" for keywords
-
-Among discrete variables, combine sparse classes into aggregate classes that are more meaningful.  
-Example: For example, NYC 311 service has 1,700+ complaint + descriptor combinations
-
-- Flavors of feature engineering. Feature engineering is important but expensive due to the time cost
-Automated methods like FeatureTools (https://www.featuretools.com/) can construct a large number of new variables for prediction problems.
-
-- DIY: Augment a US Senate Roll Call 
-- Goal is to produce additional features that are correlated with the likely outcome of each vote.
-- Get data from senate site -- 101st to 115th for sessions 1 and 2
-https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_1.xml
-https://www.senate.gov/legislative/LIS/roll_call_lists/vote_menu_101_2.xml
-- Clean up dates 
-- For each record, we'll calculate a number of additional variables on a 90 day moving window
-- Extract a matrix of key words
-- We can see that a simple data set can give way to thousands of new variables
-
-
+## Style
+Every coder approaches coding differently. Thus, each person's code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 

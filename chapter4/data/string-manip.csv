@@ -11,7 +11,7 @@ Extract substring based on start and end position.,substr,str_sub
 Trim whitespace on either end of string (excessive spaces),trimws,str_trim
 Returns number of characters in string,nchar,str_length
 Returns the number of matched patterns.,,str_count
-Convert to upper case,toupper,str_upper
-Convert to lower case.,tolower,str_lower
-Convert to title case.,,str_title
+Convert to upper case,toupper,str_to_upper
+Convert to lower case.,tolower,str_to_lower
+Convert to title case.,,str_to_title
 Pad string (e.g. add leading zeros to string),sprintf,str_pad
