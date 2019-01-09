@@ -1,10 +1,14 @@
 ---
 title: "Chapter 4: Readying the Data"
+date: "January 9, 2019"
 output:
   pdf_document: 
       number_sections: true
   html_document: default
-  geometry: margin=1in
+header-includes:
+- \usepackage{rotating, graphicx}
+bibliography: citations.bib
+link-citations: yes
 ---
 
 # Concepts
@@ -559,36 +563,21 @@ d1 - d3
 
 Often times will need to extract parts of the date. With lubridate, each `year`, `month`, `quarter`, `day`, `hour`, `minute`, and `second` can be extracted using a dedicated function.  For example, we can extract the `year` and `quarter` and concatenate into a string using `paste0`.
 
- \vspace{12pt} 
+\vspace{12pt} 
 ```{r}
   y1 <- year(d0)
   q1 <- quarter(d0)
   paste0(y1, "Q", q1)
 ```
- \vspace{12pt} 
+\vspace{12pt} 
  
 In base R, we can alternatively use the `format` function to specify an output format using date symbols. The example below outputs a concatenation of year and month.
 
+\vspace{12pt} 
 ```{r}
   format(d0, "%Y-%m")
 ```
-
-
-## Basic Math 
-
-Once the data ar Arithmetic operations: Sum, mean, etc.
-
-| Operation | General |   Row-Wise   | Column-wise |
-|:---------|:---------------|:-------------|:---------|
-| Sum      | `sum`  | `rowSums` | `colSums` |
-| Mean      | `mean`  | `rowMeans` | `colMeans` |
-| Minimum | `min` | | |
-| Maximum | `max` | | |
-
-
-Distance measures: dist() - L1/L2
-String distance: adist() - Levenshtein, stringdist() - soundex
-
+\vspace{12pt} 
 
 
 # Sculpting the data
@@ -916,6 +905,7 @@ This process, as illustrated below, creates a 20-observation data frame `crimes_
 Data are generally stored in either *long* form and *wide* form. Long form represents each subject (or individual unit of analysis) at one point in time as a row and each variable as a column. This format also is the most analytically convenient format.  In the social sciences, long format is analogous to panel data or stacked data. For example, the following is a long format data set with arrest rates associated with burglary, robberies and thefts for each ward and quarter.
 
 \vspace{12pt} 
+
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
   crimes_long <- crimes  %>% 
                 group_by(qtr, ward) %>% 
@@ -924,6 +914,7 @@ Data are generally stored in either *long* form and *wide* form. Long form repre
   knitr::kable(crimes_long[c(1,13,25, 37, 49),1:3], booktabs = TRUE,
         caption = 'Example of long data.', digits = 2, row.names = FALSE)
 ```
+
 \vspace{12pt} 
 
 Wide format, in contrast, represents each subject as one row and each column is a variable. If there are multiple dimensions such as time, a variable is spread across multiple time columns. This format is more common when presenting data as it is easier to visually inspect data in a single viewport or sheet of paper. The long format crime data above can be restructured into wide form, as shown below. 
@@ -931,12 +922,14 @@ Wide format, in contrast, represents each subject as one row and each column is 
 The shape of data has a direct implications for how analyses can be conducted and depend on the use case. Panel analyses, or analyses using data for each subject over time, require data in long form. Cross sectional analyses may require data to be in wide form. The process of converting data from one form to another is known as *reshaping*. For those who have familiarity with spreadsheet software, reshaping data essentially is the same as working with a pivot table. 
   
 \vspace{12pt} 
+
 ```{r, echo = FALSE, warning=FALSE, message=FALSE}
   crimes_long$ward <- paste("ward.", crimes_long$ward)
   knitr::kable(reshape2::dcast(crimes_long, qtr ~ ward)[1:5,1:5], booktabs = TRUE,
         caption = 'Example of wide data.', digits = 2,
         row.names = FALSE)
 ```
+
 \vspace{12pt} 
 
 To reshape data, we rely on a package called `reshape2`, which simplifies the process of reshaping into two functions: `melt` and `dcast`. The former `melt` is used to convert data into long form, whereas the latter `dcast` converts data into wide form. 
@@ -1014,6 +1007,7 @@ Variables are typically treated differently based on their quality and character
 ## If and If...Else Statement
 If statements evaluate a logical statement, then execute a script based on whether the evaluated statement is true or false. If the statement is `TRUE`, then the code block is executed.
 
+\vspace{12pt} 
 ```{r}
   budget <- 450
   if(budget > 400){
@@ -1021,10 +1015,11 @@ If statements evaluate a logical statement, then execute a script based on wheth
     print("You're over budget. Cut back.")
   }
 ```
+\vspace{12pt} 
 
 In cases where there are two or more choices, if...else statements would be appropriate. In addition to the `if()` statement, an `else` statement is included to handle cases where the logical statement is `FALSE`.
 
-
+\vspace{12pt} 
 ```{r, eval=FALSE}
   budget <- 399  
   if(budget >= 400){
@@ -1035,9 +1030,11 @@ In cases where there are two or more choices, if...else statements would be appr
     print("You're under budget, but watch it.")
   }
 ```
+\vspace{12pt} 
 
 The complexity of these statements can be as simple as `if(x > 10){ print("Hello")}` more complex trees:
 
+\vspace{12pt} 
 ```{r}
   age <- 23
     
@@ -1051,27 +1048,31 @@ The complexity of these statements can be as simple as `if(x > 10){ print("Hello
       print("senior")
     }
 ```
-
+\vspace{12pt} 
 
 ## For-loops
 Loops can be used to run the a given statement of code multiple times for a specified number of times or a list of index value. This is a functionality that is available in most programming languages, but the programming syntax will be different. Conceptually, for loops can be likened to an assembly line in a car factory. In order to build a car, a series of well-defined, well-timed processes need to coordinated in a serial fashion. To build 500 cars, the process needs to be executed 500 times. For-loops are essentially the same: Given a well-defined, self-contained process, a process can be be iterativelyapplied to address repetive tasks.
 
 Let's take the following example. The code block essentially says "print values for the range of 1 through 5", where `i` is an *index value*. When executing the statement, R will push the first value in the sequence of 1:5 into the index (in this case, it's the number 1), then the code block in between the `{}` (curly brackets) will be executed, treating `i` as if it's the number 1. Upon executing the code without error, R will advance to the next value in the sequence and repeat the process until all values in the sequence have been completed.
 
+\vspace{12pt} 
 ```{r}
   for(i in 1:5){
     print(paste0("Car #", i))
   }
 ```
+\vspace{12pt} 
 
 We can do the same for a vector or list of values. In the example below, the vector `news` contains six terms. Using a for-loop, we can print out each word in the vector. 
 
+\vspace{12pt} 
 ```{r}
   news <- c("The","Dow","Is","Up","By","400pts")
   for(i in news){
     print(i)
   }
 ```
+\vspace{12pt} 
 
 For-loops has a few qualities that users should be aware. First, what happens within the for-loop is written to the R environment as _global variables_. That means that any object (e.g. calculations, models) that is created in the loop will be accessible in the programming enviromment even after the loop ends. This may be a good or bad, depending on the use case: Good if one wants to keep copies of the intermediate results of a loop iteration, but bad if the user is not careful to take note of the potential floor of extraneous objects that may effect downstream calculations.  Second, one of the most common mistakes when using loops is failing to record the result of the loop. There are functions in R that are designed to log and package results from loops, but in plain vanilla loops, this is not the case. 
 
@@ -1085,7 +1086,7 @@ This may be applied in a broad variety of cases such as processes each data set 
 
 In the example below, we would like to calculate the minimum and maximum of each of 1000 randomly generated normal distributions with $\mu = 1000$ and $\sigma = 10$. To do this, a placeholder data frame `x` with three columns (iteration, min and max) is created with $n = 1000$ rows for each of the random distributions to be generated. Then, we use `Sys.time()` to capture when the loop starts and end -- a common practice for optimizing code. The loop is initiated for 1 to 1000 iterations to calculate the mininum and maximum. At the end of each iteration, the min and max results are overwritten to the row that corresponds to the iteration in the placeholder `x`. 
 
-
+\vspace{12pt} 
 ```{r}
 #Set placeholder data frame with n rows
   n <- 1000
@@ -1103,9 +1104,11 @@ In the example below, we would like to calculate the minimum and maximum of each
   Sys.time() - start
 
 ```
+\vspace{12pt} 
 
 The above process required roughly 0.8 seconds to process. _What happens if the placeholder length were not pre-specified?_ For the given parameters, the task normally may last between 1.2 and 1.5 seconds. This may not seem to be much time, but at scale with millions if not billions of records and iterations, the time does tend to add up.
 
+\vspace{12pt} 
 ```{r}
 #Set placeholder data frame without dimensions
   n <- 1000
@@ -1123,7 +1126,7 @@ The above process required roughly 0.8 seconds to process. _What happens if the 
   Sys.time() - start
 
 ```
-
+\vspace{12pt} 
 
 ### R-specific: `apply`
 
@@ -1131,7 +1134,7 @@ For-loops are common across all languages, but the efficiency of their implement
 
 In R, the speed of for-loops may be improved using `lapply()` under certain circumstances.  `lapply()`, or _list apply_ Whereas the intermediate objects in for-loops are global variables, `lapply()` creates temporary _local variables_. 
 
-
+\vspace{12pt} 
 ```{r}
 #Set n
   n <- 1000
@@ -1147,11 +1150,12 @@ In R, the speed of for-loops may be improved using `lapply()` under certain circ
   x <- do.call(rbind, x)
   Sys.time() - start
 ```
-
+\vspace{12pt} 
 
 ## While
 Whereas for loops require a range or list of values through which to iterate, `while()` statements keep iterating until some condition is met. The `while()` statement is formulated as follows:
 
+\vspace{12pt} 
 ```{r, eval=FALSE}
   while([condition is true]){
     
@@ -1159,9 +1163,11 @@ Whereas for loops require a range or list of values through which to iterate, `w
     
   }
 ```
+\vspace{12pt} 
 
 A simple case may involve drawing a random value $x$ from a normal distribution ($\mu = 1.0$, $\sigma = 0.5$) while $x$ is greater than 0.01. 
-1
+
+\vspace{12pt} 
 ```{r, echo = FALSE}
 set.seed(1)
 ```
@@ -1173,7 +1179,7 @@ set.seed(1)
   }
   print("done!")
 ```
-
+\vspace{12pt} 
 
 # Functions
 
@@ -1185,6 +1191,7 @@ A typical function is constructed as follows. Using `function`, a set of input p
 
 It is good form to include commentary about how to use the function. At a minimum, there should be comments containing what the function is, the arguments, and the output. In the open source tradition, you should be writing the code as if others will read and use it. 
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
 meanToo <- function(df1, var1, ...){
   #
@@ -1204,13 +1211,15 @@ meanToo <- function(df1, var1, ...){
   return(temp)
 }
 ```
+\vspace{12pt} 
 
 To execute the function, we will simply need to call the function with a data frame and a variable name. Basically any script can be genericized into a standardized function. 
 
+\vspace{12pt} 
 ```{r, eval=FALSE}
   meanToo(data, "x1")
 ```
-
+\vspace{12pt} 
 
 
 ## DIY: Tracking the supply of online content
@@ -1230,7 +1239,7 @@ To make this a seamless process, we should construct a function `bingCounts` tha
 - `RCurl` is used to make use of the Client URL package to make a request to the web for a webpage.
 - As the webpage is in HTML format, we use the `XML` package to parse the information.
 
-
+\vspace{12pt} 
 ```{r, warning = FALSE, message=FALSE}
 
 bingCounts <- function(search.term, year.filter){
@@ -1274,6 +1283,7 @@ bingCounts <- function(search.term, year.filter){
 
 }
 ```
+\vspace{12pt} 
 
 Rather than copying the above function multiple times, the resulting function can then be neatly wrapped into a loop to extract the number of search results for each year in a nine-year period between 2009 and 2017. We find the number of search results has grown 44-times over the period. Based on CDC data, the number of opioid-related deaths increased 2.4-times from approximately 20,400 to 49,000.^[https://www.drugabuse.gov/related-topics/trends-statistics/overdose-death-rates] Thus, we can see the search queries give a measure of direction of growth, but are misleading in their magnitude. 
 
@@ -1290,16 +1300,36 @@ Rather than copying the above function multiple times, the resulting function ca
   }
 ```
 
-
+\vspace{12pt} 
 ```{r, echo = FALSE, fig.cap = "Number of search result by year"}
 #Plot
   plot(results, type = "l", ylab = "Number of Search Results", xlab = "Year", col = "red")
   points(results, pch = 16, col = "red")
   
 ```
-
+\vspace{12pt} 
 
 # Best Practices
 
-## Style
-Every coder approaches coding differently. Thus, each person's code is a digital equivalent of a fingerprint and has a unique touch. This is all the more reason why a style guide for coding is useful for not only producing functional code, but readable code. 
+> __*Writing just any piece of code is easy. The challenging thing is to ensure that it works well and is repeatable.*__
+
+To be successful in the wild requires the appropriate mindset and embracing of data etiquette.  Data processing is not like a vampiric feeding frenzy of the sort that might be seen on Buffy the Vampire slayer (the TV show): one simply does not arbitrarily chomp at and slice data without any thought as to what comes next. It requires discipline and finesse to acquire a raw piece of information and extract the empirical substance. 
+
+Hypothetically, imagine that you have conducted a three-month analytics project, rushing to obtain to a result. If asked to provide backup, documentation, and a process, it may very well require an additional few months to decipher your passionate but hasty explorations. Where did this data come from? Why did I take a dot product in this equation? What happened to the raw file? Who is Bob mentioned in this email?  Ultimately, the data scientist is in control and should be empowered to conduct data processing in a structured, scientific manner. _So, what exact does that mean?_ Here are five guidelines that make for successful, scalable data science projects:
+
+- _Define a file structure and stick to it_. Create a folder for _scripts_ to store all code, another for _raw_ data, a folder for _outputs_ from data processing, and another for _documentation_. Choose any file structure, but make sure it is consistent and always followed.
+
+
+- _Think modularly_.   One of the greatest human inventions is the assembly line. Each step in the process is discrete, requiring workers to specialize in one set of well-defined tasks. As a worker becomes specialized, production speed increases as workers focus on a repetitive task as opposed to switching between tasks. Also, if any step in the process needs to be improved, revised, or replaced, all other steps in the process are not disrupted -- only one step needs to be addressed. This standardization of processes is the only way to scale.  Coding is the same.  Each group of similar tasks can be rolled up into a function that is comprised of generic actions. For example, a function could transform involve downloading a file, unzipping it, loading into memory, and extract a specific set of fields, then saving out the extracted data. 
+
+- _Adopt and stick to a coding style_. Each file, data field, and function should follow a style so that the logic is cohesive, readable and traceable. The [Google R Style Guide](https://google.github.io/styleguide/Rguide.xml), for example, sets easy to follow rules. For example, variable names should be labeled as lower case characters with  a `"."` as a separator:  `variable.name`. Functions should be named in proper case without spaces: `NewFunction` or `MyFunction`. Regardless of the style guide, file names should be meaningful and the only punctuation used should be `"_"` for spaces and `"."` to accompany the file type: `gdp_2014_10_02.json`. Be vigilent with your code style as it may be the difference between a successful and a failed project.
+
+
+- _Work forward, not in circles_. Raw meats should never be placed with cooked meats. It's a one way street to keep things clean and sanitary. Data is also a one way street  Start from the raw data, make a copy when working with the raw, do thy bidding on the data, then output results or processed data as a new file. Never overwrite the raw file as this is the equivalent to repeatedly refridgerating and re-cooking already cooked meat -- the result may be less than desirable in the future. 
+
+
+- _Version up_. Each time code is written, modified, amended, or updated, a new version should be saved. Saving can be done in one many ways. If on a local computer, simply adding a version number to the code file name would suffice with an entry to a log file. The log file can be as simple as a text file with time stamps indicating the date fo the edit, the file name and the nature of the edit. Services such as [Github](https://github.com/) are particularly useful for version control and working on code in groups. 
+
+Following these basic guidelines is the difference between successful, scalable projects and ones that get stuck in the mud. 
+
+# Chapter References
