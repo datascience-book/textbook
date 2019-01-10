@@ -405,7 +405,7 @@ Now that we've laid out our expanded framework for multiple linear regression, l
 
 $$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Age} + \beta_3 \text{Year} + \varepsilon $$
 
-which says that the sale price depends upon an intercept $\beta_0$, 
+which says that the sale price depends upon an intercept $\beta_0$,
 
 ```{R, }
   lm(
