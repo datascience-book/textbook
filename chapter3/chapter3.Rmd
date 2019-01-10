@@ -11,9 +11,9 @@ header-includes:
 link-citations: yes
 ---
 
-# Data are everywhere—and they come in all types.
+# Data are everywhere — and they come in all types.
 
-We encounter data everywhere we look, including news reports: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37...".
+Data are everywhere we look. They are not necessarily values in a spreadsheet that lack context, but embedded in our everyday discussions and communication. How the stock market is doing is rarely communicated to the public in the form of a spreadsheet (perhaps to investors). Rather it is communicated in the form of concise statements. Let's take the example for a [CNBC online article](https://www.cnbc.com/2017/08/29/us-stocks-north-korea-missile.html) about stock market performance: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37...".
 
 - Each piece of information corresponds to a different data type (e.g., numeric, string, factors, Boolean, dates).
 - "Dow Jones industrial average" references the name of a specific stock-market index.
@@ -21,146 +21,170 @@ We encounter data everywhere we look, including news reports: "The Dow Jones ind
 - "56.97" and "21,865.37" are numbers (with units)
 - There are also data embedded in the phrases "erased", "earlier losses" and "higher".
 
-To make sense of all the data, we need to map each piece of information to a data type and structure. 
+An investor or an economist can take an isolated statement and draw upon all past information in their memory to make sense of it. Computers, on the other hand, need a little help. They need people to structure data and set guidelines for them to follow. For one thing, each piece of information needs to be associated with a *data type* such as numeric and character. This dictates how each value can be treated. Each morsel of data can be stored as an object. Similar objects can be organized together into data structures that can be more easily analyzed. 
+
+Once information is structured and code is written, computers are capable of incredible feats from examining satellite imagery to making sense of text. This chapter focuses on the fundamentals of statistical programming. We cover the basics of how data are stored, what can be done to each type of information, loading and executing code among others. These basic concepts are everything on which data science relies.
+
+
 
 # Data types
 
-In R, you encode (often implicitly) your variables/data as having one of several types of data, e.g., `numeric`, `logical`, `character`, `factor`, or `date`.
+In R, data are encoded (often implicitly) as one of several types of data e.g., `numeric`, `logical`, `character`, `factor`, or `date`. In this section, we describe the properties of each.
 
-## `numeric`
+#`numeric` 
 
-As you might guess, ‘numeric' data are numbers. The numeric type is R's catch-all for all numbers, encompassing both integer and continuous numbers.
+As you may have guessed, *numeric* data are numbers. The numeric type is R's catch-all for all numbers, encompassing both integer and continuous numbers. 
 
-Examples of numeric data in R:
-```{R, ch3 numeric}
+```{R, ch3 numeric, eval = FALSE}
 4
-4.4
+56.4
 4/9
 pi
 ```
 
 ## `character`
 
-You will most often encounter `character` data (also strings as _strings_) in datasets of linguistic text—e.g., court transcripts, novels, text messages, or government audit reports. You tell R that text is `character`-type data by wrapping the text in quotation marks, e.g., `"Text"`. Both single quotes (`'`) and double quotes (`"`) work, you just. For example: 
+Words, sentences, letters, among other sequence of letters and numbers are often encoded as `character` data (also strings as *strings*) in datasets of linguistic text (e.g., court transcripts, novels, text messages, or government audit reports). When a value is wrapped in quotation marks, (e.g., `"Text"`), we are indicating to R that the value is a character. Both single quotes (`'`) and double quotes (`"`) work, you just. For example: 
 
-```{R, ch3 chacter}
+```{R, ch3 chacter, eval = FALSE}
 "text"
 "Text is fun!"
 "Let's have an example with an interior quotation mark."
 ```
 
-## `logical`
+__`logical`__.  If we want to test whether something is *true* or *false*, then we have stumbled into the world of logic. Because programming and data science use logical data so frequently, they get their own data type. In R, logical data are `TRUE` or `FALSE`, which can be abbreviated as `T` or `F`. As is always the case in R: *the letters' cases matter*, meaning you must use `TRUE` and cannot use `true`. Below are the only four values that logical values can assume: 
 
-If you want to test whether something is true or false, then you've found yourself in the world of logic. Because programming and data science use logical data so frequently, they get their own data type. In R, logical data are `TRUE` or `FALSE`, which you can abbreviate as `T` or `F`. As is always the case in R: the letters' cases matter (meaning you must use `TRUE` and cannot use `true`). 
-
-Basic examples of logical data in R:
-```{R, ch3 logical}
+```{R, ch3 logical, eval = FALSE}
 TRUE
 T
 FALSE
 F
 ```
 
-In addition to defining something as `TRUE` or `FALSE`, you can also use logical operators that test whether a statement is `TRUE` or `FALSE`. For instance,
+But how do we produce logical values? Often times, a relational operator is used to test whether a statement is `TRUE` or `FALSE`. For instance:
 
-```{R, ch3 logical operators}
+\vspace{12pt} 
+```{R, ch3 logical operators, eval = FALSE}
 # Is 3 less than 4?
 3 < 4
+
 # Is 3 greater than 4?
 3 > 4
+
 # Is 3 equal to 4?
 3 == 4
 ```
+\vspace{12pt} 
 
-<!-- TODO: Can we link to tables' numbers -->
-The table below describe some of R's most common logical operators.
+In combination with a logical operator, we can evaluate two or more relational statements.
 
- \vspace{12pt} 
+\vspace{12pt} 
+```{R, ch3 logical operators, eval = FALSE}
+# is 3 less than 4 AND greater than 1?
+(3 < 4) & (3 > 1)
+
+# is 3 less than 4 OR greater than 1?
+(3 < 4) | (3 > 1)
+```
+\vspace{12pt} 
+
+There are a variety of relational operators like the ones above and logical operators that will come in handy for filtering and subsetting data in later chapters. The table below presents some of R's most common logical operators.
+
+\vspace{12pt} 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
 temp.table <- read.csv("data/logical_operators.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
-               caption = "Common logical operators.")
+               caption = "Common relational and logical operators.")
 ```
  \vspace{12pt} 
  
- 
+These logical operators are particularly common for `numeric` data, but they be used them for any type of data. For instance, if we were to execute each of these statements, we will notice that R is indeed case sensitive: `"a"` is not the same as `"A"`, and, in fact, `"a"` precedes `"A"` in R's ordering of letters. Numbers precede letters.
 
-These logical operators are particularly common for `numeric` data, but you can actually use them for any type of data. For instance,
-
-```{R, logical operator example}
+\vspace{12pt} 
+```{R, logical operator example, eval = FALSE}
 # Is "A" equal to "a"? (Is R case sensitive?)
 "A" == "a"
+
 # Is "a" less than "A"?
 "a" < "A"
+
 # Is 3 less than "a"?
 3 < "a"
+
 # Is numeric 3 equal to character 3?
 3 == "3"
 ```
+\vspace{12pt} 
 
-Notice that R is indeed case sensitive: `"a"` is not the same as `"A"`, and, in fact, `"a"` precedes `"A"` in R's ordering of letters. Numbers precede letters.
+Finally, it is worth noting that you can transform `TRUE` and `FALSE` to binary numeric (`1` and `0`) by multiplying them by the number `1`.  This is particularly useful for creating *dummy variables* quickly.
 
-Finally, it is worth noting that you can transform `TRUE` and `FALSE` to binary numeric (`1` and `0`) by multiplying them by the number `1`:
-```{R, ch3 binary logical}
+\vspace{12pt} 
+```{R, ch3 binary logical, eval = FALSE}
 TRUE * 1
 1 * FALSE
 ```
+\vspace{12pt} 
 
 ## `factor`
 
-Factors are a bit of special data type in R, because they allow you to take one type of variable (e.g., `numeric` or `character`) and add a few more layers of information. For instance, you can add labels to your data (so that the values "Sun" and "Mon" are labeled "Sunday" and "Monday") and you also have the option to indicate that the data are order (meaning Sunday precedes Monday). You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`. We will more fully explore `factor` data in the graphing section.
-
-<!-- TODO: More on factor data in another section. Link? -->
+Factors are a special data type in R, because they allow you to take one type of variable (e.g., `numeric` or `character`) and add a few more layers of information. We can add labels to the data so that values "Sun" and "Mon" are labeled "Sunday" and "Monday". Also, we have the option to indicate the order of that data, meaning Sunday precedes Monday, etc. You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`. We will more fully explore `factor` data in the graphing section.
 
 ## `date`
 
-While there are many ways to think about dates—`character` data like "January" or `numeric` data like `1`—dates are so common (and so strange to work with) that they get their own type of data, namely, the `date` type. We will dive more into working with dates in the next chapter.
+While there are many ways to think about dates -- `character` data like "January" or `numeric` data like `1` -- dates are so common (and oddly challenging to work with) that they get their own type of data, namely, the `date` type. We will dive more into working with dates in the next chapter.
 
-## The `class` function.
+## The `class` function
 
-Just looking at a dataset does not always tell you the type of data. The question of type is particularly important when you read data into R from another source—you will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function helps you here.
+Inferring the type of data by simplying looking at the data can be misleading.  The question of type is particularly important when you read data into R from another source -- we will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function works wonders.
 
-_A Quick aside on functions:_ This is the first time in this book that we officially use function. We will cover functions in much greater depth throughout the book, but let's cover a few of the basics now. Functions take __arguments__ (the data that you _feed_ the function) and produce __output__. For example, the class function takes one argument like the number `56.97` and will output a character that describes the class of whatever argument we inputted into the function—`"numeric"` in our case. Functions help us complete tasks/analyses that may be too difficult or time-consuming to code by ourselves. Functions also excel at repetitive tasks—you can easily tell R to do something a million times so you don't have to copy and paste a million times. You can also write your own functions in R—but that will come later.
+*A Quick aside on functions*: This is the first time in this book that we officially use function. We will cover functions in much greater depth throughout the book, but let's cover a few of the basics now. Functions take __arguments__ (the data that you *feed* the function) and produce __output__. For example, the class function takes one argument like the number `56.97` and outputs a character that describes the class of whatever argument we inputted into the function -- `"numeric"` in our case. Functions help us complete tasks/analyses that may be too difficult or time-consuming to code by ourselves. Functions also excel at repetitive tasks -- you can easily tell R to do something a million times so you don't have to copy and paste a million times. You can also write your own functions in R—but that will come later.
 
 Aside complete. Let's see this `class` function in action.
 
-```{R, ch3 class type examples}
+\vspace{12pt} 
+```{R, ch3 class type examples, eval = FALSE, eval = FALSE}
 # numeric
 class(56.97)
 class(57)
 class(57L)
 class(1/3)
+
 # character
 class("Dow Jones")
+
 # logical
 class(TRUE)
 class(F)
 class(3 > 2)
 class(1 * TRUE)
+
 # factor
 class(factor(3))
+
 # date
 Sys.Date()
 class(Sys.Date())
 as.Date("2015-12-31")
 class(as.Date("2015-12-31"))
+
 # Fun
 class(class)
-# <Mind blows>
 ```
+\vspace{12pt} 
 
 One more note on functions: Many functions in R take many arguments, and sometimes arguments are optional. To keep track of which values you are assigning to which arguments, it is often best to use the argument's name. In the `class` examples that we just covered, we implicitly assigned the various values that we fed to `class` to its sole argument `x`. We could have also used the argument's name.
 
-
-```{R, ch3 class argument naming}
+\vspace{12pt} 
+```{R, ch3 class argument naming, eval = FALSE}
 # Without the argument's name
 class(TRUE)
+
 # With the argument's name
 class(x = TRUE)
 ```
+\vspace{12pt} 
 
-
-Both options produce the same output, but the second example—in which we explicitly use the argument's name—makes it a bit clearer what we are doing. We admit it doesn't really matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
+Both options produce the same output, but the second example -- in which we explicitly use the argument's name -- makes it a bit clearer what we are doing. We admit it does not really matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
 
 # Objects in R
 
@@ -168,27 +192,33 @@ Simply entering data into R's console is not going to be enough. We need a way t
 
 R's assignment operator `<-` exists solely for the task of assigning a value (on the right-hand side) to the name (on the left-hand side). If you are reading code out load,^[Yes, it does happen.] `object <- value` is typically read "object gets value."
 
-__Examples__
+\vspace{12pt} 
+```{r, eval = FALSE}
+a <- 3
+string_ex <- "Some funny/clever words."
+some.logic <- TRUE
+```
+\vspace{12pt} 
 
-- `a <- 3`
-- `string_ex <- "Some funny/clever words."`
-- `some_logic <- TRUE`
+As you can see, we have a fair amount of free freedom in the names that can be used for the objects. However, to avoid any heartache of troubleshooting code, the variable names should avoid using (1) a number as the first character in the name (e.g. `"1variable"`), (2) any spaces in the name (e.g. `"variable 1"`), (3) a name of an existing function. 
 
-As you can see, you get a lot of freedom in the names that you use for the objects.
+Once we assign a value to an object, we can access that object's value -- and perform operations on that value. For instance, we can assign a value of three to object `a`, as above, and then we can (1) check the value held in `a` by executing `a` in the console, (2) check the class of `a`, and (3) multiply `a` by 3:
 
-Once we assign a value to an object, we can access that object's value—and perform operations on that value. For instance, we can assign a value of three to object `a`, as above, and then we can (1) check the value held in `a` by executing `a` in the console, (2) check the class of `a`, and (3) multiply `a` by 3:
-
-
-```{R, ch3 assigning values}
+\vspace{12pt} 
+```{R, ch3 assigning values, eval = FALSE}
 # Assign value 3 to object named 'a'
 a <- 3
+
 # (1) Check a's value
 a
+
 # (2) Check a's class
 class(a)
+
 # (3) Multiply a by 3
 a * 3
 ```
+\vspace{12pt} 
 
 Looks great!
 
