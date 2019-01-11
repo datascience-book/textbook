@@ -31,7 +31,7 @@ Once information is structured and code is written, computers are capable of inc
 
 In R, data are encoded (often implicitly) as one of several types of data e.g., `numeric`, `logical`, `character`, `factor`, or `date`. In this section, we describe the properties of each.
 
-#`numeric` 
+## `numeric` 
 
 As you may have guessed, *numeric* data are numbers. The numeric type is R's catch-all for all numbers, encompassing both integer and continuous numbers. 
 
@@ -64,7 +64,7 @@ F
 But how do we produce logical values? Often times, a relational operator is used to test whether a statement is `TRUE` or `FALSE`. For instance:
 
 \vspace{12pt} 
-```{R, ch3 logical operators, eval = FALSE}
+```{r, ch3 logical operators, eval = FALSE}
 # Is 3 less than 4?
 3 < 4
 
@@ -79,7 +79,7 @@ But how do we produce logical values? Often times, a relational operator is used
 In combination with a logical operator, we can evaluate two or more relational statements.
 
 \vspace{12pt} 
-```{R, ch3 logical operators, eval = FALSE}
+```{R, ch3 logical operators continued, eval = FALSE}
 # is 3 less than 4 AND greater than 1?
 (3 < 4) & (3 > 1)
 
@@ -184,13 +184,13 @@ class(x = TRUE)
 ```
 \vspace{12pt} 
 
-Both options produce the same output, but the second example -- in which we explicitly use the argument's name -- makes it a bit clearer what we are doing. We admit it does not really matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
+Both options produce the same output, but the second example -- in which we explicitly use the argument's name -- makes it a bit clearer what we are doing. We admit it does not truly matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
 
 # Objects in R
 
-Simply entering data into R's console is not going to be enough. We need a way to store the data in our computer's memory. To be able to access the data that we store, we need to give the data a name. In R parlance, we need a way to assign the values (the data) to objects stored in memory (the names).
+Simply entering data into R's console is not enough. We need a way to store data in our computer's memory. To be able to access and re-access the data that we store, we give each piece of data a name. In R parlance, we *assign* the values (the data) to objects stored in memory (the names).
 
-R's assignment operator `<-` exists solely for the task of assigning a value (on the right-hand side) to the name (on the left-hand side). If you are reading code out load,^[Yes, it does happen.] `object <- value` is typically read "object gets value."
+R's assignment operator `<-` exists solely for the task: assigning a value (on the right-hand side) to the name (on the left-hand side). If you are reading code out load,^[Yes, it does happen.] `object <- value` is typically read "*object* gets *value.*""
 
 \vspace{12pt} 
 ```{r, eval = FALSE}
@@ -200,7 +200,7 @@ some.logic <- TRUE
 ```
 \vspace{12pt} 
 
-As you can see, we have a fair amount of free freedom in the names that can be used for the objects. However, to avoid any heartache of troubleshooting code, the variable names should avoid using (1) a number as the first character in the name (e.g. `"1variable"`), (2) any spaces in the name (e.g. `"variable 1"`), (3) a name of an existing function. 
+As you can see, we have a freedom in the names that can be used for the objects. However, we can mitigate the heartache of troubleshooting erroneous code by using common variable name conventions. Variable names should avoid (1) a number as the first character in the name (e.g. `"1variable"` is not a good idea) as this will not register as an object, (2) any spaces in the name (e.g. `"variable 1"`), (3) a name of an existing function. 
 
 Once we assign a value to an object, we can access that object's value -- and perform operations on that value. For instance, we can assign a value of three to object `a`, as above, and then we can (1) check the value held in `a` by executing `a` in the console, (2) check the class of `a`, and (3) multiply `a` by 3:
 
@@ -224,7 +224,7 @@ Looks great!
 
 # R's object classes
 
-Just as data in R come in different _types_, objects in R come in different _classes_, e.g., a `vector`, a `matrix`, a `data.frame`, or a `list`. Each of the object classes presents a slightly different structure, making it better for some uses and worse for others. We'll review four of the most common data structures now and then will discuss others as they arise throughout the book.
+Just as data in R come in different _types_, objects in R come in different _classes_, e.g., a `vector`, a `matrix`, a `data.frame`, or a `list`. Each of the object classes presents data in a slightly different structure, making it better for some uses and worse for others. We'll review four of the most common data structures now and then will discuss others as they arise throughout the book.
 
 ## `vector`
 
@@ -232,24 +232,27 @@ Just as data in R come in different _types_, objects in R come in different _cla
 
 The simplest way to create a vector is with the concatenate function: `c`. To create a `vector` of values, you feed the `c` function your values, each separated by a comma (`,`). For instance, to make a vector out of the numbers 1, 2, and 3, we write `c(1, 2, 3)`. And to create a vector of the characters `"apple"` and `"banana"`, we write `c("apple", "banana")`.
 
-In action:
 
-```{R, ch3 basic vector}
+\vspace{12pt} 
+```{R, ch3 basic vector, eval = FALSE}
 # Vector of numbers
 c(1, 2, 3)
+
 # Vector of characters
 c("apple", "banana")
 ```
+\vspace{12pt} 
 
 So what happens when we create a vector of a number and a character?
 
-```{R, ch3 vector mix}
+\vspace{12pt} 
+```{R, ch3 vector mix, eval = FALSE}
 # Mixed vector
 c(1, "banana")
 ```
-R coerces everything to character.
+\vspace{12pt} 
 
-This result may not be what you expected—you may have expected R to allow a vector to contain objects of different types.^[Wait a few sections for R's `list`.] At some point, the folks who developed R made this decision—and millions of other little decisions—that led to the current implementation of R. As you get deeper into R, you will find that there is a logic to these decisions (e.g., why R tells you it is `TRUE` that `"apple pie" < "banana cream pie"`), but R will still occasionally surprise you. And that is part of learning to program in R. So don't be afraid to dive into the rabbit holes that surprise you. You may lose a few hours in the short run, but in the long run you'll become an excellent data scientist.^[And R Wizard.]
+*R coerces everything to character.* This result may not be what you expected—you may have expected R to allow a vector to contain objects of different types.^[Wait a few sections for R's `list`.] At some point, the folks who developed R made this decision—and millions of other little decisions—that led to the current implementation of R. As you get deeper into R, you will find that there is a logic to these decisions (e.g., why R tells you it is `TRUE` that `"apple pie" < "banana cream pie"`), but R will still occasionally surprise you. And that is part of learning to program in R. So don't be afraid to dive into the rabbit holes that surprise you. You may lose a few hours in the short run, but in the long run you'll become an excellent data scientist.^[And R Wizard.]
 
 ## `matrix`
 
@@ -263,45 +266,65 @@ You generally will need to feed two arguments to R's `matrix` function:
 For example, let's imagine we want a matrix with 2 rows and 3 columns that contains the integers one through six. Then we need to feed `matrix` a (1) a vector containing the integers one through six, and (2) `nrow = 2`, telling R we want two rows.
 
 _Aside on creating numeric sequences:_ As we covered before, you can easily create short numeric vectors using the `c` function, e.g., `c(1, 2, 3)`. But this construction quickly gets tedious for longer vectors—even creating a vector of the integers between 1 and 100 would be a nightmare with only the `c` function. Lucky for us, R's makers included a quick and easy fix: `a:b` generates a numeric vector containing the integers from `a` to `b` (inclusive of `a` and `b`). E.g., `1:100` will create a vector with the integers 1 to 100.^[For more complicated tasks, there's also the sequence function `seq`, which takes the starting value for the sequence (`from`), the stopping value for the sequence (`to`), and the _distance_ between each of the items in the sequence (`by`).]
-```{R, ch3 sequence example}
+
+
+\vspace{12pt} 
+```{R, ch3 sequence example, eval = FALSE}
 # Old school
 c(1, 2, 3, 4, 5, 6)
+
 # New school
 1:6
 ```
+\vspace{12pt} 
 
 Using our new sequence knowledge, we can create our $2 \times 3$ matrix^[Two rows and three columns] with the integers one through six.
 
-```{R, ch3 matrix example}
+\vspace{12pt} 
+```{R, ch3 matrix example, eval = FALSE}
 matrix(data = 1:6, nrow = 2)
 ```
+\vspace{12pt} 
 
 And there we have it. Notice that because the `matrix` function takes two arguments, we explicitly named the arguments^[Not necessary but highly helpful.] and we separated the two arguments' assignments with a comma. Also notice that by default, R filled the matrix _by its columns_ (top to bottom and then left to right). If you would rather fill your matrix _by its rows_, you can add the optional argument `byrow = TRUE` to the `matrix` function:
 
-```{R, ch3 matrix ex by row}
+
+\vspace{12pt} 
+```{R, ch3 matrix ex by row, eval = FALSE}
 matrix(data = 1:6, nrow = 2, byrow = TRUE)
 ```
+\vspace{12pt} 
 
 As we mentioned earlier: you can create matrices filled with essentially any type of data.
 
-```{R, ch3 matrix ex types}
+
+\vspace{12pt} 
+```{R, ch3 matrix ex types, eval = FALSE}
 # Character
 matrix(data = c("Six", "words", "can", "be", "a", "lot."), ncol = 3, byrow = T)
 
 # Logical
 matrix(data = c(T, T, F, F, F, T), ncol = 3)
 ```
+\vspace{12pt} 
 
 Finally, notice that you can force R to fill in a `matrix` by specifying both the number of rows (`nrow`) __and__ the number of columns (`ncol`) for a `matrix`.
-```{R, ch3 matrix ex fill}
+
+
+\vspace{12pt} 
+```{R, ch3 matrix ex fill, eval = FALSE}
 matrix(data = 1, nrow = 3, ncol = 2)
 ```
+\vspace{12pt} 
 
 ## `data.frame`
 
 As a budding data scientist, one day you will wake up and find yourself surrounded by `data.frame`s. The `data.frame` is the basic object for data entry and analysis in R—much like a table of data or a spreadsheet (but better). Just like a `matrix`, a `data.frame` has rows and columns. Unlike a `matrix`, a `data.frame` can have different types of data in each of its columns. In addition, you will name each of the columns in your `data.frame`.
 
 In general, you define a `data.frame` using the following conventions:
+
+
+\vspace{12pt} 
 ```{R, data frame conventions, eval = F}
 data.frame(
   column1 = values...,
@@ -310,15 +333,19 @@ data.frame(
   columnN = values
 )
 ```
+\vspace{12pt} 
 
 More concretely, let's create a two-column `data.frame`. The first column will be called `some_letters` and will contain... some letters. The second column with be called `some_numbers`...
 
-```{R, ch3 data frame example}
+
+\vspace{12pt} 
+```{R, ch3 data frame example, eval = FALSE}
 data.frame(
   some_letters = c("a", "A", "b", "B"),
   some_numbers = 1:4
 )
 ```
+\vspace{12pt} 
 
 One of the main requirements for a `data.frame` is that R needs to be able to fill each of the `data.frame`'s columns. In practice this requirement means one of two things:
 
@@ -327,22 +354,29 @@ One of the main requirements for a `data.frame` is that R needs to be able to fi
 
 For an example of the second option:
 
-```{R, ch3 data frame ex multiples}
+
+\vspace{12pt} 
+```{R, ch3 data frame ex multiples, eval = FALSE}
 data.frame(
   some_letters = c("a", "A", "b", "B"),
   some_numbers = 1:2
 )
 ```
+\vspace{12pt} 
 
 R repeats the shorter vector (the second column in this example) until the two columns are the same length.
 
 If the numbers of elements are not multiples (e.g., 4 and 3), R will refuse to construct the `data.frame`, and you will get an error. E.g.,
+
+
+\vspace{12pt} 
 ```{R, ch3 data frame ex error, error = T}
 data.frame(
   some_letters = c("a", "A", "b", "B"),
   some_numbers = 1:3
 )
 ```
+\vspace{12pt} 
 
 Notice that R's error message gives us a hint to what the problem is: `arguments imply differing number of rows: 4, 3`. Generally, error messages in R will contain a hint of the problem, but you have not know a bit about R to understand the hints (e.g., here we need to know the rules about column lengths in a `data.frame`). As a result, error messages can seem a bit cryptic while you are in the early stages of learning R.
 
@@ -354,7 +388,10 @@ _Aside:_ In the `data.frame` examples above, we wrote `data.frame(` and then wen
 R's `list` class of objects is exactly what its name implies—it lists things. Similar to the `vector`, a `list` has only one dimension—its length. Unlike the `vector`, a `list` can contain objects of many different types. The crazy part of `list` its elements can be _anything_. You are not stuck with simple objects like `1` or `T` or `"Some text"`. A single `list` can have `vector`s, `data.frame`s, and even other `list`s as its elements.
 
 The conventions for creating a `list` mirror what we've discussed so far—especially with the `vector`-creating `c` function: You simply pass the objects you want in the `list` as the arguments to the `list` function:
-```{R, ch3 list example}
+
+
+\vspace{12pt} 
+```{R, ch3 list example, eval = FALSE}
 list(
   "apples",
   c(T, F, T),
@@ -362,6 +399,8 @@ list(
   data.frame(var1 = 9:10, var2 = 11:12)
 )
 ```
+\vspace{12pt} 
+
 Here we have a (very mixed) four-element `list`, whose individual elements are
 
 1. a one-element `character` vector,
@@ -370,7 +409,10 @@ Here we have a (very mixed) four-element `list`, whose individual elements are
 4. a two-variable `data.frame`
 
 As with most objects in R—and just as we did with the columns of the `data.frame`—you can name the individual elements of the `list` when you create the `list`. Let's re-create the `list`, naming its elements with super-creative names.
-```{R, ch3 list ex naming}
+
+
+\vspace{12pt} 
+```{R, ch3 list ex naming, eval = FALSE}
 list(
   el_1 = "apples",
   el_2 = c(T, F, T),
@@ -378,21 +420,32 @@ list(
   el_4 = data.frame(var1 = 9:10, var2 = 11:12)
 )
 ```
+\vspace{12pt} 
+
 Our knowledge and creativity are impressive, right?
 
 ## The `class` function, v2
 
 Previously we used the `class` function to learn the data types of various objects (e.g., `class(3.1415)`). You can also use `class` to learn about an object's class. For example,
+
+
+\vspace{12pt} 
 ```{R, ch3 object classes}
 # Check the class of a matrix
 class(matrix(data = 1:4, nrow = 2))
+
 # Check the class of a data.frame
 class(data.frame(a = 1:3, b = 1:6))
+
 # Check the class of a list
 class(list(a = 1:3, b = 1:6))
 ```
+\vspace{12pt} 
 
 However, if you check the class of a `vector`, R will not tell you `"vector"`. Rather, R will tell you what type of vector you have—`numeric`, `logical`, `character`, etc.
+
+
+\vspace{12pt} 
 ```{R, ch3 vector types}
 # Numeric vector class
 class(c(1, 2, 3))
@@ -406,6 +459,8 @@ class(c(T, F, T))
 # Coercion to character
 class(c(T, 3, "Hi"))
 ```
+\vspace{12pt} 
+
 The takeaway? R 'thinks' about different types of vectors as different classes of objects.
 
 In addition, each object class also has its own function to check whether an object belongs to the class. For instance, you can use the `is.matrix` to check whether an object is a `matrix`. Type `is.` into the RStudio console and then hit your tab key—you will get a glimpse of all of these `is.*` class functions.
@@ -431,9 +486,11 @@ A large community of R users and developers contribute and maintain a (vast arch
 
 To install `readxl`, you can install the `readxl` package by executing the following line in the R console. To break it down, `install.packages` requires the name of a known package on CRAN in the form of a string value.
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
   install.packages("readxl")
 ```
+\vspace{12pt} 
 
 For some packages, R will also install package dependencies -- other packages on which the request package relies. This is one of the beautiful things about R: it is an extensible language that builds on existing functionality. Entire families of packages are dependent on common functions, ensuring that a common logic is employed in making the magic happen with data.
 
@@ -445,16 +502,20 @@ Like installing a new air conditioning unit, the unit is only useful when it is 
 
 To load a package, you use the `library` function in combination with the package's name. Note that whereas `install.packages` expects the package name in string format, the `library` function can accommodate both strings (e.g. "readxl") or the package as a name  (e.g. readxl) as it is now an installed resource.
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
   library(readxl)
 ```
+\vspace{12pt} 
 
 The `library` function will only load one package at a time, meaning that every package will need to be called individually. If we needed to load two installed packages -- `readxl` and a package for text manipulation known as `tidytext` --  we would need to do the following:
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
   library(readxl)
   library(tidytext)
 ```
+\vspace{12pt} 
 
 For highly complex projects requiring many packages, this will be cumbersome. We will have a fix for this shortcoming later on.
 
@@ -464,12 +525,14 @@ When a package is loaded, it is only temporarily help in the computer's memory. 
 
 While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes). What if we needed to load these three packages? The manual option requires one to embrace the tedium:
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
   library(readxl)
   library(tidytext)
   library(ggplot2)
   ...
 ```
+\vspace{12pt} 
 
 And the tedium does not end on your computer. When the code is shared with a collaborator, they may not have all of the packages installed, meaning the script will *crash*, requiring them to backtrack through the error log and install all of the missing packages. This scenario happens all too often, but it need not be the case.
 
@@ -477,10 +540,12 @@ Meet: `pacman`.
 
 Upon installing `pacman`, the mental overhead of keeping track of all packages is quickly minimized:
 
+\vspace{12pt} 
 ```{r, eval = T}
   library(pacman)
   p_load(readxl, tidytext, ggplot2)
 ```
+\vspace{12pt} 
 
 The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync.
 
@@ -495,7 +560,7 @@ temp.table <- read.csv("data/preferred_packages.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
                caption = "Recommended packages.")
 ```
- \vspace{12pt} 
+\vspace{12pt} 
  
 
 Write a command to import these core R packages.
@@ -511,7 +576,7 @@ Suppose you need to analyze an Excel file of stock market data. In order to load
 - how to load the file (*function*), and 
 - the name of file (*file*).
 
-## Directories {-}
+## Directories 
 
 R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`.
 
@@ -538,6 +603,7 @@ For example,
 
 Best practice: Define your directories to objects at the start of your script.
 
+\vspace{12pt} 
 ```{r, eval = FALSE}
 #Set directory path
   setwd(main_dir)
@@ -548,8 +614,9 @@ Best practice: Define your directories to objects at the start of your script.
 #Get list of files in current directory
   dir()
 ```
+\vspace{12pt} 
 
-## Load Functions {-}
+## Load Functions
 
 There are a multitude of data storage formats in use such as extensible markup language (XML), comma separated values (CSV), Excel files among others. Each has its quirks. Some require special software to load while others simply need time and patience to crack the code. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
 
@@ -586,30 +653,30 @@ temp.table <- read.csv("data/gas_target.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
                caption = "Target format")
 ```
- \vspace{12pt} 
+\vspace{12pt} 
  
 
 __Loading CSVs__. Before reading in a file, it is generally a good idea to open the file in a code editor to take a peek at the structure, but "blind loading" the file can also give clues as well. Let's start with the CSV `doe_usgulf.csv` using the `read_csv` function from the `readr` package, assign the data to the object `gulf`, then inspect the first few rows using `head`.
 
- \vspace{12pt} 
+\vspace{12pt} 
 ```{r, warning = FALSE, message = FALSE}
 pacman::p_load(readr)
 gulf <- read_csv("data/doe_usgulf.csv")
 head(gulf, 3)
 ```
- \vspace{12pt} 
+\vspace{12pt} 
  
 It appears that the data was successfully loaded. The data is read in as a *tibble*, which is a variant of a data frame designed for more efficient data manipulation. The headers require cosmetic changes. Generally, it is good practice to keep column names as the same case (lower case) and avoid the use of spaces and punctuation with the exception of periods. We can edit the column headers, which can be called as a vector using `colnames(gulf)`, by assigning a new string vector that turns all letters into lower case (`tolower`) and replaces substrings (`gsub`) that are eiher spaces or punctuation (`[[:space:][:punct:]]`) with periods. These string manipulation commands will be covered in more detail later in this chapter.
  
- \vspace{12pt} 
+\vspace{12pt} 
 ```{r, eval = FALSE}
 colnames(gulf) <- tolower(gsub("[[:space:][:punct:]]", ".", colnames(gulf)))
 ```
- \vspace{12pt} 
+\vspace{12pt} 
  
 However, as these column names are quite long, we can opt to overwrite them with something more concise. Notice that we did not need to open the CSV and manually edit the column names.
  
- \vspace{12pt} 
+\vspace{12pt} 
 ```{r}
 colnames(gulf) <- c("date", "gulf.price")
 ```
@@ -692,19 +759,24 @@ It quickly becomes apparent that [Stack Overflow](https://stackoverflow.com/) is
 
 As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
 
+\vspace{12pt} 
 ```{r, ch3 comment self, eval = F}
   # Make sure the packages are installed and loaded.
   p_load(readxl, dplyr)
+
   # Navigate to the data directory to load the data.
   setwd("/Users/Someone/OnlyData")
+  
   # Load the xlsx file (named 'fake_data.xlsx')
   fake_df <- read_xlsx("fake_data.xlsx")
 ```
+\vspace{12pt} 
 
 In the example above, each comment line briefly describes what we will do in the next line and why we want to do it. Often the _why_ is the most important part: with some experience, you will be able to figure out what each line of an R script does, but it is much more difficult to figure out _why_ the author wrote the 641 lines of code in the middle of a 1200-line R script.
 
 Another popular use of comments in R—and in many other languages—is to flag questions, issues, or unfinished items. The idea here is to start the comment with a quick flag, for instance `# TODO`. This flag helps you find the unfinished parts of your document—or the parts that you want your collaborators to finish for you. For instance, we might start a document
 
+\vspace{12pt} 
 ```{R, ch3 flag ex, eval = F}
   # Make sure the packages are installed and loaded
   # FIXME: There are better packages for large datasets.
@@ -718,15 +790,18 @@ Another popular use of comments in R—and in many other languages—is to flag 
   
   # TODO: Clean the dataset. Check out `stringr` and `data.table`
 ```
+\vspace{12pt} 
 
 You can also use commenting (`#`) to tell R to ignore lines of code. This usage of the hash is called _commenting out_ your code, as it allows you to turn off a line of code, e.g.,
 
+\vspace{12pt} 
 ```{R, ch3 comment out, eval = F}
 # Standard line of code
 two_plus_two <- 2 + 2
 # Commented out line of code
 # two_times_two <- 2 * 2
 ```
+\vspace{12pt} 
 
 In general, commenting lines of code out is most helpful for temporary changes and/or testing code. If you really do not need a code, just delete it.
 
@@ -742,13 +817,16 @@ The test bed also generates an extraordinary amount of data that help engineers 
 
 Suppose we wanted to know how much energy the solar arrays are exposed to in an average hour and how variable that exposure is. With only a few lines of code, we can import and summarize the information.  To start, we load the `pacman` package and use `p_load` to load the `readr` package.
 
+\vspace{12pt} 
 ```{r}
 #Load libraries
   pacman::p_load(readr)
 ```
+\vspace{12pt} 
 
 With the basic functions loaded, `read_csv` is used to import a comma separated values (CSV) file stored at the given `url`, which is then loaded into memory as a data frame labeled `solar`. We can check the dimensions of the data frame using `dim`: it has n = 8,737 with 32 columns.
 
+\vspace{12pt} 
 ```{r}
 #Create string object with URL
   url <- "https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv"
@@ -759,25 +837,32 @@ With the basic functions loaded, `read_csv` is used to import a comma separated 
 #Check dimensions
   dim(solar)
 ```
+\vspace{12pt} 
 
 As we are primarily interested in the total amount of sunlight hitting the solar arrays at any given hour (kWh), we focus in on the variable `PV_PVInsolationHArray` in data frame `solar`. To take a sneak peek of the data, we can use `head` to retrieve the first six observations.
 
+\vspace{12pt} 
 ```{r}
   head(solar$PV_PVInsolationHArray)
 ```
+\vspace{12pt} 
 
 To answer our questions, we can obtain a concise `summary` to gauge the hourly variability. As it turns out, the summary indicates that the photovoltaic arrays are exposed to fairly small amounts of energy for the majority of hours as indicated by the small median relative to the mean, but there are occasional periods with intense energy exposure.
 
+\vspace{12pt} 
 ```{r}
   summary(solar$PV_PVInsolationHArray)
 ```
+\vspace{12pt} 
 
 This can be more concisely summarized as the coefficient of variation ($CV = \frac{\text{standard deviation}}{\text{mean}}$) -- the ratio of the standard deviation and the mean. Values of the CV that exceed $CV = 1$ indicate greater dispersion. Otherwise stated, the data may be *wider than it is tall*, therefore greater vales of CV indicate there may be more noise and less consistency in the data. We compute the `mean` and standard deviation `sd`. The resulting CV indicates that one standard deviation is 1.5-times as wide as the mean, suggesting some visible degree of variability in hourly sun exposure.
 
+\vspace{12pt} 
 ```{r}
   a <- mean(solar$PV_PVInsolationHArray)
   b <- sd(solar$PV_PVInsolationHArray)
   print(b/a)
 ```
+\vspace{12pt} 
 
 With only a few lines of code, we have shown how programming can make data analysis an efficient process. In the context of policy, programming removes the tedium of spreadsheeting, allowing an analysis to be delivered using only a few decisive keystrokes.
