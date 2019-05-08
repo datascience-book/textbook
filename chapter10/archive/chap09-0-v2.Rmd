@@ -1,0 +1,2058 @@
+---
+output:
+  pdf_document: 
+      number_sections: true
+  html_document: default
+  geometry: margin=1in
+---
+
+# Chapter 9: Classifiers
+
+## Playing with fire
+
+On an August afternoon in 2007, a fire broke out on the 17th floor of the then-vacant Deutsche Bank Building, a skyscraper situated across from the former World Trade Center in New York City. The building, seriously damaged after the 9/11 attacks, had been undergoing hazard abatement and controlled demolition, leading to changes to the building floor plans and safety apparatus. When the New York City Fire Department (FDNY) responded to the scene, it was clear the fire was a serious one, quickly escalating to a seven-alarm fire incident requiring 87 units and 475 firefighters. ^[https://cityroom.blogs.nytimes.com/2007/08/18/2-firefighters-are-dead-in-deutsche-bank-fire/]  As standpipes had been disabled and floor plans altered, FDNY units found it difficult to navigate the skyscraper and put water on the fire, resorting to unconventional methods of supplying water to crews. Eventually, the fire was put out seven hours after it started, not before two firefighters lost their lives, succumbing to cardiac arrest from heavy smoke inhalation. ^[http://www.nydailynews.com/news/firefighters-dead-7-alarm-deutsche-bank-blaze-article-1.238838]  In response to the tragedy, a mayoral investigation found that the deaths could have been prevented had city agencies established information sharing protocols and leveraged a risk-based strategy to mitigate and avoid hazards. ^[http://www1.nyc.gov/assets/doi/downloads/pdf/pr_db_61909_final.pdf]  While an ideal end state would be to end all structural fires, the recommendations focused on reducing death and injury by ensuring that FDNY had the most up-to-date ground intelligence.
+
+Risk mitigation strategy was indeed due for improvements. Since the 1950’s, FDNY building inspections were managed using a manual index card system where inspection schedules were based on tiers of perceived risk, where the riskiest buildings needed to be inspected once a year and the least risky buildings were inspected once every seven years. While it was a longstanding process, it left a shortfall in inspection coverage. Of the one million buildings in New York City, only one-third are inspection-qualified. Of those 300-thousand buildings, FDNY had historically been only able to inspect at most 10% of the buildings in a given year due to other operational priorities. This meant that even on a seven-year schedule, not all buildings would be reached and the fixed timeline meant that both perfectly safe and guaranteed fire traps had equal chance of being inspected. This could be easily changed. By incorporating the latest information about where fires did and did not occur and associating it with building characteristics, a new data-driven strategy could direct how buildings are prioritized for inspection.
+
+In 2013, the New York City Fire Department (FDNY) set out to address the risk management problem by melding data and technology with their field operations. On the surface, the idea of using data and technology to reduce the risk of fire is quite alluring. However, under the hood, there were notable obstacles. On the operational side, buy-in was required. Anyone who has observed firefighters on scene will notice that it is a well-choreographed operation -- every person knows their part and abides by the established protocols as directed by leadership. For data to drive value, it needed to be integrated and accepted into the culture of a 10,000+ person fire fighting organization. On the technical side, decades worth of index cards needed to be digitized and a scheduling platform needed to be developed. Perhaps most importantly, the system had to work. Scheduling just any inspection is simple. But scheduling inspections to buildings with observable fire risks is far more challenging as such as system would need to be able to distinguish between fire-prone and fire-proof buildings. Without effective targeting, the entire effort would be for naught. 
+
+The Commissioner and First Deputy Commissioner at the time both believed that technology had a role to play at FDNY. Aligned with Mayor Michael Bloomberg's vision of smart, data-driven government, they saw an opportunity to set an example for the nation's fire services.  They relied on the the Assistant Commissioner for Management Initiatives to lead a change management process with fire chiefs and fire officers, information technology (IT) managers, among others to change the flow of operations so that data served as a pillar on which FDNY could rely. Alliances were forged with leading fire personnel such as the Deputy Chief of Fire Operations and Battalion Chiefs to formalize the role of data in the culture of the fire house, amending standard operating procedures (SOPs) to use a digital inspection system. On the IT front, a lead software engineer and project manager meticulously gathered specifications that were then used to construct a scheduling platform. Recognizing that the proof was in the pudding, a Director of Analytics was hired to lead the overhaul of a prediction algorithm to rank buildings based on their risk and convincing stakeholders that a statistical representation of fire ignition was indeed trustworthy. The result was the Risk-Based Inspection System (RBIS), a firefighter-facing data platform that scheduled inspections at buildings with the greatest risk of fire. Three times a week for three hours per session, fire officers logged onto RBIS to obtain a list of buildings for scheduled inspection. Buildings were selected using FireCast, a statistical algorithm developed in-house to predict fires at the building level. Through FireCast, buildings no longer used assumed a static risk classification as in the index card system, but rather a dynamic risk score took into account the latest information.  
+
+Prediction often relies on accuracy measures to determine how well algorithms perform in the field; FireCast was no different. The algorithm was able to identify buildings with fires over 80% of the time -- a degree of accuracy that superceded prior attempts at the problem. Upon implementing the new system, impacts were observed in leading operational indicators. In the first month, the number of safety violations issued grew by +19% relative to the trend under the index card system, but fell to +10% in the second month. This indicated that the riskiest buildings did indeed have more observable risks than less risky buildings, but the amount of observable risk fell as building inspection teams progressed down the risk list. 
+
+From a statistical perspective, the prediction should have yielded far more violations, but efficacy of the prediction program was limited by (1) a fire unit's time budget to conduct inspections; (2) a policy requiring that time had to be set aside for weekly inspections, which at times led to inspecting buildings that were not observably risky after all truly risky buildings were exhausted; (3) the rule of law giving residents the right to refuse inspection. To measure efficacy, FDNY developed an indicator known as the Pre-Arrival Coverage Rate (PACR), which measures the proportion of buildings that experienced a fire that were inspected within some period (90 days) before the fire occurred -- essentially measuring if fire companies had the opportunity to evaluate risks of priority buildings. Under FireCast, FDNY had achieved a PACR of 16.5%, which was an eightfold improvement over the old strategy that yielded 1.5%. ^[http://www.nfpa.org/news-and-research/publications/nfpa-journal/2014/november-december-2014/features/in-pursuit-of-smart] ^[https://www.nist.gov/publications/research-roadmap-smart-fire-fighting] 
+
+Since Firecast was launched in 2014, other fire prediction efforts have emerged around the United States such as the Firebird open source system for Atlanta in 2016^[http://firebird.gatech.edu/] and a spatio-temporal fire prediction approach for Pittsburgh in 2018^[http://www.kdd.org/kdd2018/accepted-papers/view/a-dynamic-pipeline-for-spatio-temporal-fire-risk-prediction].
+
+## What's a classifier?
+
+The RBIS/FireCast is an example of a _classification_ problem -- a task in which a model determines which group or _class_ does an observation belongs based on its attributes, doing so based by learning from known examples. Examples must include the factual (what happened) and counter-factual (what did not happen) in order to distinguish between potential fires from non-fires. 
+
+Classification is nothing new in everyday life as we use our own mental classification models to contextualize the world around us. For example, marketers and advertisers are always look to get product offerings in front of prospective customers and will often purchase lists of people and apply models based on past customer behavior in order to identify those who are most likely to be interested.^[ref needed] The criminal justice system has incorporated risk classifcation models to determine if those involved in alleged crime pose a flight risk if bail is posted.^[ref needed from Vera Institute]  On a more futuristic front, the technology behind self-driving cars uses a complex array of sensors and cameras that are processed by classifiers in order to distinguish between cars, people, motorbikers and cyclists. 
+
+The same is true with fires.
+
+By examining buildings that have and have not caught fire in the past, we are able to learn what pattern characteristics are associated with greater risk of fire. We can *score* or apply the learned pattern to new records to obtaining the probability of fire so that fire fighters could have a sneak peak of what may happen to other buildings as their conditions change. There may be thousands of variables that can play a role in predicting fires.
+
+If fires are truly predictable, we can employ supervised learning to map how input variables can distinguish buildings that had fires from those that did not. Otherwise stated, which fire status class does a building likely belong?  Given a binary outcome $Y(Fire)$ we can determine class membership as a function of the building's characteristics: 
+
+$$Y(Fire) = f(\text{Building characteristics, Location, Complaints, ...})$$
+
+It sounds simple enough, but as it turns out, there are many different ways that algorithms can associate building characteristics to fires.  We can illustrate the complexities of this task under three hypothetical scenarios, plotting two input variables on the X and Y axes and color-coding two classes in purple and light blue. The solid black lines represent the true *decision boundary*, or the threshold at which an observation is classified in a specified class. 
+
+At first, the idea of classifying records may seem straight forward. In policy, we tend to start from a normative theory of how a phenomenon functions -- perhaps a simple linear explanation. For example, a building that is bigger and older may be a reasonable working hypothesis for identifying high risk buildings. But as we investigate more and deeper, we may add exceptions to the rule as we discover cases that do not conform. Those exceptions may improve the number of correctly classified records, but detract from the simple narrative. 
+
+
+```{r, echo = FALSE, fig.cap = "Linear, Non-Linear and Discontinuous Classification Problems.", fig.height = 2}
+###############
+#Prep diagrams#
+###############
+  
+  #Base data
+  set.seed(234)
+  n <- 2000
+  examp <- data.frame(x1 = runif(n), x2 = runif(n))
+  examp$linear <- (examp$x1 < examp$x2) * 1
+  examp$nonlinear <- examp$x1 < ( examp$x2 * 4 - 8*examp$x2^2 + 2*examp$x2^3) -0.1
+  part1 <- examp$x1 < ( examp$x2 * 4 - 8*examp$x2^2 + 2*examp$x2^3) +0.2
+  part2 <- examp$x2 >  1.2- ( examp$x1*0.6)
+  part3 <- examp$x2 >  0.2+ ( examp$x1*1.4)
+  examp$discont <- (part1 == TRUE | part2 == TRUE )*1
+  examp$varied <- (part1 == TRUE | part2 == TRUE | part3 == TRUE)*1
+  
+  #Create grid
+  grid <- expand.grid(x1= seq(0.001, 1, 0.001), x2 = seq(0.001, 1, 0.001))
+  
+
+###################
+# CALIBRATE MODELS#
+###################
+  
+#Logistic
+  loglin <- glm(linear ~ x1 + x2, data = examp, family = binomial())
+  logvaried <- glm(varied ~ x1 + x2, data = examp, family = binomial())
+  logdiscont <- glm(discont ~ x1 + x2, data = examp, family = binomial())
+  prob.grid.lin1 <- predict(loglin, grid, type = "response") 
+  prob.grid.lin2 <- predict(logvaried, grid, type = "response") 
+  prob.grid.lin3 <- predict(logdiscont, grid, type = "response") 
+  
+#RPART
+  library(rpart)
+  dectree <- rpart(linear ~ x1 + x2, data = examp, cp = 0)
+  decvaried <- rpart(varied ~ x1 + x2, data = examp, cp = 0)
+  decdiscont <- rpart(discont ~ x1 + x2, data = examp, cp = 0)
+  prob.grid.rpart1 <- predict(dectree, grid)
+  prob.grid.rpart2 <- predict(decvaried, grid)
+  prob.grid.rpart3 <- predict(decdiscont, grid)
+  
+#Random Forest 
+  library(randomForest)
+   adatree <- randomForest(factor(linear) ~ x1 + x2, data = examp, mtry = 2)
+   adavaried <- randomForest(factor(varied) ~ x1 + x2, data = examp, mtry = 2)
+   adadiscont <- randomForest(factor(discont) ~ x1 + x2, data = examp, mtry = 2)
+   prob.grid.gbm1 <- predict(adatree, grid, type = "response")
+   prob.grid.gbm2 <- predict(adavaried, grid, type = "response")
+   prob.grid.gbm3 <- predict(adadiscont, grid, type = "response")
+   
+#KNN
+   library(kknn)
+   gammod1 <- kknn(linear ~ (x1) + (x2), train = examp, test = grid, distance = 1, k = 1)
+   gammod2 <- kknn(varied ~ (x1) + (x2), train = examp, test = grid, distance = 1, k = 1)
+   gammod3 <- kknn(discont ~ (x1) + (x2), train = examp, test = grid, distance = 1, k = 1)
+   prob.grid.gam1 <- fitted(gammod1)
+   prob.grid.gam2 <- fitted(gammod2)
+   prob.grid.gam3 <- fitted(gammod3)
+
+   
+  
+################
+# PROBLEM SPACE#
+################
+  
+  par(mfrow = c(1,3), mar = c(0, 1.2, 0.9, 0))
+  
+  #Linear example
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  title(main="(1) Linear", line= -0.2, cex.lab=1.3, font=3)
+   contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+  
+  
+  #Non-linear
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+    title(main="(2) Non-Linear", line= -0.2, cex.lab=1.3, font=3)
+    contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+    
+  #Discontinuous
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+   title(main="(3) Discontinuous", line= -0.2, cex.lab=1.3, font=3)
+     contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+  
+```
+
+As it turns out, the function for drawing the decision boundary can take on many forms and each balances interpretability and accuracy. A simple linear pattern can be produced using a *logistic regression* -- the workhorse of the natural and social sciences. While the method provides an analytically convenient answer, the resulting decision boundary may miss finer, more isolated patterns. Non-parametric methods offer a far more flexible solution to prediction at the cost of interpretability. A simple technique known as *k-nearest neighbors* is useful when k-number of similar, comparable observations can serve as a reference for informing the prediction of a given point. **Decision tree learning* along with its many variants such as *Random Forest* learn patterns by partitioning a sample into finer more homogeneous sub-samples. When faced with infinite distributions of data, each method responds to the circumstances differently.
+
+
+```{r, echo = FALSE, fig.cap = "Linear, Non-Linear and Discontinuous Classification Problems.", fig.height = 5}
+
+#####################   
+# plot the boundary##
+#####################
+   
+  par(mfrow = c(3,4), mar = c(0, 1.2, 0.9, 0))
+   
+  #Linear example
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="Logistic Regression", line= 0, cex.main=1.2, font.main = 1)
+  title(ylab="Linear", line= -0.2, cex.lab=1.3, font=3)
+
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="kNN", line= 0, cex.main=1.2, font.main = 1)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="Decision Tree", line= 0, cex.main=1.2, font.main = 1)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="Random Forest", line= 0, cex.main=1.2, font.main = 1)
+  
+  
+  #Non-linear
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(ylab="Non-Linear", line= -0.2, cex.lab=1.3, font=3)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  #Discontinuous
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(ylab="Discontinuous", line= -0.2, cex.lab=1.3, font=3)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+```
+
+Each technique has its own set of assumptions that in turn make it better suited for certain policy problems and certain types of data. But there are basic considerations that underlie our use of any  classifier, namely  (1) the idea of separability, (2) balancing interpretability with prediction, and (3) the different definitions of accuracy.
+
+
+### Separability {-} 
+ A fire prediction algorithm needs to actually predict where fires and non-fires will be. A bail algorithm needs to be able to distinguish between those who are flight risks and those who are not. Simply training a classifier will not do. The success of a classifier fundamentally lies in if the classes are  *separable* based on its input variables -- basically the idea that the algorithm can learn from the underlying data and distinguish one class from another.
+
+The idea of separability manifests itself different in discrete and continuous values. With discrete variables, separability is a matter of placing as many *True Positives* and *True Negatives* as represented in a $2 x 2$ table below. This translates into placing the vast majority of observations into the upper left cell and bottom left cell. In the first example below, we have a separable case in which nearly 80% of observations are distributed along the diagonal.
+
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Load libraries
+  library(kableExtra)
+  library(knitr)
+
+#Sample size
+  n <- 1200
+  
+#Generate simulated fire data
+  id <- 1:n
+  y <- rep(NA, n)
+  
+  set.seed(20000)
+  yhat <- 0.8/(1 + exp(-id/100 +7 +rnorm(n, 0, 0.3)))
+  
+  for(i in 1:n){
+    set.seed(i*200)
+    y[i] <- (runif(1) < yhat[i])*1
+  }
+  y <- y == 1
+  
+#Gen square footage
+  set.seed(10000)
+  sf <- round((sqrt(id)*1000 + 40000 + rnorm(n, 6000,4000)))/1000
+  
+#Gen Bldgs
+  bldgs <- c(rep("Elevator Apt", 50000),
+             rep("Warehouse", 4000),
+             rep("School", 1000),
+             rep("Theater", 300))
+  
+#Create data frame
+  set.seed(102)
+  df <- data.frame(building_id = 1:n, 
+                   time = 2010,
+                   fire = y, 
+                   class = sample(bldgs, n, replace = TRUE), 
+                   square_feet_k = sf, 
+                   prev_violation = NA, 
+                   gas_leaks = NA)
+ 
+#Create gas leaks and prev vios
+  for(i in 1:nrow(df)){
+    set.seed(i)
+    df$prev_violation[i] <- ifelse(df$fire[i], runif(1) < 0.5 + 
+                                     (runif(1)*0.3) , runif(1) < 0.1)
+    set.seed(i*2)
+    a<- runif(1)
+    set.seed(i*3)
+    df$gas_leaks[i] <- ifelse(df$fire[i], a < 0.35 - (runif(1)*0.3), runif(1) < 0.1)
+  }
+ 
+#Yank out top 9 for show and tell
+  set.seed(100)
+  df2 <- df[order(runif(n)),]
+  short <- df2[1:9,]
+  temp <- data.frame(building_id = ".", 
+                     time = ".",
+                     fire = ".", 
+                     class = ".", 
+                     square_feet_k = ".", 
+                     prev_violation = ".", 
+                     gas_leaks = ".")
+  short <- rbind(short,temp, temp, temp)
+  # kable(short, 
+  #       row.names = FALSE, 
+  #       booktabs = TRUE, 
+  #       caption = "Simulated fire prediction data set",
+  #       col.names = c("ID", "Year", "Fire?", "Building Type", 
+  #                     "Square Feet ('000)","Prior Building Violation", 
+  #                     "Prior Gas Leaks")) 
+
+#Confusion Matrix
+
+  fire <- rep(NA,nrow(df))
+  fire[df$fire] <- "Fire"
+  fire[!df$fire] <- "No Fire"
+  short <- ((table(fire, df$prev_violation)))
+  short <- round(short*100/nrow(df),1)
+  kable(short, 
+        booktabs = TRUE, 
+        caption = "Separability of two classes given a separable discrete variable.",
+        col.names = c("No Violation","Violation - T"),
+        row.names = T)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+Alternatively, a low separable case may will have a large proportion of observations along the other diagonal, indicating many *False Positive* (Type I error) and *False Negatives* (Type II error). In the case below, we see that the majority of cases have been incorrectly classified.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+#Confusion Matrix
+  fire <- rep(NA,nrow(df))
+  fire[df$fire] <- "Fire"
+  fire[!df$fire] <- "No Fire"
+  short <- ((table(fire, df$class=="Elevator Apt")))
+  short <- round(short*100/nrow(df),1)
+  kable(short, 
+        booktabs = TRUE, 
+        caption = "Separability of two classes given a unseparable discrete variable.",
+        col.names = c("Elevator Apartment - F","Elevator Apartment- T"),
+        row.names = T)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+When working with continuous variables, separability is in terms of differences in means and distributions of the target classes. For example, a low separability scenario (left) would be one where the input variable's distribution for each class substantially overlap, which suggests an absence of any distinguishing information. High separability (middle), in contrast, would have means that are significantly different from one another and the distributions themselves overlap minimally. But perhaps the neatest thing is perfect separability (right). In this case, we basically can produce a perfect definition of the outcome in question, in which case we do not need a classifier to model the relationship -- just a threshold to serve as the definition. 
+
+```{r, fig.height = 2, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Separability of two classes given a continuous variable."}
+
+#Libs
+  library(ggplot2)
+  library(grid)
+  library(gridExtra)
+
+#Prep data
+  a <- rnorm(1000,10,10)
+  b <- rnorm(1000,12,10)
+  c <- rnorm(1000,50,10)
+  d <- rnorm(1000,100,10)
+  sep.df <- data.frame(a, b, c, d)
+
+#Plot
+  lowsep <- ggplot(sep.df) + 
+            geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+            geom_density(aes(b), fill = "orange", alpha = 0.3) + 
+            ggtitle("Low Separability" ) + 
+            theme(plot.title = element_text(size = 10,hjust = 0.5), 
+                  axis.line=element_blank(),
+                  axis.text.x=element_blank(),
+                  axis.text.y=element_blank(),
+                  axis.ticks=element_blank(),
+                  axis.title.x=element_blank(),
+                  axis.title.y=element_blank(),
+                  legend.position="none",
+                  panel.background=element_blank(),
+                  panel.border=element_blank(),
+                  panel.grid.major=element_blank(),
+                  panel.grid.minor=element_blank(),
+                  plot.background=element_blank())
+
+    highsep <- ggplot(sep.df) + 
+               geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+               geom_density(aes(c), fill = "orange", alpha = 0.3) +  
+               ggtitle("High Separability" ) + 
+               theme(plot.title = element_text(size = 10,hjust = 0.5), 
+                     axis.line=element_blank(),
+                     axis.text.x=element_blank(),
+                     axis.text.y=element_blank(),
+                     axis.ticks=element_blank(),
+                     axis.title.x=element_blank(),
+                     axis.title.y=element_blank(),
+                     legend.position="none",
+                     panel.background=element_blank(),
+                     panel.border=element_blank(),
+                     panel.grid.major=element_blank(),
+                     panel.grid.minor=element_blank(),
+                     plot.background=element_blank())
+
+    perfect <- ggplot(sep.df) + 
+               geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+               geom_density(aes(d), fill = "orange", alpha = 0.3) +  
+               ggtitle("Perfect Separability" ) + 
+               theme(plot.title = element_text(size = 10,
+                                               hjust = 0.5), 
+                     axis.line=element_blank(),
+                     axis.text.x=element_blank(),
+                     axis.text.y=element_blank(),
+                     axis.ticks=element_blank(),
+                     axis.title.x=element_blank(),
+                     axis.title.y=element_blank(),
+                     legend.position="none",
+                     panel.background=element_blank(),
+                     panel.border=element_blank(),
+                     panel.grid.major=element_blank(),
+                     panel.grid.minor=element_blank(),
+                     plot.background=element_blank())
+#Plot
+gridExtra::grid.arrange(lowsep, highsep, perfect, ncol = 3)
+```
+
+The bottom line about separability is that a good data scientist will check their assumptions. In policy, there will be prevailing theories and conventional wisdom that dictate how certain factors influence a phenomenon. But what may sound good may in actuality have little separability and in turn offer little predictive power. In those cases, it is worth revisiting and revising the assumptions. After all, the goal of a classifier is to classify. 
+
+
+### Measures of accuracy {-} 
+
+As alluded to when describing separability, accuracy is central to evaluating if a classifier's results are useful. This requires understanding of a minimum of two ideas: what does probability have to do with accuracy and what exactly is the subtance of accuracy. 
+
+__Predicted Probability__. Most classifiers output a form of conditional probability. Accuracies are derived from probabilities produced by the classifier, indicating whether a given observation is predicted to below to a given class (e.g. fire vs. no fire, Yankee fan vs. Red Sox fan, Sith vs. Jedi, Republican v. Democrat). In order to convert probabilities into a prediction of a class, we need to set a threshold. So, what is the classification threshold? 
+
+*Short answer: It depends on the sample.*
+
+For balanced samples in which the outcome variable's classes are represented in approximately equal proportion, the threshold is $pr(Y=1) \geq 0.5$ as the objective probability of occurrence is close to $0.5$. In reality, this may not be all that common scenario due to *class imbalance* and *rare events*. Class imbalance is the case in which the *minority class* -- the class with fewer observations -- is proportionally less prevalent in the sample than other classes. For example, political campaigns often deal with voter data in districts that are overwhelming in favor of one party over another. Rare events are infrequent events in which there is a super minority of observations. Fires and disasters tend to fall into this category. In some cases, fewer than $n = 200$ observations may lead to biased estimates.^[https://gking.harvard.edu/files/gking/files/0s.pdf]. We will revisit class imbalance and rare events later in this chapter, but for now, let's assume that the classification threshold is $Pr(Y=1) \geq 0.5$. 
+
+__Accuracy__. Classifier accuracy measures rely on metrics derived from the *confusion matrix*, or a $n \times n$ table where the rows represent actual classes and columns represent predicted classes. For a two class problem, the confusion matrix is a $2 \times 2$ table.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c("True Negative (TN)", "False Negative (FN)"),
+                     pred_max = c("False Positive (FP)", "True Positive (TP)"))
+  row.names(temp) <- temp$first
+  knitr::kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Structure of confusion matrix",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+
+Each cell of the confusion matrix is a building block required to calculate accuracy:
+
+- The True Positive (TP) is the number of cases in which the actual positive observations ($Y = 1$) are correctly predicted (e.g. model predicts a fire and a fire actually occurs). Note that *P* is used to denote the total number of positive records.
+- The True Negative (TN) is the number of  cases where the actual negative observation ($Y = 0$) are correctly predicted. Note that *N* is used to denote the total number of negative records.
+- The False Positive (FP) is number of cases where the actual label was $Y = 0$, but the model classified a record as $\hat{Y} = 1$. This is also known as *Type I error*.
+- The False Negative (FN) is number of cases where the actual label was $Y = 1$, but the model classified a record as $\hat{Y} = 0$. This is also known as *Type II error*.
+
+In a perfectly balanced sample of $n = 100$, we would expect the $P = 50$ and $N = 50$. Likewise, a perfect predictions should yield $TP = P$ and $TN = N$ along the diagonal.  This is a rare case, but it  stands that the goal is to check if the download diagonal captures the majority of observations.
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c(50, 0),
+                     pred_max = c(0, 50))
+  row.names(temp) <- temp$first
+  knitr::kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Confusion matrix for perfectly accurate predictions",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+In contrast, a model with little predictive power will have the majority of observations in the upward diagonal. Below, the matrix suggests the trained model has little predictive power as it classified the vast majority of records as negative even when some should have been positive. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c(40, 45),
+                     pred_max = c(10, 5))
+  row.names(temp) <- temp$first
+  knitr::kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Confusion matrix for poor predictions.",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+
+Despite having well-defined building blocks of accuracy, the tricky thing is that there is not just one measure of accuracy or error. In fact, there are many measures of accuracy that that support different analytical use cases and help accentuate different policy priorities.
+
+- Take the reader through an example of how to interpret different 
+
+While its simplicity makes for a great summary measure, it can be misleading in samples with class imbalance. For example, if 90% of a sample is composed of the negative class ($Y=0$) and the predictions correctly classify all negatives and none of the positives, the accuracy score would still be 90%. 
+
+
+| Measure | Formula | What It Answers |
+|----------------+-----------------------+----------------------------|
+| __Individual Measures__|
+| True Positive Rate (TPR) | $TPR = \frac{TP}{TP+FN}$ |  What proportion positive cases were correctly identified? |
+| False Positive Rate (FPR) | $FPR = \frac{FP}{FP+TN}$ |  What proportion of negative cases were incorrectly predicted as positive? This is also known as the false detection rate or Type I error. |
+| False Negative Rate (FNR) | $FNR = \frac{FN}{TP+FN}$ |  Proportion of positive cases that were incorrectly predicted negative. This is also known as the false alarm rate or Type I error. |
+| Predicted Positive Value (PPV) or Precision | $PPV = \frac{TP}{TP+FP}$ |  Proportion of positive cases that were incorrectly predicted negative. This is also known as the false alarm rate or Type I error. |
+| __Overall Measures__|
+| Accuracy (ACC) | $ACC = \frac{TP + TN}{n}$ |  What proportion of  records were correctly classified? |
+| F1-Score (F1) | $F1 = \frac{2}{\frac{1}{TPR} \times \frac{1}{FPR}}$ |  Alternative method of calculating accuracy using a harmonic mean |
+| Receiving-Operating Characteristic (ROC) Curve  | sd |  asd |
+
+
+
+### Interpretability versus prediction {-} 
+
+When selecting models for classification tasks, data scientists often times balance interpretability and predictive accuracy. It is similar to the idea of buying clothing of a generic size (e.g. small, medium, large) or having it custom tailored. The former captures the gist of one's body dimensions and it is easy to explain: *I bought a medium*. A custom tailored piece of clothing requires many adjustments beyond the size, allowing a master tailor to mold the clothing to features of the body and to one's comfort. 
+
+The same idea applies to classifiers. 
+
+In the social and natural sciences, classification methods like logistic regression are favored for their use in *parameter estimation* to infer relationships between variables. The model coefficients are directly interpretable, showing how a variable can contribute or detract from the probability of an outcome holding all else constant. Inferring relationships from estimated parameters in turn facilitate narratives for communicating insight. But there is a tradeoff. While linear methods may extract the gist of the relationships, they may miss the finer movements necessary for a reliable prediction. 
+
+If the goal is to produce a highly accurate prediction, it may be worth considering a body of exciting methods that have arisen from statistics and computer science that are optimized for predictive accuracy. These other methods may be more versatile, adapt to scenarios where there are more variables than observations, find interactions between variables and nonlinear patterns, and optimize for robustness. In the tech sector, for example, data science pursuits are often a matter of how well classifiers can scale to service their customers and drive sales. Understanding which variables definitively drive the predictions can be useful for teams focused on communicating insights, but not as much for the technology side of the house.
+
+The bottom line is that one's choice of classifier depends on how much one prizes interpretability versus accuracy.
+
+
+### Fairness and transparency {-} 
+
+In the area of criminal justice, algorithms such as COMPAS are actively being used to predict the chance that someone accused of a crime will recidivate within two years. While classifiers may offer a degree of efficiency when sifting through a multitude of data and are relied upon by judges in passing sentences, there are significant concerns regarding their ethical use. In 2016, ProPublica conducted research that examines the fairness of risk ratings from COMPAS, finding that while the algorithm is able to correctly predict recidivism 61% of the time, black defendents are 1.9-times more likely than white counterparts to be labeled high risk but not actually re-offend.^[https://www.propublica.org/article/machine-bias-risk-assessments-in-criminal-sentencing] In other words, if two defendents with the same criminal history were scored by COMPAS and the only difference is their race, the two defendents would be treated differently. 
+
+It is unsurprising that *fairness* and *transparency* are emerging areas of focus in the use of classifiers. Fairness can take on many definitions, but for the purpose of this text, we define it as whether two or more subpopulations receive equal treatment. Transparency means that the provenance of the underlying information and its method of producing predictions are available for review -- not that it fits a neat normative, but that it can be traced and scrutized. 
+ 
+
+
+## Six common classifiers 
+
+Six algorithms cover much of the common use cases that are relevant for public policy and other applied fields. Each method has its strengths and weaknesses, and each is more appropriate in certain contexts than others. Thus, each method set is illustrated using data that are well-suited for its purposes.
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+  usescases <- read.csv("data/use_case_table.csv")
+  knitr::kable(usescases, 
+        row.names = FALSE, 
+        booktabs = TRUE, 
+        caption = "Overview of classifiers",
+        col.names = c("Method", "Common Uses", "Key Assumptions", "User Beware")) 
+```
+
+### K-Nearest Neighbors (KNN)
+
+As hurricanes become more intense and leave a trail of destruction, city services will need to be able to more efficiently triage requests for help. Let's take the example of Hurricane Sandy and its effect on NYC. One of the main services offered by cities is the management and care of its trees. A downed tree can cause property damage, bodily harm and traffic disruptions. Due to the high wind and lush foliage during Sandy, many trees fell.
+
+In NYC, the Department of Parks and Recreation is responsible for tree removal. When a resident makes a call to the city's services hotline 311, a work order is created and a tree removal team is dispatched. This may be a transactional process: one call for tree removal, one tree is then removed. As it takes time for crews to move and set up, a first-in/first-out queuing process can be inefficient. Imagine if 20 of 100 blocks in a neighborhood were flagged for tree removal. It would make sense to use that call data to identify other blocks that may also have downed trees.
+
+We would expect that downed trees are more likely to occur in *pockets* and proximity is the best indicator of activity. As the city knows where residents call for tree- and non-tree-related issues, we can use the location of the calls to triangulate on likely problem areas as well as anticipate pockets of yet-to-be-reported downed trees, or at least serve that is a reasonable working theory.
+
+For this task of predicting based on proximity, k-Nearest Neighbors (KNN) can help.
+
+#### Under The Hood
+
+K-nearest neighbors (KNN) is a non-parametric, instance-based algorithm that is based on a simple idea: *observations that are closer together are more likely to be similar*. The method is non-parametric as it does not directly use its inputs to determine the value of $y$. It is instance-based as each prediction is determine on a case-by-case basis using a pre-defined procedure. 
+
+The procedure is simple. For each case $y_i$:
+
+1. _Distance_. First, we calculate the _distance_ to all other records with known outcomes. Distance most commonly takes the form of Euclidean distance (below), which is appropriate with continuous values. For cases where the underlying data are boolean or binary, Manhattan distance may be more appropriate. In effect, the input variables $X$ serve as sets of coordinates to triagulate which points are closer to a given case. 
+
+$$ \text{Euclidean distance} = \sqrt{\sum_{i=1}^n(x_{i} - x_{0})^{2} }$$ 
+
+
+
+2. _Voting_. For the $k$ nearest observations, take the average of $y$ (below). Basically, for each class $j$ in $Y$, we take the average of $k$ observations that are closest based on $X$. In effect, this procedure yields a local conditional probability for each observation, which is converted into a predicted class through *majority voting*.   
+
+$$Pr(Y = j|X) = \frac{1}{k}\sum_{i \in A} I(y^i = j)$$
+
+
+3. _Tuning_. The method is sensitive to the value of $k$, requiring tuning -- or testing different values of $k$. When $k = 10$, the conditional probability for $y_i$ reflects the 10-nearest neighbors. When $k = n$, the conditional probability is the sample mean. 
+
+
+The procedure described above yields the results for just one value of $k$. However, kNNs, like many other algorithms, are an iterative procedure, requiring tuning of *hyperparameters* -- or values that are starting and guiding assumptions of a model. In the case of kNNs, $k$ is a hyperparameter and we do not precisely know the best value of $k$. Often times, tuning of hyperparameters involves a *grid search*, a process whereby a range of possible hyperparameters is determined and the algorithm is tested at equal intervals from the minimum to maximum of that tuning range. 
+
+To illustrate this, a two-dimensional dataset with a target $y$ that takes of values $0$ and $1$ has been plotted below. Graph (1) plots the points, color-coded by their labels. Graph (2), (3), and (4) show the results of a grid search along intervals of a $log_{10}$ scale, where the background is color-coded as the predicted label for the corresponding value of $k$. In addition to $k$, two measures are provided above each graph to help contextualize predictions: the True Positive Rate or $TPR$ and the True Negative Rate or $TNR$. 
+
+The $TPR$ is defined as #$TPR = \frac{\text{Number of values that were correctly predicted}}{\text{Number of actual cases values}}$#. The $TNR$ is similarly defined as #$TNR = \frac{\text{Number negative values that were correctly predicted}}{\text{Number of actual negative values}}$#. Both are measures bound between 0 and 1, where higher values indicate a higher degree of accuracy. A high $TPR$ and low $TNR$ indicates that the algorithm is ineffective in distinguishing between positive and negative cases. The same is true with a low $TPR$ and high $TNR$. This is exactly the case in Graph (4) where all points are classified as $Y = 1$, which is empirically characterized by $TNR = 0.02$ and $TPR = 1$.
+
+
+<Redo the graph below>
+```{r, fig.height=4, echo=FALSE, warning=FALSE, message = FALSE, fig.cap = "Comparison of prediction accuracies for various values of k."}
+#Prep diagrams
+
+#Base data
+set.seed(234)
+examp <- as.data.frame(expand.grid(x1 = seq(0.01,1,0.01), x2 = seq(0.01,1,0.01)))
+
+examp$linear <- (examp$x1 < examp$x2) * 1 
+part1 <- examp$x1 < ( examp$x2 * 4 -(8+rnorm(nrow(examp),0.4,0.4))-examp$x2^2 + 2*examp$x2^3 )
+part2 <- examp$x2 >  0.7 +rnorm(nrow(examp),0.3,0.1) - ( examp$x1*0.9)
+part3 <- examp$x2 >  0.2 -runif(nrow(examp))*0.4+runif(nrow(examp))*0.4+ ( examp$x1*1.4)
+examp$discont <- ( part2 == TRUE )*1
+
+
+#ADaptive 
+library(kknn)
+  k1 <- kknn(discont ~ x1 + x2, 
+              train = examp, 
+              test = examp,
+              k = 3,
+              kernel = "rectangular")
+  k10 <- kknn(discont ~ x1 + x2, 
+             train = examp, 
+             test = examp,
+             k = 10,
+             kernel = "rectangular")
+  k100 <- kknn(discont ~ x1 + x2, 
+              train = examp, 
+              test = examp,
+              k = 30,
+              kernel = "rectangular")
+  
+prob.grid.gbm1 <- k1$fitted.values
+prob.grid.gbm2 <- k10$fitted.values
+prob.grid.gbm3 <- k100$fitted.values
+
+
+# plot the boundary
+par(mfrow = c(2,2), mar = c(0, 1.2, 0.9, 0))
+
+#Example
+plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+     font.main = 1,  pch = 16, cex = 0.3, main = "Example Data",
+     xaxt = "n", yaxt = "n", asp = 1, bty="n")
+points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.3)
+points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.3)
+
+
+#k = 3
+
+est <- table(examp$discont,prob.grid.gbm1 >= 0.5)
+tpr <- round(100*est[2,2]/sum(examp$discont),2)
+fpr <- round(100*est[1,2]/sum(examp$discont==0),2)
+
+plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+     font.main = 1,  pch = 16, cex = 0.3, 
+     xaxt = "n", yaxt = "n", asp = 1,bty="n")
+points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.3)
+points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.3)
+contour(x=seq(0.01, 1, 0.01), y = seq(0.01, 1, 0.01), 
+        z=matrix(prob.grid.gbm1, nrow=100), levels=0.1,
+        col="black", drawlabels=FALSE, lwd=1.3, add=T)
+title(main=paste0("k = 3, TPR = ", tpr, ", FPR = ", fpr), line= 0, cex.main=0.9, font.main = 1)
+
+
+#k = 2
+est <- table(examp$discont,prob.grid.gbm2 >= 0.5)
+tpr <- round(100*est[2,2]/sum(examp$discont),2)
+fpr <- round(100*est[1,2]/sum(examp$discont==0),2)
+plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+     font.main = 1,  pch = 16, cex = 0.4, 
+     xaxt = "n", yaxt = "n", asp = 1,bty="n")
+points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.4)
+points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.4)
+contour(x=seq(0.01, 1, 0.01), y = seq(0.01, 1, 0.01), 
+        z=matrix(prob.grid.gbm2, nrow=100), levels=0.1,
+        col="black", drawlabels=FALSE, lwd=1.3, add=T)
+title(main=paste0("k = 10, TPR = ", tpr, ", FPR = ", fpr), line= 0, cex.main=0.9, font.main = 1)
+
+
+#k = 100
+est <- table(examp$discont,prob.grid.gbm3 >= 0.5)
+tpr <- round(100*est[2,2]/sum(examp$discont),2)
+fpr <- round(100*est[1,2]/sum(examp$discont==0),2)
+plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+     font.main = 1,  pch = 16, cex = 0.4, 
+     xaxt = "n", yaxt = "n", asp = 1,bty="n")
+points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.4)
+points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.4)
+contour(x=seq(0.01, 1, 0.01), y = seq(0.01, 1, 0.01), 
+        z=matrix(prob.grid.gbm3, nrow=100), levels=0.1,
+        col="black", drawlabels=FALSE, lwd=1.3, add=T)
+title(main= paste0("k = 100, TPR = ", tpr, ", FPR = ", fpr), line= 0, cex.main=0.9, font.main = 1)
+
+    
+```
+
+#### Which K is the right K?
+
+The accuracy of a KNN model is dependent on finding the right value of $k$. Thus, to optimize for accuracy, try multiple values of $k$ and compare the resulting accuracy values. It is helpful to first see that when $k = n$, kNNs are simply the sample statistic (e.g. mean or mode) for the whole dataset. Below, the True Positive Rate (TPR, blue) and True Negative Rate (TNR, green) have been plotted for values of $k$ from 1 to $n$. The objective is to ensure that there is a balance between TPR and TNR such that predictions are accurate. Where $k > 20$, the TPR is near perfect. For values of $k < 10$, TPR and TNR are more balanced, thereby yielding more reliable and accurate results.
+
+
+```{r, fig.height=3, echo=FALSE, warning=FALSE, message = FALSE, fig.cap = "True Positive Rate (TPR = blue) and True Negative Rate (FPR = green) performance for varying values of k"}
+  library(ggplot2)
+  library(class)
+  set.seed(100)
+ 
+  calc <- data.frame()
+  for(i in seq(1,50,5)){
+    res <- kknn(discont ~ x1 + x2, 
+                train = examp, 
+                test = examp, k = i)
+    est <- table(examp$discont,res$fitted.values >= 0.5)
+    tpr <- est[2,2]/sum(examp$discont)
+    fpr <- est[2,1]/sum(examp$discont==0)
+    calc <- rbind(calc, data.frame(k = i, tpr = tpr, fpr = fpr))
+  }
+  
+  # ggplot() + 
+  #   geom_line(aes(x = k, y = tpr), data = calc, colour = "blue") + 
+  #   geom_line(aes(x = k, y = tnr), data = calc, colour = "green") + 
+  #   ylab("Rate") + xlab("K neighbors") 
+  #   
+  
+  plot(calc$k, calc$tpr, type = "l", col = "blue", ylim = c(0,1), ylab = "Percent", xlab = "k")
+  lines(calc$k, calc$fpr, col = "green" )
+```
+
+There are other factors that influence the selection of $k$:
+
+- _Scale_. kNNs are strongly influenced by the scale and unit of values of $x$ as ranks are dependent on straight Euclidean distances. For example, if a dataset contained  measurements of age in years and wealth in dollars, the units will over emphasize income as the range varies from 0 to billions whereas age is on a range of 0 to 100+. To ensure equal weights, it is common to transform variables into standardized scales such as:
+    - Range scaled or $$\frac{x - \min(x)}{\max(x)-\min(x)} $$ yields scaled units between 0 and 1, where 1 is the maximum value
+    - Mean-centered or $$ \frac{x - \mu}{\sigma}$$ yield units that are in terms of standard deviations
+    
+- _Grids_. Similar to the scale issue, KNNs are particularly effective in data that are distributed on a grid -- measurements along a continuous scale at equal incremenets, but may be a poor choice when the data are mixed data formats such as integers and binary.
+- _Symmetry_. It's key to remember that neighbors around each point will not likely be uniformly distributed. While kNN does not have any probabilistic assumptions, the position and distance of neighboring points may have a skewing effect. 
+
+
+#### Tips
+
+KNNs are efficient and effective under certain conditions:
+
+- KNNs can handle target values that are either discrete or continuous, making the approach relatively flexible. However, best performance is achieved when the input features should are in the same scale (e.g. color values in a grid).
+- They are best used when there are relatively few features as distances to neighbors need to be calculated for each and every record and need to be optimized by searching for the value of $k$ that optimizes for accuracy. In cases where data is randomly or uniformly distributed in fewer dimensions, a trained KNN is an effective solution to filling gaps in data, especially in spatial data. 
+- KNNs are not interpretable as it is a nonparametric approach -- it does not produce results that have a causal relationship or illustrate. Furthermore, kNNs are not well-equipped to handle missing values.
+
+
+
+#### Use Case: Anticipating the extent of damage from a storm
+
+As it common and proper, the kNN algorithm needs to be calibrated for the best $k$ using the training set, then applied to a test set. To do this, we will use the `kknn` library. The training portion uses the `train.kknn()` function to conduct k-folds cross validation, then the scoring uses the `kknn()`. While both functions can be fairly easily written from scratch (and we encourage new users to write their own as was demonstarted in the previous chapter), we will plow forth with using the library.
+
+To start, we will load the `kknn` library:
+
+```{r}
+#Call "class" library
+  library(kknn)
+```
+
+Next, we'll load in our data set
+
+```{r, message = FALSE, warning = FALSE, fig.height = 3}
+#Load data (need persistent link)
+  nyc <- read.csv("data/sandy_trees.csv")
+```
+
+ and take a look at what the geographic distribution of the data. 
+ 
+```{r}
+#Plot
+  plot(x = nyc$xcoord, y = nyc$ycoord, 
+       xlab = "x coordinate", ylab = "y coordinate",
+       cex = 0.3,  pch = 15, asp=1)
+```
+
+In New York City, only the two largest boroughs, Brooklyn and Queens, share the same land mass. The rest are separated by rivers. For a more consistent data set, we subset our data using the `boro` variable to focus.
+
+```{r, message = FALSE, warning = FALSE}
+
+#Subset
+  nyc <- subset(nyc, boro %in% c("QN", "BK"))
+
+#Standardize input variables
+  nyc$xcoord <- scale(nyc$xcoord)
+  nyc$ycoord <- scale(nyc$ycoord)
+  
+#Plot
+  plot(x = nyc$xcoord, y = nyc$ycoord, 
+       xlab = "x coordinate", ylab = "y coordinate",
+       cex = 0.3, pch = 15, asp=1)
+```
+
+
+```{r}
+
+#Set up data
+  train <- subset(nyc, !is.na(tree.sandy), 
+                  select = c("ycoord", "xcoord", "tree.sandy"))
+  test <- subset(nyc, 
+                 select = c("ycoord", "xcoord", "tree.next7"))
+  
+  
+```
+
+In order to find the optimal value of $k$, we will execute the `train.kknn()` function, which accepts the following arguments:
+
+`train.kknn(formula, data, kmax, kernel, distance, kcv)`
+
+- `formula` is a formula object (e.g. "`coverage ~ .`").
+- `data` is a matrix or data frame of training data.
+- `kmax` is the maximum number of neighbors to be tested
+- `kernel` is a string vector indicating the type of distance weighting (e.g. "rectangular" is unweighted, "biweight" places more weight towards closer observations, "gaussian" imposes a normal distribution on distance, "inv" is inverse distance).
+- `distance` is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).
+- `kcv` is the number of partitions to be used for cross validation.
+
+The flexibility of `train.kknn()` allows for test exhaustively and find the best parameters. Below, we conduct 10-folds cross validation up to $k = 100$ for three kernel (rectangular, biweight and inverse) assuming L1-distances. While the command is simple, it runs the kNN algorithm for 2000 times (20 cross-validation models for each k - kernel combination).
+
+
+```{r, message = FALSE, warning = FALSE, results = 'hide', echo = TRUE}
+
+#Set seed to ensure cross validation is replicable
+  set.seed(100)
+
+#Run with 20-folds cross validation
+  fit.cv <- train.kknn(tree.sandy ~ ycoord + xcoord , 
+                      data = train, 
+                      kcv = 20, 
+                      distance = 1, kmax = 100, 
+                      kernel = c("rectangular", "inv"))
+
+```
+
+
+The resulting model object contains the cross-validation error log in the `MISCLASS` attribute, which has been plotted below, as well as `best.parameters` that indicates that $k = $ `r fit.cv$best.parameters$k` using an inverse distance kernel yields the lowest error.
+
+
+```{r, message=FALSE, warning = FALSE, fig.cap = "20-fold cross validated errors for k = 1 to k = 100"}
+
+#Plot Cross Validation
+   plot(fit.cv)
+   
+#Retrieve best parameters
+   best <- fit.cv$best.parameters
+```
+
+With the KNN algorithm tuned, we can now use the `kknn()` function to score the test set. The function syntax is as follows:
+
+`kknn(formula, train, test, k, kernel, distance)`
+
+- `formula` is a formula object (e.g. "`coverage ~ .`").
+- `train` is a matrix or data frame of training data.
+- `test` is a matrix or data frame of test data.
+- `k` is the number of neighbors.
+- `kernel` is the type of weighting of distance (e.g. "rectangular" is unweighted, "biweight" places more weight towards closer observations).
+- `distance` is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).
+
+Notice that in the following code block, we train the kNN and apply it to the test sample all in one step.
+
+```{r, message=FALSE, warning = FALSE}
+
+#Apply tune KNN parameters
+   fit <- kknn(tree.sandy ~ ycoord + xcoord, 
+               train = train, 
+               test = test,
+               k = best$k,
+               kernel = "inv")
+
+#Produce 
+    test$prob <- fit$fitted.values
+    test$tree.next7[is.na(test$tree.next7)] <-0
+```
+
+
+With all the right pieces computed, we can examine how closely the predictions based on tree downing patterns on the day of Hurricane Sandy compare with where trees were reported to have fallen over the 10 days that followed. In the first panel, we see that a cloud of points capture the gist of the downed tree pattern. About 25.7% of all cells in Brooklyn and Queens made at least one call to 311, of which 78% made a request to deal with a tree issue. 
+
+```{r, message=FALSE, warning = FALSE, fig.cap = "Graphical comparison of actual and predicted areas with reported downed trees. Red indicates at least one tree was reported in a given 0.359 square-mile area", fig.height = 4, fig.width = 8}
+
+  
+ par(mfrow = c(1,3))
+
+  plot(train[,2:1], main = "(1) Calls during storm",
+       col = rgb(train$tree.sandy , 0, 1- train$tree.sandy, 1), 
+       cex = 0.4, pch = 16, asp = 1)
+  
+  plot(test[,2:1], main =  "(2) Predicted probabilities",
+       col = rgb(test$prob, 0, 1 - test$prob, 1), 
+       cex = 0.4, pch = 16, asp = 1)
+  
+  plot(test[,2:1], main =  "(3) Actual next 10 days",
+       col = rgb(test$tree.next7, 0, 1 - test$tree.next7, 1), 
+       cex = 0.4, pch = 16, asp = 1)
+    
+```
+
+Using the extracted probabilities, we now can calculate the accuracy using the True Positive Rate (TPR) using a probability cutoff of 0.5. Typically, one would expect a $2 \times 2$ matrix given a binary label where the accuracy rate can be calculated based on the diagonals. In this case, prediction accuracy was `r `, indicating that the model performs reasonably well.
+
+The test model accuracy can also be calculated by taking the Area Under the Curve (AUC) of the Receiving-Operating Characteristic. The ROC calculates the TPR and FPR at many thresholds, that produces a curve that indicates the general robustness of a model. The AUC is literally the area under that curve, which is a measure between 0.5 and 1 where the former indicates no predictive power and 1.0 indicates a perfect model. 
+
+In order to visualize the ROC, we will rely on the `plotROC` library, which is an extension of `ggplot2`. We will create a new data frame `input` that is comprised of the labels for the test set `ytest` and the predicted probabilities `test.prob`. 
+
+```{r, warning=FALSE, message=FALSE,}
+#Load libraries
+  library(ggplot2)
+  library(plotROC)
+
+#Set up test data frame
+  input <- data.frame(ytest = test$tree.next7, 
+                      prob = test$prob)
+```
+
+We then will first create a ggplot object named `base` that will contain the labels (`d = `) and probabilities (`m = `), then create the ROC plot using  `geom_roc()` and `style_roc()`. A ROC curve for a well-performing model should sit well-above the the 45 degree diagonal line, which is the reference for an AUC of 0.5 (the minimum expected for a positive predictor). However, as the curve is below the 45 degree line, we may have a seriously deficient model. 
+
+```{r, message = FALSE, warning=FALSE, fig.height = 3, fig.cap = "ROC curve out of sample"}
+#Base object
+  roc <- ggplot(input, aes(d = ytest, m = prob)) + 
+         geom_roc() + style_roc()
+  
+#Show result
+  roc
+```
+
+
+As estimated using `calc_auc()`, the out-of-sample AUC is `r   round(calc_auc(roc)$AUC, 3)`, which is generally a decent level of accuracy for this type of problem.
+
+```{r, message=FALSE, warning = FALSE, fig.height = 2}
+  calc_auc(roc)$AUC
+```
+
+Despite the promising result, we are reminded by there are a few one should ask the following question: _Is there a better classifier?_ 
+
+
+#### Practice Exercises {-}
+
+The US Census Bureau's American Community Survey provides an in-depth view of life in America. One of the many features that are captured in the survey is healthcare coverage. Apply the above methods to predict healthcare coverage in the US State of Georgia in the year 2009.
+
+The data can be obtained here: 
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+  library(digIt)
+  health <- digIt("acs_health")
+```
+
+1. Randomly split the sample into a 50% training and 50% test set.
+
+2. Predict healthcare `coverage` using continuous variables such as age (`agep`) and `wage`. 
+
+3. Calculate the performance on the test sample.
+
+
+###Logistic Regression
+
+For much of the natural and social sciences, the goal of classification is inference. Inference of how much specific factors are associated with an observed phenomenon -- not just prediction. The association typically are furnished with probabilistic qualities that allow an analyst to gauge how certain the pattern is. The output, in turn, lend themselves to building narratives. 
+
+The statistically-driven narrative are part of our daily lives. Nowadays, it would not surprise one to hear that a smoker has X-times higher chance of developing cancer than a non-smoker.^[https://www.cdc.gov/cancer/lung/basic_info/risk_factors.htm] ^^MORE STATS EXAMPLES NEEDED HERE^^
+
+These short empirical tid bits are rooted in a method known as *logistic regression*. Like ordinary least squares, logistic regressions are the workhorse of the social and natural sciences for inferring the marginal effects of input factors holding all else constant.
+
+#### Under The Hood
+
+Before we dive into the particulars, we will cut straight to the chase: logistic regression is the workhorse of many fields, but it is truly well-suited for cases where we believe that the decision plane between two or more classes is a straight line. It imposes strong linear assumptions on a problem, which may not afford the flexibility of KNNs. 
+
+Let's assume that the classes of a target variable $y$ can be dinstinguished using some linear combination of input variables $x1$ and $x2$. Upon graphing the features and color coding using the labels, you see that the points are clustered such that purple points represent to $z = 1$ and gold points represent $z = 0$. 
+
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+  library(digIt)
+  health <- digIt("acs_health")
+  
+#Create index of randomized booleans of the same length as the health data set
+  set.seed(100)
+  rand <- runif(nrow(health)) 
+  rand <- rand > 0.5
+  
+#Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+```
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 3, fig.width= 4, fig.cap = "A linearly separable problem."}
+#Margin Example
+margin_size <- -0.2
+set.seed(123)
+df <- data.frame(x = runif(1500),
+                 y = runif(1500),
+                 supports = NA)
+  
+  
+#Best boundary
+  df$z <- -1 + 3*df$x
+  df$perp <- 0.6578033 + df$x*-0.5 
+  df$perp[df$x >= 0.6951213] <- NA
+  df$perp[df$x <= 0.4711213] <- NA
+  
+#Cut out
+  df <- df[which((df$y > df$z + margin_size | df$y < df$z - margin_size | !is.na(df$supports))), ]
+  df$group <- 0
+  df$group[df$y < df$z - margin_size] <- 1
+  df$group[df$x >0.6] <- 1
+  df$cols <- "blue"
+  df$cols[df$group == "Side B"] <- "green"
+  
+  
+#Plot
+# library(ggplot2)
+# 
+# ggplot(df, aes(group=factor(group))) + 
+#     geom_point(aes(x = x, y = y,  colour = factor(group)))  +
+#     ylim(0,1) + xlim(0,1) + 
+#     ylab("x1") + xlab("x2") + scale_colour_manual(values=c("purple", "gold")) +
+#     theme(plot.title = element_text(size = 10), 
+#           axis.line=element_blank(),
+#           axis.text.x=element_blank(),
+#           axis.text.y=element_blank(),axis.ticks=element_blank(),
+#           legend.position="none",
+#           panel.background=element_blank(),panel.border=element_blank(),
+#           panel.grid.major=element_blank(),
+#           panel.grid.minor=element_blank(),plot.background=element_blank())
+  
+par(mfrow = c(1,1), mar = c(0, 1.2, 0.9, 0))
+  vec <- rep("purple", nrow(df))
+  vec[df$group==1] <- "gold"
+  
+  #Linear Boundary
+  plot(df$x, df$y, col =vec, pch = 16, axes = F, xlab = "x1", ylab = "x2")
+  lines(df$x, df$z+0.2)
+  
+```
+
+
+As it turns out, we can express the relationship between $y$, $x_1$, and $x_2$ as a linear model similar to OLS:
+
+$$y = w_0 + w_1 x_1 + w_2 x_2 + \epsilon$$
+
+where $y$ is a binary outcome and, like OLS, $\beta_k$ are coefficients that are learned using a *Maximum Likelihood Estimation* or MLE. The simple idea of MLE is that weights can be interatively adjusted so that we maximize the chance that the all the coefficients can jointly maximize the chance of accurately mimicking the target. While the innards of MLE are beyond the scope of this text, refer to *Elements of Statistical Learning* ^[Ref needed] or the more introductory version *Introduction to Statistical Learning.*^[Ref needed]
+
+If treated as a typical linear model with a continuous outcome variable, we run the risk that $\hat{y}$ would exceed the binary bounds of 0 and 1 and would thus make little sense. Imagine if $\hat{y}$, the predicted value of $y$ were -103 or +4 -- *what would that mean in the case of a binary variable?* This is a logical shortcoming of a linear model for binary outcomes. Statisticians have cleverly solved the bounding problem by inserting the predicted output into a logistic function:
+
+$$F(z) = \frac{1}{1+ e^{-z}}$$
+For a variable $x$ that ranges for -10 to +10, the logit transformation converges to +1 where $x > 0$ and to 0 where $x < 0$. This S-shaped curve is known as a *sigmoid* and bounds $\hat{y}$ to a 0/1 range.  
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 2}
+library(ggplot2)
+set.seed(123)
+l <- data.frame(x = seq(-10,10,.01))
+l$logit <- 1/(1+exp(-l$x))
+  
+ggplot(l) + 
+  geom_line(aes(x = x, y = logit),colour = "orange") +
+  ylab("F(x)") + xlab("x")
+```
+
+By substituting the linear model output $z$ into the logistic function, we bound the output between 0 and 1 and interpret the result as a conditional probability:
+
+$$p = Pr(Y=1|X) = F(z) = \frac{1}{1+ e^{-(w_0 + w_1 x_1 + w_2 x_2 )}}  $$
+This may seem to be a convoluted set of formulas, but it serves a convenient purpose. Unlike many of the techniques in this book, logistic regression is directly interpretable so as long as we believe that the decision boundary is linear. To be able to state that, for example, smokers have a 15 to 30-times higher chance of lung cancer than non-smokers, we can interpret coefficients as an odds ratio, implying that two quantities are compared. The odds of an event are defined as the following:
+
+$$odds = \frac{p}{1-p}= \frac{F(z)}{1-F(z)}=e^z$$
+In its purest form, probability $p$ can be calculated without a model, but to hold all covariates constant, we can fit the output of a logistic regression into this framework where $F(z)$ is a probability of some event $z = 1$and $1-F(z)$ is the probability of $z = 0$. The odds can be re-formulated as:
+
+$$pr(success) = \frac{e^{(w_0 + w_1 x_1 + w_2 x_2 )}}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}$$
+$$pr(failure) = \frac{1}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}$$
+
+Typically, we deal with *odds* in terms of *log odds* as the exponentiation may be challenging to work with:
+
+$$log(odds)=log(\frac{p}{1-p})= w_0 + w_1 x_1 + w_2 x_2 $$
+
+where *log* is a natural logarithm transformation. This relationship is particularly important as it allows for conversion of probabilities into odds and vice versa. 
+
+The underlying coefficients of the logistic regression can be interpretted using *Odds Ratios* or *OR*. Odds ratios essential express a marginal unit comparison. Since $odds = e^{z} = e^{w_0 + w_1 x_1 + w_2 x_2}$, then we can express an odds ratio as a marginal 1 unit increase in $x_1$ comparing $odds(x+1)$ over $odd(x+0)$:
+
+$$OR = \frac{e^{w_0 + w_1 (x_1+1) + w_2 x_2}}{e^{w_0 + w_1 (x_1+0) + w_2 x_2}} = e^{w_1}$$
+
+After a little arithmetic, it turns out the OR is simply equal to $e^{w_1}$, which can be interpreted as a multiplicative effect or a percentage effect ($100 \times (1-e^{w_1})\%$). More simply, this means that one can obtain the ballpark effect of a regression coefficient by exponentiating it. For example, if a logistic regression were trained to relate wages and citizenship binary variable ($x$) to whether people have health care insurance, the result may look as follows:
+
+$$y(\text{no coverage}) = 0.468 - 0.048 \times wage + 0.372 \times \text{non-citizen} $$
+As it, the coefficients provide little information other than the fact that a positive cofficient indicates that an increase in an input $x$ increases the chances of $y$. By exponentiating the cofficients odds of coverage are as follows for each variable:
+
+- $OR_{wage} = e^{-0.048} = 0.953$ translates to -4.68% lower chance of not having health coverage for every $1000 increase in wages. Otherwise stated, more that one earns, better the chance of having health coverage.
+- $OR_{non-citizen} = e^{0.372} = 0.451$ translates to 45% higher chance of not having health coverage among non-citizens.
+
+
+
+#### Tips
+
+Training a logistic regression is a fairly straight forward process as will be demonstrated in later sections. However, there are a number of key issues issues to keep in mind.
+
+Tuning a logistic regression is a matter of selecting combinations of features (variables): finding the right combination of features will maximize classification accuracy. The process generally starts from a hypothesis of how variables are related to a target, but ultimately, the process unfolds as a series of trial and error tests. Suppose an analyst finds that a four-variable specification is the best model. If the underlying data set has 100 variables, then we can infer that the chosen specification is only one of 3.9 million possible four variable specifications. How does one know if the specification is the best? The possibilities of tuning an accurate model can be seemingly endless, but can be bound if the goals are set in advance. As logistic regression is one of the few truly interpretable machine learning algorithms, the goals can be broadly divided between *interpretability* (focus on $\hat{\beta}$) and *prediction* ($\hat{y}$).
+
+
+__Interpretability__. Logistic regression is well-suited for socializing an empirical problem by crafting narratives around the coefficients. In order to tease out the associated effect of a variable, it is customary to estimate a series of models to understand how robust the observed effect size is. 
+
+- __Multicollinearity__. In virtually all introductory texts that cover logistic regression, collinearity is consistently flagged and rightfully so. As a refresher, multi-collinearity is a condition in which two or more input variables are not only correlated with the target variables, but amongst each other as well. The consequence is odd behavior among the coefficients -- a factor that should be negative signals positive, the size of effects may be extraordinarily large, etc. The answer lies within what the coefficients represent: they are the average effect of $x$ on $y$, partially isolated holding all else constant. Thus, if two or more variables have identical or very similar information, the model's learning process guided by MLE will be challenged in distilling the effects for each variable. This explains the odd behavior in coefficients and makes coefficients invalid for interpretation. Interestingly, the predictions $\hat{y}$ will still be usable. The best option is to conduct variable selection in advance to minimize double counting of signal.
+- __"Ill-Posed Problems"__. Like ordinary least squares, logistic regression are not well suited for scenarios where the number of observations $n$ is out-numbered variables $k$ -- $k > n$. A more recent solution has been to rely on regularization methods (e.g. LASSO and Ridge) that are designed to efficiently perform in these scenarios.
+
+__Sample imbalance__. ^^Sample imbalance will directly impact prediction accuracy^^
+
+
+#### Use Case: Health Care Coverage
+
+Universal healthcare has become a basic human right in many countries. In the United States, this is not currently a guarantee, shrouded in heated political debate and controvery whether its a matter of human rights or a matter in which an individual may choose his or her fate. Regardless of the politics, there is data on healthcare coverage.
+
+According to the American Community Survey [ACS](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_pums_csv_2009&prodType=document), an annual survey of approximately 3.5% of the US population as conducted by the US Census Bureau, over 22.4% of residents of the U.S. state of Georgia were without healthcare coverage in 2009. That is a fairly sizable proportion of the population -- for every ten people, between two to three did not have coverage. If you read the news in 2010, a new law to provide [affordable healthcare](http://www.nytimes.com/2010/03/24/health/policy/24health.html?mcubz=1) came into effect to help the uninsured. 
+
+Imagine that you are hypothetically tasked with getting the word out and drive recruitment in the state of Georgia. There is a hiccup, however. While commercial registries exist with people's demographic and personal contact information, most statistics on coverage are based on surveys, thus we do not precisely know _who_ does not have insurance. A brute force approach could be to reach out to everyone under the sun though we can easily infer a wasted effort as 776 of every 1000 people are already covered. *How do we get to the 224 people who are not already insured?* For marketers, this is a classic targeting problem.
+
+Data needs to enable the prediction and classification of a population into two classes: covered and not covered. By correctly classifying people as covered and not covered, decision makers and outreach staff can mobilize targeted outreach. From a data science perspective, the real objective is to be able to identify and replicate re-occurring patterns in the training data, then generalize the insights onto a sample or population that is not contained in the sample.
+
+Given the label $y(Coverage)$, we can use logistic regression to not only infer what is associated with coverage, but also train a model to predict who is likely to need coverage: 
+
+$y(Coverage) = f(\text{Sex, Age, Education, Marital Status, Race, Citizenship})$
+
+Based on the Census American Community Survey, we will illustrate how to construct a logistic regression. The sample has been *balanced*, meaning that both covered and non-covered survey respondents are represented in equal proportions in the sample. 
+
+
+```{r, message=FALSE, warning=FALSE}
+# Load ACS health care data
+  library(digIt)
+  health <- digIt("acs_health")
+  
+# Convert characters into discrete factors
+  factor_vars <- c("coverage", "mar", "cit", "esr", "schl")
+  for(var in factor_vars){
+    health[,var] <- as.factor(health[,var])
+  }
+  
+# Randomly assign
+  set.seed(100)
+  rand <- runif(nrow(health)) > 0.5
+  
+# Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+  
+```
+
+
+Training a logistic regression can be easily done using the `glm()` function, which is a flexible algorithm class known as Generalized Linear Models. Using this one method, multiple types of linear models can be estimated including ordinary least squares for continuous outcomes, logistic regression for binary outcomes and Poisson regression for count outcomes. 
+
+At a minimum, three parameters are required:
+
+`glm(formula, data, family)`
+
+where:
+
+- `formula` is a formula object. This can take on a number of forms such as a symbolic description (e.g. $y = w_0 + w_1 x_1+ w_2 x_2 + \epsilon$ is represented as `y ~ x1 + x2`). 
+- `data` is a data frame containing the target and inputs.
+- `family` indicates the probability distribution used in the model. Distributions typically used for GLMs are _binomial_ (binary outcomes), _poisson_ (count outcomes), _gaussian_ (continuous outcomes - same as OLS), among others.
+
+The family refers to the probability distribution family that underlies the specific estimation method. In the case of logistic regression, the probability family is *binomial*.
+
+To start, we will specify three models: 
+
+- _Economic_: $coverage = f(log(age) + wage + employment)$
+- _Social_: $coverage = f(citizenship + marital + schooling)$
+- _Combined_:  $coverage = f(log(age) + wage + employment + citizenship + marital  + schooling)$
+
+
+then assign each to a formula object and estimate each formula. 
+
+```{r, message = FALSE, warning = FALSE, results = 'asis'}
+# Formula objects
+  econ <- as.formula("coverage ~ log(agep) + wage + esr")
+  soc <- as.formula("coverage ~ cit + mar + schl")
+  all <- as.formula("coverage ~ log(agep) + wage + schl + esr + cit + mar")
+  
+# Estimated GLM models
+  glm_econ <- glm(econ, data = train, family = binomial)
+  glm_soc <- glm(soc, data = train, family = binomial)
+  glm_all <- glm(all, data = train, family = binomial)
+
+```
+
+ In the social sciences and in public policy, the focus of regression modeling is typically placed on identifying an effect or an associated relationship that describes the process being studied. Often times, coefficient tables are examined, in particular the direction of the relationships (e.g. positive or negative weights), their statistical significance (e.g. p-value or t-statistics), and the relative fit of the model (e.g. the lowest Akaike Information Criterion or AIC provides _relative_ model fit comparison). For example, an analyst may point out that education has an effect on coverage by interpreting the coefficient point estimates. In the combined model, education attainment coefficients are are estimated relative to people who hold a graduate degree, thus indicating that people who :
+ 
+-  did not finish high school have a _6.58-times_ higher chance of not having health coverage ($ e^{\text{w = 1.884}} = 6.58$)
+-  hold a high school degree have a _4.91-times_ higher chance of not having health coverage ($ e^{\text{w = 1.592}} = 4.91$)
+-  hold a college degree are relatively better off than the previous two groups with a _1.79-times_ higher chance of not having health coverage ($ e^{\text{w = 0.584}} = 1.79$)
+ 
+All coefficients are statistically significant. While it is valid to evaluate models on this basis, it is necessary to remember that this is not the same as evaluating a model for predictive use cases as  predictive accuracy is not assessed on the basis of coefficients. 
+ 
+```{r, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE, fig.cap = "Coefficient table of three alternative GLM specifications."}
+ library(stargazer)
+ stargazer(glm_econ, glm_soc, glm_all)
+```
+ 
+Like the KNN example, the absolute accuracy of a model needs to be obtained through model validation techniques like cross validation. The `boot` library can be used to generate cross-validated accuracy estimates through the `cv.glm()` function:
+
+`cv.glm(data, glmfit, cost, K)`
+
+where:
+
+- `data` is a data frame or matrix.
+- `fit` is a glm model object.
+- `cost` specifies the cost function for cross validation. 
+- `K` is the number of cross validation partitions.
+
+Note that the cost function needs to take two vectors. The first is the observed responses and the second is the predicted responses. For example, the cost function could be the overall accuracy rate:
+
+$$ \frac{FP+FN}{TP+FP+TN+FN}$$
+
+or the true positive rate (TPR):
+
+$$\frac{TP}{TP+FN}$$
+Both are written as functions below:
+```{r, message = FALSE, warning = FALSE}
+# Misclassification Rate
+  costAccuracy <- function(y, y.hat){
+    a <- sum((y == 1 ) & (y.hat >= 0.5))
+    b <- sum((y == 0 ) & (y.hat < 0.5))
+    c <- ((a + b) / length(y))
+    return(c)
+  }
+
+# True Positive Rate
+  costTPR <- function(y, y.hat){
+    a <- sum((y == 1 ) & (y.hat >= 0.5))
+    b <- sum((y == 1 ) & (y.hat < 0.5))
+    return((a) / (a + b))
+  }
+```
+ 
+So that we can compare the cross validation accuracy with KNN, we will specify the `cost` using the misclassification rate for each of the three candidate models and set $k = 10$. Whereas KNN was able to achieve a 74% accuracy rate, the best GLM model was able to reach 72%, suggesting that some of the underlying variability in coverage rate is not captured in linear relationships. Also note that the input features for the KNN model were in a dummy matrix, thus the comparison is not perfect.
+
+```{r, echo = FALSE, fig.cap = "Comparison of CV accuracy  (k = 10 folds), message = FALSE, warning = FALSE"}
+# Load boot library
+library(boot)
+
+# Estimate k-folds 
+k_econ <- cv.glm(data = train, glmfit = glm_econ, cost = costAccuracy, K = 10)
+k_soc <- cv.glm(data = train, glmfit = glm_soc, cost = costAccuracy, K = 10)
+k_all <- cv.glm(data = train, glmfit = glm_all, cost = costAccuracy, K = 10)
+
+# Put together table of misclassification
+out <- rbind(data.frame(specification = "Economic", accuracy = k_econ$delta[1]),
+             data.frame(specification = "Social", accuracy = k_soc$delta[1]),
+             data.frame(specification = "All", accuracy = k_all$delta[1]))
+
+# Output table
+knitr::kable(out, booktab = TRUE)
+```
+
+
+In order to obtain the predicted values of $coverage$, we use `predict()`:
+
+`predict(object, newdata, response)`
+
+where:
+
+- `object` is a GLM model object.
+- `newdata` is a data frame. This can be the training data set or the test set with the same format and features as the training set.
+- `response` indicates the type of value to be returned, whether it is the untransformed "link" or the probability "response".
+
+We will now apply `predict()` to score the responses for each `train` and `test` samples.
+
+```{r, warning=FALSE, message=FALSE}
+  pred.glm.train <- predict(glm_all, train, type = "response")
+  pred.glm.test <- predict(glm_all, test, type = "response")
+```
+
+A quick review of the predicted probabilities indicates confirms that we have the right response values (probabilities), bound by 0 and 1.
+```{r, warning=FALSE, message=FALSE}
+  summary(pred.glm.train)
+```
+
+Lastly, to calculate the prediction accuracy, we will once again rely on the combination of ``ggplot2`` and ``plotROC` libraries for the AUC. Interestingly, the test set AUC is greater than that of the train set. This occurs occassionally and is often times due to the luck of the draw.
+```{r, message = FALSE, warning = FALSE}
+#plotROC
+  library(plotROC)
+  library(ggplot2)
+
+#Set up ROC inputs
+  input.glm <- rbind(data.frame(model = "train", d = train$coverage, m = pred.glm.train), 
+                  data.frame(model = "test", d = test$coverage,  m = pred.glm.test))
+  
+#Graph all three ROCs
+  roc.glm <- ggplot(input.glm, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  + ggtitle("ROC: GLM")
+
+#AUC
+  calc_auc(roc.glm)[,2:3]
+```
+
+
+#### Practice Exercises {-}
+
+1. Can logistic regression be applied to the downed tree problem from the KNN section? Apply the method to the downed trees data. How do the accuracies compare and why?
+
+2. ^^Another question goes here^^
+
+
+
+
+### Decision Tree Learning
+
+
+```{r, message=FALSE, warning=FALSE}
+# Load ACS health care data
+  library(digIt)
+  health <- digIt("acs_health")
+  
+# Convert characters into discrete factors
+  factor_vars <- c("coverage", "mar", "cit", "esr", "schl")
+  for(var in factor_vars){
+    health[,var] <- as.factor(health[,var])
+  }
+  
+# Randomly assign
+  set.seed(100)
+  rand <- runif(nrow(health)) > 0.5
+  
+# Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+  
+```
+
+
+In everyday policy setting and operations, decision trees are a common tool used for communicating complex processes, whether for how an actor moves through intricate and convoluted bureaucracy or how a sub-population can be described based on a set of criteria. While the garden variety decision tree can be laid out qualitatively, supervised learning allows decision trees to be created in an empirical fashion that not only have the power to aesthetically communicate patterns, but also predict how a non-linear system behaves.
+
+The structure of a decision tree can be likened to branches of a tree: moving from the base of the tree upwards, the tree trunk splits into two or more large branches, which then in turn split into even smaller branches, eventually reaching even small twigs with leaves. Given a labeled set of data that contains input features, the branches of a decision tree is grown by subsetting a population into smaller, more homogeneous units. In other words, moving from the root of the tree to the terminating branches, each subsequent set of branches should contain records that are more similar, more homogeneous or purer. 
+
+As was demonstrated at the beginning of this chapter, decision trees use a form of recursive partitioning to learn patterns, doing so using central concepts of _information theory_. There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). All these algorithms follow the same framework that includes the following elements: (1) nodes and edges, (2) attribute tests, and (3) termination criteria.
+
+#### Under The Hood
+
+__Nodes + Edges__. Recalling the healthcare insurance decision tree, the tree can be characterized by nodes and edges. 
+
+- Nodes (circles) contain records. 
+- Edges (lines) show dependency between nodes and is the product of a split decision. Nodes are split based on an attribute test -- a technique to identify the optimal criterion to subset records into more homogeneous groups of the target variable. 
+- The node at the top of the tree is known as the *root*and represents the full population.
+- Each time a node is split, the result is two nodes -- each of which is referred to as a child node. 
+A node without any child nodes is known as a leaf.  
+
+The goal is to grow a tree from the root node into as many smaller, more homogeneous child nodes with respect to the target variable.
+
+__Attribute tests__. To understand attribute tests means to have a thorough understanding of separability. Let's suppose we have a list of residents of a town. The list contains both users and non-users of a given healthcare service. For each person, the inventory captures whether a given person is employed, has income over $20k, and lives on the west side or east side of town. Each of the features are plotted in the pie chart below. 50% of town residents use the health service, but which of the features is best at separating users from non-users?
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE, fig.cap = "Summary characteristics of town residents."}
+  #Libraries
+  library(ggplot2)
+  library(gridExtra)
+  
+  #Get fabricated data
+  customers <- read.csv("data/entropy_example.csv")
+  customers$id <- 1:nrow(customers)
+  
+  
+  #Target
+  tab <- as.data.frame(table(customers$user))
+  colnames(tab) <- c("customer", "count")
+  
+  pie_c <- ggplot(data = tab, aes(x = "", y = count, fill = customer)) +
+              geom_bar(width = 100, stat = "identity") +
+              coord_polar(theta="y", start = 0) +
+              theme( plot.title = element_text(size = 9), 
+                    axis.text.x=element_blank(), axis.text.y=element_blank(), 
+                    axis.title.x=element_blank(), axis.title.y=element_blank()) 
+  
+  #Area
+  tab <- as.data.frame(table(customers$area))
+  colnames(tab) <- c("area", "count")
+  
+  pie_i <- ggplot(data = tab, aes(x = "", y = count, fill = area)) +
+              geom_bar(width = 100, stat = "identity") +
+              coord_polar(theta="y", start = 0) +
+              theme( plot.title = element_text(size = 9), 
+                    axis.text.x=element_blank(), axis.text.y=element_blank(), 
+                    axis.title.x=element_blank(), axis.title.y=element_blank()) 
+  
+  #Income
+  tab <- as.data.frame(table(customers$income))
+  colnames(tab) <- c("income", "count")
+  
+  pie_r <- ggplot(data = tab, aes(x = "", y = count, fill = income)) +
+              geom_bar(width = 100, stat = "identity") +
+              coord_polar(theta="y", start = 0) +
+              theme( plot.title = element_text(size = 9), 
+                    axis.text.x=element_blank(), axis.text.y=element_blank(), 
+                    axis.title.x=element_blank(), axis.title.y=element_blank()) 
+  
+    
+  #Employment
+  tab <- as.data.frame(table(customers$employ))
+  colnames(tab) <- c("employ", "count")
+  
+  pie_e <- ggplot(data = tab, aes(x = "", y = count, fill = employ)) +
+              geom_bar(width = 100, stat = "identity") +
+              coord_polar(theta="y", start = 0) +
+              theme( plot.title = element_text(size = 9), 
+                    axis.text.x=element_blank(), axis.text.y=element_blank(), 
+                    axis.title.x=element_blank(), axis.title.y=element_blank()) 
+  
+  
+  grid.arrange(pie_c, pie_e, pie_r, pie_i, ncol = 2)
+```
+
+To answer that question, we can rely on a visual cross-tabulation where the size of the circles is scaled proportional to the number of records. The objective is to identify the matrix where the circles are the largest along any diagonal -- this would indicate that given usership, a feature is able to serve as a criterion that separates users from non-users. Of the three graphs below, graph #2 is able to separate a relatively large proportion of users from non-users. For a relatively low-dimensional dataset (fewer attributes), a visual analysis is accomplishable. However, on scale, undertaking this process manually may be onerous and prone to error.
+
+```{r, echo = FALSE, message = FALSE, warning=FALSE, fig.cap = "A visual comparison of low separability (1 and 3) and high separability (2)."}
+  
+  #employ
+  tab <- as.data.frame(table(customers$user, customers$employ))
+  colnames(tab) <- c("customer", "employ", "count")
+  
+  pie_1 <- ggplot(tab, aes(customer, employ)) + 
+              geom_point(aes(size = count), colour = "navy") + 
+              theme_bw() + xlab("Customer?") + ylab("Employed?") +  ggtitle("(1)") + 
+              scale_size_continuous(range=c(3,15)) + 
+              theme(plot.title = element_text(size = 10), legend.position="none")  + coord_fixed(ratio = 1)
+  
+  
+  #Income
+  tab <- as.data.frame(table(customers$user, customers$income))
+  colnames(tab) <- c("customer", "income", "count")
+  
+  pie_2 <- ggplot(tab, aes(customer, income)) + 
+              geom_point(aes(size = count), colour = "navy")  +  ggtitle("(2)") +  
+              theme_bw() + xlab("Customer?") + ylab("Income") +   
+              scale_size_continuous(range=c(3,15)) + 
+              theme(plot.title = element_text(size = 10), legend.position="none")  + coord_fixed(ratio = 1) 
+  
+  #Revenue
+  tab <- as.data.frame(table(customers$user, customers$area))
+  colnames(tab) <- c("customer", "area", "count")
+  
+  pie_3 <- ggplot(tab, aes(customer, area)) + 
+              geom_point(aes(size = count), colour = "navy")  +  ggtitle("(3)") +  
+              theme_bw() + xlab("Customer?") + ylab("Side of town?") +   
+              scale_size_continuous(range=c(3,15)) + 
+              theme(plot.title = element_text(size = 10), legend.position="none")  + coord_fixed(ratio = 1)
+  
+  grid.arrange(pie_1, pie_2, pie_3,  ncol = 3)
+```
+
+Enter attribute tests.
+
+Decision trees are grown by splitting a data set into many smaller samples. Attribute tests are the mode of finding the split criterion, following an empirical process to systematically test all input features to find the feature with the greatest separability.  The process starts from the root node where the algorithm examines each input feature to find the one that maximizes separability at that node: 
+
+```
+  Let Sample = S, Target = Y, Input Features = X
+      For each X:
+          Calculate the attribute test statistic comparing X and Y
+          Store statistic
+      Compare and identify Xi that yields the greatest separability
+      Split S using input feature that maximizes separability
+      Iterate process on child node
+```
+
+Upon finding the optimal feature for a given node, the decision tree algorithm splits the node into two child nodes based on the optimal feature, then moves onto the next node (often times a child node) and runs the same process to find the next split. There are a number of attribute tests, of which we will cover two: *Information Gain* and  *Gini Impurity*.
+
+__Information gain__ is a form of *Entropy*, which is a measure of purity of information. Based on these distinct states of activity, entropy is defined as:
+
+$$\text{Entropy} = \sum{-p_{i} log_2(p_{i})}$$
+
+where $i$ is an index of states, $p$ is the proportion of observations that are in state $i$, and $log_2(p_i)$ is the Base 2 logarithm of the proportion for state $i$. Information Gain (IG) is variant of entropy, which is the entropy of the root node *less* the average entropies of the child nodes.
+
+$$\text{IG} = \text{Entropy}_\text{root} - \text{Avg Child Entropy}$$
+How does this work in practice? Starting from the root node, we need to calculate the root entropy, where the classes are based on the classes of the target `usership`.
+
+$\qquad \text{Entropy}_\text{usership} = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
+
+$\qquad \qquad \qquad \qquad \qquad  = (-\frac{6}{12} log_2(\frac{6}{12})) + (-\frac{6}{12} log_2(\frac{6}{12}))$
+
+$\qquad \qquad \qquad \qquad \qquad  = 1.0$
+
+Then, the attribute test is applied to the root node by calculating the weighted entropy for each proposed child node. Using the `income` feature, the calculation is as follows:
+
+- Split the root node into two child nodes using the `income` class. This yields the following subsamples as shown in the table below:
+
+| | < $20k | > $20k|
+|--------+---------+----------|
+|No | 0 | 6 |
+|Yes | 5 | 1 |
+|Total | 5 | 7 |
+
+- For each child node (the columns in the table), calculate entropy:
+
+$\qquad \text{Entropy}_\text{income < 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
+
+$\qquad \qquad \qquad \qquad \qquad  = -\frac{5}{5} log_2(\frac{5}{5}) = 0$
+
+
+$\qquad \text{Entropy}_\text{income > 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
+
+$\qquad \qquad \qquad \qquad \qquad = -\frac{6}{7} log_2(\frac{6}{7}) + -\frac{1}{7} log_2(\frac{1}{7}) = 0.5916728$
+
+- Calculate the weighted average entropy of children:
+
+$\qquad \text{Entropy}_\text{income split} = \frac{5}{12}(0) +  \frac{7}{12}(0.5916728) = 0.3451425$
+
+- Then calculate the information gain:
+
+$\qquad \text{IG}_\text{income} = \text{Entropy}_\text{root} -  \text{Entropy}_\text{income split}$
+
+$\qquad \qquad \qquad \qquad \qquad = 1 - 0.3451425 = 0.6548575$
+
+- We then can perform the same calculation on all other features (e.g. employment, part of town) and compare results. The goal is to *maximize* the IG statistic at each decision point. In this case, we see that income is the best attribute to use for splitting. This split is easily interpretable: "The majority of users of health services can be predicted to earn less than $20,000."
+
+| Measure | IG |
+|---------+------|
+|Employment| 0.00 | 
+|Income | 0.6548575 |
+|Area of Town|0.027119 |
+
+
+__Gini Impurity__ is closely related to the entropy with a slight modification:
+
+$$\text{Gini Impurity} = \sum{p_{i}(1-p_{i})} = 1 - \sum{p_{i}^2}$$
+Using Gini Impurity as an attribute test is also similar to Information Gain: 
+
+$$\text{Gini Gain} = \text{Gini}_\text{root} - \text{Weighted Gini}_\text{child}$$
+
+#### (3) Stopping Criteria + Tree Pruning
+Both Gini Gain and Information Gain attribute tests can be recursively applied until there are no longer input features available to split the data. This is also known as a "fully grown tree" or an "unpruned tree". While the terminal leafs may yield a high degree of accuracy in training, trees may grow to epic and complex proportions that have leaf sizes are often times too small to provide accurate and generalizable results. While fully grown trees are considered to have low bias, their out-of-sample performance may be high in variance. There [theoretically] exists some optimal balancing point where trees are complex enough to capture statistical patterns, but are not too complex to yield misleading results.
+
+Fortunately, the methodologists who invented decision tree learning have designed two approaches to balance accuracy and generalizability: stopping criteria and pruning.
+
+Recall that a leaf is defined as a node with no child nodes. Otherwise stated, a leaf is a terminal node in which no additional attribute testing is conducted -- it's placed out of commission. Stopping criteria are employed to determine if a node should be labeled a leaf during the growing process, thereby stopping tree growth at a given node. These criteria are specified before growing the tree and take on a number of different forms including: 
+
+- A node has fewer records than a pre-specific threshold;
+- The purity or information gain falls below a pre-specified level or is equal to zero;
+- The tree is grown to n-number of levels (e.g. Number of levels of child nodes relative to the root exceeds a certain threshold).
+
+While stopping criteria are useful, the results in some studies indicate their performance may be sub-optimal. The alternative approach involves growing a tree to its fullest, then comparing the prediction performance given tree complexity (e.g. number of nodes in the tree) using cross-validation.  In the example graph below, model accuracy degrades beyond a certain number of nodes. Thus, optimal number of nodes is defined as when cross-validation samples (e.g. train/test, k-folds) reaches a minimum across samples. Upon finding the optimal number of nodes, the tree is _pruned_ to only that number of nodes. 
+
+```{r, echo=FALSE, warning = FALSE, message = FALSE, fig.height = 2}
+set.seed(1020)
+n = 15
+tree.error <- data.frame( trees = 1:n,
+                          v1 = 50*(1+cos((1:n)/3)) + runif(n)*10,
+                          v2 = 50*(1+cos((1:n)/3)) + runif(n)*10,
+                          v3 = 50*(1+cos((1:n)/3)) + runif(n)*10,
+                          v4 = 50*(1+cos((1:n)/3)) + runif(n)*10,
+                          v5 = 50*(1+cos((1:n)/3)) + runif(n)*10)
+
+ggplot(tree.error) + geom_line(aes(x = trees, y = v1), colour = "orange") + geom_line(aes(x = trees, y = v2), colour = "navy") +
+  xlab("Number of nodes") + ylab("Error") + geom_vline(xintercept = 10, colour = "red") + geom_line(aes(x = trees, y = v3), colour = "green") + geom_line(aes(x = trees, y = v4), colour = "purple") + geom_line(aes(x = trees, y = v5), colour = "lightblue")  + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+ 
+```
+
+
+#### Issues
+
+Like any technique, decision trees have strengths and weaknesses:
+
+| Strengths  | Weakness|
+|--------------------------------------+--------------------------------|
+| - Rules (e.g. all the criteria that form the path from root to leaf) can be directly interpreted. | - Data sets with large number of features will have overly complex trees that, if left unpruned, may be too voluminous to interpret. |
+| - Method is well-suited to capture interactions and non-linearities in data. | - Trees tend to overfitted at the terminal leafs when samples are too small. |
+| - Technique can accept both continuous and continuous variables without prior transformation. | |
+| - Feature selection is conducted automatically | |
+
+
+#### In Practice: Decision Trees
+To put decision trees into practice, we will use the same `train` and `test` data frames introduced in the GLM section. There are a number of R implementations of decision trees, the most popular of which is the `rpart` library:
+```{r, message = FALSE, warning=FALSE}
+  library(rpart)
+```
+
+The main function within the library comes with flexible capabilities to grow decision trees: 
+
+`rpart(formula, method, data, cp, minbucket, minsplit)`
+
+where:
+
+- `formula` is a formula object. This can take on a number of forms such as a symbolic description (e.g. $y = f(x_1, x_2, ...)$ is represented as "`y ~ x1 + x2`""). 
+- `method` indicates the type of tree, which are commonly either a classification tree "class" or regression tree "anova". Split criteria can also be custom written.
+- `data` is the data set in data frame format.
+- `cp` is a numeric indicates the complexity of the tree. $cp = 1$ is a tree without branches, whereas $cp = 0$ is the fully grown, unpruned tree. If $cp$ is not specified, `rpart()` defaults to a value of 0.01.
+- `minbucket` is a stopping criteria that specifies the minimum number of observations in any terminal leaf.
+- `minsplit`  is a stopping criteria that specifies the number of observation in a node to qualify for an attribute test.
+
+As a first pass, we'll run `rpart()` with the default assumptions. Note that in `rpart()` automatically conducts k-folds cross-validation for each level of tree growth. If one were to use `summary()` or `str()` to check the structure of the output object named `fit`, the inner workings would likely be found to be quite exhaustive and rather complex. Fortunately, the `printcp()` method can be used to obtain a summary of the overall model accuracy for tree at different stages of growth. Key features of the `printcp()` output include:
+
+- A listing of the variables actually used in construction (note that `cit`)
+- In the table, `CP` indicates the tree complexity, `nsplit` is the number of splits, `rel error` is the prediction error in the training data, `xerror` is the cross-validation error, and `xstd` is the standard error.
+
+```{r, message = FALSE, echo = FALSE, warning=FALSE}
+#cp = 0
+  fit <- rpart(coverage ~ agep + wage + cit + mar + schl + esr , 
+               method = "class", data = train)
+
+#Lowest xerror
+  best.error <- as.vector(min(fit$cptable[,4]))
+  best.splits <- as.vector(fit$cptable[,2][which(fit$cptable[,4]==min(fit$cptable[,4]))])
+  best.sd <- as.vector(fit$cptable[,5][which(fit$cptable[,4]==min(fit$cptable[,4]))])
+
+  opt.error <- best.error + best.sd
+  opt.select <- as.vector(fit$cptable[,1][which(fit$cptable[,4] <= opt.error)])[1]
+  opt.xerror <- as.vector(fit$cptable[,4][which(fit$cptable[,4] <= opt.error)])[1]
+  opt.select.split <- as.vector(fit$cptable[,2][which(fit$cptable[,4] <= opt.error)])[1]
+  
+```
+
+To choose the best tree, a _rule of thumb_ is to first find the tree with the lowest cross-validation `xerror`, then find the tree that has the lowest number of splits that is still within one standard deviation `xstd` of the best tree^[Hastie et. al (2001)]. The idea behinds this rule of thumb takes advantage of uncertainty: the true value lies somewhere within a confidence interval, thus any value within a tight confidence interval of the best value is approximately the same. In this first model, the best tree has `r paste0("nsplit = ", best.splits)` and `r paste0("xerror = ", best.error)`. By applying the rule, the upper bound of acceptable error is `r paste0("xerror = ", round(best.error,6)," + ", round(best.sd, 6), " = ", opt.error)`. As it turns out, the tree with `r paste0("nsplit = ", opt.select.split)` is within one standard deviation and is thus the best model. 
+
+
+```{r, eval = FALSE}
+
+#Fit decision tree under default assumptions
+  fit <- rpart(coverage ~ agep + wage + cit + mar + schl + esr, 
+               method = "class", data = train)
+  
+#Tools to review outpu
+  printcp(fit)
+```
+
+The model's learned rules contained in `fit` can be plotted with `plot()`, but it takes a bit of work to get the plot into a presentable format. The substitute is using the `rpart.plot` library, which auto-formats the tree and color codes nodes based on the concentration of the target variable.
+
+```{r, fig.height = 3, fig.cap = "Decision tree using default parameters."}
+#Plot
+  library(rpart.plot)
+  rpart.plot(fit, shadow.col="gray", nn=TRUE)
+```
+
+```{r, message = FALSE, echo = FALSE, warning=FALSE}
+#cp = 0
+  fit.0 <- rpart(coverage ~ agep + wage + cit + mar + schl + esr , 
+               method = "class", data = train, cp = 0)
+
+#Lowest xerror
+  best.error <- as.vector(min(fit.0$cptable[,4]))
+  best.splits <- as.vector(fit.0$cptable[,2][which(fit.0$cptable[,4]==min(fit.0$cptable[,4]))])
+  best.sd <- as.vector(fit.0$cptable[,5][which(fit.0$cptable[,4]==min(fit.0$cptable[,4]))])
+
+  opt.error <- best.error + best.sd
+  opt.select <- as.vector(fit.0$cptable[,1][which(fit.0$cptable[,4] <= opt.error)])[1]
+  opt.xerror <- as.vector(fit.0$cptable[,4][which(fit.0$cptable[,4] <= opt.error)])[1]
+  opt.select.split <- as.vector(fit.0$cptable[,2][which(fit.0$cptable[,4] <= opt.error)])[1]
+  
+```
+
+While this answer is valid, it should be noted that the CP lower threshold is 0.01, which is the default value. For robustness, we should run the model once more, this time specifying $cp = 0$ to obtain the full, unpruned tree (see below). Applying the error minimization rule once more, the minimum `r paste0("xerror = ", round(best.error, 6))`, which corresponds to `r paste0("nsplit = ", best.splits)`. The maximum $xerror$ within one standard deviation is `r paste0("xerror = ", round(best.error, 6), " + ", round(best.sd, 6), " = ", round(opt.error,6) )`, which corresponds to `r paste0("nsplit = ", opt.select.split)` with `r paste0("xerror = ", round(opt.xerror, 6))` and `r paste0("cp = ", round(opt.select,6))`
+
+```{r, eval = FALSE}
+#cp = 0
+  fit.0 <- rpart(coverage ~ agep + wage + cit + mar + schl + esr , 
+               method = "class", data = train, cp = 0)
+  printcp(fit.0)
+```
+
+```{r, echo = FALSE}
+  printcp(fit.0)
+```
+
+At this point, we'll re-run the decision tree once more with the updated $cp$ value, assign the decision tree object to `fit.opt`, and plot the resulting decision tree. Notice how the rendered tree is significantly more complex relative to the default and interpretation may be more challenging with a plethora of criteria. 
+
+```{r, fig.height = 4, fig.cap = "Decision tree for optimized complexity."}
+  fit.opt <- rpart(coverage ~ agep + wage + cit + mar + schl + esr, 
+               method = "class", data = train, cp = opt.select)
+  rpart.plot(fit.opt, shadow.col="gray", nn=TRUE)
+```
+
+In lieu of a thorough review of the learned rules, we may rely on a measure of variable importance, that is defined as follows:
+
+$$\text{Variable Importance}_k = \sum{\text{Goodness of Fit}_\text{split, k} + (\text{Goodness of Fit}_\text{split,k}\times \text{Adj. Agreement}_\text{split})}$$
+Where *Variable Importance* for variable $k$ is the sum of *Goodness of Fit* (e.g. Gini Gain or Information Gain) at a given split involving variable k. In otherwords, a variable's importance is the sum of all the contributions variable $k$ makes towards predicting the target. Below, we can see that the measure can be extracted from the `fit.opt` object. As it turns out, `age` is the most important factor.
+
+```{r}
+#Extract variable importance list from fit object
+  fit.opt$variable.importance
+```
+
+
+Using the `plotROC` package once again, we calculate the AUC score for each model to assess predictive performance on both the training and test set. One particularly striking difference is the switch in position of the $optimal$ and $cp = 0$ curves: $cp = 0$ is higher in the training set, but are at the approximate safe height in test. This indicates that $cp = 0$ notably overfits, likely to the extra low bias of unpruned leafs.
+
+```{r, fig.height = 3, message = FALSE, warning = FALSE, fig.cap = "ROC curves for train and test sets."}
+#plotROC
+  library(plotROC)
+  library(gridExtra)
+
+#Predict values for train set
+  pred.opt.train <- predict(fit.opt, train, type='prob')[,2]
+  pred.0.train <- predict(fit.0, train, type='prob')[,2]
+  pred.default.train <- predict(fit, train, type='prob')[,2]
+
+#Predict values for test set
+  pred.opt.test <- predict(fit.opt, test, type='prob')[,2]
+  pred.0.test <- predict(fit.0, test, type='prob')[,2]
+  pred.default.test <- predict(fit, test, type='prob')[,2]
+  
+#Set up ROC inputs
+  input.test <- rbind(data.frame(model = "optimal", d = test$coverage, m = pred.opt.test), 
+                  data.frame(model = "CP = 0", d = test$coverage,  m = pred.0.test),
+                  data.frame(model = "default", d = test$coverage,  m = pred.default.test))
+  input.train <- rbind(data.frame(model = "optimal", d = train$coverage,  m = pred.opt.train), 
+                  data.frame(model = "CP = 0", d = train$coverage,  m = pred.0.train),
+                  data.frame(model = "default", d =  train$coverage,  m = pred.default.train))
+  
+  
+#Graph all three ROCs
+  roc.test <- ggplot(input.test, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  + ggtitle("Test")
+  roc.train <- ggplot(input.train, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  +ggtitle("Train")
+  
+#Plot
+  grid.arrange(roc.train, roc.test, ncol = 2)
+  
+```
+
+Lastly, we can extract the AUC statistics using `calc_auc()`. As multiple AUCs were calculated, we will need to extract the labels for the AUCs from the `input` file in order to produce a a 'prettified' table using `xtable`. The resulting table below presents the results of the three models that were trained. For all models, we should expect that the training AUC will be greater than the test AUC. This is generally true, but occassionally the test AUC may be greater and is largely a matter of how the data was sampled.
+
+Starting from the top of the table:
+
+- *Full grown*. The unpruned tree is the most complex model, which means the model has a higher chance of overfitting. This is characterized by an artificially inflated training AUC and a large drop in test AUC. As seen, the AUC drops from 0.88 to 0.826 in the test sample. The unreliable results of an unpruned tree are likely due to the algorithm's sensitivity to irregular noise at leafs. 
+- *Optimal*. The optimal tree achieves a consistent $AUC = 0.83$ with minimal loss of accuracy as an appropriate level of complexity was precisely tuned.
+- *Default*. An underfit model will have consistently low performance in both training and testing.  As we can see, these patterns are played out in the table below containing AUCs for each the default decision tree, the optimal model complexity and the fully grown tree.
+
+As the result of tuning towards an optimal model, we can see that the decision tree yields a marked improvement over the kNN model's $AUC = 0.44$. For a social science problem, this is considered to be a decent result.
+
+
+```{r, results = 'asis', message = FALSE, warning = FALSE}
+#Assemble a well-formatted table
+  tab <- data.frame(model = unique(input.test$model), 
+                    train = round(calc_auc(roc.train)$AUC,3), 
+                    test = round(calc_auc(roc.test)$AUC,3))
+
+```
+```{r, echo = FALSE, warning=FALSE, message=FALSE, fig.cap = "Comparison of decision tree models"}
+  knitr::kable(tab, booktab = FALSE)
+```
+
+
+
+### Random Forests   
+
+
+```{r, message=FALSE, warning=FALSE}
+# Load ACS health care data
+  library(digIt)
+  health <- digIt("acs_health")
+  
+# Convert characters into discrete factors
+  factor_vars <- c("coverage", "mar", "cit", "esr", "schl")
+  for(var in factor_vars){
+    health[,var] <- as.factor(health[,var])
+  }
+  
+# Randomly assign
+  set.seed(100)
+  rand <- runif(nrow(health)) > 0.5
+  
+# Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+  
+```
+
+
+In much of modern data references, we see more uncertainty being characterized. When a hurricane approaches the US Eastern Seaboard, forecasters often map the "cone of uncertainty" that provides the possible range of motion of a storm based on the results of many forecasted simulations. In presidential elections, often times the most polling results are ones that ensemble or average the results of many other similarly conducted polls. The reliance on predictions from a group of models with the same aim may very well improve prediction quality. In statistical learning, average the results of multiple models is known as *ensemble learning* or *ensembling* for short.
+
+Single models may imposes biases on data and may be well-suited in specific situations. Ensemble methods combine the results of many models to obtain more stable results.  For example, the curve in graph #1 can be approximated using a decision tree algorithm. The result of a single tree only loosely fits the curve in a jagged fashion (#2). That one tree may impose biases on the data, perhaps through how the tree is pruned or the assumption that the jagged approximation is appropriate, which may then translate into greater variance in predictions. One could imagine that the structure of that one tree may have happened by chance, and under different situations, the fit could be better. 
+
+Bootstrapping can help. Recall from elementary statistics that bootstrapping is defined as any statistical process that involves sampling records with replacement. By bootstrapping a sample, we treat a sample like a population, we can expose and characterize the qualities of an estimator under various scenarios already available in the data, which in turn produces an empirical probability distribution for predictions using the estimator. We can bootstrap the decision tree by (1) sampling the data with replacement up to the full size of the sample, then (2) run the decision tree. The result of repeating the process 50 times is (graph #3) produces a result that appears to be more organic and more accurate. This process of _bootstrapping_ and _aggregating_ the results is referred to as _bagging_.
+
+```{r, message=FALSE, warning = FALSE, fig.height = 2.5, echo = FALSE, fig.cap = "Comparison of results of applying a single model to fit a curve versus an ensemble of models."}
+
+library(rpart)
+library(gridExtra)
+library(ggplot2)
+
+set.seed(100)
+x <- 1:100
+y <- 5 + sin(x/20) + 2*cos(x/10)
+df <- data.frame(x, y)
+
+fit <- rpart(y ~ x, data = df)
+df$yhat <- predict(fit, df)
+
+base <- ggplot(df) + geom_line(aes(x = x, y = y))  + 
+  ggtitle("(1) Actual" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+single_tree<- ggplot(df) + geom_line(aes(x = x, y = y)) +
+  geom_line(aes(x = x, y = yhat), colour = "orange") + 
+  ggtitle("(2) Single Tree" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+for(k in 1:50){
+  temp <- df[sample(df$x, 100, replace=T),1:2]
+  fit <- rpart(y ~ x, data = temp)
+  yhat <- predict(fit, df)
+  df <- cbind(df, yhat)
+}
+
+colnames(df)[4:ncol(df)] <- paste0("yhat",1:50)
+
+many <- ggplot(df) + geom_line(aes(x = x, y = y)) + geom_line(aes(x = x, y = yhat), colour = "orange") +
+  geom_line(aes(x = x, y = yhat2), colour = "red") + geom_line(aes(x = x, y = yhat3), colour = "orange") +
+  geom_line(aes(x = x, y = yhat4), colour = "red") + geom_line(aes(x = x, y = yhat5), colour = "orange") +
+  geom_line(aes(x = x, y = yhat5), colour = "red") + geom_line(aes(x = x, y = yhat6), colour = "orange") +
+  geom_line(aes(x = x, y = yhat7), colour = "red") + geom_line(aes(x = x, y = yhat8), colour = "orange") +
+  geom_line(aes(x = x, y = yhat9), colour = "red") + geom_line(aes(x = x, y = yhat10), colour = "orange") +
+  geom_line(aes(x = x, y = yhat11), colour = "red") + geom_line(aes(x = x, y = yhat12), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat13), colour = "red") + geom_line(aes(x = x, y = yhat14), colour = "orange") +
+  geom_line(aes(x = x, y = yhat15), colour = "red") + geom_line(aes(x = x, y = yhat16), colour = "orange") +
+  geom_line(aes(x = x, y = yhat17), colour = "red") + geom_line(aes(x = x, y = yhat18), colour = "orange") +
+  geom_line(aes(x = x, y = yhat19), colour = "red") + geom_line(aes(x = x, y = yhat20), colour = "orange")  + 
+  geom_line(aes(x = x, y = yhat21), colour = "red") + geom_line(aes(x = x, y = yhat22), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat23), colour = "red") + geom_line(aes(x = x, y = yhat24), colour = "orange") +
+  geom_line(aes(x = x, y = yhat25), colour = "red") + geom_line(aes(x = x, y = yhat26), colour = "orange") +
+  geom_line(aes(x = x, y = yhat27), colour = "red") + geom_line(aes(x = x, y = yhat28), colour = "orange") +
+  geom_line(aes(x = x, y = yhat29), colour = "red") + geom_line(aes(x = x, y = yhat30), colour = "orange") +
+  geom_line(aes(x = x, y = yhat31), colour = "red") + geom_line(aes(x = x, y = yhat32), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat33), colour = "red") + geom_line(aes(x = x, y = yhat34), colour = "orange") +
+  geom_line(aes(x = x, y = yhat35), colour = "red") + geom_line(aes(x = x, y = yhat36), colour = "orange") +
+  geom_line(aes(x = x, y = yhat37), colour = "red") + geom_line(aes(x = x, y = yhat38), colour = "orange") +
+  geom_line(aes(x = x, y = yhat39), colour = "red") + geom_line(aes(x = x, y = yhat40), colour = "orange")  + 
+  geom_line(aes(x = x, y = yhat41), colour = "red") + geom_line(aes(x = x, y = yhat42), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat43), colour = "red") + geom_line(aes(x = x, y = yhat44), colour = "orange") +
+  geom_line(aes(x = x, y = yhat45), colour = "red") + geom_line(aes(x = x, y = yhat46), colour = "orange") +
+  geom_line(aes(x = x, y = yhat47), colour = "red") + geom_line(aes(x = x, y = yhat48), colour = "orange") +
+  geom_line(aes(x = x, y = yhat49), colour = "red") + geom_line(aes(x = x, y = yhat50), colour = "orange")  + 
+  ggtitle("(3) 50 Models" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+
+df$average <- rowMeans(df[,4:ncol(df)])
+
+avg <- ggplot(df) + geom_line(aes(x = x, y = y)) +
+  geom_line(aes(x = x, y = average), colour = "blue") + 
+  ggtitle("(4) Ensemble Average" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(base, single_tree,  many, avg, ncol = 2)
+```
+
+Applying bagging to decision trees may not necessarily be enough to develop a well-balance prediction. In the social sciences and public policy, it is generally assumed that a model's specification is a choice left to the analyst; However, it may also be a source of methodological bias. 
+
+_Random forests_ can help. The technique, as crystallized in Breiman (2001), is an extension of decision trees using a modified form of bootstrapping and ensemble methods to mitigate overfitting and bias issues. Not only are individual records bootstrapped, but input features are bootstrapped such that if $K$ variables are in the training set, then $k$ variables are randomly selected to be considered in a model such that $k < K$. Each bootstrap sample is exhaustively grown using decision tree learning and is left as an unpruned tree. The resulting predictions of hundreds of trees are ensembled. The logic is described below.
+
+__Pseudo-code__
+```
+Let S = training sample, K = number of input features
+  1. Randomly sample S cases with replacement from the original data.
+  2. Given K features, select k features at random where k < K.
+  3. With a sample of s and k features, grow the tree to its fullest complexity.
+  4. Predict the outcome for all records.
+  5. Out-Of-Bag (OOB). Set aside the predictions for records not in the s cases.
+Repeat steps 1 through 5 for a large number of times saving the result after each tree.
+Vote and average the results of the tree to obtain predictions. 
+Calculate OOB error using the stored OOB predictions. 
+```
+
+The *Out-Of-Bag* (OOB) sample is a natural artifact of bootstrapping: approximately one-third of observations are naturally left un-selected, which can be used as the basis of calculating each tree's error and the overall model error. Think of it as a convenient built in test sample.
+
+_How about interpretation?_ Unlike decision trees, it is not a simple task to deduce rules or criteria that describe the target variable. Instead, random forests use *variable importance*, which, like for a decision tree, measures the contribution of a feature to the homogeneity of a classifier. Unlike decision trees, variable importance for a Random Forest is calculated as the mean decrease in the Gini coefficient of a split relative to the Gini coefficient of the root node. Gini coefficients measures homogeneity on a scale of 0 to 1, where 0 is perfect homogeneity and 1 is perfect heterogeneity. The Gini changes are summed for each variable and normalized. 
+
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Random Forests construct hundreds of trees sampling from both observations and features, then combine the trees into one prediction through voting.", fig.height = 3}
+
+library(rpart.plot)
+library(rpart)
+
+id <- 1:100
+y <- 5 + sin(id/20) + 2*cos(id/10)
+df <- data.frame(id, y)
+
+for(i in 1:100){
+  x <- y + runif(length(id))*10
+  df <- cbind(df, x)
+  colnames(df)[i+2] <- paste0("X",i)
+}
+
+
+par(mfrow = c(1,5))
+for(k in 1:3){
+  temp <- df[sample(1:nrow(df), replace=T), 2:ncol(df)]
+  sampled.vars <- sample(colnames(temp)[2:ncol(temp)], 3)
+  fit <- rpart(y ~ ., data = df[, sampled.vars], cp = 0)
+  rpart.plot(fit, shadow.col="gray", nn=TRUE, 
+             main = paste0("Tree ", k, "\n uses ", paste(sampled.vars, collapse = ", "),""), cex.main = 1.1)
+}
+
+plot(c(0), pch = 19, col = "white", xaxt = "n", yaxt = "n", frame.plot=FALSE, xlab = "", ylab="")
+text(1, 0, ". . .", cex = 5)
+for(k in 500){
+  temp <- df[sample(1:nrow(df), replace=T), 2:ncol(df)]
+  sampled.vars <- sample(colnames(temp)[2:ncol(temp)], 3)
+  fit <- rpart(y ~ ., data = df[, sampled.vars], cp = 0)
+  rpart.plot(fit, shadow.col="gray", nn=TRUE, 
+             main = paste0("Tree ", k, "\n uses ", paste(sampled.vars, collapse = ", ","")), cex.main = 1.1)
+}
+```
+
+
+#### Tuning
+Whereas methods like regression have a closed form solution, Random Forest require tuning as optimal models need to be searched for under different conditions. The principal tuning parameters include: Number of features and number of trees.
+
+- _Number of input features_. As $k$ number of parameters need to be selected in each sampling round, the value of $k$ needs to minimize the error on the OOB predictions. 
+- _Number of trees_ influences the stability the Variable Importance metric that is commonly used to infer variable influence in decision tree learning. More trees help to stabilize the Variable Importance estimate. To determine the number of trees, keep adding trees to a sample until the OOB error for a randomly select set of trees is approximately equal to that of the ensemble.
+
+####Random Forests in Practice
+
+Like decision trees, much of Random Forests rely on easy to use methods made available through the `randomForest` library. There are a couple of ways to run the algorithm, including:
+
+`randomForest(formula, data, method, mtry, ntree)`
+
+where: 
+- `formula` is an object containing the specification to be estimated. Note that 
+- `data` is a data frame.
+- `mtry` is the number of variables to be randomly sampled per iteration. Default is $\sqrt{k}$ for classification trees.
+- `ntree` is the number of trees. Default is 500.
+
+Using the same formula as the `rpart()` function, we can train a naive Random Forest and check the OOB error. Approximately 75.6% of observations in the OOB sample were correctly classified using 2 randomly selected variables in each of the 500 trees.
+
+```{r, warning=FALSE, message = FALSE}
+#Load randomForest library
+  library(randomForest)
+
+#Only complete obs
+  train <- na.omit(train)
+
+#Run Random Forest
+  spec <- as.formula("coverage ~  agep + wage + cit + mar + schl + esr")
+  fit.rf <- randomForest(spec, data = train, mtry = 2, ntree = 500)
+
+#Check OOB error
+  fit.rf
+```
+
+```{r, echo = FALSE}
+imp <- importance(fit.rf)
+imp <- data.frame(var = row.names(imp), score = imp)
+imp <- imp[order(-imp[,2]), ]
+
+```
+Using the `importance()` method, we can see the Mean Decrease Gini, which calculates the mean of Gini coefficients. `agep` has the largest value of `r imp[1,2]`, indicating that age is the best predictor of coverage; However, the values themselves do not have any meaning outside of a comparison with other Gini measures.
+
+```{r, warning=FALSE, message = FALSE}
+importance(fit.rf)
+```
+
+By default, the `randomForests` library sets the number of trees to equal 500. By plotting the fit object, we can see how OOB error and the confidence interval converges asymptotically as more trees are added to the ensemble. Otherwise stated, more trees will help up to a certain point and the default is likely more than enough. 
+
+```{r, warning=FALSE, message = FALSE, fig.height = 4}
+  plot(fit.rf)
+```
+
+As we know that $n = 500$ trees is more than enough, we will now need to tune the tree for the number of variables. To tune the algorithm, we will use the `tuneRF()` method. The method searches for the optimal number of variables per split by incrementally adding variables. While it's a useful function, it is relatively verbose. In addition to the target and input features, a number of other parameters need to be specified:
+
+`tuneRF(x, y, ntreeTry,  mtryStart, stepFactor, improve, trace, plot)`
+
+where: 
+- `x` is a data frame or matrix of input features.
+- `ntreeTry` is the number of trees used in each iteration of tuning.
+- `mtryStart` is the number of variables to start.
+- `stepFactor` is the number of additional variables tested per iteration.
+- `improve` is the minimum relative improvement in OOB error for the search to go on.
+- `trace` is a boolean that indicates where to print the search progress. 
+- `plot` is a boolean that indicates whether to plot the search results. 
+
+
+Below, we conduct a search from `mtryStart = 1` with a `stepFactor = 2`. The search result indicates that _2_ variables per split are optimal.
+```{r, warning=FALSE, fig.height=4, fig.cap = "Random Forest tuning result (m = number of features, OOB Error = out of sample error)."}
+#Search for most optimal number of input features
+  fit.tune <- tuneRF(x = train[,3:ncol(train)], y =  train[,2], ntreeTry = 500, 
+                     mtryStart = 1, stepFactor = 2, 
+                     improve = 0.001, plot = TRUE)
+
+#Extract best parameter
+  tune.param <- fit.tune[fit.tune[, 2] == min(fit.tune[, 2]), 1]
+```
+
+
+Using the optimal result, we can plug back into the `randomForest()` method and re-run. However, as the default model already has the same parameters as the optimal model, we can proceed to calculating the model accuracy. Comparing the training and test models for the Random Forest algorith, we see a large drop in the AUC between train and test, indicating quite a bit of overfitting. 
+
+```{r, fig.height = 2, message = FALSE, warning = FALSE}
+#plotROC
+  library(plotROC)
+
+#Predict values for train set
+  pred.rf.train <- predict(fit.rf, train, type='prob')[,2]
+
+#Predict values for test set
+  pred.rf.test <- predict(fit.rf, test, type='prob')[,2]
+
+  
+#Set up ROC inputs
+  input.rf <- rbind(data.frame(model = "train", d = train$coverage, m = pred.rf.train), 
+                  data.frame(model = "test", d = test$coverage,  m = pred.rf.test))
+  
+#Graph all three ROCs
+  roc.rf <- ggplot(input.rf, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  +ggtitle("Train")
+
+#AUC
+  calc_auc(roc.rf)
+```
+
+
+

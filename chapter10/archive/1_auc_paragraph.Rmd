@@ -1,0 +1,47 @@
+---
+title: "AUC scrap"
+author: "Jeff Chen"
+date: "5/3/2019"
+output: pdf_document
+---
+
+
+
+Alternatively, the AUC 
+we rely on a combination of the `ggplot2` and `plotROC` packages to calculate and visually compare the predictive accuracy. A short pre-processing step is required to construct a data frame `input.glm` with predictions of training and testing samples (`m`) and their labels (`d`).  
+
+\vspace{12pt} 
+
+```{r, message = FALSE, warning = FALSE}
+#Load packages
+  pacman::p_load(plotROC, ggplot2)
+
+#Set up ROC inputs
+  input.glm <- rbind(data.frame(model = "train", 
+                                d = train$no.coverage, 
+                                m = pred.glm.train), 
+                    data.frame(model = "test", 
+                               d = test$no.coverage,  
+                               m = pred.glm.test))
+```
+```{r, echo = FALSE, warning = FALSE, message=FALSE}
+  roc.glm <- ggplot(input.glm, 
+                    aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) +  style_roc()
+```
+The `input.glm` data frame is loaded into `ggplot`, specifying `geom_roc` to calculate and render a ROC curve. There is little difference between the ROC curves, indicating the model seldom overfits the data --  it is stable and generalizable. More precisely, by applying the function `calc_auc` to the `roc.glm` object, we validate this observations with AUCs are `r round(calc_auc(roc.glm)$AUC[1],4)` and `r round(calc_auc(roc.glm)$AUC[2],4)` for training and testing, respectively.
+
+
+
+```{r, message = FALSE, warning = FALSE, fig.cap = "ROC curves comparing training and test predictions.", fig.height=3}
+#Calculate ROC
+  roc.glm <- ggplot(input.glm, 
+                    aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()
+
+#Plot
+  roc.glm
+```
+
+
+\vspace{12pt} 

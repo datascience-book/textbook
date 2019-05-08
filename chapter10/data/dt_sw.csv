@@ -1,0 +1,4 @@
+﻿Great for:,Challenges:
+Rules (e.g. all the criteria that form the path from root to leaf) can be directly interpreted. ,"Data sets with large number of features will have overly complex trees that, if left unpruned, may be too voluminous to interpret."
+Method is well-suited to capture interactions and non-linearities in data.,Trees tend to overfitted at the terminal leafs when samples are too small.
+Technique can accept both continuous and continuous variables without prior transformation.,Feature selection is conducted automatically.

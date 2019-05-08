@@ -1,1 +1,1 @@
-Chapter 10 - Clustering
+Chapter 10 - A Survey of Machine Learning Techniques

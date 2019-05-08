@@ -1,0 +1,7 @@
+﻿Method,Common Uses,Key Assumptions,User Beware
+k-Nearest Neighbors,Imputation of missing data; Relating data that is collected along an equally-spaced grid.,All variables have equal weight;  the variables are on the same scale;  ,Atheoretical; Equal weight means statistically irrelevant noise may be introduced into the prediction; Not well-suited for large number of variables.
+Logistic Regression,General use method; Coefficients allow for narrative building.,The boundary between classes can be described as a straight line; The variables included are how the algorithm is tuned.,Sensitive to collinearity
+LASSO logistic,Cases where there are a large number of variables,,Does not provide statistical significance of coefficients.
+Decision Tree,Well-suited for teasing out interactions; Leafs in the tree can be used as discrete profiles.,Tree will conduct variable selection; User needs to optimize the complexity of tree to minimize overfitting;,Decision trees tend to overfit.
+Random Forest,Well-suited for teasing out interactions and surfacing variables that hold any separability.,Tree will conduct variable selection;  Requires tuning of number of features per tree.,"Great for accuracy, great for finding ""important"" variables, not great for narrative."
+Neural Networks,"Data distributed along an equal interval (e.g. imagery, sound); ",<To be finished>,"Common method, needs more data as it becomes more complex."
