@@ -7,8 +7,11 @@
   library(ggplot2)
   library(tidyr)
 
+#WD
+  setwd("/Users/jeff/Documents/Github/textbook/chapter10/data")
+
 #Load
-  comps <- read.csv("Downloads/complaints-2019-05-17_03_35.csv")
+  comps <- read.csv("~/Downloads/complaints-2019-05-17_03_35.csv")
   colnames(comps) <- tolower(colnames(comps))
   
 #cleaning
@@ -41,11 +44,12 @@
   comps$issue[comps$issue %in% c("Can't contact lender")] <- "Can't contact lender or servicer"
   comps$issue[comps$issue %in% c("Applying for a mortgage or refinancing an existing mortgage")] <- "Applying for a mortgage"
   
+  
+  
 #Split sample
-  set.seed(123)
-  rows <- rank(runif(nrow(comps)), ties.method = "random")
-  comps <- comps[rows <= 15000, ]
-  test <- comps[rows > 15000 & rows <=20000, ]
+  #set.seed(123)
+  #rows <- rank(runif(nrow(comps)), ties.method = "random")
+  #comps <- comps[rows <= 20000, ]
 
 #Tokenize
   toks1 <- comps %>%
@@ -107,8 +111,9 @@
                            value = "n")
   
 #Latent Dirichlet Model
-  lda_mod <- LDA(dtm, k = 50, control = list(seed = 1234))
+  lda_mod <- LDA(dtm[1:15000,], k = 50, control = list(seed = 1234))
   
+#Tidy output for beta hyperparameters
   cfpb_td <- tidy(lda_mod)
   
   top_terms <- cfpb_td %>%
@@ -126,6 +131,39 @@
     facet_wrap(~ topic, scales = "free") +
     theme(axis.text.x = element_text(size = 15, angle = 90, hjust = 1))
 
-  #View(top_terms)
-   save(dtm, cfpb_td, lda_mod, file = "cfpb_lda.Rda")
+#Predict
+  out_topics <- posterior(lda_mod, dtm[15001:19983,])
+  (test.topics <- apply(test.topics$topics, 1, which.max))
   
+#Get topic probabilities, string up data set into final form
+  a1 <- as.data.frame(lda_mod@gamma)
+  a2 <- as.data.frame(out_topics$topics)
+  colnames(a1) <- paste0("topic.", 1:50)
+  colnames(a2) <- paste0("topic.", 1:50)
+  comps <- cbind(partition = c(rep("train", nrow(a1)), rep("test", nrow(a2))),
+                comps[comps$complaint.id %in% as.numeric(dtm$dimnames$Docs),], 
+                rbind(a1, a2))
+  
+  
+  #View(top_terms)
+   save(dtm, lda_mod, comps, file = "cfpb_lda.Rda")
+   
+   require(ranger)
+   comps$issue <- as.factor(comps$issue)
+   train <- comps[1:15000, grep("(company.response.to.consumer|issue|sub.issue|^product)", colnames(comps))]
+   test <- comps[-c(1:15000), grep("(company.response.to.consumer|issue|sub.issue|^product)", colnames(comps))]
+   
+   mod.rf <- ranger(company.response.to.consumer ~ .,
+                 data = train)
+   test.rf <- predict(mod.rf, 
+                   test,
+                   type = "response")
+   a <- table(test$company.response.to.consumer, test.rf$predictions)
+   (a[1,1] + a[2,2])/sum(a)
+   
+   mod.glm <- glm(company.response.to.consumer ~ ., data = train,family=binomial)
+   test.glm <- predict(mod.glm, 
+                   test,
+                   type = "response")
+
+   
