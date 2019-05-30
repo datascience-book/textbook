@@ -14,14 +14,40 @@
 
 #Load
   comps <- read.csv("~/Downloads/complaints-2019-05-17_03_35.csv")
+  save(comps, file = "cfpb_raw.Rda")
+  
+#Change column names
   colnames(comps) <- tolower(colnames(comps))
   
-#cleaning
+#Cleanse values
+  
+  #Company names
   comps$company <- tolower(comps$company)
+  
+  #Change headers
   colnames(comps)[grep("(^product$)", colnames(comps))] <- "product.type"
+  colnames(comps)[15] <- "target.series"
+  
+  #Clean complaint status
+  comps$target.series <- as.character(comps$target.series)
+  comps$target.series[grep("non-monetary", comps$target.series)] <- "Non-monetary" 
+  comps$target.series[grep("with monetary", comps$target.series)] <- "Monetary" 
+  comps$target.series <- as.factor(comps$target.series)
+  
+  #Set up sample partition
+  set.seed(123)
+  rows <- format(as.Date(comps$date.received, "%m/%d/%y"), "%Y")
+  comps <- cbind(partition = (rows == "2016"),
+                 comps)
+  rand <- ave(runif(nrow(comps)), paste0(comps$target.series, comps$partition), FUN = rank)
+  rand <- (rand <= 5000 & comps$partition == T) |  (comps$partition == F)
+  comps <- comps[rand==T, ]
+  
+  #Clean narratives
   comps$consumer.complaint.narrative <- tolower(comps$consumer.complaint.narrative)
   comps$clean.narrative <- gsub("[[:punct:][:digit:]]", "", comps$consumer.complaint.narrative)
-
+  
+  #Standardize issues
   comps$issue <- trimws(comps$issue)
   comps$issue[comps$issue %in% c("Advertising", "Advertising and marketing, including promotional offers", "Advertising, marketing or disclosures")] <- "Advertising and marketing"
   comps$issue[comps$issue %in% c("Applying for a mortgage or refinancing an existing mortgage")] <- "Applying for a mortgage"
@@ -47,13 +73,6 @@
   comps$issue[comps$issue %in% c("Can't contact lender")] <- "Can't contact lender or servicer"
   comps$issue[comps$issue %in% c("Applying for a mortgage or refinancing an existing mortgage")] <- "Applying for a mortgage"
   
-  
-#Split sample
-  set.seed(123)
-  rows <- format(as.Date(comps$date.received, "%m/%d/%y"), "%Y")
-  
-  comps <- cbind(partition = (rows == "2015"),
-                 comps)
 
 #Tokenize
   toks1 <- comps %>%
@@ -119,20 +138,17 @@
   tok4 <- toks3 %>%
           count(word, complaint.id, partition) 
   tok4 <- tok4[tok4$n > 1,]
-  rm(toks1, toks1b, toks1c, vals, drop)
+  rm(toks1, toks1b, toks1c, toks3, vals, drop)
   wide <- dcast(tok4, complaint.id + partition ~ word)
   
 #Join DTM to main file
   
-  comps2 <- inner_join(comps[, c("complaint.id", "partition", "date.received", "product.type", "issue", "consumer.complaint.narrative","company.response.to.consumer")],
+  comps2 <- inner_join(comps[, c("complaint.id", "partition", "date.received", "product.type", "issue", "consumer.complaint.narrative","target.series")],
                         wide, by = c("complaint.id", "partition"))
   
   #Fill holes
     comps2[is.na(comps2)] <- 0
-  
-  #Rename target
-    colnames(comps2)[grep("company.response.to.consumer", colnames(comps2))] <- "target.series"
-  
+
   #Column type
     comps2$issue <- as.factor(comps2$issue)
     
@@ -154,7 +170,7 @@
   mod.rf <- ranger(target.series ~ .,
                    data = train[, -c(1:5)],
                    importance = "impurity",
-                   mtry = 68, 
+                   mtry = 80, 
                    seed = 123)
   
   #Importance
