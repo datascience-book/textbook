@@ -1,18 +1,20 @@
----
-title: 'Chapter 10'
+--- 
 header-includes: \usepackage{rotating, graphicx}
-link-citations: yes
-output:
+output: 
   pdf_document:
-    number_sections: yes
-  html_document: default
-  word_document: default
-  geometry: margin=1in
-bibliography: citations_p10.bib
+    number_sections: true
+description: Introduction
+documentclass: book
+link-citations: yes
+bibliography:
+- citations_p10.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
 ---
 
+# The Pursuit of Prediction
 
-# Magic Eight Balls
+## A Need To Know
 
 On an early September day in 2013, the staff of Fairbanks International Airport had an unusual encounter: TSA agents intercepted a motorist headed for the airport. This was not just any routine traffic stop — it was on the tarmac of an airfield. A motorist unwittingly drove passed marked signs and lights, venturing down a taxiway and eventually across an active runway on the way to the airport car park (@fairbanks1, @fairbanks2). Later that same month, yet another motorist made the same mistake. What is the connection? Both incidents were the result of faulty driving directions from an iPhone app. Needless to say, the airport blocked the entrance to the tarmac and filed complaints with Apple. 
 
@@ -53,7 +55,7 @@ The pursuit of predictive accuracy has led to a multitude of computational devel
   
 
 ##########
-# CALIBRATE MODELS#
+## CALIBRATE MODELS#
 ##########
   
 #Logistic
@@ -103,8 +105,8 @@ The pursuit of predictive accuracy has led to a multitude of computational devel
 
 ```{r, echo = FALSE, fig.cap = "Linear, Non-Linear and Discontinuous Classification Problems.", fig.height = 4}
 
-###########   
-# plot the boundary#
+############   
+## plot the boundary#
 ###########
    
   par(mfrow = c(3,4), mar = c(0, 1.2, 0.9, 0))
@@ -250,7 +252,7 @@ You will no doubt have noticed that the algorithms mentioned sound quite exotic 
 
 ```
 
-# K-Nearest Neighbors (KNN)
+## K-Nearest Neighbors (KNN)
 
 As hurricanes become more intense and leave a trail of destruction, city governments will need to be able to more efficiently triage requests for help. Let's take the example of Hurricane Sandy and its effect on NYC. One of the main services offered by cities is the management and care of its trees. A downed tree can cause property damage, bodily harm and traffic disruptions. Due to the high wind and lush foliage during Sandy, many trees fell.
 
@@ -258,7 +260,7 @@ In NYC, the Department of Parks and Recreation is responsible for tree removal. 
 
 We would expect that downed trees are more likely to occur in *pockets* and proximity is the best indicator of activity. As the city knows where residents call for tree- and non-tree-related issues, we can use the location of the calls to triangulate on likely problem areas as well as anticipate pockets of yet-to-be-reported downed trees, or at least serve that is a reasonable working theory. For this task of predicting based on proximity, k-Nearest Neighbors (KNN) can help.
 
-## Under The Hood
+### Under The Hood
 
 K-nearest neighbors (KNN) is a non-parametric, instance-based algorithm that is based on a simple idea: *observations that are closer together are more likely to be similar*.  The method is non-parametric as it does not directly use its inputs $x$ to determine the value of $y$, but rather assumes that inputs serve as ways to quantify how close points are. It is instance-based as each prediction is determine on a case-by-case basis using its surrounding neighbors. 
 
@@ -314,7 +316,7 @@ To illustrate how tuning works, we have extracted a raster data from the US Depa
   vec <- cbind(vec, color, labs, cll)
 
  
-# plot BASE example
+## plot BASE example
   par(mfrow = c(2,3), mar = c(0, 1.2, 0.9, 0))
   
   plot(vec$x, vec$y, pch = 16, cex = 0.3, col = as.character(vec$color),
@@ -357,7 +359,7 @@ To illustrate how tuning works, we have extracted a raster data from the US Depa
 
 \vspace{12pt} 
 
-## Tips of the trade
+### Tips of the trade
 
 __Tuning__.  As the accuracy of a KNN model is dependent on finding the optimal value of $k$, it makes the process far simpler to think about the tuning process as a grid search. A systematic way of testing for $k$ is try test all values from $k=1$ to $k=\sqrt{n}$ in multiples of one's choosing. The idea is to get a ballpark sense of what works, then hone in on the best value of $k$. Log the values of $k$ that are tested and compare the accuracies to find the optimum. For example, searching for values of $k$ that provide the best prediction in the cropland example suggests that TPR is near its max value at $k=1$ and the FPR is minimized at the same value, thus choosing the minimum value of $k$ would likely be adequate.
 
@@ -395,7 +397,7 @@ Lastly, KNNs are not interpretable as it is a nonparametric approach. It should 
 ```
 
 
-## DIY: Anticipating the extent of damage from a storm
+### DIY: Anticipating the extent of damage from a storm
 
 We now turn back to our motivating example. Suppose the location of all calls for non-emergency help from the day of Hurricane Sandy are captured in NYC's 311 system, yet there are still neighborhoods that likely have downed trees but have not reported it. *From what we know, how can we guess the disposition of other parts of the city to have a fuller picture?*
 
@@ -623,7 +625,7 @@ As estimated using `calc_auc()`, the out-of-sample AUC is `r round(calc_auc(roc)
 Despite the promising result, we should be cognizant that KNNs generally are not the algorithm of choice of modelers unless there is relatively little data. We should thus ask: _Is there a better classifier?_ 
 
 
-## Practice Exercises
+### Practice Exercises
 
 The US Census Bureau's American Community Survey provides an in-depth view of life in America. One of the many features that are captured in the survey is healthcare coverage. Apply the above methods to predict healthcare coverage in the US State of Georgia in the year 2009.
 
@@ -640,7 +642,7 @@ The US Census Bureau's American Community Survey provides an in-depth view of li
 
 
 
-# Decision Tree Learning
+## Decision Tree Learning
 
 Mobile technologies have lowered the bar to using lightweight sensors that measure the physical world and have opened new applications of data in daily life. From a smart phone's accelerometer, it’s possible to track distinct patterns in one’s activity based on the fluctuations in acceleration ($\frac{m}{s^{2}}$). In fact, many of these technologies have become commonly available, enabling physical fitness activity monitoring to characterizing transportation quality. Below is a set of exercise measurements from an smartphone accelerometer that lasted approximately 6.5 minutes and graphed at a frequency of 5 hertz (five readings per second). 
 
@@ -699,7 +701,7 @@ Decision tree learning can help bring clarity. Trees are designed to look at inp
 Decision trees use recursive partitioning to learn patterns, doing so using central concepts of _information theory_. There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). All these algorithms follow the same framework that includes the following elements: (1) nodes and edges, (2) attribute tests, and (3) termination criteria.
 
 
-## Under the hood
+### Under the hood
 
 __Anatomy of a decision tree__. The tree is comprised of nodes and edges. Nodes (circles) contain records. Edges (lines) show dependency between nodes and is the result of an *attribute test* -- or a process that finds the optimal criterion to subset records into more homogeneous groups of the target variable.  The node at the top of the tree is known as the *root* and represents the full population. Each time a node is split, the result is two nodes -- each of which is referred to as a *child node*. A node without any child nodes is known as a *leaf*. The node is labeled using majority voting based on whichever class is most represented.  The goal is to grow a tree from the root node into as many smaller child nodes that contain more of one class than another.
 
@@ -785,7 +787,7 @@ Using Gini Impurity as an attribute test is also similar to Information Gain.
 $$\text{Gini Gain} = \text{Gini}_\text{root} - \text{Weighted Gini}_\text{child}$$
 $$\Delta i(s,t) = i(t)-p_L i (t_L) - p_R i (t_R)$$
 
-## Tips of the trade
+### Tips of the trade
 
 Like any technique, decision trees have strengths and weaknesses. Unlike logistic regression and KNN, decision trees can conduct automated variable selection on any type of data type. In addition, the recursive partitioning produce a tangible definition for each subpopulation represented by a node. The splitting mechanism make it possible to capture interactions and non-linearities that are otherwise not easily accounted for in the previous methods. The implications are that two or more input variables can be blended together to find cells of activities that are otherwise overlooked.
 
@@ -800,7 +802,7 @@ There are detractors, however. Trees can be grown so deeply that there are too m
 ```
 
 
-## DIY: Predicting monetary and non-monetary relief
+### DIY: Predicting monetary and non-monetary relief
 
 > Navient has been unresponsive after I've asked to speak with several managers. I have called them consistently since summertime as my automatic payments were not being taken out. They say it came back as NSF, but my bank says it was never billed. Then Navient admitted to having I.T. issues. Late fees, interest, you name it. After calling to resolve many times, they offered me payment options and promised to repair my credit damage of their reporting me. After making each payment, they would change the terms and tell me I had to pay additional money or pay this or that, and then they would rescind the negative info. I finally scraped up the money and paid what it said I was past due on after their lies - and the online account still shows I owe money as of {xx/xx/xxxx} and its {xx/xx/xxxx} - so my payment made on {xx/xx/xxxx} obviously didn't post although it was taken from my bank account. I called again today and requested that a manager call me back - nothing yet. Supposedly they record all calls - well, someone should listen to all the lies they've been telling me over the months and changing the agreements. It is unethical and immoral. They are ruining students lives! Check the recordings and the call logs - I'm the one who calls them! And if they ever seldom call me, they never leave a voicemail but the recordings will prove they lie and say they did leave a voicemails, and I dispute that and tell them they are lying directly. listen to the recordings!
 
@@ -958,10 +960,10 @@ In other words, the following function can extract the optimal `cp` value.
 
 ```{r}
 bestCP <- function(fit_obj){
-  # Returns best CP val within 1 SD of lowest xerror
+  ## Returns best CP val within 1 SD of lowest xerror
   #
-  # Args:
-  #   fit_obj: decision tree object
+  ## Args:
+  ##   fit_obj: decision tree object
   #
   
   #Pull cross-validated error
@@ -1063,7 +1065,7 @@ When applied to the function to the predictions (`pred.opt` and `pred.full`), we
 
 
 
-# Random Forests   
+## Random Forests   
 
 How do we know anything for sure? Virtually every aspect of life has some uncertainty tied in. When a hurricane approaches the US Eastern Seaboard, forecasters often map the *cone of uncertainty* that provides the possible range of motion of a storm based on the results of many forecasted simulations. In presidential elections, often times the most polling results are ones that ensemble or average the results of many other similarly conducted polls. The reliance on predictions from a group of models with the same aims may well improve prediction accuracy. In statistical learning, average the results of multiple models is known as *ensemble learning* or *ensembling* for short.
 
@@ -1232,13 +1234,13 @@ for(k in 500){
 
 \vspace{12pt} 
 
-## Tuning
+### Tuning
 Whereas methods like regression have a closed form solution, Random Forest require tuning as optimal models need to be searched for under different conditions. The principal tuning parameters include: Number of features and number of trees.
 
 - _Number of input features_. As $k$ number of parameters need to be selected in each sampling round, the value of $k$ needs to minimize the error on the OOB predictions. 
 - _Number of trees_ influences the stability the Variable Importance metric that is commonly used to infer variable influence in decision tree learning. More trees help to stabilize the Variable Importance estimate. To determine the number of trees, keep adding trees to a sample until the OOB error for a randomly select set of trees is approximately equal to that of the ensemble.
 
-## DIY: Revisiting monetary relief
+### DIY: Revisiting monetary relief
 
 There are a number of R libraries that implement the Random Forest algorithm. The more commonly used version is `randomForest` as it automates most of the procedure, but is less scalable and efficient than its younger sibling `ranger`. As we will revisit the bag-of-words data set in this DIY, the `ranger` library will vastly reduce the time required to train the Random Forest. The `ranger` function expects at least a formula and a data frame, 
 
@@ -1373,4 +1375,4 @@ Normally, we can plug the tuned parameter back into the `randomForest()` method 
 
 This result does not mean that Random Forests will always turn better results, but rather multiple techniques should be tested when tackling prediction problems. Also, remember the policy goal: is the objective to predict or to explain? If a little of both, then it is worth understanding the value of increased accuracy at the cost of interpretability. 
 
-#References
+## References
