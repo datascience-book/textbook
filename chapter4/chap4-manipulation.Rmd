@@ -12,14 +12,14 @@ site: bookdown::bookdown_site
 biblio-style: apalike
 ---
 
-# Manipulating Data
+# Processing Data
 
 Speeches contain a wealth of information. As humans, we are taught to understand verbal and written communication -- pick out the nouns, verbs, and adjectives, then combine the information to decipher meaning. Take the following excerpt from the 2010 State of the Union:
 
 > Now, one place to start is serious financial reform.  Look, I am not interested in punishing banks.  I'm interested in protecting our economy.  A strong, healthy financial market makes it possible for businesses to access credit and create new jobs. It channels the savings of families into investments that raise incomes.  But that can only happen if we guard against the same recklessness that nearly brought down our entire economy. 
 We need to make sure consumers and middle-class families have the information they need to make financial decisions.  We can't allow financial institutions, including those that take your deposits, to take risks that threaten the whole economy.
 
-We can infer that the excerpy was written in a time of economic hardship and the author recognizes that consumers and middle class need beter information about the financial markes. Despite these clear inferences, to many, text is not be considered data. Our minds analyze the text and infer what the author is signaling, sifting for key terms and phrases. The majority of words convey little to no meaning -- they help make language more fluid. We can cut to the core meaning by dropping the filler:
+We can infer that the excerpt was written in a time of economic hardship and the author recognizes that consumers and middle class need better information about the financial markets. Despite these clear inferences, to many, text is not be considered data. Our minds analyze the text and infer what the author is signaling, sifting for key terms and phrases. The majority of words convey little to no meaning -- they help make language more fluid. We can cut to the core meaning by dropping the filler:
 
 > ~~Now, one place to start is serious~~ financial reform.  ~~Look, I am not interested in~~ punishing banks.  ~~I'm interested in~~ protecting our economy.  ~~A~~ strong, healthy financial market ~~makes it possible for~~ businesses ~~to access~~ credit ~~and~~ create new jobs. ~~It channels the~~ savings of families ~~into~~ investments ~~that~~ raise incomes.  ~~But that can only happen if we guard against the same~~ recklessness ~~that nearly brought down our entire~~ economy. 
 ~~We need to make sure~~ consumers ~~and~~ middle-class families ~~have the information they need to make~~financial decisions. ~~We can't allow~~ financial institutions, ~~including those that take your~~ deposits,~~to take risks that threaten the whole~~ economy.
@@ -112,12 +112,12 @@ We can aggregate the data into a form that is meaningful to answer a research qu
 
 Text processing is just one aspect of readying data for use -- there is far more that underlies manipulating data.
 
-There are entire texts dedicated to data engineering and manipulating data. In this chapter, we offer a broad overview of the mechanics of data manipulatin. We begin at a microscopic level, focusing on loading raw data and how to treat and transform data values into useful, analysis-ready information. Then, we take a step back to focus on the macroscopic structure of data -- how to scupt the structure (rows and columns) of a data set into a format that is appropriate for a desire use case. We close the chapter by introducing efficiency augmenting programming paradigms, namely control structures (e.g. loops, if statements) that reduce repetitive coding and user-written functions that allow scripts to be generalized and re-used. 
+There are entire texts dedicated to data engineering and manipulating data. In this chapter, we offer a broad overview of the mechanics of data manipulation. We begin at a microscopic level, focusing on loading raw data and how to treat and transform data values into useful, analysis-ready information. Then, we take a step back to focus on the macroscopic structure of data -- how to sculpt the structure (rows and columns) of a data set into a format that is appropriate for a desire use case. We close the chapter by introducing efficiency augmenting programming paradigms, namely control structures (e.g. loops, if statements) that reduce repetitive coding and user-written functions that allow scripts to be generalized and re-used. 
 
 
 ## Load and Assembly
 
-The first step of any data project is to load and assemble a data set. The input-output (I/O) or loading of data can be tricky task for a new-to-programming rookie, requiring a particularly large investment of time to search for the right way to open a file using code. Upon finding a solution, the analyst may dismiss any concern for ordering and structuring code, resulting in ad hoc spaghetti-like code. In the course of writing this text, the authors have come across a number of haphazardous data practices among new programmers. In particular, we have found that: 
+The first step of any data project is to load and assemble a data set. The input-output (I/O) or loading of data can be tricky task for a new-to-programming rookie, requiring a particularly large investment of time to search for the right way to open a file using code. Upon finding a solution, the analyst may dismiss any concern for ordering and structuring code, resulting in ad hoc spaghetti-like code. In the course of writing this text, the authors have come across a number of precarious data practices among new programmers. In particular, we have found that: 
 
 - Analysts will often manually open files and delete unnecessary rows at the top of a file believing that functions may not be able to read in files. 
 - The number of columns differ between two files that need to be appended, requiring columns to be deleted or empty columns added before loading.
@@ -170,7 +170,7 @@ head(gulf, 3)
 ```
  \vspace{12pt} 
  
-The data were successfully loaded as a *tibble*, which is a variant of a data frame designed for more efficient data manipulation. Unlike data frames, tibbles read headers as-is, thus requiring the analyst to make cosmetic changes. Generally, it is good practice to keep column names as the same case (lower case) and avoid the use of spaces and punctuation with the exception of periods. We can edit the column headers, which can be called as a vector using `colnames(gulf)`, by assigning a new string vector that turns all letters into lower case (`tolower`) and replaces substrings (`gsub`) that are eiher spaces or punctuation (`[[:space:][:punct:]]`) with periods. These string manipulation commands will be covered in more detail later in this chapter.
+The data were successfully loaded as a *tibble*, which is a variant of a data frame designed for more efficient data manipulation. Unlike data frames, tibbles read headers as-is, thus requiring the analyst to make cosmetic changes. Generally, it is good practice to keep column names as the same case (lower case) and avoid the use of spaces and punctuation with the exception of periods. We can edit the column headers, which can be called as a vector using `colnames(gulf)`, by assigning a new string vector that turns all letters into lower case (`tolower`) and replaces substrings (`gsub`) that are either spaces or punctuation (`[[:space:][:punct:]]`) with periods. These string manipulation commands will be covered in more detail later in this chapter.
  
  \vspace{12pt} 
 ```{r, eval = FALSE}
@@ -186,7 +186,7 @@ colnames(gulf) <- c("date", "gulf.price")
 ```
 \vspace{12pt} 
 
-__Loading an Excel file__. Excel files tend to have a few more curve balls than CSVs. While Excel files are more readable due to aesthetic and cosmetic stylings, parsing can be a challenge. Using `read_excel` from the `readxl` package, we take a first look at the first sheet (`sheet = 1`) of our Excel file `doe_ny.xlsx`, then use `head` to examine what was loaded. Unlike our CSV, our first attempt requires a tweak: The headers are located in the second row of the sheet, which has the implication that the first row needs to be skipped.
+__Loading an Excel file__. Excel files tend to have a few more curve balls than CSVs. While Excel files are more readable due to aesthetic and cosmetic styling, parsing can be a challenge. Using `read_excel` from the `readxl` package, we take a first look at the first sheet (`sheet = 1`) of our Excel file `doe_ny.xlsx`, then use `head` to examine what was loaded. Unlike our CSV, our first attempt requires a tweak: The headers are located in the second row of the sheet, which has the implication that the first row needs to be skipped.
 
 \vspace{12pt} 
 ```{r, message = FALSE, warning = FALSE}
@@ -228,7 +228,7 @@ The above scenario is the ideal: two data frames with the same number of columns
 
 Note that if two columns in two different data frames represent the same concept but have different names, `rbind.fill` does not know to make the connection. Column names are interpreted literally, meaning that it is of the utmost importance that headers are exactly labeled.
 
-__Combining data by rows__. The two data frames `gulf` and `ny` contain the same number of rows. If they are in the same exact desired order and have the same number of rows, we can use the `cbind` function to join the datasets by rows. The `cbind` function will join  all columns in both data frames together, including the dates. To ensure the data is neatly organized, we keep all columns from the `gulf` dataset and only the second column from the `ny` data set. The resulting data frame contains three columns containing daily spot prices from two sources. 
+__Combining data by rows__. The two data frames `gulf` and `ny` contain the same number of rows. If they are in the same exact desired order and have the same number of rows, we can use the `cbind` function to join the data sets by rows. The `cbind` function will join  all columns in both data frames together, including the dates. To ensure the data is neatly organized, we keep all columns from the `gulf` data set and only the second column from the `ny` data set. The resulting data frame contains three columns containing daily spot prices from two sources. 
 
 \vspace{12pt} 
 ```{r}
@@ -312,7 +312,7 @@ Mastering _regex_ is a productivity multiplier, opening the possibility of ultra
 
 ### Text manipulation functions
 
-*Find and replace* functionality are common in word processing and spreadsheet softwares, but are not particularly efficient with large data and complex string patterns. The following text manipulation functions simplify find and replace operations, whether for extracting data or editing specific values. We provide two sets of functions. The first are core functions that are furnished with R -- these closely resemble string manipulation functions implemented in most programming languages. While they are powerful, they at times may require some additional trial and error to use. Alternatively, the `stringr` package simplifies text manipulation and syntax, and in some case extends functionality. For the most part, we will use `stringr` in this text.
+*Find and replace* functionality are common in word processing and spreadsheet software, but are not particularly efficient with large data and complex string patterns. The following text manipulation functions simplify find and replace operations, whether for extracting data or editing specific values. We provide two sets of functions. The first are core functions that are furnished with R -- these closely resemble string manipulation functions implemented in most programming languages. While they are powerful, they at times may require some additional trial and error to use. Alternatively, the `stringr` package simplifies text manipulation and syntax, and in some case extends functionality. For the most part, we will use `stringr` in this text.
   
 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
@@ -334,7 +334,7 @@ Complex "find" operations are possible with stringr functions. To illustrate, be
 ```
 \vspace{12pt} 
 
-Suppose we need to find acts that are named for two congressmen. The `str_detect()` function produces a boolean vector if a regex pattern  `[A-z]{1,}-[A-z]{1,}` is matched for each element in the string vector `laws`. This is particularly useful if we would like to identify and subset elements that match a text pattern.
+Suppose we need to find acts that are named for two congressmen. The `str_detect()` function produces a Boolean vector if a regex pattern  `[A-z]{1,}-[A-z]{1,}` is matched for each element in the string vector `laws`. This is particularly useful if we would like to identify and subset elements that match a text pattern.
 
 \vspace{12pt}   
 ```{r}
@@ -365,7 +365,7 @@ The secret ingredient of the text manipulation functions is the regex expression
   
 (4) The length of a match is specified using curly brackets `{}`. 
   
-In New York City, the famed avenue _Broadway_ is may be written and abbreciated in a number of ways. The vector `streets` contains a few instances of spellings of Broadway mixed in with other streets that start with the letter `B`.
+In New York City, the famed avenue _Broadway_ is may be written and abbreviated in a number of ways. The vector `streets` contains a few instances of spellings of Broadway mixed in with other streets that start with the letter `B`.
 
 \vspace{12pt}   
 ```{r, eval = FALSE}
@@ -499,7 +499,7 @@ Together, these character combinations make it possible to accomplish complex st
   
 In an increasingly digital world, data privacy is a sensitive issue that has taken center stage. At the center of it is the safeguarding of Personally identifiable information (PII). Legislation in the European Union, namely the General Data Protection Regulation or GDPR, requires companies to protect the personal data of European Union (EU) citizens associated with transactions conducted in the EU [(@gdpr)]. The US Census Bureau, which administers the decennial census, must apply disclosure avoidance practices in order so that individuals cannot be identified [(@censusavoidance)]. Thus, anonymization has become a common task when processing and using sensitive PII data. 
 
-__Redaction__. For example, the first element in the vector below contains hypothetical PII and sensiive information -- John's social security number and balance in his savings account are shown. When presented with many lines of sensitive information, one could review each sentence and manually redact sensitive information, but given thousands if not millions of pieces of sensitive information, this is simply not feasible.
+__Redaction__. For example, the first element in the vector below contains hypothetical PII and sensitive information -- John's social security number and balance in his savings account are shown. When presented with many lines of sensitive information, one could review each sentence and manually redact sensitive information, but given thousands if not millions of pieces of sensitive information, this is simply not feasible.
 
 \vspace{12pt}  
 ```{r}
@@ -748,7 +748,7 @@ To *extract two or more columns* follows a familiar pattern, making use of eithe
 
 Extracting specific *subsets* is perhaps one of the most essential skills of data processing as it allows one to focus on specific aspects of the data. In addition to calling specific array indexes to subset data, we can extract specific rows based on user-specified criteria, such as "crimes that happened in 2015" or "robberies that involved a handgun". Here, we describe three approaches using logical vectors, the `which` command and the `filter` command in the `dplyr` library. The first two options are possible using the pre-built functionality of R. 
 
-The __logical vector__ approach first creates a boolean vector that describes some logical comparison, then passing the logical vector to the data frame to subset. 
+The __logical vector__ approach first creates a Boolean vector that describes some logical comparison, then passing the logical vector to the data frame to subset. 
 
 
 \vspace{12pt} 
@@ -932,7 +932,7 @@ This process, as illustrated below, creates a 20-observation data frame `crimes_
 
 ### Reshaping data
   
-The shape and stucture of a data set usually goes hand-in-hand with how it will be used. Data are generally stored in either *long* form and *wide* form. Long form represents each subject (or individual unit of analysis) at one point in time as a row and each variable as a column. This format also is the most analytically convenient format.  In the social sciences, long format is analogous to panel data or stacked data. For example, the following is a long format data set with arrest rates associated with burglary, robberies and thefts for each ward and quarter.
+The shape and structure of a data set usually goes hand-in-hand with how it will be used. Data are generally stored in either *long* form and *wide* form. Long form represents each subject (or individual unit of analysis) at one point in time as a row and each variable as a column. This format also is the most analytically convenient format.  In the social sciences, long format is analogous to panel data or stacked data. For example, the following is a long format data set with arrest rates associated with burglary, robberies and thefts for each ward and quarter.
 
 \vspace{12pt} 
 
@@ -970,7 +970,7 @@ To reshape data, we rely on a package called `reshape2`, which simplifies the pr
 ```
 \vspace{12pt} 
 
-__*Long to Wide*__. Suppose we summarized the crimes data into a quarterly data set of arrest rates by type of crime and wward. This data would be returned in long form.
+__*Long to Wide*__. Suppose we summarized the crimes data into a quarterly data set of arrest rates by type of crime and ward. This data would be returned in long form.
 
 \vspace{12pt} 
 ```{r, message = FALSE, warning=FALSE}
@@ -983,7 +983,7 @@ __*Long to Wide*__. Suppose we summarized the crimes data into a quarterly data 
 
 The `dcast` function converts data from long form to wide form and expects a data frame, a formula, and at least one value variable. Let's walk through the example below that produces a new data frame where each row is a type of crime in a ward and each column is the arrest rate for each time period. 
 
-- The formula dictates the desired structure. In the formula `ward + primary.type ~ period`, for example, variables to the left of the tilda `~` are treated as row identifiers and variables to the right are dimensions that will be spread across the columns. Multiple dimensions can be specified, each separated by an addition symbol `+`. 
+- The formula dictates the desired structure. In the formula `ward + primary.type ~ period`, for example, variables to the left of the tilde `~` are treated as row identifiers and variables to the right are dimensions that will be spread across the columns. Multiple dimensions can be specified, each separated by an addition symbol `+`. 
 - The parameter `value.var` indicates the variable that will fill the cells of the new data structure, which in this case is the `arrest.rate`.
 
 The resulting data frame has $n=150$ rows and $k=22$ columns.
@@ -1157,7 +1157,7 @@ A multitude of real world phenomena can be described as random walks, such as ex
 ```
 \vspace{12pt} 
 
-If we know the total space required for the simulation, we can set up `df` with a pre-specified number of rows and overwrite individual cells when needed. Such a simple change vastly reduces the processing time to less than 1.5 seconds -- only one-quarter of the time! *Why?* Part of the answer lies in the functional differences between appending to data frames and overwritting cells in a data frame. When we use `rbind`, `R` is forced to overwrite the entire data frame with an additional row. As objects become large, the write time compounds. In contrast, overwriting individual cells only replaces specific cells, removing unnecessary read-write time. 
+If we know the total space required for the simulation, we can set up `df` with a pre-specified number of rows and overwrite individual cells when needed. Such a simple change vastly reduces the processing time to less than 1.5 seconds -- only one-quarter of the time! *Why?* Part of the answer lies in the functional differences between appending to data frames and overwriting cells in a data frame. When we use `rbind`, `R` is forced to overwrite the entire data frame with an additional row. As objects become large, the write time compounds. In contrast, overwriting individual cells only replaces specific cells, removing unnecessary read-write time. 
 
 
 \vspace{12pt} 
@@ -1185,7 +1185,7 @@ If we know the total space required for the simulation, we can set up `df` with 
 \vspace{12pt} 
 
 
-Even more surprisingl, there are simpler functions that can simulate a random walk in far less time and with less code. In fact, a simple combination of the `sample` and `cumsum` functions can randomly draw $n=10000$ values of $u_t$ and calculate a vector of elements with cumulative sums (effectively a random walk), all in less than 0.01 seconds. This is all to show that loops are easy to use, but be sure to plan out your loops carefully to maximize efficiency and it is worth conducting some due diligence to identify possible alternatives. 
+Even more surprising, there are simpler functions that can simulate a random walk in far less time and with less code. In fact, a simple combination of the `sample` and `cumsum` functions can randomly draw $n=10000$ values of $u_t$ and calculate a vector of elements with cumulative sums (effectively a random walk), all in less than 0.01 seconds. This is all to show that loops are easy to use, but be sure to plan out your loops carefully to maximize efficiency and it is worth conducting some due diligence to identify possible alternatives. 
 
 
 
@@ -1207,7 +1207,7 @@ Whereas for-loops require a range of values through which to iterate, `while` st
 
 A few key ingredients are required. The `while` statement requires a logical statement (e.g. $x > 2$) -- the *goal*. So as long $x$ is greater than $2$, the statement will continue to run. There also needs to be an *update step* in the script that ensures that values that are to be evaluated are tuned towards satisfying the goal so that eventually $x$ is no longer greater than $2$. Otherwise, the while loop will continue for infinitum, also known as an *infinite loop*. 
 
-To put this into perspective, we construct a while loop to search for a value of $x$ that minimizes the formula $y = x^{\frac{3}{2}} - 8x + 100$. Before the loop, we set initial value of $x = -100$, set $step = 1$ to control the fineness of the search interval for $x$, create a counter variable $i$ to keep track of the number of iterations, and a placeholder vector `vals` to store values of $y$. The while loop starts by evaluating if one of two conditions is true: if there are less than two iterations (`i < 2`) or if we have found a minimum value (if current value of $y$ in iteration $i$ is less than the previous iteration). If either is true, then the script within the curley braces is executed, otherwise the loop terminates. Notice that $step$ is added to $x$  in order to advance the loop to the next set of conditions to be evaluated.
+To put this into perspective, we construct a while loop to search for a value of $x$ that minimizes the formula $y = x^{\frac{3}{2}} - 8x + 100$. Before the loop, we set initial value of $x = -100$, set $step = 1$ to control the fineness of the search interval for $x$, create a counter variable $i$ to keep track of the number of iterations, and a placeholder vector `vals` to store values of $y$. The while loop starts by evaluating if one of two conditions is true: if there are less than two iterations (`i < 2`) or if we have found a minimum value (if current value of $y$ in iteration $i$ is less than the previous iteration). If either is true, then the script within the curly braces is executed, otherwise the loop terminates. Notice that $step$ is added to $x$  in order to advance the loop to the next set of conditions to be evaluated.
 
 \vspace{12pt} 
 ```{r}
@@ -1234,7 +1234,7 @@ While these loops are useful for searching for solutions, the problem needs to b
 
 Data manipulation tasks are often repeated for many different projects and it is not uncommon for two or more scripts to contain the same exact steps. Rather than tediously modifying scripts, try to live by the following philosophy: once, then never again. The idea is that if code is well-designed and documented, it can serve as re-usable tools that can be re-applied to similar problems. This is the basis of *user-written functions*: a coder can define some set of standard required inputs on which a set of steps can be applied to produce a standard output, then their work can be shared with many others who face similar problems
 
-A function is constructed as follows. Using `function`, a set of parameters are specified upfront as the key ingredients, then a set of coded procedures are executed using those same parameters. In the example below, we construct a function `meanToo` that replicates the functionality of the `mean` function. `meanToo` requires a data frame `df` and a variable name in string format `var.name`. Within the curley brackets, we insert code that uses the input parameters as placeholders. The mean is calculated as the sum of `var.name` in data frame `df` divided by the number of rows in `df`, then assigns the result to the object `temp`. These calculations are temporary and only executed with a *local environment* -- they are wiped once the function finishes running; However, the `temp` object can be extracted by passing it to `return`. All of the above steps are assigned to the `meanToo` object that is treated like any other function. 
+A function is constructed as follows. Using `function`, a set of parameters are specified upfront as the key ingredients, then a set of coded procedures are executed using those same parameters. In the example below, we construct a function `meanToo` that replicates the functionality of the `mean` function. `meanToo` requires a data frame `df` and a variable name in string format `var.name`. Within the curly brackets, we insert code that uses the input parameters as placeholders. The mean is calculated as the sum of `var.name` in data frame `df` divided by the number of rows in `df`, then assigns the result to the object `temp`. These calculations are temporary and only executed with a *local environment* -- they are wiped once the function finishes running; However, the `temp` object can be extracted by passing it to `return`. All of the above steps are assigned to the `meanToo` object that is treated like any other function. 
 
 It is good practice to include documentation about what the function does and how to use it. At a minimum, include what the function is, the arguments, and the output. Typically in the culture of open source software, code should be written with others in mind: keep it transparent and re-usable.
 
@@ -1361,24 +1361,20 @@ Rather than copying the above function multiple times, the resulting function ca
 
 *Writing just any piece of code is easy. The real challenge is to ensure that it is re-usable, functional and adopted.*
 
-To be successful in the wild requires the appropriate mindset and embracing of data etiquette.  Data processing is not like a vampiric feeding frenzy of the sort that might be seen on Buffy the Vampire slayer (the TV show): one simply does not arbitrarily chomp at and slice data without any thought as to what comes next. It requires discipline and finesse to acquire a raw piece of information and extract the empirical substance. 
+Data processing is not like a vampiric feeding frenzy of the sort that might be seen on Buffy the Vampire slayer (the TV show): one simply does not arbitrarily chomp at and slice data without any thought as to what comes next. It requires discipline and finesse to acquire a raw piece of information and extract the empirical substance.  It is the foundational step of any successful data science project. 
 
-Hypothetically, imagine that you have conducted a three-month analytics project, rushing to obtain to a result. If asked to provide backup, documentation, and a process, it may very well require an additional few months to decipher your passionate but hasty explorations. Where did this data come from? Why did I take a dot product in this equation? What happened to the raw file? Who is Bob mentioned in this email?  Which directors have seen the report? Ultimately, the data scientist is in control and should be empowered to conduct data processing in a structured, scientific manner. _So, what exact does that mean?_ Here are five guidelines that make for successful, scalable data science projects:
+Imagine that you have conducted a three-month analytics project, rushing to obtain to a result. If asked to provide backup, documentation, and a process, it may very well require an additional few months to decipher your passionate but hasty explorations. Where did this data come from? Why did I take a dot product in this equation? What happened to the raw file? Who is Bob mentioned in this email?  Which directors have seen the report? Ultimately, the data scientist is in control and should be empowered to conduct data processing in a structured, scientific manner. Here are five tips that can bulletproof data processing:
 
-- _Define a file structure and stick to it_. At a minimum, create a folder for _scripts_ to store all code, another for _raw_ data, a folder for _outputs_ from data processing, and another for _documentation_. Choose any file structure, but make sure it is consistent and always followed.
+- _Define a file structure and stick to it_. All work product needs to be chronicled in a coherent structure. At a minimum, create a folder for _scripts_ to store all code, another for _raw_ data, a folder for _outputs_ from data processing, and another for _documentation_. Choose any file structure, but make sure it is consistent and always followed. Name scripts and data in a logical, intuitive format. And perhaps more importantly, create a *Read Me* file -- a simple text document that explains the contents of the project and keeps a log of versions. 
 
-- _Think modularly with code_.   One of the greatest human inventions is the assembly line. Each step in the process is discrete, requiring workers to specialize in one set of well-defined tasks. As a worker becomes specialized, production speed increases as workers focus on a repetitive task as opposed to switching between tasks. Also, if any step in the process needs to be improved, revised, or replaced, all other steps in the process are not disrupted -- only one step needs to be addressed. This standardization of processes is the only way to scale.  Programming and data manipulation are the same. 
+- _Adopt and stick to a coding style_. Each file, data field, and function should follow a style so that the logic is cohesive, readable and traceable. The Google R Style Guide (@google), for example, sets easy to follow guidelines. According to the style guide, variable names should be labeled as lower case characters with  a `"."` as a separator:  `variable.name`. Functions should be named in proper case without spaces: `NewFunction` or `MyFunction`. Regardless of the style guide, file names should be meaningful and the only punctuation used should be `"_"` for spaces and `"."` to accompany the file type: `gdp_2014_10_02.json`. But most importantly, the code needs to make common sense. Be vigilant with your code style as it may be the difference between a successful adopted project and a failed project.
 
-- _Think about data in layers_. Data should be processed to varying degrees keeping in mind its ultimate uses and preserving its provenance, from raw information to analytical outputs. NASA earth science satellite imagery, for example, is processed to varying degrees. Level 0 data are raw satellite instrument data at full resolution. Level 1B contained reconstructed, calibrated, and processed data that serve as the core source data for downstream applications. Whereas Level 4 are outputs from specific models and analyses.
+- _Version up_. Each time code is written, modified, amended, or updated, a new version should be saved. Cloud-based services such as [Github](https://github.com/) make version control simple and also allow groups of coders to work together. If storing work product on a local server or computer, simply save the file with a new version number as well as making an entry into a log or Read Me file. The log file can be as simple as a text file with time stamps indicating the date of the edit, the file name and the nature of the edit. 
 
-- _Adopt and stick to a coding style_. Each file, data field, and function should follow a style so that the logic is cohesive, readable and traceable. The [Google R Style Guide](https://google.github.io/styleguide/Rguide.xml), for example, sets easy to follow rules. For example, variable names should be labeled as lower case characters with  a `"."` as a separator:  `variable.name`. Functions should be named in proper case without spaces: `NewFunction` or `MyFunction`. Regardless of the style guide, file names should be meaningful and the only punctuation used should be `"_"` for spaces and `"."` to accompany the file type: `gdp_2014_10_02.json`. Be vigilent with your code style as it may be the difference between a successful and a failed project.
+- _Think modularly with code_.   One of the greatest human inventions is the assembly line. Each step in the process is discrete, requiring workers to specialize in one set of well-defined tasks. As a worker becomes specialized, production speed increases as they refine their ability to accomplish a specific task. If any step in the process needs to be improved, revised, or replaced, all other steps in the process are not disrupted -- only one step needs to be addressed. This standardization of processes is the only way to scale. Programming and data processing are the same -- the goal is to produce well-written code that can reliably accomplish and re-accomplish the same tasks using newly available data. In essence, one needs to construct code that lays the pipeline for data to flow from loading, to cleansing and standardization of values, re-structuring into usable form, and storing in an accessible format. Each module of the process should be able to be swapped out like an interchangeable piece if need be. 
 
+- _Think about data in layers_. All data should ideally stem from a single "source of truth" -- one harmonized set of data should serve as the basis for all applications, whether its supporting inspectors in the field or informing high-level policy making. It is thus not uncommon to have data stored in varying degrees of processing. NASA earth science satellite imagery, for example, is stored in at least six different levels of varying amounts of processing. Level 0 data are raw satellite instrument data at full resolution. Level 1B contained reconstructed, calibrated, and processed data that serve as the core source data for downstream applications. Whereas Level 4 are outputs from specific models and analyses. Before commencing data processing, first consider what end users want to accomplish, then process the data set into a common, standard form that can serve as a lowest common denominator. It is from that source data set that all use case specific derived data should come.
 
-- _Work forward, not in circles_. Raw meats should never be placed with cooked meats. It's a one way street to keep things clean and sanitary. Data is also a one way street  Start from the raw data, make a copy when working with the raw, do thy bidding on the data, then output results or processed data as a new file. Never overwrite the raw file as this is the equivalent to repeatedly refridgerating and re-cooking already cooked meat -- the result may be less than desirable in the future. 
-
-
-- _Version up_. Each time code is written, modified, amended, or updated, a new version should be saved. Saving can be done in one many ways. If on a local computer, simply adding a version number to the code file name would suffice with an entry to a log file. The log file can be as simple as a text file with time stamps indicating the date fo the edit, the file name and the nature of the edit. Services such as [Github](https://github.com/) are particularly useful for version control and working on code in groups. 
-
-Following these basic guidelines is the difference between successful, scalable projects and ones that get stuck in the mud. 
+It will undoubtedly require some time to first familiarize oneself with the steps of data processing before coding projects become tidy engineering feats. Nonetheless, these best practices are worthy ideals to which to strive. 
 
 ## Chapter References
