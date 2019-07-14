@@ -12,12 +12,11 @@ site: bookdown::bookdown_site
 biblio-style: apalike
 ---
 
-# The Pursuit of Prediction
+# Predictive Strategies
 
 ## Map Data as Guestimates
 
 On an early September day in 2013, the staff of Fairbanks International Airport had an unusual encounter: TSA agents intercepted a motorist headed for the airport. This was not just any routine traffic stop — it was on the tarmac of an airfield. A motorist unwittingly drove passed marked signs and lights, venturing down a taxiway and eventually across an active runway on the way to the airport car park (@fairbanks1, @fairbanks2). Later that same month, yet another motorist made the same mistake. What is the connection? Both incidents were the result of faulty driving directions from an iPhone app. Needless to say, the airport blocked the entrance to the tarmac and filed complaints with Apple. 
-
 Incidents like these are not uncommon. In fact, competing apps like Waze have led drivers into danger, whether its impassable snow covered roads (@snow) or into the path of a wildfire (@fire). Part of the problem lies in the maintaining an up-to-date record of the built environment. Imagine that the address of every building, condition and speed limits of every road, status of traffic, among other real-time conditions need to be available for any user to use at a moment's. It is a massive challenge that has led companies to acquire other companies to improve data quality (@appleacquisition). Sometimes, companies will even use sensitive user data to fill data gaps (@applyrebuild). Keeping up-to-date data is a problem of scale -- it is simply too hard for humans to manually curate and keep information up to date for literally all of existence. 
 
 Machine learning can help. 
@@ -26,8 +25,11 @@ Everyday, we already rely on high frequency and high resolution data to make eve
 
 What if algorithm can provide help distill a mass of data into a simple, more useful form. The economy, for example, is comprised of an extraordinarily large number of variables. Some are related, others are not. When faced with thousands of economic variables, a human analyst may be biased towards what they are familiar or their world perspective. A machine learning algorithm, in contrast, will seek out variables that have the greatest signal for predicting a measure of interest. This is what the U.S. Bureau of Economic Analysis (BEA) has experimented with in recent memory. The agency, which is responsible for estimating the Gross Domestic Product (GDP), is faced with a constant scheduling tango with their data sources -- some data are available in time for their advance estimate of GDP and others are not. When data are not available in time, economically-motivated projections carry the estimates forward until when there is an opportunity to incorporate the "gold copy" data. The risk of projection is the chance that it does not reflect the gold copy when it is available, leading to revisions in economic estimates -- a source of anxiety for economists and financial analysts. To reduce revisions to service sector estimates, BEA has developed an experimental approach that relies on *ensembles* of machine learning algorithms, such as *Random Forests* and *Regularized Regression*, to sift through thousands of alternative economic variables and predict economic growth before data is available.  This strategy has been shown that predictions can reduce revisions to economic estimates by billions of dollars (@beaforecast), which in turn can mitigate unnecessary market responses to revisions. Similar prediction strategies have been applied by tech companies to optimize their resources. Uber, for example, trained a Long-Short Term Memory (LSTM) algorithm to forecast ridership when faced with extreme events such as sports events and holidays. By improving their short-range forecasts across their platform, they can better optimize resource allocation to meet customer demand and manage budgets more efficiently (@uberlstm).
 
+The pursuit of prediction has driven computer scientists and statisticians to constantly develop new strategies that maximize predictive accuracy at scale. [Machine learning algorithms sit within a data science pipeline]
 
-The pursuit of prediction has driven computer scientists and statisticians to constantly develop new strategies that maximize predictive accuracy. In fact, each type of machine learning algorithm works best under different circumstances, whether it's the type of data or the use case.  Let's revisit the seemingly simple case of classification. Below, we plot three distinct scenarios for a two-class classification problem : simple linear boundary, non-linear, and discontinuous. A *logistic regression* is a natural fit for a linear boundary given its root in linear regression. While it is the champion of parameter estimation, logistic regression is ill-fit for more complex relationships. Non-parametric techniques are far more flexible and can mold the decision boundary to the counters of the data. This gain in accuracy comes at the cost of interpretability. For example, *K-nearest neighbors* (kNN) performs classification by looking at neighborhoods of observations. Given a training sample, each record in the test sample is predicted using the most common label for the $k$ closest known records. In essence, kNN is driven by a majority or plurality vote from neighboring records.  Alternatively, *decision tree learning* such as *Classification and Regression Trees* (CART) and *Random Forest* algorithms assorb the patterns that it has learned by encoding as binary rules that split a sample into finer, more homogeneous partitions. Each algorithm has its strengths and weaknesses rooted in how it deals with and assimilates information.
+[Image]
+
+In fact, each type of machine learning algorithm excels under different conditions.  Let's revisit the case of classification. Below, we plot three distinct scenarios for a two-class classification problem: simple linear boundary, non-linear, and discontinuous. A *logistic regression* is a natural fit for a linear boundary given its root in linear regression. While it is the champion of parameter estimation, logistic regression is ill-fit for more complex relationships. Non-parametric techniques are far more flexible and can mold the decision boundary to the counters of the data. This gain in accuracy comes at the cost of interpretability. For example, *K-nearest neighbors* (kNN) performs classification by looking at neighborhoods of observations. Given a training sample, each record in the test sample is predicted using the most common label for the $k$ closest known records. In essence, kNN is driven by a majority or plurality vote from neighboring records.  Alternatively, *decision tree learning* such as *Classification and Regression Trees* (CART) and *Random Forest* algorithms assorb the patterns that it has learned by encoding as binary rules that split a sample into finer, more homogeneous partitions. Each algorithm has its strengths and weaknesses rooted in how it deals with and assimilates information. The ch
 
 \vspace{12pt} 
 
@@ -252,29 +254,133 @@ You will no doubt have noticed that the algorithms mentioned sound quite exotic 
 
 ## K-Nearest Neighbors (KNN)
 
-K-nearest neighbors (KNN) is a non-parametric algorithm built on a simple idea: *observations that are closer together are likely to be similar*.  This non-parametric technique does not learn coefficients like in the case of regression, but rather treats its input variables $X$ like coordinates in order to measure distance between each other. It is instance-based, meaning that the prediction of each $y_i$ is inferred from each point's surrounding neighbors. In many ways, KNN molds to the data. Since it lacks a formal empirical structure, the algorithm can impute missing values in a realistic, organic fashion.
+K-nearest neighbors (KNN) is a non-parametric algorithm built on a simple idea: *observations that are closer together are likely to be similar*.  Thus, promixity of points matters as each prediction of $y_i$ is inferred from its surrounding records. These neighbors are identified by treating each input variables $x_k$ as coordinate, which in turn allows distance to be calculated between all points in the data set. In many ways, KNN is like spackle -- it can fill holes while retaining the shape of the surface to which it is applied. Thus, the algorithm can impute missing values in a realistic, organic fashion.
 
 ### Under the hood
 
-The algorithm is quite simple. For each case $y_i$:
+When KNN produces predictions, it first locates where each new point falls within the training data space, then constructs a prediction from neighboring points. Each prediction $\hat{y}_i$ relies on the training targets and inputs $\{(x_n, y_n) \}^N_{n=1}$ as sets of landmarks that help the algorithm get its bearings -- a sort of base map. If the base map [or training data] is reliable and densely populated, then mapping new points to the space can deliver promising results. 
 
-_1. Calculate distance_. First, we calculate the distance $d$ to all other records with known outcomes. Distance most commonly takes the form of Euclidean distance, which is appropriate with continuous values. For cases where the underlying data are boolean or binary, Manhattan distance is more appropriate. 
+```{r, echo = FALSE, message = FALSE, warning=FALSE, fig.cap = "KNN algorithm process.", fig.height = 2}
+#Illustration of kNN
+
+require(ggplot2)
+  n <- 200
+  k <- 4
+  
+  #Create training data
+    set.seed(100)
+    x <- runif(n)
+    
+    set.seed(44)
+    y <- runif(n)
+  
+    z <- ifelse(y > x*1.2 , 1, 0)
+    z1 <- ifelse(y < 0.8, 1,0)
+    z <- z*z1
+    
+    df <- data.frame(x, y, z)
+    
+  #Create test
+    df_test <- data.frame(id = 1:3,
+                          x = c(0.33, 0.63, 0.6),
+                          y = c(0.6, 0.7, 0.5))
+  
+    
+  #Create segments  
+    segs <- data.frame()
+    segs_all <- data.frame()
+    for(i in 1:nrow(df_test)){
+      d <- sqrt((df_test$x[i] - df$x)^2 + (df_test$y[i] - df$y)^2)
+      segs <- rbind(segs,
+                data.frame(id = i, 
+                           x0 = df_test$x[i], 
+                           y0 = df_test$y[i],
+                           df[rank(d, ties.method = "random") <=k,]))
+      segs_all <- rbind(segs_all,
+                    data.frame(id = i, 
+                               x0 = df_test$x[i], 
+                               y0 = df_test$y[i],
+                               df))
+    }
+    
+  #Plot
+    
+  par(mfrow = c(1,3), mar = rep(3,4))
+  #First plot
+    plot(df$x, df$y, col = rgb(df$z, 0.8, 1- df$z, 0.4),
+         pch = 20, cex = 2, xlab = "", ylab = "", 
+         yaxt = "n", xaxt = "n",
+         xlim = c(0.2, 0.7), ylim = c(0.3, 0.8), asp = 1)
+    points(df_test$x, df_test$y, col = "black", 
+           cex = 3, pch = 18)
+    title(ylab="X1", xlab = "X2", line=1, cex.lab=1.2)
+    title(main = "(1) Set up", line=1, cex.lab=1.2)
+    
+  #Second plot
+    plot(df$x, df$y, col = rgb(df$z, 0.8, 1- df$z, 0.4),
+         pch = 20, cex = 2, xlab = "", ylab = "", 
+         yaxt = "n", xaxt = "n",
+         xlim = c(0.2, 0.7), ylim = c(0.3, 0.8), asp = 1)
+    segments(x0 = segs_all$x0,
+             y0 = segs_all$y0,
+             x1 = segs_all$x,
+             y1 = segs_all$y, 
+             col = rgb(segs_all$z, 0.8, 1 - segs_all$z, 0.1), 
+             lwd = 1)
+    points(df_test$x, df_test$y, col = "black", 
+           cex = 3, pch = 18)
+
+    title(ylab="X1", xlab = "X2", line = 1, cex.lab = 1.2)
+    title(main = "(2) Calculate distance", line = 1, cex.lab = 1.2)
+    
+    
+    #Third plot
+      scored <- c(1, 0, 0)
+      plot(df$x, df$y, col = rgb(df$z, 0.8, 1- df$z, 0.4),
+           pch = 20, cex = 2, xlab = "", ylab = "", 
+           xlim = c(0.2, 0.7), ylim = c(0.3, 0.8), asp = 1,
+           yaxt = "n", xaxt = "n")
+      segments(x0 = segs$x0,
+               y0 = segs$y0,
+               x1 = segs$x,
+               y1 = segs$y, 
+               col = rgb(segs$z, 0.8, 1 - segs$z, 1), 
+               lwd = 2)
+      points(df_test$x, df_test$y, col = rgb(scored, 0.8, 1- scored, 1), 
+             cex = 3, pch = 18)
+       title(ylab="X1", xlab = "X2", line = 1, cex.lab = 1.2)
+      title(main = "(3) Vote using k-neighbors", line=1, cex.lab=1.2)
+```
+
+The algorithm is quite simple: 
+
+_1. Set k_. Prior to starting the algorithm, we first set a value of $k$, which determines the number of surrounding points around a record $i$ that will be used to produce a prediction for $y_i$. The true value of $k$ is not known -- this will require some systematic trial and error. 
+
+For the subsequent steps, do for each record $i$: 
+
+_2. Calculate distance_. The collection of input variables $X$ serve as coordinates. To identify the neighborhood around each $i$ in the test sample, calculate the distance $d_{ij}$ from $i$ to each point $j$ in the training sample.  Distance most commonly takes the form of Euclidean distance, which is appropriate with continuous values. For cases where the underlying data are boolean or binary, Manhattan distance is more appropriate. 
+
+\vspace{12pt} 
+
+| Distance | Formula | Description|
+|-----------------+------------------------------------+-----------------------------------------|
+| Euclidean | $\sqrt{\sum_{i=1}^n(x_{i} - x_{0})^{2} }$ | A distance measure useful for continuous values|
+| Manhattan |$\sqrt{\sum_{i=1}^n|x_{i} - x_{0}| }$| Named for the street blocks of Manhattan in New York City, Manhattan distances are useful for binary and discrete problems. |
+
+Table: Types of distance
+
+\vspace{12pt} 
 
 
-$$\text{Euclidean distance} = \sqrt{\sum_{i=1}^n(x_{i} - x_{0})^{2} }$$ 
+_3. Vote!_. The prediction $\hat{y}_i$ is calculated from a vote of the $k$ nearest points to point $i$. In classification problems, the proportion $p_c$ of points that are in each class $c$ in $Y$.  The proportion $p_c$ is converted into a predicted class through *majority voting* -- assign an observation to the class that is most represented in the neighborhood. In regression contexts, $\hat{y}_i$ is simply the average of $y_i$ for the $k$-nearest neighors.
 
-$$\text{Manhattan distance} = \sqrt{\sum_{i=1}^n|x_{i} - x_{0}| }$$ 
-
-
-In effect, the collection of input variables $X$ serve as coordinates and help locate neighborhoods of points. 
-
-_2. Vote!_. For the $k$ nearest observations to a given observation, we calculate the proportion of observations in each class $j$ in $Y$.  This yields a conditional probability for each observation $i$, which is converted into a predicted class through *majority voting* -- assign an observation to the class that is most represented in the neighborhood.   There are various flavors of the voting calculation that account for distance from a given observation. 
+There are various flavors of voting. The procedure illustrated give all $k$ neighbors equal weight, but if its believed that closer points should be given more weight, then a variety of *kernels* such as inverse distance and biweights discount the importance of points that are farther away even if they are part of $k$. 
 
 \vspace{12pt} 
 
 | Voting Type | Formula | Interpretation|
 |-----------------+------------------------------------+-----------------------------------------|
-| Rectangular | $Pr(Y = j) = \frac{1}{k}\sum_{i=1}^k I(y^i = j)$ | Calculate the proportion of $j$ based on $k$ nearest neighbors.|
+| Rectangular | $Pr(Y = j) = \frac{1}{k}\sum_{i=1}^k I(y^i = j)$ | Calculate the proportion of $j$ based on $k$ nearest neighbors. This is the same of simple arithmetic mean.|
 | Inverse |$Pr(Y = j) = \sum_{i =1}^k w(d)(y^i = j)$  where $w(d) = \frac{1}{d_i\sum_{i=1}^k(\frac{1}{d_i})}$|Calculate the weighted proportion of $j$ based on the inverse distance to $k$ nearest neighbors.|
 | Biweight | | |
 | Gaussian | | |
@@ -284,15 +390,13 @@ Table: Types of voting kernels
 \vspace{12pt} 
 
 
-_3. Tune k_. The KNN technique is sensitive to the value of $k$ and the voting kernel, requiring tuning -- or testing different values of $k$. When $k = 10$ with a rectangular kernel, the conditional probability for $y_i$ reflects the 10-nearest neighbors. When $k = n$, the conditional probability is equivalent to the sample mean. 
-
-KNNs are merely a smoothing procedure. They are highly effective for filling missing data, but their simplicity also does not allow them to learn or store patterns they uncover nor do they facilitate inference.
+_4. Tune k_. When $k = 10$ with a rectangular kernel, the conditional probability for $y_i$ reflects the 10-nearest neighbors. When $k = n$, the probability is equivalent to the sample mean. These two extremes illustrate that KNN is sensitive to the value of $k$ and the kernel, yet we do not truly know which is right. Tuning is a necessity to test different scenarios in order to optimize accuracy. 
 
 \vspace{12pt} 
 
-### Working with KNNs
+### In Practice
 
-_Tuning_. Like many other algorithms, KNNs require systematic trial and error in order to optimize the *hyperparameters*.  We do not know what is the true value of $k$ or the absolute best kernel to use, thus tuning of the hyperparameters is a necessity, typically relying on a grid search. The idea is to develop a ballpark sense of what works, then hone in on the best value of $k$. One search strategy could test all values from $k=1$ to $k=\sqrt{n}$ in multiples of one's choosing, keeping track of how each $k$ performs in terms of a loss function (e.g. TPR, FPR, F1-statistic). 
+*__Tuning__*. Like many other algorithms, KNNs require systematic trial and error in order to optimize the *hyperparameters*.  We do not know what is the true value of $k$ or the absolute best kernel to use, thus tuning of the hyperparameters is a necessity, typically relying on a grid search. The idea is to develop a ballpark sense of what works, then hone in on the best value of $k$. One search strategy could test all values from $k=1$ to $k=\sqrt{n}$ in multiples of one's choosing, keeping track of how each $k$ performs in terms of a loss function (e.g. TPR, FPR, F1-statistic). 
 
 To illustrate the tuning process, we have assembled a sample of USDA CropScape landcover data (@cropscape) for farmland that grows corn (yellow) and soybeans (green). More often than not, data will having missing values and capture only a fraction of the full picture. Suppose we had only 10% of all land cover data available, but need to see the remaining 90%.  KNNs can impute the likely landcover using available data, tuning the value of $k$.  *Exactly how important is the choice of $k$?* In the imputations below, we compare values of $k$ at 1, 5, 10, and 100. It is apparent that as the value of $k$ increases, the corn fields increasingly creep into areas where soy would be expected. Not only is this loss in accuracy reflected visually, but statistically as well. 
 
@@ -400,91 +504,72 @@ Lastly, KNNs are not interpretable as it is a nonparametric approach. It should 
 ### DIY: Anticipating the extent of damage from a storm
 
 
-As hurricanes become more intense and leave a trail of destruction, city governments will need to be able to more efficiently triage requests for help. Let's take the example of Hurricane Sandy and its effect on NYC. One of the main services offered by cities is the management and care of its trees. A downed tree can cause property damage, bodily harm and traffic disruptions. Due to the high wind and lush foliage during Sandy, many trees fell.
+As hurricanes become more intense, city governments will need to be able to more efficiently triage requests for help. Hurricane Sandy, for example, had a tremendous effect on New York City. One of the main services offered by cities is maintenance of street trees. A downed tree can cause property damage, bodily harm and traffic disruptions. Due to the high wind and lush foliage during Sandy, many trees fell.
 
-In NYC, the Department of Parks and Recreation is responsible for tree removal. When a resident makes a call to the city's services hotline 311, a work order is created and a tree removal team is dispatched. This may be a transactional process: one call for tree removal, one tree is then removed. As it takes time for crews to move and set up, a first-in/first-out queuing process can be inefficient. Imagine if 20 of 100 blocks in a neighborhood were flagged for tree removal. It would make sense to use that call data to identify other blocks that may also have downed trees.
+In NYC, the Department of Parks and Recreation is responsible for tree removal. When a resident makes a call to the city's services hotline 311, a work order is created and a tree removal team is dispatched. This may be a transactional process: one call for tree removal, one tree is then removed. As it takes time for crews to move and set up, a first-in/first-out queuing process can be inefficient. Imagine if 20 of 100 blocks in a neighborhood were flagged for tree removal. It would make sense to use call data to identify other blocks that may also have downed trees.
 
-We would expect that downed trees are more likely to occur in *pockets* and proximity is the best indicator of activity. As the city knows where residents call for tree- and non-tree-related issues, we can use the location of the calls to triangulate on likely problem areas as well as anticipate pockets of yet-to-be-reported downed trees, or at least serve that is a reasonable working theory. For this task of predicting based on proximity, k-Nearest Neighbors (KNN) can help. Suppose the location of all calls for non-emergency help from the day of Hurricane Sandy are captured in NYC's 311 system, yet there are still neighborhoods that likely have downed trees but have not reported it. *From what we know, how can we guess the disposition of other parts of the city to have a fuller picture?*
+We would expect that downed trees are more likely to occur in *pockets* and proximity is the best indicator of activity. As the city knows where residents call for tree- and non-tree-related issues, we can use the location of the calls to triangulate on likely problem areas as well as anticipate pockets of yet-to-be-reported downed trees, or at least serve that is a reasonable working theory. For this task of predicting based on proximity, KNNs can help. Suppose the location of all calls for non-emergency help from the day of Hurricane Sandy are captured in NYC's 311 system, yet there are still neighborhoods that likely have downed trees but have not reported it. *From what we know, can we guess the disposition of other parts of the city to have a fuller picture?*
 
-__Prepare the data__. Some calls for help are associated with downed trees while others may concern non-emergency issues. By this logic, we could assume that a downed tree would be called in if a call were made at all. 
-
-Our data set contains $n=7513$ observations, each of which is a 1000 foot by 1000 foot area. When plotted, the data set captures the outline of NYC.
+__Prepare the data__. During and after a storm, one would imagine that residents of a neighborhood would call to report downed trees. If such a call were made, then we could flag that neighborhood as one that experienced a tree troubles. Alternatively, if a neighborhood's complaints are devoid of tree-related problems during a storm, we can assume that the area was unaffected. These are the assumptions that were applied to NYC create a data set of $n=7513$ records, each of which is a $1000ft \times 1000 ft$ area in New York City. 
 
 \vspace{12pt} 
 
 ```{r, message = FALSE, warning = FALSE, fig.height = 3}
-
-#Load data (need persistent link)
+#Load data
   nyc <- read.csv("data/sandy_trees.csv")
 ```
 
 \vspace{12pt} 
 
-For simplicity, we will focus on the two largest and geographically connected boroughs, Brooklyn (BK) and Queens (QN). The remaining boroughs of the city are separated by rivers, which may be better represented using separate models. We subset our data using the `boro` variable to focus, scale the geographic coordinates using the `scale` function, and  map the resulting subset.
+For simplicity, we will focus on the two largest and geographically connected boroughs (`boro`), Brooklyn (BK) and Queens (QN). The remaining boroughs of the city are separated by rivers, which may have been impacted quite differently.
 
 \vspace{12pt} 
 
 ```{r, message = FALSE, warning = FALSE}
 
-#Subset
-  nyc <- subset(nyc, boro %in% c("QN", "BK"))
-
-#Standardize input variables
-  nyc$xcoord <- scale(nyc$xcoord)
-  nyc$ycoord <- scale(nyc$ycoord)
+#Extract Queens and Brooklyn
+  pacman::p_load(dplyr)
+  nyc <- filter(nyc, boro %in% c("BK", "QN"))
 
 ```
 
 ```{r, message = FALSE, warning = FALSE, fig.cap = "Plot of X-Y coordinates for Brooklyn and Queens.", echo = FALSE}
   
-#Plot
   plot(x = nyc$xcoord, y = nyc$ycoord, 
-       cex = 0.3, pch = 15, asp = 1, col = "grey")
+       cex = 0.3, pch = 15, asp = 1, col = "grey",
+       xlab = "X-Coordinate", ylab = "Y-Coordinate")
 ```
 \vspace{12pt} 
 
 
-
-
-__Train__. While this is a retrospective analysis, we simulate the process of producing the complete map as if we had partial information. The `nyc` data frame is split into a `train` set, keeping only locations where the target variable `tree.sandy` are available. A quick tabulation shows that the $n=1550$ of the $n=1946$ training set observations have a downed tree reported.
+__Train__. While this is a retrospective analysis, we simulate the process of producing the complete map as if we had partial information. The `nyc` data frame is split into a `train` set, keeping only locations where the target variable `tree.sandy` are available. A quick tabulation shows that the $n=1550$ of the $n=1946$ training set observations have at least one downed tree reported.  The outcome variable in the test sample `tree.next7` shows which zones reported trees over the seven days following the hurricane. 
 
 \vspace{12pt}
 
 ```{r}
-
-#Subset training sample
+#Extract the training and test samples
   train <- subset(nyc, !is.na(tree.sandy), 
                   select = c("ycoord", "xcoord", "tree.sandy"))
-
+  test <- subset(nyc, 
+                 select = c("ycoord", "xcoord", "tree.next7"))
+  
 #Split out
   table(train$tree.sandy)
 ```
 
-The test set is the entirety of Brooklyn and Queens. The `tree.next7` variable flags any location that had a report of a downed tree over the seven days after the hurricane.
+
+With the data ready for modeling, we load the `kknn` library, which has improvements over the standard R libraries:
 
 \vspace{12pt} 
 
 ```{r}
-  test <- subset(nyc, 
-                 select = c("ycoord", "xcoord", "tree.next7"))
-  
-```
-
-\vspace{12pt} 
-
-With the data in the right shape, we load the `kknn` library:
-
-\vspace{12pt} 
-
-```{r}
-  library(kknn)
+  pacman::p_load(kknn)
 ```
 \vspace{12pt} 
 
+Within the library, the `train.kknn` function builds in cross validation for the tuning process, greatly simplifying the search for optimal prediction parameters. Prediction of new data is handled using the `kknn` function. While both functions can be fairly easily written from scratch (and we encourage new analysts to write their own to intimately understand the assumptions), we plow forth with this library.
 
-The KNN algorithm needs to be calibrated for the best $k$ using the training set, then applied to a test set. To do this, we will use the `kknn` library. The training portion uses the `train.kknn()` function to conduct k-folds cross validation, then the scoring uses `kknn()`. While both functions can be fairly easily written from scratch (and we encourage new analysts to write their own to intimately understand the assumptions), we will plow forth with using the library.
-
-In order to find the optimal value of $k$, we will execute the `train.kknn()` function, which accepts the following arguments:
+To begin the search for $k$, the `train.kknn()` function expects the following inputs:
 
 `train.kknn(formula, data, kmax, kernel, distance, kcv)`
 
@@ -495,7 +580,7 @@ In order to find the optimal value of $k$, we will execute the `train.kknn()` fu
 - `distance` is a numerical value indicating the type of Minkowski distance. (e.g. 2 = euclidean, 1 = binary).
 - `kcv` is the number of partitions to be used for cross validation.
 
-The flexibility of `train.kknn()` allows for test exhaustively and find the best parameters. Below, we conduct 20-folds cross validation testing between $k=1$ and $k = 100$ neighbors using two kernels (rectangular and inverse) that impact the voting step. This simple command does much of the hard work by running the KNN algorithm 2000 times (20 cross-validation models for each $k$ and *kernel* combination), then surfaces the best parameters. We store the results in `fit.cv`.
+We conduct 20-folds cross validation, searching between $k=1$ and $k = 100$ neighbors in combination with two kernels (rectangular and inverse). This simple command does much of the hard work by running the KNN algorithm 2000 times (20 cross-validation models for each $k$ and *kernel* combination), then surfaces the best parameters. We store the results in `fit.cv`.
 
 \vspace{12pt} 
 
@@ -505,18 +590,17 @@ The flexibility of `train.kknn()` allows for test exhaustively and find the best
   set.seed(100)
 
 #Run with 20-folds cross validation
-  fit.cv <- train.kknn(tree.sandy ~ ycoord + xcoord , 
+  fit.cv <- train.kknn(factor(tree.sandy) ~ ycoord + xcoord , 
                       data = train, 
                       kcv = 20, 
                       distance = 1, kmax = 100, 
-                      kernel = c("rectangular", "inv"))
+                      kernel = c("rectangular", "inv", "triweight", "epanechnikov"))
 
 ```
 
 \vspace{12pt} 
 
-
-Within `fit.cv` is a `best.parameters` element that KNNs perform the best when $k = $ `r fit.cv$best.parameters$k` using an inverse distance kernel.
+Within `fit.cv` is a `best.parameters` element that KNNs perform the best when $k = $ `r fit.cv$best.parameters$k` using a rectangular kernel.
 
 \vspace{12pt} 
 
@@ -528,7 +612,7 @@ Within `fit.cv` is a `best.parameters` element that KNNs perform the best when $
 
 \vspace{12pt}
 
-With the KNN algorithm tuned, we can now proceed to scoring the test set using the `kknn()` function. The function syntax is as follows:
+With the optimal parameters tuned, the `kknn` function scores the test sample, piecing together a picture of the full extent of damage. The syntax is quite similar to the training function with some modifications: 
 
 `kknn(formula, train, test, k, kernel, distance)`
 
@@ -539,7 +623,7 @@ With the KNN algorithm tuned, we can now proceed to scoring the test set using t
 - `kernel` is the type of weighting of distance (e.g. "rectangular" is unweighted, "biweight" places more weight towards closer observations).
 - `distance` is a numerical value indicating the type of Minkowski distance. (e.g.  1 = binary, 2 = euclidean,).
 
-Notice that in the following code block, we train the KNN and apply it to the test sample all in one step as the KNN itself does not learn patterns, but just applies a simple calculation following a pre-specified routine. This is a marked difference compared with other algorithms covered in this chapter.
+Notice that both train and test are required by `kknn`. This is a consequence of KNN's instance-based learning -- it does not store relationships and re-applies them, thus the test sample needs to be scored on the fly.  This is a marked difference compared with other algorithms covered in this chapter.
 
 \vspace{12pt}
 ```{r, message=FALSE, warning = FALSE}
@@ -560,7 +644,7 @@ Notice that in the following code block, we train the KNN and apply it to the te
 ```
 \vspace{12pt}
 
-__Evaluate__. With all the right pieces computed, we can examine how closely the predictions based on tree downing patterns on the day of Hurricane Sandy compare with where trees were reported to have fallen over the 7 days that followed. During the storm, approximately `r paste0(round(100*sum(!is.na(nyc$tree.sandy))/nrow(nyc)), "%")` percent of the focus area made a call, of which `r paste0(round(100*sum(nyc$tree.sandy, na.rm=T)/sum(!is.na(nyc$tree.sandy))),"%")` reported a downed tree. This appears as a cloud of points capturing the gist of the downed tree pattern. 
+__Evaluate performance__. With all the pieces computed, we can examine how closely the predictions based on tree downing patterns on the day of Hurricane Sandy compare with where trees were reported to have fallen over the 7 days that followed. During the storm, approximately `r paste0(round(100*sum(!is.na(nyc$tree.sandy))/nrow(nyc)), "%")` percent of the focus area made a call, of which `r paste0(round(100*sum(nyc$tree.sandy, na.rm=T)/sum(!is.na(nyc$tree.sandy))),"%")` reported a downed tree. This appears as a cloud of points capturing the gist of the downed tree pattern. 
 
 \vspace{12pt}
 ```{r, message=FALSE, warning = FALSE, echo = FALSE, fig.height = 3, fig.width = 8, fig.cap = "Comparison of actual and predicted areas with reported downed trees. Red indicates at least one tree was reported in a given 0.359 square-mile area"}
@@ -582,26 +666,6 @@ __Evaluate__. With all the right pieces computed, we can examine how closely the
     
 ```
 \vspace{12pt}
-
-Using the predicted probabilities for the test sample, we calculate the TPR and FPR using both a naive cutoff threshold ($p=0.5$), finding a high TPR but a FPR of almost similar magnitude. Using such prediction would not provide any insight to field crews.
-
-\vspace{12pt}
-```{r}
-#Calculate FPR and TPR
-  tab <- table(test$prob >= 0.5, test$tree.next7)
-  tpr <- tab[2,2]/sum(test$tree.next7)
-  fpr <- tab[2,1]/sum(test$tree.next7 == 0)
-  print(paste0("TPR = ", round(tpr,3), ", FPR = ", round(fpr,3)))
-```
-
-However, a more informed cutoff based on the first day's probability of a downed tree (`r paste0("p = ",round(sum(nyc$tree.sandy, na.rm=T)/sum(!is.na(nyc$tree.sandy)),2))`) yields slightly more balanced results -- sacrifiing some true positives for far fewer false positives.
-
-```{r}
-tab <- table(test$prob >= 0.8, test$tree.next7)
-tpr <- tab[2,2]/sum(test$tree.next7)
-fpr <- tab[2,1]/sum(test$tree.next7 == 0)
-print(paste0("TPR = ", tpr, ", FPR = ", fpr))
-```
 
 The test model accuracy can also be calculated by taking the Area Under the Curve (AUC) of the Receiving-Operating Characteristic. The ROC calculates the TPR and FPR at many thresholds, that produces a curve that indicates the general robustness of a model. The AUC is literally the area under that curve, which is a measure between 0.5 and 1 where the former indicates no predictive power and 1.0 indicates a perfect model. 
 
@@ -638,76 +702,9 @@ As estimated using `calc_auc()`, the out-of-sample AUC is `r round(calc_auc(roc)
 Despite the promising result, we should be cognizant that KNNs generally are not the algorithm of choice of modelers unless there is relatively little data. We should thus ask: _Is there a better classifier?_ 
 
 
-### Practice Exercises
-
-The US Census Bureau's American Community Survey provides an in-depth view of life in America. One of the many features that are captured in the survey is healthcare coverage. Apply the above methods to predict healthcare coverage in the US State of Georgia in the year 2009.
-
-
-```{r, echo = FALSE, message=FALSE, warning=FALSE}
-  health <- read.csv("data/acs_health.csv")
-```
-
-1. Randomly split the sample into a 50% training and 50% test set.
-
-2. Predict healthcare `coverage` using continuous variables such as age (`age`) and `wage`. 
-
-3. Calculate the performance on the test sample.
-
-
-
 ## Decision Tree Learning
 
-Mobile technologies have lowered the bar to using lightweight sensors that measure the physical world and have opened new applications of data in daily life. From a smart phone's accelerometer, it’s possible to track distinct patterns in one’s activity based on the fluctuations in acceleration ($\frac{m}{s^{2}}$). In fact, many of these technologies have become commonly available, enabling physical fitness activity monitoring to characterizing transportation quality. Below is a set of exercise measurements from an smartphone accelerometer that lasted approximately 6.5 minutes and graphed at a frequency of 5 hertz (five readings per second). 
-
-Can you visually identify distinct patterns? What makes those patterns distinct? 
-
-
-```{r, echo=F, warning=FALSE, message=FALSE, fig.height = 3.5, fig.cap = "Accelerometer data collected from an iPhone.", eval = F}
-
-  temp <- read.csv("data/exercise.csv")
-  temp$accel <- sqrt(temp$user_acc_x.G.^2 + temp$user_acc_y.G.^2 + temp$user_acc_z.G.^2)
-  temp <- temp[!is.na(temp$accel) & temp$accel!="",]
-  #print(nrow(temp))
-
-  temp$timestamp.unix. <- round(temp$timestamp.unix./0.2,0)*0.2
-  temp <- temp[,c("timestamp.unix.","accel")]
-  temp_val <- aggregate(x = temp$accel, by=list(temp$timestamp.unix.), FUN=mean, na.rm=TRUE)
-  colnames(temp_val) <- c("time","accel")
-
-  temp_val <- temp_val[(nrow(temp_val)-2300):nrow(temp_val),]
-  temp_val$time <- temp_val$time - min(temp_val$time) 
-  
-  temp_val <- temp_val[order(temp_val$time),]
-  temp_val[,1] <- as.POSIXct(as.numeric(as.character(temp_val[,1])),origin="2016-01-01")
-  
-  plot(temp_val$time, temp_val$accel, xlab = "Acceleration", ylab = "Time (Seconds)", type = "l", col = "navy", cex = 0.4)
-  
-```
-
-It becomes immediately apparent that the methods covered thus far are not suitable for the task at hand. If we manually extract samples from these periods, we can quantify the patterns in terms of their central tendencies. Idle periods have near zero acceleration, walking periods have acceleration around 0.2 with tight dispersion, running periods hover around 0.6 +/- 0.2, and descending stairs vary widely. Using simply the level of acceleration may not accurate as at least two types of motion have overlapping distributions.
-
-
-```{r, echo=F, warning=FALSE, message=FALSE, fig.height = 3, fig.cap = "Acceleration by type of movement.", eval = F}
-
-library(gridExtra)
-
-#Cut parts out
-  idle <- temp_val[250:350,]
-  walk <- temp_val[45:175,]
-  run <- temp_val[1135:1200,]
-  stairs <- temp_val[1400:1700,]
-
-#Plot Graphs
-  p = ggplot(idle,aes(x=time, y= accel  ))  + geom_point(size=1) + geom_line(colour = "navy") + ylim(0, 1) + ggtitle(paste("Idle: mu = ", round(mean(idle[,2]),2),", +/- = ",round(sd(idle[,2])*1.96,2),", max = ",round(max(idle[,2]),2))) + theme(plot.title = element_text(size = 8)) + theme_minimal()
-  
-  p1 = ggplot(walk,aes(x=time, y= accel  ))  + geom_point(size=1) + geom_line(colour = "navy") + ylim(0, 1) + ggtitle(paste("Walk: mu = ", round(mean(walk[,2]),2),", +/- = ",round(sd(walk[,2])*1.96,2),", max = ",round(max(walk[,2]),2)))+ theme(plot.title = element_text(size = 8))+ theme_minimal()
-  
-  p2 = ggplot(run,aes(x=time, y= accel  ))  + geom_point(size=1) + geom_line(colour = "navy") + ylim(0, 1) + ggtitle(paste("Run: mu = ", round(mean(run[,2]),2),", +/- = ",round(sd(run[,2])*1.96,2),", max = ",round(max(run[,2]),2)))+ theme(plot.title = element_text(size = 8))+ theme_minimal()
-  
-  p3 = ggplot(stairs,aes(x=time, y= accel  ))  + geom_point(size=1) + geom_line(colour = "navy") + ylim(0, 1) + ggtitle(paste("Descend Stairs: mu = ", round(mean(stairs[,2]),2),", +/- = ",round(sd(stairs[,2])*1.96,2),", max = ",round(max(stairs[,2]),2)))+ theme(plot.title = element_text(size = 8))+ theme_minimal()
-  
-  grid.arrange(p,p1,p2,p3, ncol=2)
-```
+[Talk about what KNNs can't do]
 
 Decision tree learning can help bring clarity. Trees are designed to look at inputs and partition the sample into smaller more homogeneous cells with respect to the target. This recursive partitioning allows a tree to resemble an inverted tree: moving away from the base of the tree, the tree trunk splits into two or more large branches, which then in turn split into even smaller branches, eventually reaching even small twigs with leaves. 
 
