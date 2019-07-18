@@ -1,0 +1,14 @@
+---
+title: "voting kernels"
+author: "Jeff Chen"
+date: "7/15/2019"
+output: pdf_document
+---
+
+
+```{r, message=FALSE, warning=FALSE, echo = FALSE, fig.cap = "Types of kernels used in voting."}
+tab <- read.csv("data/kernels.csv")
+pander::pander(tab, booktab = T, justify = "left",
+               split.cells = c("10%", "45%", "45%"), )
+
+```

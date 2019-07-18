@@ -51,7 +51,7 @@ require(ggplot2)
     points(df_test$x, df_test$y, col = "black", 
            cex = 3, pch = 18)
     title(ylab="X1", xlab = "X2", line=0, cex.lab=1.2)
-    title(main = "Set up", line=1, cex.lab=1.2)
+    title(main = "(1) Set up", line=1, cex.lab=1.2)
     
   #Second plot
     plot(df$x, df$y, col = rgb(df$z, 0.8, 1- df$z, 0.4),
@@ -63,12 +63,12 @@ require(ggplot2)
              x1 = segs_all$x,
              y1 = segs_all$y, 
              col = rgb(segs_all$z, 0.8, 1 - segs_all$z, 0.1), 
-             lwd = 2)
+             lwd = 1)
     points(df_test$x, df_test$y, col = "black", 
            cex = 3, pch = 18)
 
     title(ylab="X1", xlab = "X2", line=0, cex.lab=1.2)
-    title(main = "Calculate distance", line=1, cex.lab=1.2)
+    title(main = "(2) Calculate distance", line=1, cex.lab=1.2)
     
     
     #Third plot
@@ -86,6 +86,6 @@ require(ggplot2)
       points(df_test$x, df_test$y, col = rgb(scored, 0.8, 1- scored, 1), 
              cex = 3, pch = 18)
        title(ylab="X1", xlab = "X2", line=0, cex.lab=1.2)
-      title(main = "Voting by neighbors", line=1, cex.lab=1.2)
+      title(main = "(3) Voting by neighbors", line=1, cex.lab=1.2)
       
       
