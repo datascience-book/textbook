@@ -1,0 +1,132 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeffrey Chen"
+date: '`r Sys.Date()`'
+output:
+  pdf_document: 
+      number_sections: true
+  html_document: default
+  geometry: margin=1in
+---
+
+
+## Functions
+
+Data manipulation tasks are often repeated for many different projects and it is not uncommon for two or more scripts to contain the same exact steps, but the code is hardcoded. Same logic and different variables names equates to a significant amount of time spent editing and modifying programs. 
+
+Rather than tediously modifying programs, try to write your code once, then never again. Each set of code can serve as re-usable tools that can be re-applied to similar problems, but only if it is standardized with well-laid logic. This is the basis of *user-defined functions*: a coder can define some set of standard required inputs on which a set of steps can be applied to produce a standard output.
+
+A typical function is constructed as follows. Using `function`, a set of input parameters are specified as placeholders for any kind of object. For example, `df1` represents a data frame and `var1` is a variable name in string format. Within the curley brackets, we insert code treating the parameters of actual data. In the example below, we calculate the mean of `var1` in data frame `df1`, then assign it to a `temp.mean`. These calculations are executed in a *local environment*, meaning that any calculations steps within the function are temporary. Thus, `temp.mean` is wiped once the function finishes. The `temp.mean` object can be extracted by passing it to `return`. All of the above steps are assigned to the `meanToo` object that is treated like any other function. 
+
+It is good form to include commentary about how to use the function. At a minimum, there should be comments containing what the function is, the arguments, and the output. In the open source tradition, you should be writing the code as if others will read and use it. 
+
+```{r, eval = FALSE}
+meanToo <- function(df1, var1, ...){
+  #
+  # Calculate mean of a variable in a data frame
+  #
+  # Args: 
+  #   df1 = data frame
+  #   var1 = variable name (character)
+  #
+  # Returns:
+  #   A numeric value 
+  
+  #Code goes here
+  temp <- mean(df1[[var1]])
+  
+  #Return desired result
+  return(temp)
+}
+```
+
+To execute the function, we will simply need to call the function with a data frame and a variable name. Basically any script can be genericized into a standardized function. 
+
+```{r, eval=FALSE}
+  meanToo(data, "x1")
+```
+
+### DIY: Tracking the supply of online content
+
+Services like Google Trends illustrate the demand for online content, giving a sense of what the public are interested in and what people are reacting to at a given moment. But how about the supply of online content? The supply provides a sense if content producers feel it is worth spending any time on creating new materials. 
+
+The opioid epidemic has been a social issue that has long been brewing, but has only become the centered of public attention in recent years. As the crisis deepens, we'd expect more content to be generated. For each year, we could tediously use the web browser to manually copy the number of search results from a platform like [Bing](https://www.bing.com/), but what if we need to track a large number of search terms. We can package searches on Bing into a simple function that serves as a wrapper that extracts the number of search results. For example, the search query below yields approximately 18,000 search results for the year 2010 (the number may change as this is only an estimate):
+
+`https://www.bing.com/search?q=opioid%20epidemic&filters=ex1%3a%22ez5_12810_13893%22`
+
+Breaking down the URL, we see that `q=opioid%20epidemic` is the search query `q=` where spaces are encoded as `%20`. Next, `filters=ex1%3a%22ez5_12810_13893%22` indicates a time range filter is applied, specifically `12810_13893` are indexes that represent the range 1/27/2005 to 1/15/2008. 
+
+To make this a seamless process, we should construct a function `bingCounts` that will retrieve the number of search results for a given `search.term` in a specified calendar year (`year.filter`). First, we will need to load packages using `require`, which is specifically designed for within-function package loading. In particular, we will use: 
+
+- To convert the year into indexes, we use the `lubridate` package to work with date objects.
+- To efficiently construct a search URL, we rely on the `stringr` package.
+- `RCurl` is used to make use of the Client URL package to make a request to the web for a webpage.
+- As the webpage is in HTML format, we use the `XML` package to parse the information.
+
+
+```{r, warning = FALSE, message=FALSE}
+
+bingCounts <- function(search.term, year.filter){
+  #
+  # Retrieve number of search results for exact query
+  #
+  # Args: 
+  #   search.term = search query (character)
+  #   year.term = search year.term (int)
+  #
+  # Returns:
+  #   A numeric value 
+
+  #Load package
+    require(lubridate)
+    require(stringr)
+    require(RCurl)
+    require(XML)
+
+  #Get date indexes
+    origin <- as_date("1970-01-01")
+    start.index <- as_date(paste0(year.filter, "01-01")) - origin
+    end.index <- as_date(paste0(year.filter, "12-31")) - origin
+    
+  #Construct search URL by replacing placeholder terms
+    search.url <- "https://www.bing.com/search?q=term&filters=ex1%3a%22ez5_tstart_tend%22"
+    search.url <- str_replace(search.url, "term", gsub(" ", "%20", search.term))
+    search.url <- str_replace_all(search.url, "tstart", as.character(start.index))
+    search.url <- str_replace_all(search.url, "tend", as.character(end.index))
+    
+  #Get URL content as HTML
+    search.html <- getURL(search.url)
+  
+  #Parse HTML
+    parse.search <- htmlTreeParse(search.html, useInternalNodes = TRUE)
+  
+  #Extract result statistics
+    nodes <- getNodeSet(parse.search, "//*[@id='b_tween']/span[1]")
+    value <- strsplit(xmlValue(nodes[[1]])," ", fixed = TRUE)[[1]][1]
+    return(as.numeric(gsub(",", "", value, fixed = TRUE)))
+
+}
+```
+
+Rather than copying the above function multiple times, the resulting function can then be neatly wrapped into a loop to extract the number of search results for each year in a nine-year period between 2009 and 2017. We find the number of search results has grown 44-times over the period. Based on CDC data, the number of opioid-related deaths increased 2.4-times from approximately 20,400 to 49,000.^[https://www.drugabuse.gov/related-topics/trends-statistics/overdose-death-rates] Thus, we can see the search queries give a measure of direction of growth, but are misleading in their magnitude. 
+
+```{r}
+#Set parameters
+  term <- "opioid epidemic"
+  results <- data.frame() 
+
+#Loop through 
+  for(i in 2009:2017){
+    results <- rbind(results,
+                     data.frame(year = i, 
+                                cnt = bingCounts(term, i)))
+  }
+```
+
+
+```{r, echo = FALSE, fig.cap = "Search "}
+#Plot
+  plot(results, type = "l", ylab = "Number of Search Results", xlab = "Year", col = "red")
+  points(results, pch = 16, col = "red")
+  
+```

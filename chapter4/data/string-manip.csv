@@ -1,0 +1,17 @@
+﻿Description,Base R,stringr
+Returns either the index position of a matched string or the string containing the matched portion.,grep,str_which
+Returns a logical vector indicating if a matched string was found. ,grepl,str_detect
+Searches  for a specified pattern and replaces with user-specified  substring.,gsub,str_replace_all
+Remove matched pattern from string.,gsub,str_remove_all
+Returns the first position of matched pattern in a string.,regexpr,str_locate 
+Returns the position of all matched patterns in a string. ,gregexpr,str_locate_all
+Extract substring based on matched pattern. Note that regmatches is used in conjunction with regexpr or gregexpr.,regmatches,str_extract_all
+Splits strings into a list of values based on a delimiter.,strsplit,str_split
+Extract substring based on start and end position.,substr,str_sub
+Trim whitespace on either end of string (excessive spaces),trimws,str_trim
+Returns number of characters in string,nchar,str_length
+Returns the number of matched patterns.,,str_count
+Convert to upper case,toupper,str_to_upper
+Convert to lower case.,tolower,str_to_lower
+Convert to title case.,,str_to_title
+Pad string (e.g. add leading zeros to string),sprintf,str_pad
