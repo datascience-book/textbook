@@ -1,0 +1,257 @@
+---
+title: 'DIY'
+header-includes: \usepackage{rotating, graphicx}
+link-citations: yes
+output:
+  pdf_document:
+    number_sections: yes
+  html_document: default
+  word_document: default
+  geometry: margin=1in
+bibliography: citations_p10.bib
+---
+
+## DIY: Predicting monetary and non-monetary relief
+
+> Navient has been unresponsive after I've asked to speak with several managers. I have called them consistently since summertime as my automatic payments were not being taken out. They say it came back as NSF, but my bank says it was never billed. Then Navient admitted to having I.T. issues. Late fees, interest, you name it. After calling to resolve many times, they offered me payment options and promised to repair my credit damage of their reporting me. After making each payment, they would change the terms and tell me I had to pay additional money or pay this or that, and then they would rescind the negative info. I finally scraped up the money and paid what it said I was past due on after their lies - and the online account still shows I owe money as of {xx/xx/xxxx} and its {xx/xx/xxxx} - so my payment made on {xx/xx/xxxx} obviously didn't post although it was taken from my bank account. I called again today and requested that a manager call me back - nothing yet. Supposedly they record all calls - well, someone should listen to all the lies they've been telling me over the months and changing the agreements. It is unethical and immoral. They are ruining students lives! Check the recordings and the call logs - I'm the one who calls them! And if they ever seldom call me, they never leave a voicemail but the recordings will prove they lie and say they did leave a voicemails, and I dispute that and tell them they are lying directly. listen to the recordings!
+
+
+This is a complaint written by a real consumer of a non-federal student loan and filed with the Consumer Financial Protection Bureau (CFPB). Designed for the purpose of providing consumers help in navigating difficulties with financial products, CFPB collects []. 
+
+For transparency, CFPB publishes complaint narratives as an open, anonymized database that indicates the disposition of cases and their details. Looking at the text above, certain words and phrases signal nature of them problem and the word choice also signals the sentiment of the users. Those details, in turn, may explain whether companies provide the consumer any relief, whether monetary or otherwise. 
+
+
+```{r, warning=FALSE, message=FALSE, echo = FALSE}
+#Load data
+  load("data/cfpb_dtm.Rda")
+```
+
+
+Imagine a scenario in which we would like to anticipate the outcome of a case or the label of a document before its available, but the only covariates are embedded in the text. A large team of people could read through and assign tags to each piece of text to generate usable covariates, but this is a long arduous task requiring significant manpower. Alternatively, what if we forced the unstructured text into a structure similar to data sets we have encountered before? Each narrative can been *tokenized*. First, text is standardized through stemming word endings (e.g. tell, tells, and telling all become "tell"), then are processed into *n-grams* of individual words and short word sequences. For example, "*the online account still shows I owe money*" contains eight unigrams (e.g. the, online, account, still, shows, I, owe, money), seven bigrams (e.g. the online, online account, account still, still shows, shows I, I owe, owe money), and six trigrams (e.g. the online account, online account still, account still shows, still shows I, shows I owe, I owe money). In total, the sentence yields a *bag of words* of 21 variables. Of course, some of these words are filler (e.g. "the", "I") and can be treated as *stop words* or words that can be removed as they do not likely contain signal. Combinations of these n-grams are the key to understanding what is associated with monetary relief -- it is a game of interactions that is well-suited for CART algorithm.
+
+In this DIY, we explore how CART the power of a non-parametric approach can learn the intracies in text. Covering a 49-month period from March 2015 to March 2019, we have pre-processed CFPB data into a training set (`r paste0("n = ",nrow(train))`) and test set of the remaining years (`r paste0("n = ",nrow(test))`). Note that the training set is smaller than the test for ease of computation as text data sets tend to be highly dimensional. In fact, the pre-processed training set had 469,046 unique n-grams, but was reduced to the one-percent of tokens ($k = 4657$) with three or more character and appear ten or more times in 2015. For more on the  mechanics of working with unstructured textual data, refer to the advanced topics chapter.
+
+
+```{r,  eval = F}
+#Load CFPB data
+  load("data/cfpb_dtm.Rda")
+```
+
+\vspace{12pt}
+
+
+__Training__. Our primary target is the `target.series` variable that includes labels for *Closed with non-monetary relief* and *Closed with monetary relief*. There is a slight case of class imbalance, but so severe to require re-balancing. 
+
+\vspace{12pt}
+
+```{r}
+#Quick summary
+  table(train$target.series)
+```
+
+\vspace{12pt}
+
+
+A cursory view of the frequency of words gives some indication of the structure of the narratives. The most frequent words help set the stage. CART will likely use less frequent words to modulate its predictions, relying on finer, thematic details to inform its predictions. Some words 
+
+\vspace{12pt}
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+#Importance
+  vals <- apply(train[,-c(1:6)], 2, sum)
+  vals <- vals[vals > 0]
+  imp <- data.frame(var = names(vals), 
+                     freq = vals)
+  imp$var <- gsub("(t\\d{1,4}.)","", imp$var)
+  imp <- imp[order(-imp$freq),]
+  
+#Table
+  imp_table <- cbind(imp[1:10, 1:2], 
+                    imp[1450:1459, 1:2],
+                    imp[3800:3809, 1:2])
+  colnames(imp_table) <- c("var.high", "imp.high", "var.mean", "imp.mean", "var.min", "imp.min")
+  
+#Render
+  require(knitr)
+  require(kableExtra)
+  kable(imp_table, digits = 3,
+         row.names = FALSE, "latex",
+         col.names = c("Variable", "Frequency","Variable", "Frequency","Variable", "Frequency"),
+        caption = "Sample words frequencies.") %>%
+    add_header_above(c( "High" = 2, "Medium" = 2, "Low" = 2))
+
+  
+```
+
+We make use of CART using the `rpart` library. 
+
+\vspace{12pt}
+```{r, message = FALSE, warning=FALSE}
+  pacman::p_load(rpart)
+```
+\vspace{12pt}
+
+The main function within the library comes with flexible capabilities to induct decision trees: 
+
+`rpart(formula, method, data, cp, minbucket, minsplit)`
+
+where:
+
+- `formula` is a formula object. This can take on a number of forms such as a symbolic description (e.g. $y = f(x_1, x_2, ...)$ is represented as "`y ~ x1 + x2`). 
+- `method` indicates the type of tree, which are commonly either a classification tree "class" or regression tree "anova". Split criteria can also be custom written.
+- `data` is the data set in data frame format.
+- `cp` is a numeric indicates the complexity of the tree. $cp = 1$ is a tree without branches, whereas $cp = 0$ is the fully grown, unpruned tree. If $cp$ is not specified, `rpart()` defaults to a value of 0.01.
+- `minbucket` is a stopping criteria that specifies the minimum number of observations in any terminal leaf.
+- `minsplit`  is a stopping criteria that specifies the number of observation in a node to qualify for an attribute test.
+
+As a first pass, we'll run `rpart()` setting `cp = 0`, meaning that the tree will be fully grown without any stopping criteria applied. It may take the CART algorithm a few minutes to learn the patterns in the words.
+
+```{r, message = FALSE, warning = FALSE}
+fit <- rpart(target.series ~ ., 
+             method = "class", 
+             data = train[, -c(1:5)],
+             cp = 0)
+```
+
+The `fit` object captures all of the inner workings of the decision tree. For example, just plotting the fit object will show the full depth of the tree. More importantly is the cross validation results collected at each level of additional complexity. Using the `printcp()` function, we can extract the *CP table*, which contains various accuracy measures associated with each value of the tree complexity value `cp`, including: 
+
+- the number of splits `nsplit`,
+- the prediction error in the training data `rel error`,
+- the cross-validation error `xerror`, and
+- the standard error `xstd`. 
+
+
+
+```{r, message = FALSE, echo = FALSE, warning=FALSE}
+#Get cross-validated error
+  xerror <- fit$cptable[,4]  
+
+#Lowest xerror
+  best_error <- min(xerror)
+  best_splits <- fit$cptable[,2][which(xerror == min(xerror))]
+  best_sd <- fit$cptable[,5][which(xerror == min(xerror))]
+
+#Optimal
+  opt_error <- best.error + best.sd
+  opt_select <- fit$cptable[,1][which(xerror <= opt_error)][1]
+  opt_xerror <- fit$cptable[,4][which(xerror <= opt_error)][1]
+  opt_select_split <- fit$cptable[,2][which(xerror <= opt_error)][1]
+  
+```
+
+
+\vspace{12pt}
+
+```{r, eval = F}
+  printcp(fit)
+```
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+  
+#Render
+  require(knitr)
+  require(kableExtra)
+  
+  x <- as.data.frame(head(fit$cptable, 5))
+  
+  kable(x, digits = 3,
+         row.names = FALSE, "latex", 
+        caption = "First five levels of a CP table showing cross validated error by model compexity")
+```
+
+\vspace{12pt}
+
+
+__Tuning__. *How do we find the optimal tree depth?* First, find the lowest cross-validation `xerror`, then find the tree that has the lowest number of splits that is still within one standard deviation `xstd` of the best tree^[@esl2001]. The idea behinds this rule of thumb takes advantage of uncertainty: the true value lies somewhere within a confidence interval, thus any value within a tight confidence interval of the best value is approximately the same. In this first model, the best tree has `r paste0("nsplit = ", best.splits)` and `r paste0("xerror = ", best.error)`. By applying the rule, the upper bound of acceptable error is `r paste0("xerror = ", round(best.error,6)," + ", round(best.sd, 6), " = ", opt.error)`. As it turns out, the tree with `r paste0("nsplit = ", opt.select.split)` is within one standard deviation and is thus the best model. 
+
+In other words, the following function can extract the optimal `cp` value.
+
+\vspace{12pt}
+
+```{r}
+bestCP <- function(fit_obj){
+  # Returns best CP val within 1 SD of lowest xerror
+  #
+  # Args:
+  #   fit_obj: decision tree object
+  #
+  
+  #Pull cross-validated error
+    xerror <- fit$cptable[, 4]
+  
+  #Find lowest error and associated xstd
+    best_error <- min(xerror)
+    best_sd <- fit$cptable[, 5][which(xerror == best.error)]
+
+  #Pull CP closest to lower bound
+    lower_bound <- best_error + best_sd
+    opt_select <- fit$cptable[,1][which(xerror <= lower_bound)][1]
+
+   return(opt_select)
+}
+```
+
+\vspace{12pt}
+
+Now, we can prune the tree using the optimal `cp` value, then score both the test set. As a comparison point, we will also apply the unpruned model as well.
+
+\vspace{12pt}
+
+```{r, message = FALSE, warning = FALSE}
+#Get best CP
+  best.value <- bestCP(fit)
+
+#Prune tree
+  fit.opt <- prune.rpart(fit, cp = best.value)
+  
+#Score, returning probabilities
+  pred.full <- predict(fit, test, type = 'class')
+  pred.opt <- predict(fit.opt, test, type = 'class')
+```
+
+\vspace{12pt}
+
+
+__What works__. One of the fascinating aspect of decision trees is that it is interpretable in a very different way than logistic regression. In lieu of a thorough review of the learned rules, we may rely on a measure of variable importance, that is defined as follows:
+
+__REVISIT AT SOME POINT__
+
+$$\text{Variable Importance}_k = \sum{\text{Goodness of Fit}_\text{split, k} + (\text{Goodness of Fit}_\text{split,k} \times \text{Adj. Agreement}_\text{split})}$$
+
+Where *Variable Importance* for variable $k$ is the sum of *Goodness of Fit* (e.g. Gini Gain or Information Gain) at a given split involving variable $k$. In other words, a variable's importance is the sum of all the contributions variable $k$ makes towards predicting the target. Below, we can see that the measure can be extracted from the `fit.opt` object. As may be expected, `accel` is not the main contributor to predictions, but rather measures of the maximum, mean and variability of acceleration. This also implies that the model could be further tuned by trying different windows for producing the engineered variables -- perhaps shorter or longer windows could be even more important.
+
+\vspace{12pt}
+```{r, eval = FALSE}
+  fit.opt$variable.importance
+```
+\vspace{12pt}
+
+When applied to the function to the predictions (`pred.opt` and `pred.full`), we find that the mean F1-statistics reached `r meanF1(test$activity, pred.opt)` and `r meanF1(test$activity, pred.full)` -- not bad for a first cut, but certainly can benefit from extra attention.
+
+\vspace{12pt}
+
+```{r, echo = FALSE, warning=FALSE, message=FALSE}
+#Importance
+ imp <- data.frame(var = names(fit.opt$variable.importance), 
+                    impurity = fit.opt$variable.importance)
+  imp$var <- gsub("(t\\d{1,4}.)","", imp$var)
+  imp <- imp[order(-imp$impurity),]
+  
+#Table
+  imp_table <- cbind(imp[1:10, 1:2], 
+                    imp[65:74, 1:2],
+                    imp[135:144, 1:2])
+  colnames(imp_table) <- c("var.high", "imp.high", "var.mean", "imp.mean", "var.min", "imp.min")
+  
+#Render
+  require(knitr)
+  require(kableExtra)
+  kable(imp_table, digits = 3,
+         row.names = FALSE, "latex",
+         col.names = c("Variable", "Impurity","Variable", "Impurity","Variable", "Impurity"),
+        caption = "Words with high, medium and low importance for predicting monetary relief.") %>%
+    add_header_above(c( "High" = 2, "Medium" = 2, "Low" = 2))
+
+  
+```
+
+\vspace{12pt}

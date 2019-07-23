@@ -1,0 +1,319 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
+# Classifiers
+
+###Logistic Regression
+
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+  library(digIt)
+  health <- digIt("acs_health")
+  
+#Create index of randomized booleans of the same length as the health data set
+  set.seed(100)
+  rand <- runif(nrow(health)) 
+  rand <- rand > 0.5
+  
+#Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+```
+
+Let's assume that you've been provided with a three feature dataset: a target label $z$ and two input features ($x1$ and $x2$). Upon graphing the features and color coding using the labels, you see that the points are clustered such that light blue points represent to $z = 1$ and gold points represent $z = 0$. We could, of course, use decision trees and random forests to determine some threshold to classify the two groups; but surely, there is a way to write an elegant statistical formula that would separate one group from the other? 
+
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 3, fig.width= 4}
+#Margin Example
+margin_size <- -0.2
+set.seed(123)
+df <- data.frame(x = runif(200),
+                 y = runif(200),
+                 supports = NA)
+  
+  
+#Best boundary
+  df$z <- -0.8 + df$x*2  
+  df$perp <- 0.6578033 + df$x*-0.5
+  df$perp[df$x >= 0.6951213] <- NA
+  df$perp[df$x <= 0.4711213] <- NA
+  
+#Cut out
+  df <- df[which((df$y > df$z + margin_size | df$y < df$z - margin_size | !is.na(df$supports))), ]
+  df$group <- "Side A"
+  df$group[df$y < df$z - margin_size] <- "Side B"
+  df$group[df$x >0.6] <- "Side B"
+  df$cols <- "blue"
+  df$cols[df$group == "Side B"] <- "green"
+  
+  
+#Plot
+library(ggplot2)
+
+ggplot(df, aes(group=factor(group))) + 
+    geom_point(aes(x = x, y = y,  colour = factor(group)))  +
+    ylim(0,1) + xlim(0,1) + 
+    ylab("x1") + xlab("x2") + scale_colour_manual(values=c("lightblue", "gold")) +
+    theme(plot.title = element_text(size = 10), 
+          axis.line=element_blank(),
+          axis.text.x=element_blank(),
+          axis.text.y=element_blank(),axis.ticks=element_blank(),
+          legend.position="none",
+          panel.background=element_blank(),panel.border=element_blank(),
+          panel.grid.major=element_blank(),
+          panel.grid.minor=element_blank(),plot.background=element_blank())
+```
+
+
+As it turns out, we can express the relationship between $z$, $x_1$, and $x_2$ as a linear model similar to OLS:
+
+$$z = w_0 + w_1 x_1 + w_2 x_2 + \epsilon$$
+where $z$ is a binary outcome and, like OLS, $w_k$ are weights that are learned using some optimization process. If treated as a typical linear model with a continuous outcome variable, we run the risk that $\hat{z}$ would exceed the binary bounds of 0 and 1 and would thus make little sense. Imagine if $\hat{z}$, the predicted value of $z$ were -103 or +4: what would that mean in the case of a binary variable? This could easily be the shortcoming of a linear model approach.
+
+Statistical methodologists have, however, cleverly solved the bounding problem by inserting the predicted output into a logistic function:
+
+$$F(z) = \frac{1}{1+ e^{-z}}$$
+For a feature $x$ that ranges for -10 to +10, the logit transformation converges to +1 where $x > 0$ and to 0 where $x < 0$. This S-shaped curve is known as a *sigmoid* and is a well-used distribution for bounding variables to a 0/1 range.  
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE, fig.height = 2}
+set.seed(123)
+l <- data.frame(x = seq(-10,10,.01))
+l$logit <- 1/(1+exp(-l$x))
+  
+ggplot(l) + 
+  geom_line(aes(x = x, y = logit),colour = "orange") +
+  ylab("F(x)") + xlab("x")
+```
+
+By substituting the linear model output $z$ into the logistic function, we bound the output between 0 and 1 and interpret the result as a conditional probability:
+
+$$p = Pr(Y=1|X) = F(z) = \frac{1}{1+ e^{-(w_0 + w_1 x_1 + w_2 x_2 )}}  $$
+To interpret the coefficients, we need to start by defining what *odds* are:
+
+$$odds = \frac{p}{1-p}= \frac{F(z)}{1-F(z)}=e^z$$
+where $F(z)$ is a probability of some event $z = 1$and $1-F(z)$ is the probability of $z = 0$. The odds can be re-formulated as:
+
+$$pr(success) = \frac{e^{(w_0 + w_1 x_1 + w_2 x_2 )}}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}$$
+$$pr(failure) = \frac{1}{1+e^{(w_0 + w_1 x_1 + w_2 x_2 )}}$$
+
+Typically, we deal with *odds* in terms of *log odds* as the exponentiation may be challenging to work with:
+
+$$log(odds)=log(\frac{p}{1-p})= w_0 + w_1 x_1 + w_2 x_2 $$
+
+where *log* is a natural logarithm transformation. This relationship is particularly important as it allows for conversion of probabilities into odds and vice versa. 
+
+The underlying weights of the logistic regression can be interpretted using *Odds Ratios* or *OR*. Odds ratios can be expressed as marginal unit comparison. Since $odds = e^{z} = e^{w_0 + w_1 x_1 + w_2 x_2}$, then we can express an odds ratio as a marginal 1 unit increase in $x_1$ comparing $odds(x+1)$ over $odd(x+0)$:
+
+$$OR = \frac{e^{w_0 + w_1 (x_1+1) + w_2 x_2}}{e^{w_0 + w_1 (x_1+0) + w_2 x_2}} = e^{w_1}$$
+
+After a little exponential arithmetic, the OR is simply equal to $e^{w_1}$, which can be interpreted as a multiplicative effect or a percentage effect if transformed as $100 \times (1-e^{w_1})\%$. In practice, this means simply exponentiating the regression weights to interpret the point relationship. For example, if the following regression were estimated for healthcare non-coverage where $wage$ is a continuous variable and $non-citzen$ is a discrete binary:
+
+$$z(\text{non-coverage}) = 0.1878 - 0.000001845 \times wage + 1.69 \times \text{non-citizen} $$
+Then, the odds of coverage are as follows for each variable:
+
+- $OR_{wage} = e^{0.000001845} = 0.9999816$ translates to -0.00000184% lower chance of not being covered.
+- $OR_{non-citizen} = e^{1.690} = 5.419481$ translates to 441% higher chance of not being covered.
+
+
+
+__Optimization__
+As in the case of all machine learning methods, the formulae need to be optimized. In order to estimate each weight $w_k$, we will rely on *maximum likelihood estimation* (MLE) as a framework, starting with a probability function for one record that is inspired by a Bernoulli random variable:
+
+$$ p(z = z_i | x) = [F(x)]^{z_i}[1-F(x)]^{1-z_i}$$
+If $z_i=1$, then the function is equal to the $[F(x)]^{z_i}$. Otherwise, if $z_i = 0$, then the function is equal to $[1-F(x)]^{1-z_i}$. For all records, we can define a likelihood function as the product of the above:
+
+$$L = \Pi_{i=1}^N [F(x)]^{z_i}[1-F(x)]^{1-z_i}$$
+Mathematically, it is easier to handle this formula by taking the natural logarithm, which is also known as the *log-likelihood*:
+
+$$ log(L) = z_ilog(F(x)) + (1-z_i)log(1-F(x))$$
+
+The goal here is to maximize $log(L)$, driven by a search for $w_k$ by taking partial derivatives of $L$ with respect to each $w_k$ and setting them to zero:
+
+$$\frac{\partial L}{\partial w_k} = 0$$
+
+This process can be driven using optimization algorithms such as gradient descent, the Newton-Raphson algorithm, among other commonly used techniques.
+
+__Practicals__
+After all the derivation is done, keep the following points in mind when applying logistic regression:
+
+- Tuning a logistic regression is a matter of selecting combinations of features (variables): it all depends on finding the right combination of features that maximize classification accuracy.
+- Logistic regression have strong probabilistic assumptions that a linear combination of features is sufficient to describe a phenomenon. 
+- The technique is well-suited for socializing an empirical problem, but often is outperformed in accuracy by more flexible techniques that are described later in this chapter. This tradeoff between narrative and accuracy is a good example of the bias-variance tradeoff.
+- Like ordinary least squares, the method does not perform well when the number of features is greater than the number of observations. Regularization methods (e.g. LASSO and Ridge) described in the previous chapter can be generalized for classification problems.
+
+#### In Practice: Logistic Regression
+
+For the remaining techniques in this chapter, we will use the following data set. The health data are split into a 50-50 train-test sample. Whereas the variables in the kNN example were converted into discrete variables, this sample will use mixed data classes with two continuous variables (`wage` - wage and `age` = age) and four discrete variables (`coverage` = health coverage, `mar` = marriage, `cit` = citizenship, `esr` = employment status, `schl` = education attainment).
+
+```{r, message=FALSE, warning=FALSE}
+# Load ACS health care data
+  library(digIt)
+  health <- digIt("acs_health")
+  
+# Convert characters into discrete factors
+  factor_vars <- c("coverage", "mar", "cit", "esr", "schl")
+  for(var in factor_vars){
+    health[,var] <- as.factor(health[,var])
+  }
+  
+# Randomly assign
+  set.seed(100)
+  rand <- runif(nrow(health)) > 0.5
+  
+# Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+  
+```
+
+
+Training a logistic regression can be easily done using the `glm()` function, which is a flexible algorithm class known as Generalized Linear Models. Using this one method, multiple types of linear models can be estimated including ordinary least squares for continuous outcomes, logistic regression for binary outcomes and Poisson regression for count outcomes. 
+
+At a minimum, three parameters are required:
+
+`glm(formula, data, family)`
+
+where:
+
+- `formula` is a formula object. This can take on a number of forms such as a symbolic description (e.g. $y = w_0 + w_1 x_1+ w_2 x_2 + \epsilon$ is represented as `y ~ x1 + x2`). 
+- `data` is a data frame containing the target and inputs.
+- `family` indicates the probability distribution used in the model. Distributions typically used for GLMs are _binomial_ (binary outcomes), _poisson_ (count outcomes), _gaussian_ (continuous outcomes - same as OLS), among others.
+
+The family refers to the probability distribution family that underlies the specific estimation method. In the case of logistic regression, the probability family is *binomial*.
+
+To start, we will specify three models: 
+
+- _Economic_: $coverage = f(log(age) + wage + employment)$
+- _Social_: $coverage = f(citizenship + marital + schooling)$
+- _Combined_:  $coverage = f(log(age) + wage + employment + citizenship + marital  + schooling)$
+
+
+then assign each to a formula object and estimate each formula. 
+
+```{r, message = FALSE, warning = FALSE, results = 'asis'}
+# Formula objects
+  econ <- as.formula("coverage ~ log(agep) + wage + esr")
+  soc <- as.formula("coverage ~ cit + mar + schl")
+  all <- as.formula("coverage ~ log(agep) + wage + schl + esr + cit + mar")
+  
+# Estimated GLM models
+  glm_econ <- glm(econ, data = train, family = binomial)
+  glm_soc <- glm(soc, data = train, family = binomial)
+  glm_all <- glm(all, data = train, family = binomial)
+
+```
+
+ In the social sciences and in public policy, the focus of regression modeling is typically placed on identifying an effect or an associated relationship that describes the process being studied. Often times, coefficient tables are examined, in particular the direction of the relationships (e.g. positive or negative weights), their statistical significance (e.g. p-value or t-statistics), and the relative fit of the model (e.g. the lowest Akaike Information Criterion or AIC provides _relative_ model fit comparison). For example, an analyst may point out that education has an effect on coverage by interpreting the coefficient point estimates. In the combined model, education attainment coefficients are are estimated relative to people who hold a graduate degree, thus indicating that people who :
+ 
+-  did not finish high school have a _6.58-times_ higher chance of not having health coverage ($ e^{\text{w = 1.884}} = 6.58$)
+-  hold a high school degree have a _4.91-times_ higher chance of not having health coverage ($ e^{\text{w = 1.592}} = 4.91$)
+-  hold a college degree are relatively better off than the previous two groups with a _1.79-times_ higher chance of not having health coverage ($ e^{\text{w = 0.584}} = 1.79$)
+ 
+All coefficients are statistically significant. While it is valid to evaluate models on this basis, it is necessary to remember that this is not the same as evaluating a model for predictive use cases as  predictive accuracy is not assessed on the basis of coefficients. 
+ 
+```{r, echo = FALSE, results = 'asis', warning=FALSE, message=FALSE, fig.cap = "Coefficient table of three alternative GLM specifications."}
+ library(stargazer)
+ stargazer(glm_econ, glm_soc, glm_all, type = "html")
+```
+ 
+Like the kNN example, the absolute accuracy of a model needs to be obtained through model validation techniques like cross validation. The `boot` library can be used to generate cross-validated accuracy estimates through the `cv.glm()` function:
+
+`cv.glm(data, glmfit, cost, K)`
+
+where:
+
+- `data` is a data frame or matrix.
+- `fit` is a glm model object.
+- `cost` specifies the cost function for cross validation. 
+- `K` is the number of cross validation partitions.
+
+Note that the cost function needs to take two vectors. The first is the observed responses and the second is the predicted responses. For example, the cost function could be the overall accuracy rate:
+
+$$ \frac{FP+FN}{TP+FP+TN+FN}$$
+
+or the true positive rate (TPR):
+
+$$\frac{TP}{TP+FN}$$
+Both are written as functions below:
+```{r, message = FALSE, warning = FALSE}
+# Misclassification Rate
+  costAccuracy <- function(y, y.hat){
+    a <- sum((y == 1 ) & (y.hat >= 0.5))
+    b <- sum((y == 0 ) & (y.hat < 0.5))
+    c <- ((a + b) / length(y))
+    return(c)
+  }
+
+# True Positive Rate
+  costTPR <- function(y, y.hat){
+    a <- sum((y == 1 ) & (y.hat >= 0.5))
+    b <- sum((y == 1 ) & (y.hat < 0.5))
+    return((a) / (a + b))
+  }
+```
+ 
+So that we can compare the cross validation accuracy with kNN, we will specify the `cost` using the misclassification rate for each of the three candidate models and set $k = 10$. Whereas kNN was able to achieve a 74% accuracy rate, the best GLM model was able to reach 72%, suggesting that some of the underlying variability in coverage rate is not captured in linear relationships. Also note that the input features for the kNN model were in a dummy matrix, thus the comparison is not perfect.
+
+```{r, echo = FALSE, fig.cap = "Comparison of CV accuracy  (k = 10 folds), message = FALSE, warning = FALSE"}
+# Load boot library
+library(boot)
+
+# Estimate k-folds 
+k_econ <- cv.glm(data = train, glmfit = glm_econ, cost = costAccuracy, K = 10)
+k_soc <- cv.glm(data = train, glmfit = glm_soc, cost = costAccuracy, K = 10)
+k_all <- cv.glm(data = train, glmfit = glm_all, cost = costAccuracy, K = 10)
+
+# Put together table of misclassification
+out <- rbind(data.frame(specification = "Economic", accuracy = k_econ$delta[1]),
+             data.frame(specification = "Social", accuracy = k_soc$delta[1]),
+             data.frame(specification = "All", accuracy = k_all$delta[1]))
+
+# Output table
+knitr::kable(out, booktab = TRUE)
+```
+
+
+In order to obtain the predicted values of $coverage$, we use `predict()`:
+
+`predict(object, newdata, response)`
+
+where:
+
+- `object` is a GLM model object.
+- `newdata` is a data frame. This can be the training data set or the test set with the same format and features as the training set.
+- `response` indicates the type of value to be returned, whether it is the untransformed "link" or the probability "response".
+
+We will now apply `predict()` to score the responses for each `train` and `test` samples.
+
+```{r, warning=FALSE, message=FALSE}
+  pred.glm.train <- predict(glm_all, train, type = "response")
+  pred.glm.test <- predict(glm_all, test, type = "response")
+```
+
+A quick review of the predicted probabilities indicates confirms that we have the right response values (probabilities), bound by 0 and 1.
+```{r, warning=FALSE, message=FALSE}
+  summary(pred.glm.train)
+```
+
+Lastly, to calculate the prediction accuracy, we will once again rely on the combination of ``ggplot2`` and ``plotROC` libraries for the AUC. Interestingly, the test set AUC is greater than that of the train set. This occurs occassionally and is often times due to the luck of the draw.
+```{r, message = FALSE, warning = FALSE}
+#plotROC
+  library(plotROC)
+  library(ggplot2)
+
+#Set up ROC inputs
+  input.glm <- rbind(data.frame(model = "train", d = train$coverage, m = pred.glm.train), 
+                  data.frame(model = "test", d = test$coverage,  m = pred.glm.test))
+  
+#Graph all three ROCs
+  roc.glm <- ggplot(input.glm, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  + ggtitle("ROC: GLM")
+
+#AUC
+  calc_auc(roc.glm)[,2:3]
+```
+
+
+
+
