@@ -1,13 +1,21 @@
 
 require(rpart)
 require(rpart.plot)
-mod <- rpart(tree.sandy~xcoord + ycoord, data = train, cp = 0.0042272)
-out <- predict(mod, test)
-test$prob <- out
+
+train1 <- train
+test1 <- test
+
+train1$xcoord <- 100*(train1$xcoord - min(train1$xcoord ))/diff(range(train1$xcoord))
+train1$ycoord <- 100*(train1$ycoord - min(train1$ycoord ))/diff(range(train1$ycoord))
+test1$xcoord <- 100*(test1$xcoord - min(test1$xcoord ))/diff(range(test1$xcoord))
+test1$ycoord <- 100*(test1$ycoord - min(test1$ycoord ))/diff(range(test1$ycoord))
+
+mod <- rpart(tree.sandy~xcoord + ycoord, data = train1, cp = 0.0042272)
+out <- predict(mod, test1)
+test1$prob <- out
 
 rpart.plot(mod, shadow.col="gray", nn=TRUE, 
-           box.palette = "BuGn", 
-           main = "Hurricane example")
+           box.palette = "BuGn")
 
 
 

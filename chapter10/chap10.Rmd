@@ -12,7 +12,7 @@ site: bookdown::bookdown_site
 biblio-style: apalike
 ---
 
-# Predictive Strategies
+# Elementary Predictive Strategies
 
 ## Map Data as Guestimates
 
@@ -275,10 +275,10 @@ There are various flavors of voting. The procedure illustrated give all $k$ neig
 
 \vspace{12pt} 
 
-```{r, message=FALSE, warning=FALSE, echo = FALSE, fig.cap = "Types of kernels used in voting."}
+```{r, message=FALSE, warning=FALSE, echo = FALSE, fig.cap = "Types of kernels used in voting.", results='asis'}
 tab <- read.csv("data/kernels.csv")
 pander::pander(tab, booktab = T, justify = "left",
-               split.cells = c("10%", "45%", "45%"), )
+               split.cell = 80, split.table = Inf,)
 
 ```
 
@@ -507,18 +507,16 @@ For simplicity, we focus on the two largest and populous boroughs (`boro`), Broo
 \vspace{12pt} 
 
 ```{r, message = FALSE, warning = FALSE}
-
 #Extract Queens and Brooklyn
   pacman::p_load(dplyr)
   nyc <- filter(nyc, boro %in% c("BK", "QN"))
-
 ```
 
 ```{r, message = FALSE, warning = FALSE, fig.cap = "Plot of X-Y coordinates for Brooklyn and Queens.", echo = FALSE}
   
   plot(x = nyc$xcoord, y = nyc$ycoord, 
        cex = 0.3, pch = 15, asp = 1, col = "grey",
-       xlab = "X-Coordinate", ylab = "Y-Coordinate")
+       axes = FALSE, labs = FALSE, xlab = "", ylab = "")
 ```
 \vspace{12pt} 
 
@@ -639,7 +637,6 @@ Notice that both train and test are required by `kknn`. This is a consequence of
     perf <- performance(pred.obj, measure = "auc")
     return(unlist(perf@y.values))
   }
-  
 ```
 
 __Evaluate performance__. Is a 20% misclassification error in the training sample a good result? Are KNNs effective at anticipating where tree-related calls will originate for the seven days after the hurricane? The habitual thing to do is to calculate some loss and accuracy statistic to summarize out-of-sample prediction performance, such as the Area Under the Curve (AUC) of the ROC Curve for assessing the robustness of a classification predictions. Rather than writing a new script to calculate the statistic, we can re-use the `costAccuracy` function constructed in the previous chapter. With an out-of-sample `AUC = ``r round(costAccuracy(test$tree.next7, test$prob),3)`, this first attempt with KNNs would have had some operational value, offering greater clarity during a chaotic time.  However, a single AUC value does not reveal how useful the predictions would have been for triaging downed tree requests. 
@@ -651,7 +648,6 @@ __Evaluate performance__. Is a 20% misclassification error in the training sampl
 
 #Calculate ROC
   costAccuracy(test$tree.next7, test$prob)
-      
 ```
 \vspace{12pt}
 
@@ -682,7 +678,7 @@ A closer visual inspection of the predictions shows that the KNNs do in fact mol
 When applied in a prioritization context where higher predicted probabilities are triaged and targeted first, the hit rates (e.g. finding downed trees) among the highest probability areas would be quite high -- nearly 80% at its peak. Approximately 40% of impacted grid cells have predicted probabilities north of 90%, suggesting that some areas were quite obviously impacted and the data contained enough signal to flag these areas.
 
 \vspace{12pt}
-```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.cap = "Hit rate.", fig.cap = 3}
+```{r, echo = FALSE, message=FALSE, warning=FALSE, fig.cap = "Hit rate.", fig.height= 2.5 }
 #Load
   pacman::p_load(dplyr)
 #Bin the test probabilities to nearest 5%
@@ -702,26 +698,27 @@ When applied in a prioritization context where higher predicted probabilities ar
            geom_area(colour = "navy", fill = "navy") + 
     xlab("Predicted Probability") + ylab("Percent with downed trees") + 
     ggtitle("Hit rate") + 
-    theme_bw() + theme(text = element_text(size=10), title = element_text(size = 10))
+    theme_minimal() + theme(text = element_text(size=10), title = element_text(size = 10))
   
   b <-   ggplot(data = rates, aes(x = score_bucket, y = cell.target)) +  
            geom_area(colour = "navy", fill = "navy") + 
     xlab("Predicted Probability") + ylab("Number of true cases") + 
     ggtitle("Number of affected grid cells") + 
-    theme_bw() + theme(text = element_text(size=10), title = element_text(size = 10))
+    theme_minimal() + theme(text = element_text(size=10), title = element_text(size = 10))
   
   grid.arrange(a, b, ncol =2)
 
 ```
+\vspace{12pt}
 
 Despite the promising result, we should be cognizant that KNNs are among the simplest of prediction algorithms. They are great with relatively little data. We naturally should ask: _Is there a better classifier?_ 
 
 
 ## Decision Tree Learning
 
-[Talk about what KNNs can't do]
+Lack of memory, lack of ability to identify useful variables, adapts to local patterns whereas KNNs fix the k
 
-Decision tree learning can help bring clarity. Trees are designed to look at inputs and partition the sample into smaller more homogeneous cells with respect to the target. This recursive partitioning allows a tree to resemble an inverted tree: moving away from the base of the tree, the tree trunk splits into two or more large branches, which then in turn split into even smaller branches, eventually reaching even small twigs with leaves. 
+Unlike KNNs, decision tree learning molds []. Trees are designed to look at inputs and partition the sample into smaller more homogeneous cells with respect to the target. This recursive partitioning allows a tree to resemble an inverted tree: moving away from the base of the tree, the tree trunk splits into two or more large branches, which then in turn split into even smaller branches, eventually reaching even small twigs with leaves. 
 
 Decision trees use recursive partitioning to learn patterns, doing so using central concepts of _information theory_. There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). All these algorithms follow the same framework that includes the following elements: (1) nodes and edges, (2) attribute tests, and (3) termination criteria.
 
@@ -734,87 +731,103 @@ Decision trees split nodes based on finding thresholds along the input variables
 
 As we can see in the example decision tree for health care insurance, each node is connected to at least one other node. Starting at the root node, we can see that overall, the population is labeled "no coverage" based on the decimal percentage $0.5$. The 100% indicates the proportion of the sample that is contained at the node. Below is `age >= 64`, which is the most informative  attribute test that is used to split. To the left, the edge leads to another node at the bottom left corner of the diagram, which contains people who are age 64 or older. While the leaf node only contains 12% of the entire sample, it is almost exclusively people who have health care coverage. To the right, the remaining 88% of the sample, which is further split by wage and other variables. Each leaf node is defined as the intersection of multiple binary criteria, giving way to profiles of users that can be easily segmented.
 
-![Anatomy of a Decision Tree. ](data/tree_anatomy.png)
+\vspace{12pt}
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "A grown decision tree.", fig.height = 2.5}
+
+#Load packages
+  require(rpart)
+  require(rpart.plot)
+
+#Set up data
+  train1 <- train
+  test1 <- test
+  
+  train1$xcoord <- 100*(train1$xcoord - min(train1$xcoord ))/diff(range(train1$xcoord))
+  train1$ycoord <- 100*(train1$ycoord - min(train1$ycoord ))/diff(range(train1$ycoord))
+  test1$xcoord <- 100*(test1$xcoord - min(test1$xcoord ))/diff(range(test1$xcoord))
+  test1$ycoord <- 100*(test1$ycoord - min(test1$ycoord ))/diff(range(test1$ycoord))
+
+#Train
+  mod <- rpart(tree.sandy~xcoord + ycoord, data = train1, cp = 0.0042272)
+  out <- predict(mod, test1)
+  test1$prob <- out
+
+#Plot
+  rpart.plot(mod, shadow.col="gray", nn=TRUE, 
+             box.palette = "BuGn", cex = 0.7)
+```
+\vspace{12pt}
 
 
-__Growing trees__.   There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). The process is fairly clear cut and iterative:
+__Growing trees__.   There are a number of decision tree algorithms that were invented largely in the 1980s and 1990s, including the ID3 algorithm, C4.5 algorithm, and Classification And Regression Trees for Machine Learning (CART). In all cases, the algorithms follow a common strategy: 
 
-1. __Base Cases__.  The process starts with checking for "base cases" at the root node, the idea being that it might not be worth exerting effort to grow the tree if the data do not support it. The algorithm will first check to see if (a) all values of the target are of one class, and (b) none of the input variables offer any useful information. There are other base cases to consider depending on the algorithm, but any true base case will result in stopping the algorithm and returning only the root node. 
+1. *Base Cases*.  The process starts with checking for "base cases" at the root node, the idea being that it might not be worth exerting effort to grow the tree if the data do not support it. The algorithm will first check to see if (a) all values of the target are of one class, and (b) none of the input variables offer any useful information. There are other base cases to consider depending on the algorithm, but any true base case will result in stopping the algorithm and returning only the root node. 
 
-2. __Recursive Partitioning__. If none of the base cases are true, the algorithm proceeds to attribute testing using either  *Information Gain* or *Gini Impurity* as will be covered in the following section. At the root node, if there are 10 variables with each 30 possible thresholds, attribute tests are applied 300 times choosing the candidate threshold that yields the most homogeneous child nodes. Upon splitting, attribute tests are applied to each child node, making this a recursive partitioning procedure.
+2. *Recursive Partitioning*. If none of the base cases are true, the algorithm proceeds with searching for a threshold along an input variable that splits the data into two smaller samples. With respect to the target, each partition should be more homogeneous in the composition of discrete classes or lower variance in the case of a continuous target. *How is the threshold determined?* Given a large number of inputs, there is likewise a large number of candidate splits. The optimal split is selected by an *attribute test* to identify the split that maximizes *information gain*, or a split that gives the most information, increased homogeneity or reduced variance. Attribute tests are applied to each resulting partition, thus the sample is *recursively* diced into smaller concentrated subsamples. 
 
-3. __Stopping Criteria versus Pruning__.  At some point, the algorithm needs to stop. The question is *when*? One way is to grow the tree until some *stopping criteria* are met, such as if a leaf has fewer records than a pre-specific threshold, the purity or information gain falls below a pre-specified level, or if the tree has grown to n-number of levels (e.g. number of rows of splits). While stopping criteria are useful, the results in some studies indicate their performance cap the tree from reaching its full predictive potential.^[] The alternative approach involves growing a tree to its fullest, then comparing the prediction performance given tree complexity (e.g. number of nodes in the tree) using cross-validation.  In the example graph below, model accuracy degrades beyond a certain number of nodes. Thus, optimal number of nodes is defined as when cross-validation samples (e.g. train/test, k-folds) reaches a minimum across samples. Upon finding the optimal number of nodes, the tree is *pruned* to only that number of nodes. 
-
-
-
-__Attribute Tests__. Information gain is a form of *entropy* that measures the consistency of information. Based on these distinct states of activity, entropy is defined as: 
-
-$$\text{Entropy} = \sum_{i=1}^{k}{-p_{i} log_2(p_{i})}$$
-where $i$ is an index of states, $p$ is the proportion of observations that are in state $i$, and $log_2(p_i)$ is the Base 2 logarithm of the proportion for state $i$. Information Gain (IG) is variant of entropy, which is the entropy of the root node *less* the average entropies of the child nodes.
-
-$$\text{IG} = \text{Entropy}_\text{root} - \text{Avg Child Entropy}$$
-
-How does this work in practice? Starting from the root node, we need to calculate the root entropy, where the classes are based on the classes of the target `usership`.
-
-$\qquad \text{Entropy}_\text{usership} = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
-
-$\qquad \qquad \qquad \qquad \qquad  = (-\frac{6}{12} log_2(\frac{6}{12})) + (-\frac{6}{12} log_2(\frac{6}{12}))$
-
-$\qquad \qquad \qquad \qquad \qquad  = 1.0$
-
-Then, the attribute test is applied to the root node by calculating the weighted entropy for each proposed child node. Using the `income` feature, the calculation is as follows:
-
-- Split the root node into two child nodes using the `income` class. This yields the following subsamples as shown in the table below:
-
-| | < $20k | > $20k|
-|--------+---------+----------|
-|No | 0 | 6 |
-|Yes | 5 | 1 |
-|Total | 5 | 7 |
-
-- For each child node (the columns in the table), calculate entropy:
-
-$\qquad \text{Entropy}_\text{income < 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
-
-$\qquad \qquad \qquad \qquad \qquad  = -\frac{5}{5} log_2(\frac{5}{5}) = 0$
+3. *Stopping Criteria versus Pruning*.  At some point, the algorithm will need to stop. The question is *when*? One approach allows the tree to grow until each leaf node contains $n=1$, in which case we run the risk of an overgrown, overfit tree. Furthermore, like a real tree, a fully grown tree may take some time to grow when the data are large.  An alternative approach employs  *stopping criteria*. The tree partitioning is terminated if a leaf has fewer records than a pre-specified threshold (e.g. do not split if $n<5$), the information gain can no longer improve beyond a pre-specified level, among other criteria. And while these stopping criteria may sound reasonable, premature termination of the tree growing can prevent the tree from reaching its full potential -- it can bias the predictions. The happy medium grows a tree to its fullest, employing cross-validation to identify the optimal degree of tree complexity, then *pruning* the tree to the optimal level. 
 
 
-$\qquad \text{Entropy}_\text{income > 20k } = (-p_{user} log_2(p_{\text{user}})) - (-p_{\text{non-user}} log_2(p_{\text{non-user}}))$
+__Attribute tests__.  The engine of the CART algorithm is information gain -- it is the statistical heart that enable tree learning to make meaningful predictions. Simply put, information Gain (*IG*) is a comparative measure that estimates the information content laerned (referred to as Impurity $I$) from splitting a parent node ($D_\text{parent}$) into a pair of child nodes $D_j$, taking the weighted contribution of each child node $j$.
 
-$\qquad \qquad \qquad \qquad \qquad = -\frac{6}{7} log_2(\frac{6}{7}) + -\frac{1}{7} log_2(\frac{1}{7}) = 0.5916728$
+$$IG = I(D_\text{parent}) - \sum_{j=1}^{J} \frac{n_j}{N}I(D_j)$$
 
-- Calculate the weighted average entropy of children:
+The impurity measure is critical -- it gauges the amount of information content contained in a pair of partitions. It can also determine if one candidate split is more meaningful than an alternative. Impurity is typically measured using Gini Impurity, Entropy or Variance Reduction. The first two measures are utilized for classification problems, calculated on the proportion of records that belong to each of the $J$ target classes. Both have similar performance, though Gini Impurity is slightly easier to implement. Variance is a natural choice for continuous targets, designed for prioritizing splits that minimize within-partition variance. 
 
-$\qquad \text{Entropy}_\text{income split} = \frac{5}{12}(0) +  \frac{7}{12}(0.5916728) = 0.3451425$
+\vspace{12pt}
 
-- Then calculate the information gain:
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+  usescases <- read.csv("data/table_impurity.csv", stringsAsFactors = FALSE)
+  usescases <-usescases[,-3]
+  colnames(usescases) <- c("Measure", "Formula", "Description")
+  pander::pander(usescases, split.cell = 80, split.table = Inf, 
+                 caption = "Common measures used for decision tree learning attribute tests.", 
+                 justify = "left")
+```
+\vspace{12pt}
 
-$\qquad \text{IG}_\text{income} = \text{Entropy}_\text{root} -  \text{Entropy}_\text{income split}$
 
-$\qquad \qquad \qquad \qquad \qquad = 1 - 0.3451425 = 0.6548575$
+To illustrate the power of impurity metrics, consider the case of predicting which neighborhoods have downed trees, which emergency crews can use to prioritize resources. To simplify the problem, let's suppose that a single latitudinal boundary line can adequately separate affected and unaffected areas. *Which degree of latitude do we choose?* 
 
-- We then can perform the same calculation on all other features (e.g. employment, part of town) and compare results. The goal is to *maximize* the IG statistic at each decision point. In this case, we see that income is the best attribute to use for splitting. This split is easily interpretable: "The majority of users of health services can be predicted to earn less than $20,000."
+The table below presents two candidate boundaries. Split A is somewhere north and Split B is farther north (North+).  As quantitative thinkers, we naturally will attempt to make sense of the numbers to contextualize and weigh the pros and cons. Perhaps the distinguishing factor between the two options is the positive rate or maybe there is a ratio that can be calculated that elegantly illustrates the tradeoffs. In a tree learning setting, metrics like Gini Impurity are an effective comparison strategy.
 
-| Measure | IG |
-|---------+------|
-|Employment| 0.00 | 
-|Income | 0.6548575 |
-|Area of Town|0.027119 |
+\vspace{12pt}
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, error=FALSE}
+  usescases <- read.csv("data/gini_impurity_example.csv", stringsAsFactors = FALSE)
+  colnames(usescases) <- c("Label", "A: North", "A: Remainder", "B: North+", "B: Remainder")
+  pander::pander(usescases, split.cell = 80, split.table = Inf, caption = "Two sets of candidate splits.", 
+                 justify = "left")
+```
+\vspace{12pt}
+
+To evaluate which split is better, we calculate the *Gini Gain*, which is information gain (IG) when applying Gini Impurity ($I$). The IG value is calculated for each proposed split. Both calculations require the impurity of the root node  ($I(D_\text{region})$) to capture the baseline information content in the data, then the weighted impurity of the pair of candidate child nodes are subtracted to obtain the Gini Gain. Ideally, the child nodes would have values close to zero that indicate the presence of an overwhelming amount of signal, which in turn would mean a larger IG value is desirable.
+
+$$IG_A = I(D_\text{region})  - \frac{n_\text{A,north}}{N}I(D_\text{north}) - \frac{n_{\text{A,remainder}}}{N}I(D_{\text{A,remainder}})$$
+
+
+$$IG_B = I(D_\text{region})  - \frac{n_\text{B,north+}}{N}I(D_\text{B,north+}) -\frac{n_{\text{B,remainder}}}{N}I(D_{\text{B,remainder}})$$
+
+As we step through each element of the comparison, it becomes apparent that Split B can more effectively isolate downed tree areas -- it would be a 100% hit rate in the *North+* partition. Split A, in contrast, would result in a 66% hit rate in the *North* partition. Indeed, the IG calculation confirms that Split B would yield twice as much information as Split A.
+
+\vspace{12pt}
+
+```{r ginicalcs , echo = FALSE, warning=FALSE, message=FALSE, error=FALSE}
+inputs <- read.csv("data/gini-calcs.csv", sep = ",")
+knitr::kable(inputs, booktabs = T,
+                 caption = "Calculating information gain for each Split A and B.",
+                 col.names = c("Element", "Split A", "Split B"),
+                 justify = "left")
+```
 
 
 
-*Gini Impurity* is closely related to the entropy with a slight modification. 
 
-$$\text{Gini Impurity} = \sum_{i=1}^k{p_{i}(1-p_{i})} = 1 - \sum_{i=1}^k{p_{i}^2}$$
 
-Using Gini Impurity as an attribute test is also similar to Information Gain.
+### In Practice
 
-$$\text{Gini Gain} = \text{Gini}_\text{root} - \text{Weighted Gini}_\text{child}$$
-$$\Delta i(s,t) = i(t)-p_L i (t_L) - p_R i (t_R)$$
-
-### Tips of the trade
-
-Like any technique, decision trees have strengths and weaknesses. Unlike logistic regression and KNN, decision trees can conduct automated variable selection on any type of data type. In addition, the recursive partitioning produce a tangible definition for each subpopulation represented by a node. The splitting mechanism make it possible to capture interactions and non-linearities that are otherwise not easily accounted for in the previous methods. The implications are that two or more input variables can be blended together to find cells of activities that are otherwise overlooked.
+Decision trees are an incredible contribution to machine learning. They can conduct automated variable selection on any type of data type. From the recursive partitioning, each leaf node is a subsample that is defined using a set of conditional criteria, making it easy to articulate and define specific subpopulations. The splitting mechanism makes it possible to capture the intricate patterns in the data, like interactions and non-linearities, that will otherwise not be detected using classical methods like regression.  The implications are that two or more input variables can be blended together to find cells of activities that are otherwise overlooked.
 
 There are detractors, however. Trees can be grown so deeply that there are too many subpopulations to articulate. If left unpruned, terminal leafs may give a false impression of accuracy and precision -- the small samples may give a false impression. Nontheless, decision tree learning is an important contribution to classification problems and form the basis of many other algorithms.
 
@@ -829,10 +842,9 @@ There are detractors, however. Trees can be grown so deeply that there are too m
 
 ### DIY: Predicting monetary and non-monetary relief
 
+Everyday, consumers of financial products submit complaints to the Consumer Financial Protection Bureau (CFPB). Below, is an anonymized complaint written by a real consumer of a non-federal student loan:
+
 > Navient has been unresponsive after I've asked to speak with several managers. I have called them consistently since summertime as my automatic payments were not being taken out. They say it came back as NSF, but my bank says it was never billed. Then Navient admitted to having I.T. issues. Late fees, interest, you name it. After calling to resolve many times, they offered me payment options and promised to repair my credit damage of their reporting me. After making each payment, they would change the terms and tell me I had to pay additional money or pay this or that, and then they would rescind the negative info. I finally scraped up the money and paid what it said I was past due on after their lies - and the online account still shows I owe money as of {xx/xx/xxxx} and its {xx/xx/xxxx} - so my payment made on {xx/xx/xxxx} obviously didn't post although it was taken from my bank account. I called again today and requested that a manager call me back - nothing yet. Supposedly they record all calls - well, someone should listen to all the lies they've been telling me over the months and changing the agreements. It is unethical and immoral. They are ruining students lives! Check the recordings and the call logs - I'm the one who calls them! And if they ever seldom call me, they never leave a voicemail but the recordings will prove they lie and say they did leave a voicemails, and I dispute that and tell them they are lying directly. listen to the recordings!
-
-
-This is a complaint written by a real consumer of a non-federal student loan and filed with the Consumer Financial Protection Bureau (CFPB). Designed for the purpose of providing consumers help in navigating difficulties with financial products, CFPB collects []. 
 
 For transparency, CFPB publishes complaint narratives as an open, anonymized database that indicates the disposition of cases and their details. Looking at the text above, certain words and phrases signal nature of them problem and the word choice also signals the sentiment of the users. Those details, in turn, may explain whether companies provide the consumer any relief, whether monetary or otherwise. 
 

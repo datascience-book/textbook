@@ -1,0 +1,7 @@
+﻿Impurity,Candidate A,Candidate B
+"Regional
+",$\begin{array}{ll} I(D_\text{regional}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{13}{39})^2 + (\frac{26}{39})^2 \\\\ &= 0.4\bar{4} \end{array}$,$\begin{array}{ll} I(D_\text{regional}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{13}{39})^2 + (\frac{26}{39})^2 \\\\ &= 0.4\bar{4} \end{array}$ 
+Northern,"$\begin{array}{ll} I(D_\text{A,north}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{10}{10+5})^2 + \frac{5}{10+5})^2 \\\\ &= 0.4\bar{4} \end{array}$","$\begin{array}{ll} I(D_\text{B,north+}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{9}{9+0})^2 + \frac{0}{9})^2 \\\\ &= 0 \end{array}$"
+"Remainder
+","$\begin{array}{ll} I(D_\text{A,remainder}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{3}{3+21})^2 + \frac{21}{21+3})^2 \\\\ &= 0.21875 \end{array}$ ","$\begin{array}{ll} I(D_\text{B,remainder}) &= 1 - (p_\text{trees}^2 + p_\text{untouched}^2) \\\\ &= 1 - ((\frac{4}{4+26})^2 + \frac{26}{26+4})^2 \\\\ &= 0.23\bar{1} \end{array}$"
+Information Gain,$\begin{array}{ll} IG_A &= 0.4\bar{4} - \frac{15}{39} 0.4\bar{4} - \frac{24}{39} 0.21875 \\\\ &= 0.13\bar{8} \end{array}$,$\begin{array}{ll} IG_A &= 0.4\bar{4} - \frac{9}{39} 0 - \frac{30}{39} 0.23\bar{1} \\\\ &= 0.2\bar{6} \end{array}$ 

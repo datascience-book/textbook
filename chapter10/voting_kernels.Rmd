@@ -1,10 +1,14 @@
 ---
-title: "voting kernels"
-author: "Jeff Chen"
-date: "7/15/2019"
-output: pdf_document
+title: "Bookdown"
+output:
+  pdf_document:
+    toc: yes
+    fig_caption: yes
+  bookdown::html_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
 ---
-
 
 ```{r, message=FALSE, warning=FALSE, echo = FALSE, fig.cap = "Types of kernels used in voting."}
 tab <- read.csv("data/kernels.csv")
@@ -12,3 +16,28 @@ pander::pander(tab, booktab = T, justify = "left",
                split.cells = c("10%", "45%", "45%"), )
 
 ```
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+  usescases <- read.csv("data/table_impurity.csv", stringsAsFactors = FALSE)
+  colnames(usescases) <- c("Measure", "Formula", "Types of Target", "Interpretation")
+  pander::pander(usescases, split.cell = 80, split.table = Inf, caption = "Measures used for attribute tests", 
+                 justify = "left")
+
+```
+
+
+
+These impurity measures greatly simplify the task of identifying useful information. If we think back to the downed trees, the modeling objective is to learn what distinguishes affected areas from unaffected areas. Suppose emergency responders will only be assigned to areas north of a single parallel, which greatly simplifies the targeting problem into one focused on partitioning. *Which degree of latitude do we choose?* In the example table below, two candidate splits have been identified: Split A is somewhere north and Split B is farther north. To evaluate which split is better, we calculate the IG for each split, applying Gini Impurity as $I$:
+
+$$IG_A = I(D_\text{region})  - \frac{n_\text{A,north}}{N}I(D_\text{north}) - \frac{n_{\text{A,remainder}}}{N}I(D_{\text{A,remainder}})$$
+
+Text goes here \@ref(tab:ginitab)
+
+```{r, ginitab, echo = FALSE, warning=FALSE, message=FALSE}
+inputs <- read.csv("data/gini-calcs.csv", sep = ",")
+knitr::kable(inputs, booktabs = T,
+                 caption = "Common measures used for decision tree learning attribute tests.", 
+                 justify = "left")
+```
+
