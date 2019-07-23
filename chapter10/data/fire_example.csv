@@ -1,0 +1,41 @@
+﻿building_id,time,fire,class,square_feet,prev_violation,water_leaks
+1,Jan,n,Warehouse,54160.55863,n,n
+2,Jan,y,Elevator Apartment,120920.9121,n,y
+3,Jan,y,Garage,37843.2319,n,y
+4,Jan,n,Rec Center,54291.3361,n,n
+5,Jan,y,Elevator Apartment,136403.5466,n,y
+6,Feb,y,Hotel,78757.47147,y,n
+7,Feb,y,Elevator Apartment,105482.9719,y,n
+8,Feb,y,Elevator Apartment,104327.0295,y,y
+9,Feb,n,Warehouse,59671.7964,n,n
+10,Feb,y,Elevator Apartment,108354.8028,n,n
+11,Jan,y,Elevator Apartment,101341.3382,n,n
+12,Jan,y,Elevator Apartment,135805.212,y,n
+13,Jan,n,Warehouse,57608.80916,n,n
+14,Jan,n,School,32666.1381,n,n
+15,Jan,n,Garage,41245.58165,n,n
+16,Feb,y,Elevator Apartment,115385.2282,y,n
+17,Feb,y,Hotel,93712.76192,n,n
+18,Feb,n,School,31716.88397,n,n
+19,Feb,n,Garage,43966.21729,n,n
+20,Feb,y,Theater,54272.9825,n,y
+21,Jan,y,Elevator Apartment,100105.781,y,y
+22,Jan,n,School,34013.4367,n,n
+23,Jan,n,Garage,35032.18171,n,n
+24,Jan,y,Elevator Apartment,124557.5536,n,n
+25,Jan,n,Warehouse,59721.77774,n,n
+26,Feb,n,School,42553.75645,n,n
+27,Feb,n,Garage,39532.80913,n,n
+28,Feb,y,Rec Center,51641.66164,y,n
+29,Feb,n,Warehouse,43374.20239,n,n
+30,Feb,y,School,37028.53007,n,y
+31,Jan,n,Garage,42444.54757,n,n
+32,Jan,y,Theater,54307.746,n,n
+33,Jan,y,Elevator Apartment,126620.7959,n,y
+34,Jan,n,School,31458.1763,n,n
+35,Jan,n,Garage,36348.099,n,n
+36,Feb,y,Theater,53983.20666,y,n
+37,Feb,n,Warehouse,49162.54631,n,n
+38,Feb,n,School,40521.09561,n,n
+39,Feb,n,Garage,38634.76542,n,n
+40,Feb,n,Rec Center,56436.59878,n,n

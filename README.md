@@ -1,3 +1,4 @@
+
 # Data Science for Public Policy
 _Jeff Chen, Dan Hammer, Ed Rubin_
 
@@ -5,3 +6,4 @@ _Jeff Chen, Dan Hammer, Ed Rubin_
 
 ## Introduction
 ## Chapter 4 - Data Manipulation
+

@@ -1,0 +1,712 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+  geometry: margin=1in
+---
+
+# Chapter 9: Classifiers
+
+## Playing moneyball with fire
+
+
+On an August afternoon in 2007, a fire broke out on the 17th floor of the then-vacant Deutsche Bank Building, a skyscraper situated across from the former World Trade Center in New York City. The building, seriously damaged after the 9/11 attacks, had been undergoing hazard abatement and controlled demolition, leading to changes to the building floor plans and safety apparatus. When the New York City Fire Department (FDNY) responded to the scene, it was clear the fire was a serious one, quickly escalating to a seven-alarm fire incident requiring 87 units and 475 firefighters. ^[https://cityroom.blogs.nytimes.com/2007/08/18/2-firefighters-are-dead-in-deutsche-bank-fire/]  As standpipes had been disabled and floor plans altered, FDNY units found it difficult to navigate the skyscraper and put water on the fire, resorting to unconventional methods of supplying water to crews. Eventually, the fire was put out seven hours after it started, not before two firefighters lost their lives, succumbing to cardiac arrest from heavy smoke inhalation. ^[http://www.nydailynews.com/news/firefighters-dead-7-alarm-deutsche-bank-blaze-article-1.238838]  In response to the tragedy, a mayoral investigation found that the deaths could have been prevented had city agencies established information sharing protocols and leveraged a risk-based strategy to mitigate and avoid hazards. ^[http://www1.nyc.gov/assets/doi/downloads/pdf/pr_db_61909_final.pdf]  While an ideal end state would be to end all structural fires, the recommendations focused on reducing death and injury by ensuring that FDNY had the most up-to-date ground intelligence.
+
+Risk mitigation strategy was indeed due for improvements. Since the 1950’s, FDNY building inspections were managed using a manual index card system where inspection schedules were based on tiers of perceived risk, where the riskiest buildings needed to be inspected once a year and the least risky buildings were inspected once every seven years. While it was a longstanding process, it left a shortfall in inspection coverage. Of the one million buildings in New York City, only one-third are inspection-qualified. Of those 300-thousand buildings, FDNY had historically been only able to inspect at most 10% of the buildings in a given year due to other operational priorities. This meant that even on a seven-year schedule, not all buildings would be reached and the fixed timeline meant that both perfectly safe and guaranteed fire traps had equal chance of being inspected. This could be easily changed. By incorporating the latest information about where fires did and did not occur and associating it with building characteristics, a new data-driven strategy could direct how buildings are prioritized for inspection.
+
+In 2013, the New York City Fire Department (FDNY) set out to address the risk management problem by melding data and technology with their field operations. On the surface, the idea of using data and technology to reduce the risk of fire is quite alluring. However, under the hood, there were notable obstacles. On the operational side, buy-in was required. Anyone who has observed firefighters on scene will notice that it is a well-choreographed operation -- every person knows their part and abides by the established protocols as directed by leadership. For data to drive value, it needed to be integrated and accepted into the culture of a 10,000+ person fire fighting organization. On the technical side, decades worth of index cards needed to be digitized and a scheduling platform needed to be developed. Perhaps most importantly, the system had to work. Scheduling just any inspection is simple. But scheduling inspections to buildings with observable fire risks is far more challenging as such as system would need to be able to distinguish between fire-prone and fire-proof buildings. Without effective targeting, the entire effort would be for naught. 
+
+The Commissioner and First Deputy Commissioner at the time both believed that technology had a role to play at FDNY. Aligned with Mayor Michael Bloomberg's vision of smart, data-driven government, they saw an opportunity to set an example for the nation's fire services.  They relied on the the Assistant Commissioner for Management Initiatives to lead a change management process with fire chiefs and fire officers, information technology (IT) managers, among others to change the flow of operations so that data served as a pillar on which FDNY could rely. Alliances were forged with leading fire personnel such as the Deputy Chief of Fire Operations and Battalion Chiefs to formalize the role of data in the culture of the fire house, amending standard operating procedures (SOPs) to use a digital inspection system. On the IT front, a lead software engineer and project manager meticulously gathered specifications that were then used to construct a scheduling platform. Recognizing that the proof was in the pudding, a Director of Analytics was hired to lead the overhaul of a prediction algorithm to rank buildings based on their risk and convincing stakeholders that a statistical representation of fire ignition was indeed trustworthy. The result was the Risk-Based Inspection System (RBIS), a firefighter-facing data platform that scheduled inspections at buildings with the greatest risk of fire. Three times a week for three hours per session, fire officers logged onto RBIS to obtain a list of buildings for scheduled inspection. Buildings were selected using FireCast, a statistical algorithm developed in-house to predict fires at the building level. Through FireCast, buildings no longer used assumed a static risk classification as in the index card system, but rather a dynamic risk score took into account the latest information.  
+
+Prediction often relies on accuracy measures to determine how well algorithms perform in the field; FireCast was no different. The algorithm was able to identify buildings with fires over 80% of the time -- a degree of accuracy that superceded prior attempts at the problem. Upon implementing the new system, impacts were observed in leading operational indicators. In the first month, the number of safety violations issued grew by +19% relative to the trend under the index card system, but fell to +10% in the second month. This indicated that the riskiest buildings did indeed have more observable risks than less risky buildings, but the amount of observable risk fell as building inspection teams progressed down the risk list. 
+
+From a statistical perspective, the prediction should have yielded far more violations, but efficacy of the prediction program was limited by (1) a fire unit's time budget to conduct inspections; (2) a policy requiring that time had to be set aside for weekly inspections, which at times led to inspecting buildings that were not observably risky after all truly risky buildings were exhausted; (3) the rule of law giving residents the right to refuse inspection. To measure efficacy, FDNY developed an indicator known as the Pre-Arrival Coverage Rate (PACR), which measures the proportion of buildings that experienced a fire that were inspected within some period (90 days) before the fire occurred -- essentially measuring if fire companies had the opportunity to evaluate risks of priority buildings. Under FireCast, FDNY had achieved a PACR of 16.5%, which was an eightfold improvement over the old strategy that yielded 1.5%. ^[http://www.nfpa.org/news-and-research/publications/nfpa-journal/2014/november-december-2014/features/in-pursuit-of-smart] ^[https://www.nist.gov/publications/research-roadmap-smart-fire-fighting] 
+
+Since Firecast was launched in 2014, other fire prediction efforts have emerged around the United States such as the Firebird open source system for Atlanta in 2016^[http://firebird.gatech.edu/] and a spatio-temporal fire prediction approach for Pittsburgh in 2018^[http://www.kdd.org/kdd2018/accepted-papers/view/a-dynamic-pipeline-for-spatio-temporal-fire-risk-prediction].
+
+## What's a classifier?
+
+The RBIS/FireCast is an example of a _classification_ problem -- a task in which a model determines which group or _class_ does an observation belongs based on its attributes, doing so based by learning from known examples. Examples must include the factual (what happened) and counter-factual (what did not happen) in order to distinguish between potential fires from non-fires. 
+
+Classification is nothing new in everyday life as we use our own mental classification models to contextualize the world around us. For example, marketers and advertisers are always look to get product offerings in front of prospective customers and will often purchase lists of people and apply models based on past customer behavior in order to identify those who are most likely to be interested.^[ref needed] The criminal justice system has incorporated risk classifcation models to determine if those involved in alleged crime pose a flight risk if bail is posted.^[ref needed from Vera Institute]  On a more futuristic front, the technology behind self-driving cars uses a complex array of sensors and cameras that are processed by classifiers in order to distinguish between cars, people, motorbikers and cyclists. 
+
+The same is true with fires.
+
+By examining buildings that have and have not caught fire in the past, we are able to learn what pattern characteristics are associated with greater risk of fire. There may be thousands of variables that can play a role in predicting fires. How do these methods words? The short answer is it depends on the classifier. Although building-level fire data is often censored for privacy reasons, let's take a closer look at classifiers using a simulated data set.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Load libraries
+  library(kableExtra)
+  library(knitr)
+
+#Sample size
+  n <- 1200
+  
+#Generate simulated fire data
+  id <- 1:n
+  y <- rep(NA, n)
+  
+  set.seed(20000)
+  yhat <- 0.8/(1 + exp(-id/100 +7 +rnorm(n, 0, 0.3)))
+  
+  for(i in 1:n){
+    set.seed(i*200)
+    y[i] <- (runif(1) < yhat[i])*1
+  }
+  y <- y == 1
+  
+#Gen square footage
+  set.seed(10000)
+  sf <- round((sqrt(id)*1000 + 40000 + rnorm(n, 6000,4000)))/1000
+  
+#Gen Bldgs
+  bldgs <- c(rep("Elevator Apt", 50000),
+             rep("Warehouse", 4000),
+             rep("School", 1000),
+             rep("Theater", 300))
+  
+#Create data frame
+  set.seed(102)
+  df <- data.frame(building_id = 1:n, 
+                   time = 2010,
+                   fire = y, 
+                   class = sample(bldgs, n, replace = TRUE), 
+                   square_feet_k = sf, 
+                   prev_violation = NA, 
+                   gas_leaks = NA)
+ 
+#Create gas leaks and prev vios
+  for(i in 1:nrow(df)){
+    set.seed(i)
+    df$prev_violation[i] <- ifelse(df$fire[i], runif(1) < 0.5 + 
+                                     (runif(1)*0.3) , runif(1) < 0.1)
+    set.seed(i*2)
+    a<- runif(1)
+    set.seed(i*3)
+    df$gas_leaks[i] <- ifelse(df$fire[i], a < 0.35 - (runif(1)*0.3), runif(1) < 0.1)
+  }
+ 
+#Yank out top 9 for show and tell
+  set.seed(100)
+  df2 <- df[order(runif(n)),]
+  short <- df2[1:9,]
+  temp <- data.frame(building_id = ".", 
+                     time = ".",
+                     fire = ".", 
+                     class = ".", 
+                     square_feet_k = ".", 
+                     prev_violation = ".", 
+                     gas_leaks = ".")
+  short <- rbind(short,temp, temp, temp)
+  kable(short, 
+        row.names = FALSE, 
+        booktabs = TRUE, 
+        caption = "Simulated fire prediction data set",
+        col.names = c("ID", "Year", "Fire?", "Building Type", 
+                      "Square Feet ('000)","Prior Building Violation", 
+                      "Prior Gas Leaks")) 
+```
+
+
+If fires are truly predictable, we can employ supervised learning to map how input variables can distinguish buildings that had fires from those that did not. Otherwise stated, which fire status class does a building likely belong?  Given a binary outcome $Y(Fire)$ we can determine class membership as a function of the building's characteristics: 
+
+$$Y(Fire) = f(\text{Building characteristics, Location, Complaints, ...})$$
+
+It sounds simple enough, but as it turns out, there are many different ways that algorithms can associate building characteristics to fires. 
+
+
+
+
+Let's suppose that fires are correlated with building size, which can be checked using a simple scatter plot of fire occurrence versus any continuous variable square footage. The result, however, will be remarkably anti-climatic: *it will appear to be two rows of points devoid of any sign of a trend* (left).
+
+There are tricks to extracting the signal. If we assume that fires tend to happen in larger buildings, we would expect that the conditional probability of fire would increase with square footage. By taking the average of fire occurrence as a moving a window along square footage, we can convert the binary value into a locally weighted conditional probability, which yields a smooth curve -- smaller buildings have a low chance of fire, the chance of fire sharply increases (right). Assuming a smooth linear relationship is the basis of regression-based approaches to binary classification problems.
+
+```{r, echo=F, message = FALSE, warning = FALSE, fig.height = 3,fig.cap = "Output of regression-based approach."}
+#Call lib
+  library(ggplot2)
+
+#Cut data
+  sm_df <- data.frame(sf = df$square_feet_k, 
+                      y = df$fire)
+  sm_df$yhat <- predict(lm(y~sf))
+
+#Points only
+  pts <- ggplot(sm_df) + 
+    geom_point(aes(x = sf, y = y*1), colour = "blue") + 
+    ylab("Fire") + ggtitle("(1) Fires vs. Square Feet") +
+    ylim(-0.1,1.1)+ xlab("Square Feet") + theme_bw()  + 
+    theme(plot.title = element_text(size = 10))
+
+#Show what it looks like as a linear trend
+  both<- ggplot(sm_df) + 
+    geom_point(aes(x = sf, y = y*1), colour = "blue", alpha = 0.05) + 
+    geom_smooth(aes(x = sf, y = y*1), colour = "red") + ylim(-0.1,1.1)+
+    ylab("Probability of Fire") + ggtitle("(2) Pr(Fires) vs. Square Feet") + 
+    xlab("Square Feet ('000)") + theme_bw() + 
+    theme(plot.title = element_text(size = 10))
+  
+#Line up charts
+  gridExtra::grid.arrange(pts, both, ncol = 2)  
+
+```
+
+
+Another way to find the underlying relationships is as a splitting problem: Find thresholds at which the sample can be partitioned into smaller, homogeneously defined groups with similar fire risk profiles. In the case of square footage, we can use a non-parametric approach to identify some set of discrete cutoffs that maximize differences between subsamples (left). Within each split, the probability of fire is simply the average of the binary outcome. The result is a step pattern. This recursive partitioning procedure is the basis of *decision tree learning*. 
+
+
+```{r, echo=F, message = FALSE, warning = FALSE, fig.height = 3, fig.cap = "Output of decision tree learning."}
+# Classification Tree with rpart
+  library(rpart)
+  library(rpart.plot)
+
+#model
+fit <- rpart(fire ~ square_feet_k, 
+             method = "class", 
+             data = df[, 3:ncol(df)], 
+             cp = 0)
+
+#Optimize fit
+out <- fit$cptable
+fit <- rpart(fire ~ square_feet_k, 
+             method = "class", 
+             data = df[, 3:ncol(df)], 
+             cp = out[which(out[,4]==min(out[,4])),1])
+#Accuracy
+  tree.pred <- predict(fit, df[,2:ncol(df)], type='class')
+  tab <- table(tree.pred, df$fire)
+  #(tab[1] + tab[4])/nrow(df_sub)
+
+# Plot results
+ 
+  #Tree plot
+  # rpart.plot(fit,extra=104, box.palette="GnBu",
+  #          branch.lty=3, shadow.col="gray", nn=TRUE, main = "(1) Decision Tree")
+  #Points only
+  pts <- ggplot(sm_df) + 
+    geom_point(aes(x = sf, y = y*1), colour = "blue") + 
+    geom_vline(xintercept = as.numeric(fit$splits[,4])) +
+    ylab("Occurrence of Fire") + ggtitle("(1) Fires vs. Critical breaks") +
+    ylim(-0.1,1.1)+ xlab("Square Feet ('000)") + theme_bw() + 
+    theme(plot.title = element_text(size = 10))
+  
+  #Scatter
+  tree.prob <- predict(fit, df[,2:ncol(df)], type='prob')
+  b <- ggplot() + 
+    geom_point(aes(x = df$square_feet_k, y = df$fire*1), colour = "blue", alpha = 0.05) + 
+    geom_point(aes(x = df$square_feet_k, y = tree.prob[,2]), colour = "red") + 
+    ylim(-0.1,1.1) +
+    ylab("Probability of Fire") + ggtitle("(2) Pr(Fires) vs. Square Feet") + 
+    xlab("Square Feet ('000)") + theme_bw()+ 
+    theme(plot.title = element_text(size = 10))
+
+  
+  #Line up charts
+    gridExtra::grid.arrange(pts, b, ncol = 2)  
+  
+```
+
+
+
+## Classifier basics
+
+Classification is fundamentally a matter of distinguishing between two or more classes, which may seem simple but is filled in twists and turns. We illustrate the complexities of this task under three scenarios, plotting two input variables on the X and Y axes and color-coding two classes in purple and light blue. The solid black lines represent the true *decision boundary*, or the threshold at which an observation is classified in a specified class. 
+
+At first, the idea of classifying records may seem straight forward. In policy, we tend to start from a normative theory of how a phenomenon functions -- perhaps a simple linear explanation. But as we investigate more and deeper, we may add exceptions to the rule as we discover cases that do not conform. Those exceptions may improve the number of correctly classified records, but detract from the simple narrative. 
+
+
+```{r, echo = FALSE, fig.cap = "Linear, Non-Linear and Discontinuous Classification Problems.", fig.height = 2}
+###############
+#Prep diagrams#
+###############
+  
+  #Base data
+  set.seed(234)
+  examp <- data.frame(x1 = runif(2000), x2 = runif(2000))
+  examp$linear <- (examp$x1 < examp$x2) * 1
+  examp$nonlinear <- examp$x1 < ( examp$x2 * 4 - 8*examp$x2^2 + 2*examp$x2^3) -0.1
+  part1 <- examp$x1 < ( examp$x2 * 4 - 8*examp$x2^2 + 2*examp$x2^3) +0.2
+  part2 <- examp$x2 >  1.2- ( examp$x1*0.6)
+  part3 <- examp$x2 >  0.2+ ( examp$x1*1.4)
+  examp$discont <- (part1 == TRUE | part2 == TRUE )*1
+  examp$varied <- (part1 == TRUE | part2 == TRUE | part3 == TRUE)*1
+  
+  #Create grid
+  grid <- expand.grid(x1= seq(0.001, 1, 0.001), x2 = seq(0.001, 1, 0.001))
+  
+
+###################
+# CALIBRATE MODELS#
+###################
+  
+#Logistic
+  loglin <- glm(linear ~ x1 + x2, data = examp, family = binomial())
+  logvaried <- glm(varied ~ x1 + x2, data = examp, family = binomial())
+  logdiscont <- glm(discont ~ x1 + x2, data = examp, family = binomial())
+  prob.grid.lin1 <- predict(loglin, grid, type = "response") 
+  prob.grid.lin2 <- predict(logvaried, grid, type = "response") 
+  prob.grid.lin3 <- predict(logdiscont, grid, type = "response") 
+  
+#RPART
+  library(rpart)
+  dectree <- rpart(linear ~ x1 + x2, data = examp, cp = 0)
+  decvaried <- rpart(varied ~ x1 + x2, data = examp, cp = 0)
+  decdiscont <- rpart(discont ~ x1 + x2, data = examp, cp = 0)
+  prob.grid.rpart1 <- predict(dectree, grid)
+  prob.grid.rpart2 <- predict(decvaried, grid)
+  prob.grid.rpart3 <- predict(decdiscont, grid)
+  
+#Random Forest 
+  library(randomForest)
+   adatree <- randomForest(factor(linear) ~ x1 + x2, data = examp, mtry = 2)
+   adavaried <- randomForest(factor(varied) ~ x1 + x2, data = examp, mtry = 2)
+   adadiscont <- randomForest(factor(discont) ~ x1 + x2, data = examp, mtry = 2)
+   prob.grid.gbm1 <- predict(adatree, grid, type = "response")
+   prob.grid.gbm2 <- predict(adavaried, grid, type = "response")
+   prob.grid.gbm3 <- predict(adadiscont, grid, type = "response")
+   
+#GAM
+   library(gam)
+   gammod1 <- gam(linear ~ s(x1) + s(x2), data = examp)
+   gammod2 <- gam(varied ~ s(x1) + s(x2), data = examp)
+   gammod3 <- gam(discont ~ s(x1) + s(x2), data = examp)
+   prob.grid.gam1 <- predict(gammod1, grid, type = "response")
+   prob.grid.gam2 <- predict(gammod2, grid, type = "response")
+   prob.grid.gam3 <- predict(gammod3, grid, type = "response")
+
+   
+  
+################
+# PROBLEM SPACE#
+################
+  
+  par(mfrow = c(1,3), mar = c(0, 1.2, 0.9, 0))
+  
+  #Linear example
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  title(main="(1) Linear", line= -0.2, cex.lab=1.3, font=3)
+   contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+  
+  
+  #Non-linear
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+    title(main="(2) Non-Linear", line= -0.2, cex.lab=1.3, font=3)
+    contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+    
+  #Discontinuous
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+   title(main="(3) Discontinuous", line= -0.2, cex.lab=1.3, font=3)
+     contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=1.5, add=T)
+  
+```
+
+As it turns out, there are 
+
+There are many ways to take on classification problems that we will cover, such as logistic regression, decision tree learning, Random Forest, Boosting, Neural Networks among others.
+
+
+```{r, echo = FALSE, fig.cap = "Linear, Non-Linear and Discontinuous Classification Problems.", fig.height = 5}
+
+#####################   
+# plot the boundary##
+#####################
+   
+  par(mfrow = c(3,4), mar = c(0, 1.2, 0.9, 0))
+   
+  #Linear example
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="GLM", line= 0, cex.main=1.2, font.main = 1)
+  title(ylab="Linear", line= -0.2, cex.lab=1.3, font=3)
+
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="GAM", line= 0, cex.main=1.2, font.main = 1)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="Decision Tree", line= 0, cex.main=1.2, font.main = 1)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$linear == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$linear == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm1, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(main="Random Forest", line= 0, cex.main=1.2, font.main = 1)
+  
+  
+  #Non-linear
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(ylab="Non-Linear", line= -0.2, cex.lab=1.3, font=3)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$varied == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$varied == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm2, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  #Discontinuous
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.lin3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  title(ylab="Discontinuous", line= -0.2, cex.lab=1.3, font=3)
+  
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", ylab = "", xlab ="",
+       font.main = 1,  pch = 16, cex = 0.8, 
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gam3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+  
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8,  
+       xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.rpart3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+
+  plot(examp[,c("x1", "x2")], col= "lightblue", 
+       font.main = 1, cex.main = 0.9, pch = 16, cex = 0.8, xlab = "", ylab = "",
+       xaxt = "n", yaxt = "n", asp = 1,bty="n")
+  points(examp[examp$discont == 1, c("x1", "x2")], col= "purple", pch = 16, cex = 0.7)
+  points(examp[examp$discont == 0, c("x1", "x2")], col= "lightblue", pch = 16, cex = 0.7)
+  contour(x=seq(0.001, 1, 0.001), y = seq(0.001, 1, 0.001), 
+          z=matrix(prob.grid.gbm3, nrow=1000), levels=0.5,
+          col="black", drawlabels=FALSE, lwd=3, add=T)
+
+  
+```
+
+Each technique has its own set of assumptions that in turn make it better suited for certain policy problems and certain types of data. But there are basic considerations that underlie all classifiers, namely (1) balancing interpretability with prediction, (2) the idea of separability, and (3)  the different definitions of accuracy.
+
+
+### Interpretability versus Prediction {-} 
+
+When selecting models for classification tasks, data scientists often times balance interpretability and predictive accuracy. It is similar to the idea of buying clothing of a generic size (e.g. small, medium, large) or having it custom tailored. The former captures the gist of one's body dimensions and it is easy to explain: *I bought a medium*. A custom tailored piece of clothing requires many adjustments beyond the size, allowing a master tailor to mold the clothing to features of the body and to one's comfort. 
+
+The same idea applies to classifiers. 
+
+In the social and natural sciences, classification methods like logistic regression are favored for their use in *parameter estimation* to infer relationships between variables. The model coefficients are directly interpretable, showing how a variable can contribute or detract from the probability of an outcome holding all else constant. Inferring relationships from estimated parameters in turn facilitate narratives for communicating insight. But there is a tradeoff. While linear methods may extract the gist of the relationships, they may miss the finer movements necessary for a reliable prediction. 
+
+If the goal is to produce a highly accurate prediction, it may be worth considering a body of exciting methods that have arisen from statistics and computer science that are optimized for predictive accuracy. These other methods may be more versatile, adapt to scenarios where there are more variables than observations, find interactions between variables and nonlinear patterns, and optimize for robustness. In the tech sector, for example, data science pursuits are often a matter of how well classifiers can scale to service their customers and drive sales. Understanding which variables definitively drive the predictions can be useful for teams focused on communicating insights, but not as much for the technology side of the house.
+
+The bottom line is that one's choice of classifier depends on how much one prizes interpretability versus accuracy.
+
+### Confusion matrix {-} 
+
+Accuracies are derived from probabilities produced by the classifier, indicating whether a given observation is predicted to below to a given class (e.g. fire vs. no fire, Yankee fan vs. Red Sox fan, Sith vs. Jedi). In order to convert probabilities into a prediction of the class, we need to set a threshold. So, what is the classification threshold? 
+
+Short answer: It depends on the sample.
+
+For balanced samples in which the outcome variable's classes are represented in approximately equal proportion, the threshold is $pr(Y=1) \geq 0.5$ as the objective probability of occurrence is close to $0.5$. In reality, this may not be all that common scenariodue to *class imbalance* and *rare events*. Class imbalance is the case in which the *minority class* -- the class with fewer observations -- is proportionally less prevalent in the sample than other classes. For example, political campaigns often deal with voter data in districts that are overwhelming in favor of one party over another. Rare events are infrequent events in which there is a super minority of observations. Fires and disasters tend to fall into this category. In some cases, fewer than $n = 200$ observations may lead to biased estimates.^[https://gking.harvard.edu/files/gking/files/0s.pdf]. We will revisit class imbalance and rare events later in this chapter, but for now, let's assume that the classification threshold is $Pr(Y=1) \geq 0.5$. 
+
+Classifier accuracy measures rely on metrics derived from the *confusion matrix*, or a $n \times n$ table where the rows represent actual classes and columns represent predicted classes. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c("True Negative (TN)", "False Negative (FN)"),
+                     pred_max = c("False Positive (FP)", "True Positive (TP)"))
+  row.names(temp) <- temp$first
+  kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Structure of confusion matrix",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+
+Each cell of the confusion matrix is a basic building block required to calculate accuracy:
+
+- The True Positive (TP) is the count of all cases in which the actual positive observations ($Y = 1$) are correctly predicted (e.g. model predicts a fire and a fire actually occurs).
+- The True Negative (TN) is the count of all cases where the actual negative observation ($Y = 0$) are correctly predicted.
+- The False Positive (FP) is count of all cases where the actual label was $Y = 0$, but the model classified a record as $\hat{Y} = 1$. This is also known as *Type I error*.
+- The False Negative (FN) is count of all cases where the actual label was $Y = 1$, but the model classified a record as $\hat{Y} = 0$. This is also known as *Type II error*.
+
+Let's see how this works in action. In a perfectly balanced sample of $n = 100$, we would expect the $TP = 50$ and $FP = 50$. Notice that the downward diagonal contains all observations while the upward diagonal are zeroed out -- indication of a perfect prediction. This is a rare case, but it still stands that the goal is to check if the download diagonal captures the majority of observations.
+
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c(50, 0),
+                     pred_max = c(0, 50))
+  row.names(temp) <- temp$first
+  kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Confusion matrix for perfectly accurate predictions",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+In contrast, a model with little predictive power will have the majority of observations in the upward diagonal. Below, the matrix suggests the trained model has little predictive power as it classified the vast majority of records as negative even when some should have been positive. 
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+#Create confusion matrix
+  temp <- data.frame(first = c("Actual (-)", "Actual (+)"),
+                     pred_min = c(40, 45),
+                     pred_max = c(10, 5))
+  row.names(temp) <- temp$first
+  kable(temp[,2:3], 
+        row.names = TRUE, 
+        booktabs = TRUE, 
+        caption = "Confusion matrix for poor predictions.",
+        col.names = c("Predicted (-)","Predicted (+)")) 
+```
+
+<Must be a simpler way to define
+
+### Loss Functions {-}
+
+The tricky thing is that there is not just one measure of accuracy or error, but rather a whole spectrum that support different analytical use cases. 
+
+While its simplicity makes for a great summary measure, it can be misleading in samples with class imbalance. For example, if 90% of a sample is composed of the negative class ($Y=0$) and the predictions correctly classify all negatives and none of the positives, the accuracy score would still be 90%. 
+
+
+| Measure | Formula | What It Answers |
+|----------------+-----------------------+----------------------------|
+| __Individual Measures__|
+| True Positive Rate (TPR) | $TPR = \frac{TP}{TP+FN}$ |  What proportion positive cases were correctly identified? |
+| False Positive Rate (FPR) | $FPR = \frac{FP}{FP+TN}$ |  What proportion of negative cases were incorrectly predicted as positive? This is also known as the false detection rate or Type I error. |
+| False Negative Rate (FNR) | $FNR = \frac{FN}{TP+FN}$ |  Proportion of positive cases that were incorrectly predicted negative. This is also known as the false alarm rate or Type I error. |
+| Predicted Positive Value (PPV) or Precision | $PPV = \frac{TP}{TP+FP}$ |  Proportion of positive cases that were incorrectly predicted negative. This is also known as the false alarm rate or Type I error. |
+| __Overall Measures__|
+| Accuracy | $Accuracy = \frac{TP + TN}{n}$ |  What proportion of  records were correctly classified? |
+| F1-Score | $F1 = \frac{2}{\frac{1}{TPR} \times \frac{1}{FPR}}$ |  Alternative method of calculating accuracy using a harmonic mean |
+| Receiving-Operating Characteristic (ROC) Curve  | sd |  asd |
+
+
+### Separability {-} 
+The success of a classifier lies in the amount of power it has to use input variables to distinguish between classes. In other words, a fire prediction algorithm needs to actually predict where fires and non-fires will be. A bail algorithm needs to be able to distinguish between those who are flight risks and those who are not. Simply training a classifier will not do as there needs to be some signal for the classifier to make use of. This is fundamental idea behind  *separability* -- input variables must contain information to help distinguish one class from another and this is manifested differently in different types of variables.
+
+When working with continuous variables, separability is in terms of differences in means and distributions. For example, A low separability scenario (left) would be one where the input variable's distribution for each class substantially overlap, which suggests an absence of any distinguishing information. High separability (middle), in contrast, would have means that are significantly different from one another and the distributions themselves overlap minimally. But perhaps the neatest thing is perfect separability (right). In this case, we basically can produce a perfect definition of the outcome in question, in which case we do not need a classifier to model the relationship -- just a threshold to serve as the definition. 
+
+```{r, fig.height = 2, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Separability of two classes given a continuous variable."}
+
+#Libs
+  library(ggplot2)
+  library(grid)
+  library(gridExtra)
+
+#Prep data
+  a <- rnorm(1000,10,10)
+  b <- rnorm(1000,12,10)
+  c <- rnorm(1000,50,10)
+  d <- rnorm(1000,100,10)
+  sep.df <- data.frame(a, b, c, d)
+
+#Plot
+  lowsep <- ggplot(sep.df) + 
+            geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+            geom_density(aes(b), fill = "orange", alpha = 0.3) + 
+            ggtitle("Low Separability" ) + 
+            theme(plot.title = element_text(size = 10,hjust = 0.5), 
+                  axis.line=element_blank(),
+                  axis.text.x=element_blank(),
+                  axis.text.y=element_blank(),
+                  axis.ticks=element_blank(),
+                  axis.title.x=element_blank(),
+                  axis.title.y=element_blank(),
+                  legend.position="none",
+                  panel.background=element_blank(),
+                  panel.border=element_blank(),
+                  panel.grid.major=element_blank(),
+                  panel.grid.minor=element_blank(),
+                  plot.background=element_blank())
+
+    highsep <- ggplot(sep.df) + 
+               geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+               geom_density(aes(c), fill = "orange", alpha = 0.3) +  
+               ggtitle("High Separability" ) + 
+               theme(plot.title = element_text(size = 10,hjust = 0.5), 
+                     axis.line=element_blank(),
+                     axis.text.x=element_blank(),
+                     axis.text.y=element_blank(),
+                     axis.ticks=element_blank(),
+                     axis.title.x=element_blank(),
+                     axis.title.y=element_blank(),
+                     legend.position="none",
+                     panel.background=element_blank(),
+                     panel.border=element_blank(),
+                     panel.grid.major=element_blank(),
+                     panel.grid.minor=element_blank(),
+                     plot.background=element_blank())
+
+    perfect <- ggplot(sep.df) + 
+               geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+               geom_density(aes(d), fill = "orange", alpha = 0.3) +  
+               ggtitle("Perfect Separability" ) + 
+               theme(plot.title = element_text(size = 10,
+                                               hjust = 0.5), 
+                     axis.line=element_blank(),
+                     axis.text.x=element_blank(),
+                     axis.text.y=element_blank(),
+                     axis.ticks=element_blank(),
+                     axis.title.x=element_blank(),
+                     axis.title.y=element_blank(),
+                     legend.position="none",
+                     panel.background=element_blank(),
+                     panel.border=element_blank(),
+                     panel.grid.major=element_blank(),
+                     panel.grid.minor=element_blank(),
+                     plot.background=element_blank())
+#Plot
+gridExtra::grid.arrange(lowsep, highsep, perfect, ncol = 3)
+```
+
+In contrast, separability with discrete variables is a matter of placing as many *True Positives* and *True Negatives* as represented in a 2 x 2 confusion matrix. This translates into placing the vast majority of observations into the upper left cell and bottom left cell. In the first example below, we have a separable case in which nearly 80% of observations are distributed along the diagonal.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE, fig.cap = ""}
+#Confusion Matrix`
+  fire <- rep(NA,nrow(df))
+  fire[df$fire] <- "Fire"
+  fire[!df$fire] <- "No Fire"
+  short <- ((table(fire, df$prev_violation)))
+  short <- round(short*100/nrow(df),1)
+  kable(short, 
+        booktabs = TRUE, 
+        caption = "Separability of two classes given a separable discrete variable.",
+        col.names = c("No Violation","Violation - T"),
+        row.names = T)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+Alternatively, a low separable case may will have a large proportion of observations along the other diagonal, indicating many *False Positive* (Type I error) and *False Negatives* (Type II error). In the case below, we see that the majority of cases have been incorrectly classified.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+#Confusion Matrix
+  fire <- rep(NA,nrow(df))
+  fire[df$fire] <- "Fire"
+  fire[!df$fire] <- "No Fire"
+  short <- ((table(fire, df$class=="Elevator Apt")))
+  short <- round(short*100/nrow(df),1)
+  kable(short, 
+        booktabs = TRUE, 
+        caption = "Separability of two classes given a unseparable discrete variable.",
+        col.names = c("Elevator Apartment - F","Elevator Apartment- T"),
+        row.names = T)  %>%
+            kable_styling(latex_options = c("hold_position"))
+```
+
+The bottom line about separability is that a good data scientist will check their assumptions. In policy, there will be prevailing theories and conventional wisdom that dictate how certain factors influence a phenomenon. But what may sound good may in actuality have little separability and in turn offer little predictive power. In those cases, it is worth revisiting and revising the assumptions. After all, the goal of a classifier is to classify. 
+
+## Six Common Algorithms 
+
+
+__Use Cases__.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+  usescases <- read.csv("data/use_case_table.csv")
+  knitr::kable(usescases, 
+        row.names = FALSE, 
+        booktabs = TRUE, 
+        caption = "Simulated fire prediction data set",
+        col.names = c("Method", "Common Uses", "Key Assumptions", "User Beware")) 
+```
+
+__
+In the context of healthcare coverage, we will use KNNs to illustrate the process of training a classifier. With the practical aspects in mind, we will explore two types of tree-based learning, namely decision trees and random forests. Then wrap up with logistic regression and a comparison of the performance of each of the four classifiers. 
+
+To start, we will need to import data from the healthcare coverage example. The data was obtained from the 2015  American Community Survey (ACS), which is available from [US Census Bureau website](https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pga.zip). So that this chapter can focus more on classification methods, data has been pre-processed, and any data wrangling that is shown herein is specific to each method. Note that the sample has been balanced such that people who have and do not have health insurance are represented in equal proportions.
+
+The file can be imported using the `digIt` library. Upon loading the data set, five string variables will be converted into factors.
+
+```{r, message = FALSE, warning = FALSE}
+#Import
+  library(digIt)
+  health <- digIt("acs_health")
+  
+#Factors
+  factor_vars <- c("cit", "mar", "schl", "esr")
+  for(i in factor_vars){
+    health[,i] <- as.factor(health[,i])
+  }
+  str(health)
+```
+
+
+
+

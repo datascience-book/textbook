@@ -1,0 +1,301 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+# Classifiers
+
+
+
+### Random Forests   
+
+
+```{r, message=FALSE, warning=FALSE}
+# Load ACS health care data
+  library(digIt)
+  health <- digIt("acs_health")
+  
+# Convert characters into discrete factors
+  factor_vars <- c("coverage", "mar", "cit", "esr", "schl")
+  for(var in factor_vars){
+    health[,var] <- as.factor(health[,var])
+  }
+  
+# Randomly assign
+  set.seed(100)
+  rand <- runif(nrow(health)) > 0.5
+  
+# Create train test sets
+  train <- health[rand == T, ]
+  test <- health[rand == F, ]
+  
+```
+
+
+In much of modern data references, we see more uncertainty being characterized. When a hurricane approaches the US Eastern Seaboard, forecasters often map the "cone of uncertainty" that provides the possible range of motion of a storm based on the results of many forecasted simulations. In presidential elections, often times the most polling results are ones that ensemble or average the results of many other similarly conducted polls. The reliance on predictions from a group of models with the same aim may very well improve prediction quality. In statistical learning, average the results of multiple models is known as *ensemble learning* or *ensembling* for short.
+
+Single models may imposes biases on data and may be well-suited in specific situations. Ensemble methods combine the results of many models to obtain more stable results.  For example, the curve in graph #1 can be approximated using a decision tree algorithm. The result of a single tree only loosely fits the curve in a jagged fashion (#2). That one tree may impose biases on the data, perhaps through how the tree is pruned or the assumption that the jagged approximation is appropriate, which may then translate into greater variance in predictions. One could imagine that the structure of that one tree may have happened by chance, and under different situations, the fit could be better. 
+
+Bootstrapping can help. Recall from elementary statistics that bootstrapping is defined as any statistical process that involves sampling records with replacement. By bootstrapping a sample, we treat a sample like a population, we can expose and characterize the qualities of an estimator under various scenarios already available in the data, which in turn produces an empirical probability distribution for predictions using the estimator. We can bootstrap the decision tree by (1) sampling the data with replacement up to the full size of the sample, then (2) run the decision tree. The result of repeating the process 50 times is (graph #3) produces a result that appears to be more organic and more accurate. This process of _bootstrapping_ and _aggregating_ the results is referred to as _bagging_.
+
+```{r, message=FALSE, warning = FALSE, fig.height = 2.5, echo = FALSE, fig.cap = "Comparison of results of applying a single model to fit a curve versus an ensemble of models."}
+
+library(rpart)
+library(gridExtra)
+library(ggplot2)
+
+set.seed(100)
+x <- 1:100
+y <- 5 + sin(x/20) + 2*cos(x/10)
+df <- data.frame(x, y)
+
+fit <- rpart(y ~ x, data = df)
+df$yhat <- predict(fit, df)
+
+base <- ggplot(df) + geom_line(aes(x = x, y = y))  + 
+  ggtitle("(1) Actual" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+single_tree<- ggplot(df) + geom_line(aes(x = x, y = y)) +
+  geom_line(aes(x = x, y = yhat), colour = "orange") + 
+  ggtitle("(2) Single Tree" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+for(k in 1:50){
+  temp <- df[sample(df$x, 100, replace=T),1:2]
+  fit <- rpart(y ~ x, data = temp)
+  yhat <- predict(fit, df)
+  df <- cbind(df, yhat)
+}
+
+colnames(df)[4:ncol(df)] <- paste0("yhat",1:50)
+
+many <- ggplot(df) + geom_line(aes(x = x, y = y)) + geom_line(aes(x = x, y = yhat), colour = "orange") +
+  geom_line(aes(x = x, y = yhat2), colour = "red") + geom_line(aes(x = x, y = yhat3), colour = "orange") +
+  geom_line(aes(x = x, y = yhat4), colour = "red") + geom_line(aes(x = x, y = yhat5), colour = "orange") +
+  geom_line(aes(x = x, y = yhat5), colour = "red") + geom_line(aes(x = x, y = yhat6), colour = "orange") +
+  geom_line(aes(x = x, y = yhat7), colour = "red") + geom_line(aes(x = x, y = yhat8), colour = "orange") +
+  geom_line(aes(x = x, y = yhat9), colour = "red") + geom_line(aes(x = x, y = yhat10), colour = "orange") +
+  geom_line(aes(x = x, y = yhat11), colour = "red") + geom_line(aes(x = x, y = yhat12), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat13), colour = "red") + geom_line(aes(x = x, y = yhat14), colour = "orange") +
+  geom_line(aes(x = x, y = yhat15), colour = "red") + geom_line(aes(x = x, y = yhat16), colour = "orange") +
+  geom_line(aes(x = x, y = yhat17), colour = "red") + geom_line(aes(x = x, y = yhat18), colour = "orange") +
+  geom_line(aes(x = x, y = yhat19), colour = "red") + geom_line(aes(x = x, y = yhat20), colour = "orange")  + 
+  geom_line(aes(x = x, y = yhat21), colour = "red") + geom_line(aes(x = x, y = yhat22), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat23), colour = "red") + geom_line(aes(x = x, y = yhat24), colour = "orange") +
+  geom_line(aes(x = x, y = yhat25), colour = "red") + geom_line(aes(x = x, y = yhat26), colour = "orange") +
+  geom_line(aes(x = x, y = yhat27), colour = "red") + geom_line(aes(x = x, y = yhat28), colour = "orange") +
+  geom_line(aes(x = x, y = yhat29), colour = "red") + geom_line(aes(x = x, y = yhat30), colour = "orange") +
+  geom_line(aes(x = x, y = yhat31), colour = "red") + geom_line(aes(x = x, y = yhat32), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat33), colour = "red") + geom_line(aes(x = x, y = yhat34), colour = "orange") +
+  geom_line(aes(x = x, y = yhat35), colour = "red") + geom_line(aes(x = x, y = yhat36), colour = "orange") +
+  geom_line(aes(x = x, y = yhat37), colour = "red") + geom_line(aes(x = x, y = yhat38), colour = "orange") +
+  geom_line(aes(x = x, y = yhat39), colour = "red") + geom_line(aes(x = x, y = yhat40), colour = "orange")  + 
+  geom_line(aes(x = x, y = yhat41), colour = "red") + geom_line(aes(x = x, y = yhat42), colour = "orange") + 
+  geom_line(aes(x = x, y = yhat43), colour = "red") + geom_line(aes(x = x, y = yhat44), colour = "orange") +
+  geom_line(aes(x = x, y = yhat45), colour = "red") + geom_line(aes(x = x, y = yhat46), colour = "orange") +
+  geom_line(aes(x = x, y = yhat47), colour = "red") + geom_line(aes(x = x, y = yhat48), colour = "orange") +
+  geom_line(aes(x = x, y = yhat49), colour = "red") + geom_line(aes(x = x, y = yhat50), colour = "orange")  + 
+  ggtitle("(3) 50 Models" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+
+df$average <- rowMeans(df[,4:ncol(df)])
+
+avg <- ggplot(df) + geom_line(aes(x = x, y = y)) +
+  geom_line(aes(x = x, y = average), colour = "blue") + 
+  ggtitle("(4) Ensemble Average" ) + 
+  theme(plot.title = element_text(size = 10), axis.line=element_blank(),axis.text.x=element_blank(),
+        axis.text.y=element_blank(),axis.ticks=element_blank(),
+        axis.title.x=element_blank(),
+        axis.title.y=element_blank(),legend.position="none",
+        panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+        panel.grid.minor=element_blank(),plot.background=element_blank())
+
+grid.arrange(base, single_tree,  many, avg, ncol = 2)
+```
+
+Applying bagging to decision trees may not necessarily be enough to develop a well-balance prediction. In the social sciences and public policy, it is generally assumed that a model's specification is a choice left to the analyst; However, it may also be a source of methodological bias. 
+
+_Random forests_ can help. The technique, as crystallized in Breiman (2001), is an extension of decision trees using a modified form of bootstrapping and ensemble methods to mitigate overfitting and bias issues. Not only are individual records bootstrapped, but input features are bootstrapped such that if $K$ variables are in the training set, then $k$ variables are randomly selected to be considered in a model such that $k < K$. Each bootstrap sample is exhaustively grown using decision tree learning and is left as an unpruned tree. The resulting predictions of hundreds of trees are ensembled. The logic is described below.
+
+__Pseudo-code__
+```
+Let S = training sample, K = number of input features
+  1. Randomly sample S cases with replacement from the original data.
+  2. Given K features, select k features at random where k < K.
+  3. With a sample of s and k features, grow the tree to its fullest complexity.
+  4. Predict the outcome for all records.
+  5. Out-Of-Bag (OOB). Set aside the predictions for records not in the s cases.
+Repeat steps 1 through 5 for a large number of times saving the result after each tree.
+Vote and average the results of the tree to obtain predictions. 
+Calculate OOB error using the stored OOB predictions. 
+```
+
+The *Out-Of-Bag* (OOB) sample is a natural artifact of bootstrapping: approximately one-third of observations are naturally left un-selected, which can be used as the basis of calculating each tree's error and the overall model error. Think of it as a convenient built in test sample.
+
+_How about interpretation?_ Unlike decision trees, it is not a simple task to deduce rules or criteria that describe the target variable. Instead, random forests use *variable importance*, which, like for a decision tree, measures the contribution of a feature to the homogeneity of a classifier. Unlike decision trees, variable importance for a Random Forest is calculated as the mean decrease in the Gini coefficient of a split relative to the Gini coefficient of the root node. Gini coefficients measures homogeneity on a scale of 0 to 1, where 0 is perfect homogeneity and 1 is perfect heterogeneity. The Gini changes are summed for each variable and normalized. 
+
+
+```{r, echo = FALSE, warning = FALSE, message = FALSE, fig.cap = "Random Forests construct hundreds of trees sampling from both observations and features, then combine the trees into one prediction through voting.", fig.height = 3}
+
+library(rpart.plot)
+library(rpart)
+
+id <- 1:100
+y <- 5 + sin(id/20) + 2*cos(id/10)
+df <- data.frame(id, y)
+
+for(i in 1:100){
+  x <- y + runif(length(id))*10
+  df <- cbind(df, x)
+  colnames(df)[i+2] <- paste0("X",i)
+}
+
+
+par(mfrow = c(1,5))
+for(k in 1:3){
+  temp <- df[sample(1:nrow(df), replace=T), 2:ncol(df)]
+  sampled.vars <- sample(colnames(temp)[2:ncol(temp)], 3)
+  fit <- rpart(y ~ ., data = df[, sampled.vars], cp = 0)
+  rpart.plot(fit, shadow.col="gray", nn=TRUE, 
+             main = paste0("Tree ", k, "\n uses ", paste(sampled.vars, collapse = ", "),""), cex.main = 1.1)
+}
+
+plot(c(0), pch = 19, col = "white", xaxt = "n", yaxt = "n", frame.plot=FALSE, xlab = "", ylab="")
+text(1, 0, ". . .", cex = 5)
+for(k in 500){
+  temp <- df[sample(1:nrow(df), replace=T), 2:ncol(df)]
+  sampled.vars <- sample(colnames(temp)[2:ncol(temp)], 3)
+  fit <- rpart(y ~ ., data = df[, sampled.vars], cp = 0)
+  rpart.plot(fit, shadow.col="gray", nn=TRUE, 
+             main = paste0("Tree ", k, "\n uses ", paste(sampled.vars, collapse = ", ","")), cex.main = 1.1)
+}
+```
+
+
+#### Tuning
+Whereas methods like regression have a closed form solution, Random Forest require tuning as optimal models need to be searched for under different conditions. The principal tuning parameters include: Number of features and number of trees.
+
+- _Number of input features_. As $k$ number of parameters need to be selected in each sampling round, the value of $k$ needs to minimize the error on the OOB predictions. 
+- _Number of trees_ influences the stability the Variable Importance metric that is commonly used to infer variable influence in decision tree learning. More trees help to stabilize the Variable Importance estimate. To determine the number of trees, keep adding trees to a sample until the OOB error for a randomly select set of trees is approximately equal to that of the ensemble.
+
+####Random Forests in Practice
+
+Like decision trees, much of Random Forests rely on easy to use methods made available through the `randomForest` library. There are a couple of ways to run the algorithm, including:
+
+`randomForest(formula, data, method, mtry, ntree)`
+
+where: 
+- `formula` is an object containing the specification to be estimated. Note that 
+- `data` is a data frame.
+- `mtry` is the number of variables to be randomly sampled per iteration. Default is $\sqrt{k}$ for classification trees.
+- `ntree` is the number of trees. Default is 500.
+
+Using the same formula as the `rpart()` function, we can train a naive Random Forest and check the OOB error. Approximately 75.6% of observations in the OOB sample were correctly classified using 2 randomly selected variables in each of the 500 trees.
+
+```{r, warning=FALSE, message = FALSE}
+#Load randomForest library
+  library(randomForest)
+
+#Only complete obs
+  train <- na.omit(train)
+
+#Run Random Forest
+  spec <- as.formula("coverage ~  agep + wage + cit + mar + schl + esr")
+  fit.rf <- randomForest(spec, data = train, mtry = 2, ntree = 500)
+
+#Check OOB error
+  fit.rf
+```
+
+```{r, echo = FALSE}
+imp <- importance(fit.rf)
+imp <- data.frame(var = row.names(imp), score = imp)
+imp <- imp[order(-imp[,2]), ]
+
+```
+Using the `importance()` method, we can see the Mean Decrease Gini, which calculates the mean of Gini coefficients. `agep` has the largest value of `r imp[1,2]`, indicating that age is the best predictor of coverage; However, the values themselves do not have any meaning outside of a comparison with other Gini measures.
+
+```{r, warning=FALSE, message = FALSE}
+importance(fit.rf)
+```
+
+By default, the `randomForests` library sets the number of trees to equal 500. By plotting the fit object, we can see how OOB error and the confidence interval converges asymptotically as more trees are added to the ensemble. Otherwise stated, more trees will help up to a certain point and the default is likely more than enough. 
+
+```{r, warning=FALSE, message = FALSE, fig.height = 4}
+  plot(fit.rf)
+```
+
+As we know that $n = 500$ trees is more than enough, we will now need to tune the tree for the number of variables. To tune the algorithm, we will use the `tuneRF()` method. The method searches for the optimal number of variables per split by incrementally adding variables. While it's a useful function, it is relatively verbose. In addition to the target and input features, a number of other parameters need to be specified:
+
+`tuneRF(x, y, ntreeTry,  mtryStart, stepFactor, improve, trace, plot)`
+
+where: 
+- `x` is a data frame or matrix of input features.
+- `ntreeTry` is the number of trees used in each iteration of tuning.
+- `mtryStart` is the number of variables to start.
+- `stepFactor` is the number of additional variables tested per iteration.
+- `improve` is the minimum relative improvement in OOB error for the search to go on.
+- `trace` is a boolean that indicates where to print the search progress. 
+- `plot` is a boolean that indicates whether to plot the search results. 
+
+
+Below, we conduct a search from `mtryStart = 1` with a `stepFactor = 2`. The search result indicates that _2_ variables per split are optimal.
+```{r, warning=FALSE, fig.height=4, fig.cap = "Random Forest tuning result (m = number of features, OOB Error = out of sample error)."}
+#Search for most optimal number of input features
+  fit.tune <- tuneRF(x = train[,3:ncol(train)], y =  train[,2], ntreeTry = 500, 
+                     mtryStart = 1, stepFactor = 2, 
+                     improve = 0.001, plot = TRUE)
+
+#Extract best parameter
+  tune.param <- fit.tune[fit.tune[, 2] == min(fit.tune[, 2]), 1]
+```
+
+
+Using the optimal result, we can plug back into the `randomForest()` method and re-run. However, as the default model already has the same parameters as the optimal model, we can proceed to calculating the model accuracy. Comparing the training and test models for the Random Forest algorith, we see a large drop in the AUC between train and test, indicating quite a bit of overfitting. 
+
+```{r, fig.height = 2, message = FALSE, warning = FALSE}
+#plotROC
+  library(plotROC)
+
+#Predict values for train set
+  pred.rf.train <- predict(fit.rf, train, type='prob')[,2]
+
+#Predict values for test set
+  pred.rf.test <- predict(fit.rf, test, type='prob')[,2]
+
+  
+#Set up ROC inputs
+  input.rf <- rbind(data.frame(model = "train", d = train$coverage, m = pred.rf.train), 
+                  data.frame(model = "test", d = test$coverage,  m = pred.rf.test))
+  
+#Graph all three ROCs
+  roc.rf <- ggplot(input.rf, aes(d = d, model = model, m = m, colour = model)) + 
+             geom_roc(show.legend = TRUE) + style_roc()  +ggtitle("Train")
+
+#AUC
+  calc_auc(roc.rf)
+```
+
+
+
+
+
+
+

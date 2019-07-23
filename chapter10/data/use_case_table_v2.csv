@@ -1,0 +1,6 @@
+﻿Method,Common Uses,Example Daa
+k-Nearest Neighbors,Imputation of missing data; Relating data that can be treated like coordinates.,Hurricane response
+Logistic Regression,Interpretation and narrative building; Hypothesis testing.,Health care coverage
+LASSO logistic,Sift through large number of variables to surface likely covariates; Estimate logistic regression when there are more variables than observations.,Health care coverage
+Decision Tree,"Produce predictions that can interact or cross variables together to see joint effects; Resulting nodes can be used as a ""profiles"".",Activity trackers
+Random Forest,Produce predictions that can interact or cross variables together to see joint effects; Reasonable for cases when straight forward explanations are foregone.,Activity trackers
