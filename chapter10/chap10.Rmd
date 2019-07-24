@@ -809,7 +809,9 @@ $$IG_A = I(D_\text{region})  - \frac{n_\text{A,north}}{N}I(D_\text{north}) - \fr
 
 $$IG_B = I(D_\text{region})  - \frac{n_\text{B,north+}}{N}I(D_\text{B,north+}) -\frac{n_{\text{B,remainder}}}{N}I(D_{\text{B,remainder}})$$
 
-As we step through each element of the comparison, it becomes apparent that Split B can more effectively isolate downed tree areas -- it would be a 100% hit rate in the *North+* partition. Split A, in contrast, would result in a 66% hit rate in the *North* partition. Indeed, the IG calculation confirms that Split B would yield twice as much information as Split A.
+As we step through each element of the calculation, it becomes apparent that Split B can more effectively isolate areas with downed trees, achieving an 100% hit rate in the *North+* partition. Granted, the estimated hit rate is on a small sample, nonetheless is a marked improvement over Split A's 66% hit rate in the *North* partition. Indeed, the IG calculation confirms that Split B would yield twice as much information as Split A. 
+
+It is unlikely that a solitary split would do the job. For each partition (*North+* and *Remainder*), the attribute test would be applied recursively, searching for the optimal split as the tree grows deeper giving way to finer, more homogeneous partitions.
 
 \vspace{12pt}
 
@@ -823,13 +825,18 @@ knitr::kable(inputs, booktabs = T,
 
 
 
+[Variable importance]
 
 
 ### In Practice
 
-Decision trees are an incredible contribution to machine learning. They can conduct automated variable selection on any type of data type. From the recursive partitioning, each leaf node is a subsample that is defined using a set of conditional criteria, making it easy to articulate and define specific subpopulations. The splitting mechanism makes it possible to capture the intricate patterns in the data, like interactions and non-linearities, that will otherwise not be detected using classical methods like regression.  The implications are that two or more input variables can be blended together to find cells of activities that are otherwise overlooked.
+Decision trees are an incredible contribution to machine learning. Their versatility allows them to conduct automated variable selection on any type of data type, even when the number of input variables exceed the number of records. 
 
-There are detractors, however. Trees can be grown so deeply that there are too many subpopulations to articulate. If left unpruned, terminal leafs may give a false impression of accuracy and precision -- the small samples may give a false impression. Nontheless, decision tree learning is an important contribution to classification problems and form the basis of many other algorithms.
+
+
+The way in which CART learns can detect discontinuities, interactions, and non-linearities in the data, which would otherwise be ignored when applying regression. Furthermore, it is the splitting mechanism that  allows for each leaf node to be concretely defined using a set of binary criteria. A cluster of neighborhoods affected with downed trees, for example, can be identified using as a bounding box defined by four pairs of geographic coordinate learned through the splitting process. 
+
+There are detractors, however. Trees can grow so deeply that the model overfits. It does not take much to see why that may be. A leaf node can be comprised of as little as $n=1$, meaning that splits that occur deep into the tree might not be meaningful -- they are simply noisy. If left unpruned, leaf nodes can produce high variance predictions. Furthermore, there may be too many leaf nodes to articulate.   Nontheless, decision tree learning is an important contribution to classification problems and form the basis of many other algorithms.
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
   usescases <- read.csv("data/dt_sw.csv")
@@ -1041,17 +1048,6 @@ Now, we can prune the tree using the optimal `cp` value, then score both the tes
 
 __What works__. One of the fascinating aspect of CART is its interpretability. Each terminal node is a set of binary criteria, making it possible to articulate under what conditions can the target occur. This is a reasonable mode of interpretable when trees are relatively simple. Alternatively, CARTs can be reviewed through variable importance that builds upon the *impurity* measures used to construct the trees.
 
-A split in a tree is given as 
-
-
-total impurity less remaining impurity
-$$\Delta i(s,t) = i(t)-p_L i (t_L) - p_R i (t_R)$$
-$p_L = \frac{N_{t_L}}{N_t}$
-$p_R = \frac{N_{t_R}}{N_t}$
-
-
-gini impurity
-$$i(s,t) =1-\sum^J_{i=1} p_i^2$$
 
 
 Variable $X_m$
