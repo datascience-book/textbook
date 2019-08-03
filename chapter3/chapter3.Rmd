@@ -1,17 +1,21 @@
----
-title: "Chapter 3: A Light Introduction to Statistical Programming"
-date: "January 9, 2019"
-output:
-  pdf_document: 
-      number_sections: true
-  html_document: default
-header-includes:
-- \usepackage{rotating, graphicx}
-#bibliography: citations.bib
+--- 
+biblio-style: apalike
+bibliography:
+- citations.bib
+documentclass: book
+header-includes: \usepackage{rotating, graphicx}
 link-citations: yes
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    number_sections: yes
+    toc: no
+geometry: margin=1in
+site: bookdown::bookdown_site
 ---
+# A Gentle Introduction to Programming
 
-# Data are everywhere — and they come in all types.
+## Data are everywhere — and they come in all types.
 
 Data are everywhere we look. They are not necessarily values in a spreadsheet that lack context, but embedded in our everyday discussions and communication. How the stock market is doing is rarely communicated to the public in the form of a spreadsheet (perhaps to investors). Rather it is communicated in the form of concise statements. Let's take the example for a [CNBC online article](https://www.cnbc.com/2017/08/29/us-stocks-north-korea-missile.html) about stock market performance: "The Dow Jones industrial average erased earlier losses today to end 56.97 points higher at 21,865.37...".
 
@@ -27,11 +31,11 @@ Once information is structured and code is written, computers are capable of inc
 
 
 
-# Data types
+## Data types
 
 In R, data are encoded (often implicitly) as one of several types of data e.g., `numeric`, `logical`, `character`, `factor`, or `date`. In this section, we describe the properties of each.
 
-## `numeric` 
+### `numeric` 
 
 As you may have guessed, *numeric* data are numbers. The numeric type is R's catch-all for all numbers, encompassing both integer and continuous numbers. 
 
@@ -42,7 +46,7 @@ As you may have guessed, *numeric* data are numbers. The numeric type is R's cat
 pi
 ```
 
-## `character`
+### `character`
 
 Words, sentences, letters, among other sequence of letters and numbers are often encoded as `character` data (also strings as *strings*) in datasets of linguistic text (e.g., court transcripts, novels, text messages, or government audit reports). When a value is wrapped in quotation marks, (e.g., `"Text"`), we are indicating to R that the value is a character. Both single quotes (`'`) and double quotes (`"`) work, you just. For example: 
 
@@ -125,15 +129,15 @@ TRUE * 1
 ```
 \vspace{12pt} 
 
-## `factor`
+### `factor`
 
 Factors are a special data type in R, because they allow you to take one type of variable (e.g., `numeric` or `character`) and add a few more layers of information. We can add labels to the data so that values "Sun" and "Mon" are labeled "Sunday" and "Monday". Also, we have the option to indicate the order of that data, meaning Sunday precedes Monday, etc. You can manipulate these labels, the ordering, and a number of other factor options through the functions `factor` and `as.factor`. We will more fully explore `factor` data in the graphing section.
 
-## `date`
+### `date`
 
 While there are many ways to think about dates -- `character` data like "January" or `numeric` data like `1` -- dates are so common (and oddly challenging to work with) that they get their own type of data, namely, the `date` type. We will dive more into working with dates in the next chapter.
 
-## The `class` function
+### The `class` function
 
 Inferring the type of data by simplying looking at the data can be misleading.  The question of type is particularly important when you read data into R from another source -- we will not always know whether R read a variable as `numeric`, `character`, `logical`, or perhaps `factor`. The `class` function works wonders.
 
@@ -186,7 +190,7 @@ class(x = TRUE)
 
 Both options produce the same output, but the second example -- in which we explicitly use the argument's name -- makes it a bit clearer what we are doing. We admit it does not truly matter for `class`, since there is only the possibility of one argument. However, we will soon meet some functions where explicitly naming arguments helps you and your collaborators.
 
-# Objects in R
+## Objects in R
 
 Simply entering data into R's console is not enough. We need a way to store data in our computer's memory. To be able to access and re-access the data that we store, we give each piece of data a name. In R parlance, we *assign* the values (the data) to objects stored in memory (the names).
 
@@ -222,11 +226,11 @@ a * 3
 
 Looks great!
 
-# R's object classes
+## R's object classes
 
 Just as data in R come in different _types_, objects in R come in different _classes_, e.g., a `vector`, a `matrix`, a `data.frame`, or a `list`. Each of the object classes presents data in a slightly different structure, making it better for some uses and worse for others. We'll review four of the most common data structures now and then will discuss others as they arise throughout the book.
 
-## `vector`
+### `vector`
 
 `vector` objects are one of the simplest and most used classes of objects in R. Specifically, (in R) a vector is a one-dimensional "list" of values. The values in a `vector` can be `logical`, `numeric`, `factor`, or `character`, but they must all be of the same type. If the objects are not all of the same type, R will _coerce_ them to the most conducive type.
 
@@ -254,7 +258,7 @@ c(1, "banana")
 
 *R coerces everything to character.* This result may not be what you expected—you may have expected R to allow a vector to contain objects of different types.^[Wait a few sections for R's `list`.] At some point, the folks who developed R made this decision—and millions of other little decisions—that led to the current implementation of R. As you get deeper into R, you will find that there is a logic to these decisions (e.g., why R tells you it is `TRUE` that `"apple pie" < "banana cream pie"`), but R will still occasionally surprise you. And that is part of learning to program in R. So don't be afraid to dive into the rabbit holes that surprise you. You may lose a few hours in the short run, but in the long run you'll become an excellent data scientist.^[And R Wizard.]
 
-## `matrix`
+### `matrix`
 
 The next class of objects we'll discuss is R's `matrix` class. In R, matrices are very similar to the matrices you met in your mathematics courses: they have rows and columns filled with data. However, in addition to filling your matrices with numbers, as you did in your math courses, in R You can also fill your `matrix` with other types of data—e.g., logical, character, factor (just as you can with vectors).
 
@@ -317,7 +321,7 @@ matrix(data = 1, nrow = 3, ncol = 2)
 ```
 \vspace{12pt} 
 
-## `data.frame`
+### `data.frame`
 
 As a budding data scientist, one day you will wake up and find yourself surrounded by `data.frame`s. The `data.frame` is the basic object for data entry and analysis in R—much like a table of data or a spreadsheet (but better). Just like a `matrix`, a `data.frame` has rows and columns. Unlike a `matrix`, a `data.frame` can have different types of data in each of its columns. In addition, you will name each of the columns in your `data.frame`.
 
@@ -383,7 +387,7 @@ Notice that R's error message gives us a hint to what the problem is: `arguments
 _Aside:_ In the `data.frame` examples above, we wrote `data.frame(` and then went to the next line to define the columns. R does not stop at the end of the line, because it 'knows' that the `data.frame` definition is unfinished. You don't have to define a `data.frame` over multiple lines^[You can do it in one line: `data.frame(some_letters = c("a", "A", "b", "B"), some_numbers = 1:3)
 `], but using multiple lines tends to make your code more legible and easier to troubleshoot.
 
-## `list`
+### `list`
 
 R's `list` class of objects is exactly what its name implies—it lists things. Similar to the `vector`, a `list` has only one dimension—its length. Unlike the `vector`, a `list` can contain objects of many different types. The crazy part of `list` its elements can be _anything_. You are not stuck with simple objects like `1` or `T` or `"Some text"`. A single `list` can have `vector`s, `data.frame`s, and even other `list`s as its elements.
 
@@ -424,7 +428,7 @@ list(
 
 Our knowledge and creativity are impressive, right?
 
-## The `class` function, v2
+### The `class` function, v2
 
 Previously we used the `class` function to learn the data types of various objects (e.g., `class(3.1415)`). You can also use `class` to learn about an object's class. For example,
 
@@ -466,13 +470,13 @@ The takeaway? R 'thinks' about different types of vectors as different classes o
 In addition, each object class also has its own function to check whether an object belongs to the class. For instance, you can use the `is.matrix` to check whether an object is a `matrix`. Type `is.` into the RStudio console and then hit your tab key—you will get a glimpse of all of these `is.*` class functions.
 
 
-## More classes
+### More classes
 
 R offers many other object classes. Many of the object classes are specific to an application (e.g., geographic data like rasters or shape files) or packages (e.g., when you run a regression with the function `lm`, the function produces a special `lm` object).
 
-# Packages
+## Packages
 
-## Base R and filling the need for more functions
+### Base R and filling the need for more functions
 
 When you boot up R, you automatically have access to a large set of functions. You can perform mathematical operations (addition `+`, division `/`), conduct statistical summaries (`mean`, `sd`), run a regression (e.g. `lm`), plot a histogram (`hist`) and even make a map (`plot`). This original set of functions that shipped with R is called *base R* -- the basic setup when you open the box. Eventually, you will find yourself in a situation in which you need to conduct more complex and specialized tasks that are not possible by any function in base R.
 
@@ -480,7 +484,7 @@ Some may have the adventurous itch to program specialized functions, which may s
 
 For example, imagine some crazy, hypothetical world (such as the one in which we live) where someone sends you an Excel spreadsheet that you then need to load into R. Herein lies the problem: *base R does not have a function to read directly from a spreadsheet*. But, as its name implies the `readxl` package on CRAN provides exactly the functionality you need.
 
-## Installing packages
+### Installing packages
 
 A large community of R users and developers contribute and maintain a (vast archive of packages)[https://cran.r-project.org/web/packages/available_packages_by_name.html]. And these package span computationally intensive tasks like reading satellite imagery to more visual tasks like creating interactive maps for websites. It is easy to tap into these vast resources, and to get started with a package like `readxl`, we only need two inputs: (A) an internet connection and (B) R's `install.packages` function.
 
@@ -496,7 +500,7 @@ For some packages, R will also install package dependencies -- other packages on
 
 There are sources (e.g., [METACRAN](https://www.r-pkg.org/)) that allow you to search CRAN for packages, but, as with many R-related tasks, Google and asking friends and colleagues are going to be your best bets.
 
-## Loading packages
+### Loading packages
 
 Like installing a new air conditioning unit, the unit is only useful when it is plugged in and turned on. R packages follow the same logic. Installing a package simply means that you now have access to the package on your machine. To take advantage of the functionality,  packages need to be loaded into R environment during each session.
 
@@ -521,7 +525,7 @@ For highly complex projects requiring many packages, this will be cumbersome. We
 
 When a package is loaded, it is only temporarily help in the computer's memory. Whenever R and RStudio are closed or restarted, all loaded packages are removed from memory.  The point: you will need to load the packages again, but you do not need to install them again.
 
-## Package management and `pacman`
+### Package management and `pacman`
 
 While installing, loading, and updating packages in R is fairly quick and easy, the `pacman` further streamlines and simplifies these process (and many related processes). What if we needed to load these three packages? The manual option requires one to embrace the tedium:
 
@@ -549,7 +553,7 @@ Upon installing `pacman`, the mental overhead of keeping track of all packages i
 
 The `p_load` function within the `pacman` package makes package management easy. Not only does `p_load` install requested but missing packages, it loads them. Now, including this line of code at the top of each R script only requires collaborators to have `pacman` installed and the package does all of the heavy lifting of keeping packages up-to-date and in sync.
 
-### Quick Exercise {-}
+#### Quick Exercise {-}
 
 There are [X] packages that greatly expand the capabilities of R. And these packages will re-appear again and again throughout this book, namely:
 
@@ -566,7 +570,7 @@ pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
 Write a command to import these core R packages.
 
 
-# Data I/O
+## Data I/O
 
 When Captain Jean Luc Picard says "Make it so, Number Two", he is giving the order to execute a command that he specified prior to his statement. All the necessary information needed by the starship's crew to act is embedded in that order, ensuring that a precise output is delivered according to Picard's input. Our interaction with computers is no different. Computer programs cannot guess what we intend to do -- although not yet. Computers are designed to interact and respond to humans given specific rules and protocols, and importing data is no different. This is the fundamental idea that underlies data *Input/Output*.
 
@@ -576,7 +580,7 @@ Suppose you need to analyze an Excel file of stock market data. In order to load
 - how to load the file (*function*), and 
 - the name of file (*file*).
 
-## Directories 
+### Directories 
 
 R can import any kind of file, but it first needs to know where to look. Directory paths are a special kind of string that dictate how R should traverse folders to get to a folder. Suppose if the Marvel superhero Black Panther wanted to take a look at the fuel bill for his jet vehicle that is stored in a directory on an Apple computer. The path may look something like `/Users/BlackPanther/Tech_and_Travel/Bills/`. On a Windows machine, the path may look like `C:\BlackPanther\Tech_and_Travel\Bills\`.
 
@@ -616,7 +620,7 @@ Best practice: Define your directories to objects at the start of your script.
 ```
 \vspace{12pt} 
 
-## Load Functions
+### Load Functions
 
 There are a multitude of data storage formats in use such as extensible markup language (XML), comma separated values (CSV), Excel files among others. Each has its quirks. Some require special software to load while others simply need time and patience to crack the code. Fortunately, R is equipped to load virtually all data formats. Below is a recommended set of functions that are easy to use and flexible.
 
@@ -737,15 +741,15 @@ We calculate the correlation using the `cor` function finding a value of $\rho =
 \vspace{12pt} 
 
 
-# Finding help
+## Finding help
 
-## Help function
+### Help function
 
 Developers interested in driving adoption of their packages understand that ease of use and clear documentation win the day. Thus, each R function is equipped with documentation to illustrate its syntax and use. As a first line of support, you can access any function's help file using `?<package_name>` in the console.
 
 For instance, suppose you are interested in importing a spreadsheet using the `read_xlsx` from the `readxl` package, but you would like to have a better understand how to use it. Assuming that `readxl` has been loaded, simply execute the following in the console `?read_xlsx`. If the package has not already been loaded,  include the package's name, double colons (`::`), and the function's name, e.g., `?readxl::read_xlsx`. The double colon trick essentially is short hand for obtaining a specific function from a library without importing the entire library and is not restricted to looking up help files.
 
-## Google and online communities
+### Google and online communities
 
 One of the best aspects of R is the vibrant and (generally) helpful online community. By simply searching "*R <issue goes here>*", you will likely discover that you are not the first to have faced the challenge at hand. To illustrate the point:
 
@@ -755,7 +759,7 @@ One of the best aspects of R is the vibrant and (generally) helpful online commu
 It quickly becomes apparent that [Stack Overflow](https://stackoverflow.com/) is a key resource for programming and [Cross Validated](https://stats.stackexchange.com/) for statistics and machine learning. More often than not, these online communities will have an answer and R coders hunting for an answer will copy and paste code without checking what it does. User beware, the answer might not be to your question, be the most efficient, or accurate. Nonetheless, these online resources are a great starting point.
 
 
-# Best practices: Commenting your scripts
+## Best practices: Commenting your scripts
 
 As you may have noticed, many of the code snippets in this chapter contained comments preceded by a hash (`#`).^[Also called a _pound sign_ or _number sign_ or _octothorpe_ in the olden days before Twitter.] The hash tells R to ignore whatever follows the hash _on the same line as the `#`_. Thus, the hash allows you to make notes (generally called comments) to yourself, your collaborators, or anyone else who may have to read through your code. These comments help you figure out what you (or your friend) were doing two years ago when you wrote the R script. For instance:
 
@@ -807,7 +811,7 @@ In general, commenting lines of code out is most helpful for temporary changes a
 
 Finally, it is worth saying that the style and amount of commenting, flagging, and commenting-out are highly subjective. If you find them burdensome, then you probably should cut back a bit or try a different strategy. That said, it's pretty rare for 0 comments to be an optimal number of comments in an R script.
 
-# DIY: Loading solar energy data from the web
+## DIY: Loading solar energy data from the web
 
 Solar energy generation has been rapidly gaining ground. In the period between 2008 and 2017, annual net generation of solar energy produced by utility scale facilities had grown by 61.3-times, from 864 thousand megawatt hours to 52,958 thousand megawatt hours.^[https://www.eia.gov/electricity/monthly/epm_table_grapher.php?t=epmt_1_01]. At the same time, solar also became more economical: photovoltaic module costs fell from \$3.37/peak watt to \$0.48/peak watt -- a 86% reduction in cost.
 
