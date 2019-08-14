@@ -96,7 +96,7 @@ There are a variety of relational operators like the ones above and logical oper
 
 \vspace{12pt} 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE}
-temp.table <- read.csv("data/logical_operators.csv")
+temp.table <- read.csv("tables/ch3_tab_logical_operators.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
                caption = "Common relational and logical operators.")
 ```
@@ -560,7 +560,7 @@ There are [X] packages that greatly expand the capabilities of R. And these pack
  \vspace{12pt} 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE, fig.cap = "Recommended functions to load an assortment of files."}
 require(knitr)
-temp.table <- read.csv("data/preferred_packages.csv")
+temp.table <- read.csv("tables/ch3_tab_preferred_packages.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
                caption = "Recommended packages.")
 ```
@@ -627,7 +627,7 @@ There are a multitude of data storage formats in use such as extensible markup l
  \vspace{12pt} 
 ```{r, echo = FALSE, warning=FALSE, message = FALSE, fig.cap = "Recommended functions to load an assortment of files."}
 require(knitr)
-temp.table <- read.csv("data/loading_functions.csv")
+temp.table <- read.csv("tables/ch3_tab_loading_functions.csv")
 pander::pander(temp.table, split.cell = 60, split.table = Inf, justify = "left",
                caption = "Recommended functions to load an assortment of files.")
 ```
