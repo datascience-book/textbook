@@ -1,5 +1,0 @@
-﻿Great for:,Challenges:
-Interpretable in terms of odds ratios.,"Collinear input variables may cause coefficients to return odd, inexplicable results."
-Probabilistic properties allow for hypothesis testing that help build statistically-rooted arguments.,Unable to handle cases where k > n
-Problems where the distinction between classes is linear,"When k is large, finding optimal specification is challenging."
-,Class imbalance makes prediction a non-trivial task.

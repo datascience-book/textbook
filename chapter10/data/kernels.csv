@@ -1,5 +1,0 @@
-﻿Kernel,Formula,Interpretation
-Biweight,"For $\bigl| d \bigr| < m$, kernel weight is $d(1 - \frac{d^2}{m^2})^2$.  Otherwise, $0$ when $\bigl| d \bigr| > m$. The value $m = d$ for the $k^{th}$ neighbor.",
-Rectangular,$Pr(Y = j) = \frac{1}{k}\sum_{i=1}^k I(y_i = c)$,Calculate the proportion of $j$ based on $k$ nearest neighbors. This is the same of simple arithmetic mean.
-Inverse,$Pr(Y = j) = \sum_{i =1}^k w(d)(y_i = j)$  where $w(d) = \frac{1}{d_i\sum_{i=1}^k(\frac{1}{d_i})}$,Calculate the weighted proportion of $j$ based on the inverse distance to $k$ nearest neighbors.
-Gaussian,,

@@ -1,8 +1,0 @@
-# Classifiers
-
-### Which building is most likely to catch fire?
-
-Base data:
-
-- Tax Rolls: https://data.sfgov.org/Housing-and-Buildings/Assessor-Historical-Secured-Property-Tax-Rolls/wv5m-vpq2/data
-- Fire Incidents: https://data.sfgov.org/Public-Safety/Fire-Incidents/wr8u-xric/data

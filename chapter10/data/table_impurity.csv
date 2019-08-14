@@ -1,4 +1,0 @@
-﻿Impurity Measure,Formula,Types of Target,Description
-Gini Impurity,$\text{Gini Impurity} = \sum_{i=1}^k{p_{i}(1-p_{i})} = 1 - \sum_{i=1}^k{p_{i}^2}$,Discrete,Commonly use in CART. The Gini Impurity ranges from 0 to $1 - \frac{1}{k}$.
-Entropy,$\text{Entropy} = \sum_{i=1}^{k}{-p_{i} log_2(p_{i})}$,Discrete,Relied on in other decision tree learning algorithms. Values range from 0 to 1
-Variance,$Variance = \frac{\sum_{i=1}^n (y_i - \bar{y})^2}{n}$,Continuous,Focus on reducing the spread in the target within partitions.

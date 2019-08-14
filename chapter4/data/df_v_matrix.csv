@@ -1,3 +1,0 @@
-﻿ ,Matrix,Data Frame
-Pros,Memory efficient. Good for advanced mathematical operations.,Store mixed types of data types. Allows user to refer to columns by an explicit name.
-Cons,Able to store one data type at a time -- leads to slightly more work required to manage multiple matrices. Columns can only be referred to by index number. ,Not as memory efficient.
