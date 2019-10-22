@@ -1,0 +1,59 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r ch12 load packages silently, echo = F}
+  # Packages
+  invisible(library(pacman))
+  invisible(p_load(
+    tidyverse, data.table,
+    latex2exp, viridis, ggthemes, magrittr
+  ))
+  # Change directory to Chapter 12
+  setwd("/Users/edwardarubin/Dropbox/Research/MyBooks/DataScience/Textbook/chapter12-spatial")
+```
+
+# Chapter 12: Data in space and in text
+
+Thus far we've abstracted away from thinking about how people/places/things in our dataset relate to eachother. Relationships can be complicated. People relate through roles in families, statuses social networks, positions at work, or simple locations in a city/neighborhood. Public policies, people, and businesses overlap in all kinds of interesting and complex relationships. For example, after marijuana legalization, states have restricted (1) who can purchase marijuana, (2) who can sell marijuana, and (3) how close these dispensaries can be to certain buildings (especially schools). This simple example highlights the complexity in thinking about how policies interact with the people and businesses they govern—and the space these people, businesses, and policies inhabit.
+
+In reality, data do not live in static, boring spreadsheets where each row can be treated as an independent observation, isolated from relationships with any other observation. Consequently, as data science evolves, data scientists are developing methods to better harness, represent, and understand the complex relationships inherent to (and underlying) public policy. Two particularly important and common ways in which data science employs more specialized data are (1) analyzing spatial data and (2)  natural-language processing of text-based data. It is difficult to imagine public policies without also thinking about the places/relationships affected by the police and the text/language that communicate the police (in official legal texts and in less official, social-media texts).
+
+## Spatial-data analysis
+
+The first things many people think of when they think of *spatial data* are maps. Maps convey *spatial relationships* between people, policies, places, and other objects. As such, well-made (and aesthetically pleasing) maps can be extradinarily helpful in understanding and communicating policy. However, maps are only tool in the toolbox of spatial-data analysis.
+
+Consider five spatially intensive examples of problems in public policy:
+
+- Find the ten neighborhoods in a city with the longest response path from police and fire departments.
+- Use real-time satellite imagery to detect smoke and generate early warnings of forest fires.
+- Detect changes in high-resolution satellite imagery that suggest building additions that do not match any building permits.
+- Estimate the impact of bar openings on nearby crime, business patterns, and property values.
+- Determine whether low-income households are particularly prone and risks from floods and sea-level-rise.
+
+### Spatial data, defined
+
+What makes something *spatial data*? In general, the answer is that your dataset includes attributes that allow you to relate the observations/objects in space. Often, these attributes are two variables that place the observations on a grid, for example, latitude on longitude (though any $x$ and $y$ will work). Sometimes you'll have additional information, for example the elevation/altitude of the observation or the ways in which the observations are connected (in space or otherwise)—but let's start with the two-dimension case.
+
+A typical (2-D) spatial dataset will thus have some identifier for an individual (ID, name, etc.), some interesting features, and the aforementioned coordinates.
+```{R ch12s ex spatial data, echo = F, fig.cap = "Example spatial dataset"}
+set.seed(123)
+# Create the example dataset
+ex_df = tibble(
+  id = str_pad(1:4, 3, "left", "0"),
+  income = c(1, 10, 100, 7),
+  sex = c("M", "M", "F", "F"),
+  latitude = runif(4, min = 30, max = 48) %>% round(2),
+  longitude = runif(4, min = -120, max = -67) %>% round(2)
+)
+# Print the example dataset
+ex_df
+```
+
+
+### Two classes of spatial data
+
+
+__TODO__ Image

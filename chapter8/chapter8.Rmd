@@ -129,18 +129,18 @@ The simple answer to this (big) question: Use the data. For any line that we dra
   reg_dt[, y_hat1 := 10/4 + 0.25 * x]
   # Plot the points
   ggplot(data = reg_dt, aes(x = x, y = y)) +
-    geom_segment(
-      aes(xend = x, yend = y_hat1),
-      color = "grey70", size = 0.3
-    ) +
-    geom_abline(
-      aes(intercept = 10/4, slope = 0.25, color = "line 1"),
-      size = 0.8
-    ) +
-    geom_point() +
-    labs(color = "") +
-    scale_color_manual("", values = viridis(3, end = 0.95)[1]) +
-    theme_pander()
+  geom_segment(
+    aes(xend = x, yend = y_hat1),
+    color = "grey70", size = 0.3
+  ) +
+  geom_abline(
+    aes(intercept = 10/4, slope = 0.25, color = "line 1"),
+    size = 0.8
+  ) +
+  geom_point() +
+  labs(color = "") +
+  scale_color_manual("", values = viridis(3, end = 0.95)[1]) +
+  theme_pander()
 ```
 
 Each of the vertical grey lines connecting _line 1_ to a black point from the dataset illustrates the error from predicting that data point with the line. In regression land, this error gets a special name: the _residual_. Formally, we define the residual as the difference between the observed value ($y$) and the predicted value ($\widehat{y}$), i.e.,
@@ -176,14 +176,21 @@ Let's see how OLS fits our data:
   reg_lm <- lm(y ~ x, data = reg_dt)
   b <- reg_lm$coefficients
   # Plot the points
-  ggplot(data = reg_dt, aes(x = x, y = y)) +
-    geom_abline(
-      aes(intercept = b[1], slope = b[2], color = "OLS"),
-      size = 0.8
-    ) +
-    geom_point() +
-    labs(color = "") +
-    theme_pander()
+  ggplot(
+    data = reg_dt,
+    aes(x = x, y = y)
+  ) +
+  geom_segment(
+    aes(xend = x, yend = reg_lm$fitted.values),
+    color = "grey70", size = 0.3
+  ) +
+  geom_abline(
+    aes(intercept = b[1], slope = b[2], color = "OLS"),
+    size = 0.8
+  ) +
+  geom_point() +
+  labs(color = "") +
+  theme_pander()
 ```
 
 Alright, so OLS does a nice job of fitting a line between though a dataset, but how does OLS actually come up with this line? Where do the numbers come from?
@@ -261,7 +268,7 @@ Now that we're ready to run a regression, we need some data. For this example, w
   sale_df <- read_csv("home_sales_nyc.csv")
 ```
 
-While the dataset (`home_sales_nyc.csv`) contains a number of interesting variables, we are going to estimate the relationship between a property's sales price (the aptly named `sale_price` variable in the dataset) and the property's size (measured in square feet, i.e., the variable `gross_square_feet`). Before running any analysis, you should always plot your data to see if everything looks right.
+While the dataset (`home_sales_nyc.csv`) contains a number of interesting variables, we are going to start by estimating the relationship between a property's sales price (the aptly named `sale_price` variable in the dataset) and the property's size (measured in square feet, i.e., the variable `gross_square_feet`). Before running any analysis, you should always plot your data to see if everything looks right.
 
 ```{r ch8 nyc sales plot, echo = T, fig.cap = "Residential property sales and property size, 2017-2018"}
   ggplot(data = sale_df, aes(x = gross_square_feet, y = sale_price)) +
@@ -296,9 +303,18 @@ After the residuals, are gives the coefficient estimates and several other impor
 
 Next: The estimate slope coefficient on `gross_square_feet`. The estimated coefficient on square feet is approximately `r coef(reg_est)[2] %>% round(1)`. First, consider the _sign_ of the coefficient. The fact that this coefficient is positive indicates that properties with more gross square feet (bigger properties) tend to sell for more money. No surprises here. The actual value of the coefficient tells us that _in this dataset_ each additional gross square foot correlates with an increase in sales price of approximately `r coef(reg_est)[2] %>% round(0)` dollars.
 
-But how confident should we be in this estimate? The next three columns provide us with tools for statistical inference—telling how precise our estimate is. The column labeled `Std. Error` gives the _standard error_, the column labeled `t value` gives the (Student's) t statistic for testing whether the coefficient is different from zero, and the column `Pr(>|t|)` gives the p-value for a two-sided hypothesis test that tests whether there is statistically significant evidence that our estimated coefficient differs from zero (i.e., testing the null hypothesis $\beta_1 = 0$). Common practices within statistics and social sciences suggests that p-values below 0.05 indicate sufficient statistical evidence to reject the null hypothesis. Here, because our p-value is (much) less than 0.05, we would say that we find statistically significant evidence of a non-zero relationship between a property's sales price and its gross square feet at the five-percent level.
+But how confident should we be in this estimate? The next three columns provide us with tools for statistical inference—telling how precise our estimate is. The column labeled `Std. Error` gives the _standard error_,^[The _standard error_ gives the standard deviation of the estimator's distribution—it measures how precise our estimate is.] the column labeled `t value` gives the (Student's) t statistic for testing whether the coefficient is different from zero, and the column `Pr(>|t|)` gives the p-value for a two-sided hypothesis test that tests whether there is statistically significant evidence that our estimated coefficient differs from zero (i.e., testing the null hypothesis $\beta_1 = 0$). Common practices within statistics and social sciences suggests that p-values below 0.05 indicate sufficient statistical evidence to reject the null hypothesis. Here, because our p-value is (much) less than 0.05, we would say that we find statistically significant evidence of a non-zero relationship between a property's sales price and its gross square feet at the five-percent level.^[Recall that the p-value gives the probability of observing the test statistic—or a more extreme test statistic—if the null hypothesis was actually true. In other words, the p-value is telling us how likely our sample is if we assume the null hypothesis is correct. Low probabilities (e.g., less than 0.05) mean that our sample would have pretty unlikely if the null hypothesis was actually true. Either we just observed an unlikely event, **or** the null hypothesis is not true—and we should reject it.]
 
-__TODO__ How much do we assume/teach about hypothesis testing?
+Related: The `tidy()` function from the `broom` package offers an alternative, more succinct, summary of the results of a regression.^[You can actually `tidy()` many different objects in R.]
+
+```{R, ch8 tidy lm}
+  # Load 'broom' package
+  p_load(broom)
+  # Tidy regression results
+  tidy(reg_est)
+```
+
+Applying `tidy()` to the regressions results (produced by the `lm()` function) returns a much simpler set of regression results: the coefficient estimates (`estimate` column), the standard errors for the estimates (`std.error`), and the t statistics and p-values associated with testing the coefficients against a null hypothesis that the coefficients equal zero.
 
 ## Forming and testing hypotheses with regression
 
@@ -310,9 +326,8 @@ As is frequently the case both in policy analysis and in data science, there are
 
 At the heart of our hypothesis is the question whether _price per square foot_ is indeed constant across property sizes—so let's try to directly test this! This hypothesis has _price per square foot_ as the outcome variable, so we need to transform our outcome variable. We then want to determine whether _price per square foot_ is correlated with the variable `gross_square_feet`. If the coefficient on the `gross_square_feet` differst (statistically) significantly from zero, then we can reject the hypothesis that price per square is constant across property sizes.
 
-Our new outcome variable is price per square foot, which does not currently exist in the dataset. We _could_ create a new variable, but R's `lm` function allows us to create combinations of other variables as our outcome variable using the variables' names and mathematical operators. Thus, for our outcome variable, we will have `sale_price / gross_square_feet`. The explanatory variable will still be `gross_square_feet`.
+Our new outcome variable is price per square foot, which does not currently exist in the dataset. We _could_ create a new variable, but R's `lm()` function allows us to create combinations of other variables as our outcome variable using the variables' names and mathematical operators. Thus, for our outcome variable, we will have `sale_price / gross_square_feet`. The explanatory variable will still be `gross_square_feet`.
 
-__TODO__ Regression and plot.
 ```{R, ch8 nyc sales new reg}
   # Estimate the model
   reg_tran <- lm(sale_price / gross_square_feet ~ gross_square_feet, data = sale_df)
@@ -333,7 +348,6 @@ __TODO__ Regression and plot.
     scale_color_viridis_d(begin = 0.3, end = 0.8) +
     theme_pander()
 ```
-
 
 __TODO__ We can also plot a flexible "smoothed" line...
 
@@ -359,10 +373,10 @@ First, we estimate the regression model (saving the estimated model as `reg_est2
 
 And now we check the results:
 ```{R, ch8 lm summary quad}
-  summary(reg_est2)
+  tidy(reg_est2)
 ```
 
-A hypothesis test of the coefficient on the quadratic term ($\beta_2$ above) indicates rejects the null hypothesis ($\beta_2 = 0$, meaning there is no quadratic relationship) at the five-percent level. What does all of this mean? There is statistically significant evidence supporting the hypothesis that sales prices are not constant across
+A hypothesis test of the coefficient on the quadratic term ($\beta_2$ above) indicates rejects the null hypothesis ($\beta_2 = 0$, which states that there is no quadratic relationship) at the five-percent level. What does all of this mean? There is statistically significant evidence supporting the hypothesis that sales prices are not constant across
 
 That said, it can be hard to mentally visualize this estimated regression. Lucky for us: R does visualization. Let's plot the data, along with first model (with only linear footage) and the second model (with linear footage and quadratic footage).
 
@@ -405,28 +419,42 @@ Now that we've laid out our expanded framework for multiple linear regression, l
 
 $$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Age} + \beta_3 \text{Year} + \varepsilon $$
 
-which says that the sale price depends upon an intercept $\beta_0$,
+which says that the sale price depends upon an intercept $\beta_0$, square footage, age, and the year in which the home was built.
 
-```{R, }
-  lm(
+```{R, ch8 multi reg}
+  # Estimate multiple regression
+  reg_multi <- lm(
     sale_price ~
     gross_square_feet + age + sale_year,
     data = sale_df
   )
+  # Summarize the regression
+  reg_multi %>% summary()
 ```
 
-The interpretation of the estimated coefficients changes a bit when you are in a multiple linear regression setting. We now interpret the coefficients as the relationship between $y$ and $x_i$, _conditional_ on the other variables. What do we mean by 'conditional'? The estimate of the relationship comes from a model that includes a specific set of other variables. Thus, _conditional_ means we've estimated the relationship between $y$ and $x_i$ _controlling for_ the variables.
+The interpretation of the estimated coefficients changes a bit when you are in a multiple linear regression setting. We now interpret the coefficients as the relationship between $y$ and $x_i$, _conditional_ on the other variables. What do we mean by 'conditional'? The estimate of the relationship comes from a model that includes a specific set of other variables. Thus, _conditional_ means we've estimated the relationship between $y$ and $x_i$ _after controlling for_ the other variables. Further, the interpretation of the coefficients requires that we hold the other variables constant.
+
+For example, when we only had square footage and an intercept on the right-hand side, we interpreted the coefficient on `gross_square_feet` as _the price increases approximately $466 for each additional (gross) square foot._ But with age and year-of-sale on the right-hand side as well (multiple regression!), we now interpret the coefficient on `gross_square_feet` as _the price increases approximately $473 for each (gross) square foot, holding age and year-of-sale fixed_.
 
 ### Functional form matters
 
-The multiple regression model that we've been discussing makes several important assumptions.
+Just as it is important to carefully interpret coefficient estimates, it is also important to understand/remember the assumptions that our regression model makes. For example, in our multiple-regression model
 
 $$ \text{Price} = \beta_0 + \beta_1 \text{Footage} + \beta_2 \text{Age} + \beta_3 \text{Year} + \varepsilon $$
 
-- Linear effects of footage, age, and year
-  - What about effects that are not explained by a simple line? Some effects may be a polynomial
+we impose several assumptions—many relating to the *functional form* of the model.
+
+The *function form* of a model describes the mathematical way we allow the variables to relate to each other—*e.g.*, should we only consider `Age` or should we also add squared `Age`? When we write down the functional form of a model, we generally want to weigh complexity, accuracy, and interpetability.^[Later, we'll also discuss the external validity of a model.] A very complex model may also be accurate, but it may be very hard to interpret. Further, as we will discuss later, complexity doesn't guarantee accuracy. Finally, we tend to think of the modeling assumptions more as simplifications/restrictions—*i.e.*, we're trying to build a decent model, as opposed to a model that perfectly describes reality.
+
+Back to the actual model for housing prices. The function form in the model above assumes that the *effects* of square footage, age, and year-of-sale are each *linear* and *separable*. The *linearity* of the effects means that adding one more year to the age of a house has the same effect whether the house is 2 years old or 200 years old. The *separability* of the effects means that an additional year of age will have the same effect on price, regardless of how large the house is.
+
+It is certainly possible that these modeling assumptions do not reasonably fit our situation. For example, the effect of an additional year of age may decrease as a house gets older. Or the effect of aging 
+
+
+- The separable assumption
+  - What about effects that are not explained by a simple line? Some effects may be a polynomial. Some effects may be discontinuous (indicators).
   - What if the effect of one variable depends upon the levels of other variables? Interactions...
-  - Other effects may be
+  - What if the effects are not linear but more percentage-based? Transformationg...
 - How do we know which model/functional form is better?
 
 ### Measures of fit
@@ -444,7 +472,7 @@ What happens when you have a
 
 Categorical variables are dummy variables.
 
-__Public-service announcement:__ This is a (dire) warning: not all things that look like numbers are actually numerical variables:^[And may not be cardinal at all.] many categorical variables are _coded_ with numbers, for instance, zip codes, area codes, interstates, serial numbers, NAICS codes (for classifying industries in North America). Fight the temptation to use all numbers as numeric. It helps to think about your data—and you'll avoid some very embarrassing moments.
+__Public-service announcement:__ This is a (dire) warning: not all things that look like numbers are actually numerical variables:^[And may not be cardinal at all.] many categorical variables are _coded_ with numbers, for instance, zip codes, area codes, interstates, serial numbers, NAICS codes (for classifying industries in North America). Fight the temptation to use all numbers as numeric. It helps to think about your data—and you'll avoid some very embarrassing moments. As we discussed above, even truly numeric variables can have nonlinear effects. For example, while _year_ may be a good candidate for an authentically numeric variable, home prices need not increase (or decrease) by the same amount from year to year.
 
 ### Interactions
 
@@ -458,6 +486,10 @@ __Public-service announcement:__ This is a (dire) warning: not all things that l
   theme(legend.position = "bottom")
 ```
 
-## Prediction?
+##
 
-## Causality
+Back to interpretation...
+
+### Prediction?
+
+### Causality
