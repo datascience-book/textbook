@@ -4,15 +4,23 @@ output:
   html_document: default
 ---
 
-```{r ch12 load packages silently, echo = F}
+```{r ch12 load packages silently, include = F}
   # Packages
   invisible(library(pacman))
   invisible(p_load(
-    tidyverse, data.table,
+    raster, sf,
+    tidyverse, data.table, prism,
     latex2exp, viridis, ggthemes, magrittr
   ))
   # Change directory to Chapter 12
-  setwd("/Users/edwardarubin/Dropbox/Research/MyBooks/DataScience/Textbook/chapter12-spatial")
+  dir_book = "/Users/edwardarubin/Dropbox/Research/MyBooks/DataScience/Textbook"
+  dir_ch12 = file.path(dir_book, "/chapter12-spatial")
+  setwd(dir_ch12)
+  # Create a path for PRISM data
+  dir_prism = file.path(dir_ch12, "PRISM")
+  dir.create(dir_prism)
+  # Tell 'prism' package where to download data
+   options(prism.path = dir_prism)
 ```
 
 # Chapter 12: Data in space and in text
@@ -37,23 +45,123 @@ Consider five spatially intensive examples of problems in public policy:
 
 What makes something *spatial data*? In general, the answer is that your dataset includes attributes that allow you to relate the observations/objects in space. Often, these attributes are two variables that place the observations on a grid, for example, latitude on longitude (though any $x$ and $y$ will work). Sometimes you'll have additional information, for example the elevation/altitude of the observation or the ways in which the observations are connected (in space or otherwise)—but let's start with the two-dimension case.
 
-A typical (2-D) spatial dataset will thus have some identifier for an individual (ID, name, etc.), some interesting features, and the aforementioned coordinates.
-```{R ch12s ex spatial data, echo = F, fig.cap = "Example spatial dataset"}
-set.seed(123)
-# Create the example dataset
-ex_df = tibble(
-  id = str_pad(1:4, 3, "left", "0"),
-  income = c(1, 10, 100, 7),
-  sex = c("M", "M", "F", "F"),
-  latitude = runif(4, min = 30, max = 48) %>% round(2),
-  longitude = runif(4, min = -120, max = -67) %>% round(2)
-)
-# Print the example dataset
-ex_df
+A typical (2-D) spatial dataset will thus have some identifier for an individual (ID, name, etc.), some interesting features, and the aforementioned coordinates. For example, here are cities in the United States (a dataset contained in the `maps` package)
+```{R ch12s ex spatial data, echo = T, fig.cap = "Spatial data example: U.S. cities"}
+  # Example dataset: US cities
+  maps::us.cities %>% as_tibble()
 ```
-
+which we can plot to achieve a (rough) map
+```{R ch12s ex spatial data map, echo = T, fig.cap = "Spatial data example: U.S. cities plotted, colored by state, sized by population"}
+  ggplot(
+    data = maps::us.cities %>% filter(country.etc %>% is_in(c("AK", "HI")) %>% not()),
+    aes(x = long, y = lat, size = pop, color = country.etc)
+  ) +
+  geom_point(alpha = 0.5) +
+  scale_color_viridis_d(option = "magma") +
+  scale_size(range = c(0.5, 5)) +
+  theme_map() +
+  theme(legend.position = "none")
+```
 
 ### Two classes of spatial data
 
+Variables in spatial datasets broadly fit into two categories: *fields* and *objects*.
 
-__TODO__ Image
+**Fields** represent spatially continuous concepts like temperature, humidity, air quality, or soil quality—concepts that take on values everywhere throughout space.
+
+```{R download prism, include = F, eval = T, cache = T}
+  # Download the data
+  get_prism_dailys(
+    type = "tmax",
+    dates = "2018-07-24",
+    keepZip = F
+  )
+  # Load the data
+  tmp = file.path(
+    dir_prism,
+    "PRISM_tmax_stable_4kmD1_20180724_bil",
+    "PRISM_tmax_stable_4kmD1_20180724_bil.bil"
+  ) %>% raster()
+```
+
+  ```{R ex field, echo = F, cache = T, fig.cap = "Example of a field: Maximum daily temperature in the United States on 24 July 2018"}
+  par(mar = c(1, 1, 1, 1))
+  plot(
+    tmp * (9/5) + 32,
+    col = magma(1e3),
+    axes = F,
+    box = F,
+    bty = "n",
+    legend.width = 1,
+    legend.args = list(
+      text = "Max. Temperature (°F)",
+      side = 2
+    )
+  )
+```
+
+__TODO__ Image example for fields (temperature?)
+
+**Objects** are variables that are discrete, disconnected items like cities, building footprints, property lines, rivers, or road networks. Objects
+
+__TODO__ Image example for objects (roads?)
+
+Because continuous fields and discrete objects are conceptually so different, we use different classes of spatial data to analyze them. To quantify continuous fields, we use *rasters*, whereas we use *vectors* to portray discrete fields.
+
+#### Rasters
+
+**Rasters** are grids. Each grid cell of a raster is associated with a value that summarizes the portion of the field contained in that grid (raster) cell. You can think of rasters as discretized or pixelated versions of the continuous field. Rasters are defined by their **extent***—the swath of space that they cover—and by their **resolution**—the size of the grid cells. If your raster's cells are quite small, then you have a *high-resolution* raster, which should do a good job of characterizing nearly any field. The drawback: such a raster may be relatively large in size and take more time to work with. Low-resolution rasters (large raster cells) can do a decent job of approximating fields whose values do not change much at smaller scales. However, as the figure below illustrates, low-resolution rasters *can* miss potentially important variation when that variation occurs at a very fine/local scale. Depending upon your application, missing out on the fine, hyper-local variation may not matter to your project—or it could wreck the entire project.
+
+```{R ex resolution, echo = F, cache = T, fig.cap = "Comparing high- and low-resolution rasters. The raster on the right is approximately 1km resolution; the raster on the left is approximately 200km resolution."}
+  # Two rows
+  par(mfrow = c(2, 1))
+  # High resolution
+  par(mar = c(0.5, 0.5, 1, 0.5))
+  plot(
+    tmp * (9/5) + 32,
+    col = magma(1e3),
+    axes = F,
+    box = F,
+    bty = "n",
+    legend = F,
+    main = "High resolution"
+  )
+  # Low resolution
+  par(mar = c(0.5, 0.5, 1, 0.5))
+  plot(
+    (tmp * (9/5) + 32) %>% aggregate(fact = 20),
+    col = magma(1e3),
+    axes = F,
+    box = F,
+    bty = "n",
+    legend = F,
+    main = "Low resolution"
+  )
+```
+
+As defined above, rasters are just grids (often used to represent spatially continuous fields. So rasters really boil down to **coordinates** (generally in two dimensions) plus a **value** attached to the coordinates. The value denotes the raster's respresentation of the field within the grid cell centered at the coordinates.
+
+For example, consider a very simple raster with 9 total cells. We can write it down as a data frame with 9 rows and 3 columns—two columns for coordinates and one column for the value.
+
+```{R simple raster}
+  simple_df = data.frame(
+    x = c(1, 2, 3, 1, 2, 3, 1, 2, 3),
+    y = c(1, 1, 1, 2, 2, 2, 3, 3, 3),
+    value = 1:9
+  )
+  simple_df
+```
+
+```{R convert simple raster}
+  # Convert from data frame to raster
+  simple_raster = simple_df %>% rasterFromXYZ()
+  simple_raster
+```
+
+```{R plot simple raster}
+  plot(
+    simple_raster,
+    col = magma(1e3),
+    box = F
+  )
+```
