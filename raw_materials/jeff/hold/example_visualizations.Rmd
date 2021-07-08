@@ -1,0 +1,51 @@
+---
+title: "Example Visualizations"
+output: html_document
+---
+
+```{r, message = FALSE, warning = FALSE, results='asis'}
+#library(devtools)
+#install_github("us-bea/bea.R")
+library(bea.R)
+
+beaKey =  "5CB58CD6-977D-46CB-A73D-79A3E81F6AAA"
+
+beaSpecs <- list(
+	'UserID' = beaKey ,
+	'Method' = 'GetData',
+	'datasetname' = 'NIPA',
+	'TableID' = '66',
+	'Frequency' = 'Q',
+	'Year' = 'X',
+	'ResultFormat' = 'json'
+);
+bea_data <- beaGet(beaSpecs, asWide = FALSE);
+
+short <- bea_data[, c("LineDescription", "TimePeriod","DataValue")]
+colnames(short) <- c("indicator", "period", "level")
+df <- reshape(short,
+                 idvar = "period",
+                 timevar = "indicator",
+                 direction = "wide")
+colnames(df) <- gsub("level\\.", "", colnames(df))
+df <- as.data.frame(df)
+#df <- df[grep("^201", df$period), ]
+
+
+x <- data.frame(indicator = as.character(colnames(df)[2:ncol(df)]), 
+                level = NA)
+
+par(mfrow = c(5,5), oma = c(0,0,0,0))
+for(i in 2:ncol(df)){
+  plot( diff(df[,i]), frame.plot = FALSE, 
+       yaxt = 'n', xaxt = 'n', main = colnames(df)[i],
+       cex.main = 0.3, type = "l", col = "orange",
+       ylab = "", xlab = "")
+  
+}
+
+
+```
+
+
+

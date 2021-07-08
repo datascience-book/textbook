@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="data-and-its-many-contexts.html">
+<link rel="next" href="data-manipulation-wrangling-processing.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="a-light-introduction-to-programming" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> A Light Introduction To Programming</h1>
+<div id="doing-visual-analytics-since-1780s" class="section level2">
+<h2><span class="header-section-number">2.1</span> Doing visual analytics since 1780’s</h2>
+<p>The modern line chart is something that most people take for granted. Grade school arithmetics class typically requires students to learn to haphazardly draw a two dimensional axis, then plot points at specific coordinates in the Cartesian space, then connect the points using line segments. This simple, routine task was once an innovation.</p>
+<p>In 1786, a Scottish engineer named William Playfair published <em>Commercial and Political Atlas</em>, an atlas that described economic and political relationships of the 18th century. The impressive book introduced the first line and pie charts, skillfully hand colored and narrated to help readers see economic patterns Granted, the patterns were correlative and circumstantial rather than proven through statistical means, but it was the beginning of graphical methods of statistics – gathering information in a common, comparable form in order to visually identify patterns. For example, in a balance of trade time series chart, England’s imports and exports to and from Denmark and Norway are plotted for the periods of 1700 to 1780. Many features of the chart are quite striking such as a naturally smooth pair of lines for each imports and exports between which two different colors are used to illustrate trade balances in favor and against England.</p>
+<div class="figure"><span id="fig:unnamed-chunk-5"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-5-1.png" alt="Playfair's balance of trade time-series chart as found in the Commercial and Political Atlas, 1786" width="672" />
+<p class="caption">
+Figure 2.1: Playfair’s balance of trade time-series chart as found in the Commercial and Political Atlas, 1786
+</p>
+</div>
+<p>In present day, we tend to take the construction of effective statistical visuals for granted. But in Playfair’s time, a three field data set with 240 data elements (<span class="math inline">\(\text{80 years x 3 fields}\)</span>) was big data. Furthermore, scaling and disseminating this work would have been an arduous process requiring typesetting and colororation by hand – a significant time investment.</p>
+</div>
+<div id="programming-to-democratizing-skills" class="section level2">
+<h2><span class="header-section-number">2.2</span> Programming to democratizing skills</h2>
+<p>With the advent of computer programming, the manual mastery of drafting charts became democratized to the masses in the form of software. A new type of engineer emerged – the software engineer – leveraging specialized computer programming languages to instruct machines to undertake user specified tasks. Formerly arduous tasks started to become simplified and genericized. In many ways, each programmed task is designed to imitate an expert’s abilities: inputs such as data are transformed by a computer following a series of pre-defined steps, returning a specific intended result. Code often requires users to be explicit about assumptions, which may require deeper expertise (e.g. what scale should the chart be, what color palette makes sense). An engineer can set sensible defaults that use best practices to fill the user’s knowledge gap, thereby reducing intellectual overhead and allow easier use of software. This enables even novice analysts with little experience to produce charts in which software automatically applies graphical styles while allowing some degree of customization. In a matter of mere minutes, an analyst can produce a smartly designed chart using the collective knowledge of visualization designers and developers.</p>
+<p>Most people will only need user-friendly, click-based software, catering to a common set of tasks that may need to be done with on a daily operations. But for others, programming is a means of exploring new frontiers – to create and test ideas that may change paradigms or make operations even more efficient. Creating something new and higher level often requires a degree of flexibility that moves beyond common tasks. Imagine the following scenarios:</p>
+<ol style="list-style-type: decimal">
+<li>An analyst is responsible for putting together forecasts, but requires five days to click through his software to refresh data and update assumptions.</li>
+<li>Every month, an outreach coordinator is responsible for pairing new mentors with mentees. The process of manually matching hundreds of people based on their surveyed interests usually takes two months to complete per cohort.</li>
+<li>Satellite imagery can be used to support intelligence decisions – perhaps in the form of counting buildings or vehicles on the ground. With 196.9 million square miles of area on the Earth’s surface, a massive army of image analysts would need to inspect a daily pipeline of images to extract usable information.</li>
+</ol>
+<p>Although proven time and time again, manual tasks may be repetitive and may be streamlined. The forecast analyst could write a script that automates the refresh and model calibration. The outreach coordinator could benefit from a program that recommends matches based on digital survey results. The satellite imagery review could be automated using the latest in computer vision technology. Indeed, programming may give way to new softwares that may bring seemingly esoteric tasks into the mainstream.</p>
+</div>
+<div id="how-programming-languages-work" class="section level2">
+<h2><span class="header-section-number">2.3</span> How programming languages work</h2>
+<p>In this book, there is much reference to Lambourghinis. They are exciting machines (for some) as the possibilities on the road are endless. It is frightening to others as the sheer speed, expense, and responsibilities are too great. To even develop these sentiments, one needs to first understand what cars are, how are vehicles controlled, how they can be used, what is needed to make use of them, the laws that govern the road, etc.</p>
+<p>There are many parallels between driving and programming. For those who are new to programming, it is likely that prior experience with software has largely been through user interfaces (UI). UIs typically involve a graphical representation displayed on a screen allowing a user to interact through touch or mouse – selecting buttons in order to perform actions. In many respects, this is the same as all the levers, buttons, knobs, and pedals found in a car driver’s seat: every control is associated with some function, whether accelerating the car or opening the windows. In both cases, in order to accomplish a specific task (e.g. driving from A to B, processing data from form A into form B), the user needs to be <em>explicit</em>. With the exception of self-driving cars, drivers need to regulate the accleration of the car with both gas and brake pedals as well as turn the steering wheel in a coordinated, well-timed series of rotations for some amount of time until the destination is reached. The user actions are translated into signals that a car can understand. For example, when a driver presses down on a gas pedal, a signal is inputted into an eletronic throttle control that interprets the driver’s motion into an amount of fuel that is injected into the engine. The result: acceleration. Having the interpretative layer is a necessity. The alternative could be something quite farcical, requiring the driver to haphazardly squeeze a syringe of fuel into the engine.</p>
+<p>Computer programming runs along a parallel. Whereas cars have an engine, a computer’s Central Processing Unit (CPU) is essentially a collection of switches that flip on and off. A combination of switches equate to different outcomes, such as displaying a visual or calculated values from an equation. In order to will a computer to do thy bidding, the computer needs to be provided instructions in its own <em>machine language</em> or code that a computer can understand. A programming language is simply a translator between what a user wants to do and presenting those instructions into machine language. The code that is written by the user is known as the <em>source code</em>. In short, computers do not use plain English syntax nor can they guess what the user wants – everything needs to be explicit.</p>
+<p>The underlying systems that allow gasoline cars, electric cars, and hybrid cars to accelerate differ from one another. All three types of cars are viable methods of transport, but accomplish the task under different assumptions and requirements. Programming languages are no different and generally can be grouped into three types:</p>
+<ul>
+<li><em>Compiled languages</em> rely on a <em>compiler</em> program to translate source code into binary machine code, which on its own is self-contained and runnable. After translation, the resulting binary code is contained and can be executed without any reliance on the source code. In data science, a common compiled language is <strong>C</strong>. As the code is compiled into binary once the source code is completed, the performance tends to be faster.</li>
+<li><em>Interpreted languages</em> rely on an <em>interpreter</em> program to execute source code. Unlike compiled languages, interpreted languages are fully reliant on the interpreter program, meaning that each time a user wants to take an action, the source code needs to be re-run and interpreted through the program. The result is a slower language relative to compiled languages. In data science, a common interpreted language is <strong>R</strong>.</li>
+<li><em>Pseudocode languages</em> (p-code langauges) are hybrids between compiled and interpreted languages. The source code is compiled into bytecode – a compact instruction set that is designed for specialized, efficient interpreters when executed. A common example of a p-code language is <strong>Python</strong>.</li>
+</ul>
+<div id="where-does-the-code-go" class="section level4 unnumbered">
+<h4>Where does the code go?</h4>
+<p><em>Code Editors</em>. All of the above languages follow a paradigm: write code, then execute it. Writing code requires a <em>code editor</em>, a simple tool that can be used to store and edit code. An editor can be as simple as Notepad on Windows or TextEdit on Macs. Practitioners tend to use more specialized code editors that make the coding process more efficient and effective, often times including functions like auto completion and improved readability. These include <a href="https://www.sublimetext.com/">Sublime Text</a>, <a href="http://brackets.io/">Brackets</a>, <a href="https://notepad-plus-plus.org/">Notepad++</a> (Windows Only), <a href="https://atom.io/">Atom</a>, among others. After code is written, it needs to be executed following the type of language. For code written for compiled languages, for example, the code needs to be translated into binary via a compiler, which is not part of the code editor.</p>
+<div class="figure">
+<img src="assets/programming/img/brackets.png" alt="Brackets is one of many open source code editors that supports a broad range of programming languages." />
+<p class="caption">Brackets is one of many open source code editors that supports a broad range of programming languages.</p>
+</div>
+<p><em>Integrated Development Environments (IDEs)</em>. For some languages, IDEs are an all-in-one tool that make software development simpler, containing a source code editor, a compiler or interpreter and a debugging capabilities all in one screen. For example, there are a number of IDEs for Python, such as <a href="https://www.jetbrains.com/pycharm/">PyCharm</a>, <a href="https://marketplace.eclipse.org/content/pydev-python-ide-eclipse">PyDev + Eclipse</a>, <a href="https://pythonhosted.org/spyder/">Spyder</a>, and <a href="https://www.yhat.com/">Rodeo</a>. For the R statistical programming language, <a href="https://www.rstudio.com/products/rstudio/">RStudio</a> is the most used IDE.</p>
+<div class="figure">
+<img src="assets/programming/img/rstudio.png" alt="A screencap of RStudio while being used to write this chapter. Quite meta." />
+<p class="caption">A screencap of RStudio while being used to write this chapter. Quite meta.</p>
+</div>
+<p><em>What does it mean for data science?</em> Data science principally involves handling, well, data. And all of the above types of languages are up to task. Two languages have risen above the rest: R and Python. Both languages can produce charts that would make Playfair proud, but modern day Playfairs need to be able to have a strong command over the all quantitative techniques that have emerged since the 1780’s. Users of each language can conduct similar tasks, but tend to differ in their aims:</p>
+<ul>
+<li><em>R</em> is a common choice language of statisticians and data-intensive researchers as it is flexible for data science and mathematical experimentation. Whether machine learning or any quantitative task, R is optimized specifically for all things data. Any data task can be easily handled using the language’s basic commands and augmented by thousands of <em>code libraries</em> – openly available sets of functions that facilitate more complicated tasks. The language does not naturally lend itself to the development of web applications, although there have been recently introduced software that are designed to run R code as standalone applications.</li>
+<li><em>Python</em> is a great all-around scripting language that is common in software engineering environments – typically focused on building and deploying web applications such as websites and Application Programming Interfaces (APIs). A key feature of Python is its focus on simplicity and readability. Whereas R is focused on statistics, Python is reliant on a broad range of libraries to handle basic data tasks.</li>
+</ul>
+<p><em>Which one language should a beginner choose first?</em> The decision rests on the tasks that one wishes to accomplish. For prototyping and testing statistical ideas, learning R is a sound choice. It is more than enough to draw statistical conclusions, visually communicate insights, and grow a data science practice. If the nature of projects is more ad hoc as is typical of new service-oriented organizations, then start with R. For cases where deploying software is a necessity – often times more product-oriented organizations, starting with Python makes more sense. A data scientist can start with one language, then learn the other as well.</p>
+<p>In the field, there is a rather farcical rift between R and Python users. There are many R projects that draw superb insights, but do not garner any support. There are plenty of Python software projects that are put into production, but see no use. Ultimately in the realm of data science, fundamentally understanding the problem is king and everything else follows.</p>
+</div>
+</div>
+<div id="setting-up-r" class="section level2">
+<h2><span class="header-section-number">2.4</span> Setting up R</h2>
+<p>As the author is a statistician, all programming herein is illustrated in the R programming language. To get started, the only installation is required to take advantage of R is found on the <a href="https://www.r-project.org/">Comprehensive R Archive Network website</a>. For ease of development, though not necessary to run R code, an IDE known as <a href="https://www.rstudio.com/products/rstudio/download/">Rstudio</a> should be installed.</p>
+<div id="installation" class="section level3">
+<h3><span class="header-section-number">2.4.1</span> Installation</h3>
+<p>Installation is a two step process. First, visit the CRAN website:</p>
+<ul>
+<li>Visit <a href="https://cran.r-project.org/">R</a></li>
+<li>Click on ‘Download R’ for your computer’s operating system or OS (Windows, Linux or Mac)</li>
+<li>Download the latest <strong>.pkg</strong> file that your OS can support</li>
+<li>Open and install the <strong>.pkg</strong> file</li>
+</ul>
+<p>Upon installing R, open the software. The software should display the <em>console</em>, which is a command-line interpreter (left). Human-written source code can be directly run in the console, which then is interpreted into machine language. In addition, the buttons at the top of the interface provides options to write and edit code in a script editor.</p>
+<p><img src="assets/programming/img/R-layout.png" alt="screencap of R console" />.</p>
+<p>Secondly, to make life easier when coding in R, install RStudio. Note that RStudio requires R, but R does not require RStudio.</p>
+<ul>
+<li>Visit <a href="https://www.rstudio.com/products/rstudio/download/">RStudio</a></li>
+<li>Click on the Installer that corresponds to your computer’s operating system or OS (Windows, Linux or Mac)</li>
+<li>Open and follow install instructions.</li>
+</ul>
+<p>Open RStudio. During the first time, the program will prompt require a version of R to be selected. There should be a four pane layout:</p>
+<ul>
+<li><p>Like plain vanilla R, RStudio contains a script editor and console. The code can be directly executed from the script editor, passing commands to the console.</p></li>
+<li>As code is run, there may be inputs and outputs that are temporarily kept in the computing environment. The <em>environment pane</em> provides an inventory of the types of objects that currently exist in the environment.<br />
+</li>
+<li><p>Some outputs of the code may be charts, which are rendered in the <em>plot pane</em>.</p></li>
+</ul>
+<div class="figure">
+<img src="assets/programming/img/RStudio-layout.png" alt="screencap of R console" />
+<p class="caption">screencap of R console</p>
+</div>
+</div>
+<div id="justifying-open-source-software" class="section level3">
+<h3><span class="header-section-number">2.4.2</span> Justifying open source software</h3>
+<p>If you are working in an organization that is in the nascent stages of using data, it is more than likely that you will need to convince executives, IT managers, your supervisor, co-workers among others that you need access to analytics software. Many will direct the bold and ambitious back to MS Excel as it can indeed cover many fundamental tasks and is inexpensive. But consider this: open source software like R is free and open, and is far more robust, flexible and powerful than any WYSIWIG.</p>
+<p>But when considering why new open source software does not usually catch on, consider the following strategies:</p>
+<ul>
+<li><em>Cost</em>. The cost of software is often cited as a barrier to use. Fortunately, open source software such as R and Python tend to be free to use and accessible by anyone. Since there is no cost barrier, there are world-wide communities of practitioners and experts who build new software from open source code bases, which means cost does not prohibit collaboration.</li>
+<li><em>New to modern technologies</em>. Organizations that are newcomers to new open source coding languages may simply be intimidated by the idea of programming. People do not usually like to admit that they are not well-versed in an area of knowledge. Consider illustrating the capabilities in a non-threatening manner – build tangible graphs and visuals that illustrate the promise of using a new open source coding language in non-technical terms while de-emphasizing your technical wizardry.</li>
+<li><em>Cybersecurity</em>. Chief Innovation Officers (CIOs) and Chief Information Security Officers (CISOs) will want to know the security of servers will be protected given that an open source software is acquired from the other side of the firewall. With open source software with large robust communities, there are far more people scrutinizing the source code than a single company’s proprietary software. Thus, it is reasonable to argue that cyber vulnerabilities have a higher chance of detection with a larger, dedicated user base.</li>
+<li><em>Customer support</em>. Like life insurance, some will want to buy peace of mind when buying a commercial, closed source software. Thus, open source softwares are not typically furnished with dedicated, reliable technical support. In many respects, open source is a matter of self-reliance and communal reliance. Do not quote Ralph Waldo Emerson, but rather advocate for a pilot period where low-risk projects are conducted using an open source software. If worse comes to worse, there are a variety of enterprise-grade open source softwares available for R and Python.</li>
+</ul>
+</div>
+</div>
+<div id="a-gentle-introduction-to-r" class="section level2">
+<h2><span class="header-section-number">2.5</span> A Gentle Introduction to R</h2>
+<p>Programming turns human thought into well-defined, structured information that can be actted upon. Let’s take the following quote from a August 2017 <a href="https://www.cnbc.com/2017/08/29/us-stocks-north-korea-missile.html">CNBC online article about stock performance</a>:</p>
+<blockquote>
+<blockquote>
+<p>The Dow Jones industrial average erased earlier losses to end 56.97 points higher at 21,865.37,…</p>
+</blockquote>
+</blockquote>
+<p>When reading the statement, our brains recognize and hold onto information for future use. Just in a 104 character sentence, we can see that: - the <em>Dow Jones industrial average</em> is a series of characters or a string that is associated with a stock market indicator; - the Dow experienced a rate of change <em>56.96</em> – a numerical value – that is measured relative to a magnitude <em>21,865.37</em> (another numerical value); - there was indeed growth in the Dow and can be recorded simply as <code>TRUE</code></p>
+<p>In programming, each of the above values is a <strong>variable</strong> – a storage location for a particular value that is associated with an identifier. In R, we can represent the above information in the following matter:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">indicator &lt;-<span class="st"> &quot;Dow Jones Industrial&quot;</span>
+change &lt;-<span class="st"> </span><span class="fl">56.96</span>
+close &lt;-<span class="st"> </span><span class="fl">21865.37</span>
+growth &lt;-<span class="st"> </span><span class="ot">TRUE</span></code></pre></div>
+<p>There are four variables (indicator, change, close, growth) each with different identifiers. Notice that each value is being named or “assigned” using <code>&lt;-</code>. To check that the assignment worked, we’ll use <code>print()</code> to write <code>indicator</code> and <code>change</code> to the console output.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(indicator)</code></pre></div>
+<pre><code>## [1] &quot;Dow Jones Industrial&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(change)</code></pre></div>
+<pre><code>## [1] 56.96</code></pre>
+<p><code>indicator</code> is set as a string value (charactes) and change is a numeric. In statistial programming, there are many different data types, including: - <em>numeric</em> (e.g. 1, 3.14, 123) - <em>string</em> or <em>characters</em> (e.g. “text goes here”) - <em>factors</em> (e.g. unique levels) - <em>boolean</em> (e.g. FALSE, TRUE) - <em>dates</em> (e.g. 12/6/2016, 2014-03-20)</p>
+<p>Thus, a variable can hold values of any data type and be overwritten with virtually anything:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#string</span>
+  people &lt;-<span class="st"> &quot;people&quot;</span>
+<span class="co">#factor</span>
+  people &lt;-<span class="st"> </span><span class="kw">factor</span>(<span class="st">&quot;people&quot;</span>)
+<span class="co">#boolean</span>
+  people &lt;-<span class="st"> </span><span class="ot">FALSE</span>
+<span class="co">#dates</span>
+  people &lt;-<span class="st"> </span><span class="kw">as.Date</span>(<span class="st">&quot;12/6/2016&quot;</span>,<span class="st">&quot;%m/%d/%Y&quot;</span>)</code></pre></div>
+<p>Variables can also hold more than one value. In the example below, we overwrite <code>people</code> as a vector, or a sequence of data elements of the same <em>data type</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">people &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">134</span>, <span class="dv">542</span>, <span class="dv">324</span>, <span class="dv">102</span>, <span class="dv">402</span>, <span class="dv">383</span>, <span class="dv">853</span>) <span class="co">#set x as a vector</span>
+<span class="kw">print</span>(people)</code></pre></div>
+<pre><code>## [1] 134 542 324 102 402 383 853</code></pre>
+<p>Let’s assume that each element of vector <code>x</code> represents a different field office’s productivity with serving constituents and we wanted to print out a simple summary. To do this, we’ll rely on the <code>sum()</code> function to add all values in the vector x, <code>length()</code> to count the number of offices, and <code>paste()</code> to concatenate all the objects into one string object.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">tot_people =<span class="st"> </span><span class="kw">sum</span>(people) <span class="co">#Sum of x</span>
+num_offices =<span class="st"> </span><span class="kw">length</span>(people) <span class="co">#count number of elements</span>
+units1 &lt;-<span class="st"> &quot;satisfied constituents served&quot;</span> <span class="co">#string variable</span>
+units2 &lt;-<span class="st"> &quot;field offices!&quot;</span> <span class="co">#another string variable</span>
+
+statement &lt;-<span class="st"> </span><span class="kw">paste</span>(tot_people, units1, <span class="st">&quot;in&quot;</span>, num_offices, units2)
+<span class="kw">print</span>(statement)</code></pre></div>
+<pre><code>## [1] &quot;2740 satisfied constituents served in 7 field offices!&quot;</code></pre>
+<div id="quick-exercise" class="section level5">
+<h5><span class="header-section-number">2.5.0.0.1</span> Quick Exercise</h5>
+<p>Using the <code>people</code> and <code>units</code> variables, write a command that lists the number of people people served per office.</p>
+</div>
+<div id="operators" class="section level3">
+<h3><span class="header-section-number">2.5.1</span> Operators</h3>
+<div id="numerical-operators" class="section level4 unnumbered">
+<h4>Numerical Operators</h4>
+<p>Numerical values can be modified, manipulated, and combined using operations such as addition (<code>+</code>), substraction (<code>-</code>), multiplication (<code>*</code>), division (<code>/</code>), exponent (<code>**</code>) and modulus (<code>%%</code>). These are the foundations of many analytical operations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> +<span class="st"> </span><span class="dv">2</span>  <span class="co">#Addition</span></code></pre></div>
+<pre><code>## [1] 6</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> -<span class="st"> </span><span class="dv">2</span>  <span class="co">#Substraction</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> *<span class="st"> </span><span class="dv">2</span>  <span class="co">#Multiplication</span></code></pre></div>
+<pre><code>## [1] 8</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> /<span class="st"> </span><span class="dv">2</span>  <span class="co">#Division</span></code></pre></div>
+<pre><code>## [1] 2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> **<span class="st"> </span><span class="dv">2</span> <span class="co">#Exponent</span></code></pre></div>
+<pre><code>## [1] 16</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="dv">4</span> %%<span class="st"> </span><span class="dv">2</span> <span class="co">#Modulus </span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<p>These operators are scalable. If we want to find the number of customers if we wanted to double productivity or half productivity, then it’s like multiplying a scalar to every row in a given column of a spreadsheet. It’s far easier to do this in R using one line of code.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##Double
+  doubled &lt;-<span class="st"> </span>people *<span class="st"> </span><span class="dv">2</span>
+  <span class="kw">print</span>(doubled)</code></pre></div>
+<pre><code>## [1]  268 1084  648  204  804  766 1706</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">##Half
+  halved &lt;-<span class="st"> </span>people /<span class="st"> </span><span class="dv">2</span>
+  <span class="kw">print</span>(halved)</code></pre></div>
+<pre><code>## [1]  67.0 271.0 162.0  51.0 201.0 191.5 426.5</code></pre>
+</div>
+<div id="logical-operators" class="section level4 unnumbered">
+<h4>Logical operators</h4>
+<p>Let’s say that you need to flag values based on specific values or specific thresholds. This task would require the use of logical operators, which evaluate a statement and return a boolean that indicates if a statement is <code>TRUE</code>. Below, we compare two quantities: <code>y</code> and <code>x</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">10</span>
+y &lt;-<span class="st"> </span><span class="dv">2</span>
+
+x &gt;<span class="st"> </span>y   <span class="co">#4 is greater than 2</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &gt;=<span class="st"> </span>y  <span class="co">#4 greater than or equal to 2</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;<span class="st"> </span>y   <span class="co">#4 is less than 2 </span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;=<span class="st"> </span>y  <span class="co">#4 less than or equal to 2</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x !=<span class="st"> </span>y  <span class="co">#4 is not equal to 2</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x ==<span class="st"> </span>y  <span class="co">#4 is equal to 2</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<p>Using the operators, we can also see how many elements in a vector meet a specific criterion. For example, to flag which records in <code>people</code> are over 200, we can do the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">above &lt;-<span class="st"> </span>people &gt;<span class="st"> </span><span class="dv">200</span>
+<span class="kw">print</span>(above)</code></pre></div>
+<pre><code>## [1] FALSE  TRUE  TRUE FALSE  TRUE  TRUE  TRUE</code></pre>
+<p>Notice that the logical operator returned a vector that evaluate the statement for each element in <code>people</code>. To see the split of <code>TRUE</code> vs. <code>FALSE</code>, we an use the <code>table()</code> function to tabulate the number of records in each unique data value.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(above)</code></pre></div>
+<pre><code>## above
+## FALSE  TRUE 
+##     2     5</code></pre>
+</div>
+</div>
+<div id="data-classes" class="section level3">
+<h3><span class="header-section-number">2.5.2</span> Data classes</h3>
+<p>Data classes are ways to store data in an efficient and usable manner within the R programming environment. These differ from data storage formats (e.g. CSV, JSON), which are widely used regardless of programming language. Each data class is designed with different functions in mind and make certain tasks more efficient. In this section, we’ll cover vectors, lists, matrices, and data frames.</p>
+<div id="lists" class="section level5 unnumbered">
+<h5>Lists</h5>
+<p>[Add section on lists]</p>
+</div>
+<div id="vectors" class="section level5 unnumbered">
+<h5>Vectors</h5>
+<p>As mentioned previously, <em>vectors</em> are sequences of data elements of the same data type. Below, there are three vectors: <code>cities</code> is a string vector whereas <code>pop</code> and <code>area</code> are numeric vectors.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cities &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;New York&quot;</span>,<span class="st">&quot;Los Angeles&quot;</span>,<span class="st">&quot;Chicago&quot;</span>,<span class="st">&quot;Houston&quot;</span>,<span class="st">&quot;Philadelphia&quot;</span>)
+pop &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">8175133</span>, <span class="dv">3792621</span>, <span class="dv">2695598</span>, <span class="dv">2100263</span>, <span class="dv">1526006</span>)
+area &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">302.6</span>, <span class="fl">468.7</span>, <span class="fl">227.6</span>, <span class="fl">599.6</span>, <span class="fl">134.1</span>)</code></pre></div>
+<p>To extract specific values in a vector, we will need call values by their index position in the list of values. Unlike other programming languages, R index values start from 1 rather than 0. Thus, in order to obtain the first value in all three vectors, one could write the following command:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">cities[<span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] &quot;New York&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">pop[<span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] 8175133</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">area[<span class="dv">1</span>]</code></pre></div>
+<pre><code>## [1] 302.6</code></pre>
+<p>Using the index values to extract values is quite useful and can be combined in many ways:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Obtain first and fourth cities</span>
+  cities[<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)]</code></pre></div>
+<pre><code>## [1] &quot;New York&quot; &quot;Houston&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Obtain the third through fifth cities</span>
+  cities[<span class="dv">3</span>:<span class="dv">5</span>]</code></pre></div>
+<pre><code>## [1] &quot;Chicago&quot;      &quot;Houston&quot;      &quot;Philadelphia&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Use criterion to obtain populations greater than 2 million</span>
+  pop[pop &gt;<span class="st"> </span><span class="dv">2000000</span>]</code></pre></div>
+<pre><code>## [1] 8175133 3792621 2695598 2100263</code></pre>
+</div>
+<div id="matrices" class="section level5 unnumbered">
+<h5>Matrices</h5>
+<p>Vectors can be combined into into a <em>matrix</em> using <code>cbind()</code>. Matrices are data elements arranged into a <code>n</code> row by <code>m</code> column rectangular layout that allow for easier multi-dimensional data manipulation. Note that all data elements, regardless of the location in a matrix, are of the same data type (e.g. numeric, string, boolean) and take on the data type of the first column of data unless specified otherwise.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mat &lt;-<span class="st"> </span><span class="kw">cbind</span>(cities, pop, area)</code></pre></div>
+<p>In this case, <code>pop</code> and <code>area</code> take on the data type of <code>cities</code>. This can be limiting if an analysis requires multi-dimensional, multi-data type data. But there benefits over vectors, namely the ability to easily and concisely extract complete multiple variable sets of data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract first row</span>
+  mat[<span class="dv">1</span>,]</code></pre></div>
+<pre><code>##     cities        pop       area 
+## &quot;New York&quot;  &quot;8175133&quot;    &quot;302.6&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract second column</span>
+  mat[,<span class="dv">2</span>]</code></pre></div>
+<pre><code>## [1] &quot;8175133&quot; &quot;3792621&quot; &quot;2695598&quot; &quot;2100263&quot; &quot;1526006&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Extract 2nd to 3rd rows and the 1st and 3rd column</span>
+  mat[<span class="dv">2</span>:<span class="dv">3</span>,<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>)]</code></pre></div>
+<pre><code>##      cities        area   
+## [1,] &quot;Los Angeles&quot; &quot;468.7&quot;
+## [2,] &quot;Chicago&quot;     &quot;227.6&quot;</code></pre>
+</div>
+<div id="data-frames" class="section level5 unnumbered">
+<h5>Data frames</h5>
+<p>If a dataset will have more than one data type, consider using data frames. To create a data frame, use the <code>data.frame()</code> to put two or more vectors together.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">city =</span> cities, <span class="dt">population =</span> pop, <span class="dt">area =</span> area)</code></pre></div>
+<p>One of the properties of data frames is the ability to set, manage and use variable names, which is not available when using matrices.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Being able to call a variable by name using the compact $ operator</span>
+  df$cities</code></pre></div>
+<pre><code>## NULL</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df$population</code></pre></div>
+<pre><code>## [1] 8175133 3792621 2695598 2100263 1526006</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Check column names</span>
+  <span class="kw">colnames</span>(df)</code></pre></div>
+<pre><code>## [1] &quot;city&quot;       &quot;population&quot; &quot;area&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Reassign column names using a vector of </span>
+  <span class="kw">colnames</span>(df) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;city_name&quot;</span>,<span class="st">&quot;pop&quot;</span>,<span class="st">&quot;area&quot;</span>)
+  
+<span class="co">#Create a new boolean variable for populations greater than 2.5m and store into data frame</span>
+  df$over_2m &lt;-<span class="st"> </span>df$pop &gt;<span class="st"> </span><span class="dv">2500000</span>
+
+<span class="co">#View results</span>
+  <span class="kw">print</span>(df)</code></pre></div>
+<pre><code>##      city_name     pop  area over_2m
+## 1     New York 8175133 302.6    TRUE
+## 2  Los Angeles 3792621 468.7    TRUE
+## 3      Chicago 2695598 227.6    TRUE
+## 4      Houston 2100263 599.6   FALSE
+## 5 Philadelphia 1526006 134.1   FALSE</code></pre>
+<p>If there is a existing matrix object, <code>as.data.frame()</code> an be used to convert the objet into a data frame. However, this method will preserve the uniform data type of the matrix, which would require manually setting the data type for each variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">new_df &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(mat)</code></pre></div>
+</div>
+<div id="basic-manipulation" class="section level5 unnumbered">
+<h5>Basic Manipulation</h5>
+<p>[Add section on indices]</p>
+</div>
+<div id="tips" class="section level5 unnumbered">
+<h5>Tips</h5>
+<p>We can check the structure of any data object in R using the <code>str()</code> method, which returns the following for a given data object: - the data format if vector, or class if matrix or data frame - dimensions of the data: number of rows if vector, matrix dimensions [rows, columns], or number of variables and rows if data frames - the first 5 values of the object along with the data format</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#vector</span>
+  <span class="kw">str</span>(cities)</code></pre></div>
+<pre><code>##  chr [1:5] &quot;New York&quot; &quot;Los Angeles&quot; &quot;Chicago&quot; &quot;Houston&quot; ...</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">str</span>(pop)</code></pre></div>
+<pre><code>##  num [1:5] 8175133 3792621 2695598 2100263 1526006</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#matrix</span>
+  <span class="kw">str</span>(mat)</code></pre></div>
+<pre><code>##  chr [1:5, 1:3] &quot;New York&quot; &quot;Los Angeles&quot; &quot;Chicago&quot; &quot;Houston&quot; ...
+##  - attr(*, &quot;dimnames&quot;)=List of 2
+##   ..$ : NULL
+##   ..$ : chr [1:3] &quot;cities&quot; &quot;pop&quot; &quot;area&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#data frame</span>
+  <span class="kw">str</span>(df)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    5 obs. of  4 variables:
+##  $ city_name: Factor w/ 5 levels &quot;Chicago&quot;,&quot;Houston&quot;,..: 4 3 1 2 5
+##  $ pop      : num  8175133 3792621 2695598 2100263 1526006
+##  $ area     : num  303 469 228 600 134
+##  $ over_2m  : logi  TRUE TRUE TRUE FALSE FALSE</code></pre>
+<p>Other tools include <code>dim()</code>, <code>class()</code>, and <code>typeof()</code>, which provide the object dimensions, the class of data object and the type of data objet, respectively. These are handy for understanding basic attributes of any data and can inform the architecture of your data science approach.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">dim</span>(df)</code></pre></div>
+<pre><code>## [1] 5 4</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">class</span>(df)</code></pre></div>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">typeof</span>(df)</code></pre></div>
+<pre><code>## [1] &quot;list&quot;</code></pre>
+</div>
+</div>
+<div id="libraries-expanded-functionality" class="section level3">
+<h3><span class="header-section-number">2.5.3</span> Libraries: Expanded functionality</h3>
+<p>While R comes with built-in functionality, higher order functions that facilitate more efficient and effective programming may require one to install and load code libraries – user-contributed functions that extend programming languages and are furnished with standardized documentation to help programmers understand their functionality. As R is an open source language, anyone can write and contribute code libraries for general public use. In fact, as of Dec 2016, there are 9,749 contributed packages on the <a href="https://cran.r-project.org">Comprehensive R Archive Network (CRAN)</a>. Some of the most used libraries include:</p>
+<ul>
+<li>ggplot2 – a graphing visualization library</li>
+<li>dplyr – a data manipulation and processing library</li>
+<li>caret – a multi-faceted machine learning library</li>
+<li>stringr – a library for character or string processing</li>
+<li>lubridate – a library to handle date data</li>
+<li>sqldf – a library to write SQL code in R</li>
+</ul>
+<p>Libraries are common among programming languages, such as Python, Java, Julia, and JavaScript.</p>
+<div id="install-and-load-a-package" class="section level4">
+<h4><span class="header-section-number">2.5.3.1</span> Install and load a package</h4>
+<p>To start, we will install and load <em>ggplot2</em>, one of the most used graphing libraries. Installation is simple enough, using the <code>install.packages()</code> command:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;ggplot2&quot;</span>)</code></pre></div>
+<p>To use the library, use <code>library()</code> to load <em>ggplot2</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<p>Upon doing so, all is needed is the data in the right form and a basic understanding of ggplot2 syntax (<a href="http://docs.ggplot2.org/current/">take a look here</a>).</p>
+</div>
+</div>
+<div id="inputoutput-io" class="section level3">
+<h3><span class="header-section-number">2.5.4</span> Input/Output (I/O)</h3>
+<p>Input/Output or I/O is the process of having a data scientist communicate with a computer to act on some piece of information. This may involve understanding how to input parameters into a function in order to obtain a desired output. More commonly, I/O from a data perspective is import and export of data into a programming environment.</p>
+<p>It is important to understand that data is captured in many <em>data formats</em> – or standardized structures for storing data. In the social sciences, data is often requested in <em>comma separated values</em> (.csv), <em>tab separated values</em> (.tsv) or other tabular flat files. Notice that there is one row per observation where the <em>header</em> (first line) contains the names of each of the fields, then values come every row thereafter. Earth science and atmospheric sciences, <em>HDF</em> and <em>NetCDF</em> are commonly used to store highly dimensional (many variables) gridded data. In internet-based technologies, data is often recorded and transmitted in <em>JavaScript Object Notation</em> (JSON) and <em>Extensible Markup Language</em> (XML). Data science is agnostic of formats. The table below provides a selection of common data formats along with an example of how they are rendered and their use.</p>
+<table style="width:100%;">
+<colgroup>
+<col width="7%" />
+<col width="20%" />
+<col width="9%" />
+<col width="36%" />
+<col width="19%" />
+<col width="7%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Abbreviation</strong></th>
+<th><strong>Name + Description</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Example</strong></th>
+<th><strong>Fields of Use </strong></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CSV</td>
+<td>Comma Separated Values</td>
+<td>Tabular</td>
+<td>state, pop_mil <br> California, 38.8 <br> Delaware, 0.936</td>
+<td>Widely used format in most fields</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>TSV</td>
+<td>Tab Separated Values</td>
+<td>Tabular</td>
+<td>state pop_mil <br> California 38.8 <br> Delaware 0.936</td>
+<td>Widely used format in most fields</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>JSON</td>
+<td>JavaScript Object Notation</td>
+<td>Tabular</td>
+<td>[{“state”: “California”, “pop_mil”: 38.8},<br>{“state”: “Delaware”, “pop_mil”: 0.936}]</td>
+<td>A common format provided from APIs</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>GeoJSON</td>
+<td>GeoJSON</td>
+<td>Spatial</td>
+<td>JSON format with additional metadata parameters that allow geographically referenced data to be used.</td>
+<td>Common format for web-based GIS</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>XML</td>
+<td>Extensible Markup Language</td>
+<td>Tabular</td>
+<td>&lt;data&gt;<br>   &lt;rec&gt; <br>      &lt;state&gt;California &lt;/state&gt;<br>      &lt;pop_mil&gt;38.8 &lt;pop_mil&gt;<br>   &lt;/rec&gt; <br>    &lt;rec&gt; <br>      &lt;state&gt;Delaware &lt;/state&gt;<br>      &lt;pop_mil&gt;0.936 &lt;pop_mil&gt;<br>   &lt;/rec&gt;<br> &lt;\data&gt;</td>
+<td>Widely used format in most fields</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>SHP</td>
+<td>Shapefile</td>
+<td>Spatial</td>
+<td>Relies on a combination of four files in order to render map objects: .shp, .shx, .sbn, .dbf</td>
+<td>Common format for Geographic Information Systems (GIS) data</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>TIFF</td>
+<td>Tagged Image File Format</td>
+<td>Spatial + Imagery</td>
+<td></td>
+<td>Common format for representing grid-based</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>HDF</td>
+<td>Hierarchical Data Format</td>
+<td>Spatial + Imagery</td>
+<td></td>
+<td>Common format for representing grid-based</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>NetCDF</td>
+<td>Network Common Data Form (NetCDF) for sharing array-oriented scientific data</td>
+<td>Spatial + Imagery</td>
+<td></td>
+<td>Common format for representing grid-based</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>It is clear that the formats look quite different and thus each require different libraries to import and export data.For example, Excel files can be opened using the <code>gdata</code> and <code>read_xl</code> libraries. CSV files can be managed using built-in functions. JSON files can be opened using <code>jsonlite</code>, <code>rjson</code> among others.</p>
+<div id="io-by-format" class="section level4">
+<h4><span class="header-section-number">2.5.4.1</span> I/O by format</h4>
+<p>Given the various formats, importing data is reliant on a number of specialized functions. In most programming languages, there will be one or more specific functions that are specially designed to handle a given data format.</p>
+<p><strong>.csv, .tsv, .xml, .json, .xlsx</strong> Each of these data formats are often used to store tabular data – or data that fits into a neat flat table, though noting that <em>json</em> and <em>xml</em> can store complex, nested data. We demonstrate this basic functionality using an abridged list of documents that was released in 2017 relating to the assassination of JFK. The abridged list is hosted at <a href="https://s3.amazonaws.com/dspp/" class="uri">https://s3.amazonaws.com/dspp/</a>.</p>
+<table>
+<caption><span id="tab:unnamed-chunk-28">Table 2.1: </span>Selection of records from the 2017 JFK Assassination Record Release</caption>
+<thead>
+<tr class="header">
+<th align="left">file.name</th>
+<th align="left">record.num</th>
+<th align="left">nara.release.date</th>
+<th align="left">formerly.withheld</th>
+<th align="left">agency</th>
+<th align="left">doc.date</th>
+<th align="left">doc.type</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DOCID-32330250.pdf</td>
+<td align="left">124-90089-10285</td>
+<td align="left">2017-10-26T00:00:00Z</td>
+<td align="left">In Part</td>
+<td align="left">FBI</td>
+<td align="left">05/07/1959</td>
+<td align="left">PAPER, TEXTUAL DOCUMENT</td>
+</tr>
+<tr class="even">
+<td align="left">DOCID-32348429.PDF</td>
+<td align="left">104-10069-10076</td>
+<td align="left">2017-07-24T00:00:00Z</td>
+<td align="left">In Part</td>
+<td align="left">CIA</td>
+<td align="left">07/14/1970</td>
+<td align="left">PAPER - TEXTUAL DOCUMENT</td>
+</tr>
+<tr class="odd">
+<td align="left">DOCID-32977063.pdf</td>
+<td align="left">145-10001-10167</td>
+<td align="left">2017-10-26T00:00:00Z</td>
+<td align="left">In Part</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">DOCID-32392200.PDF</td>
+<td align="left">104-10413-10043</td>
+<td align="left">2017-07-24T00:00:00Z</td>
+<td align="left">In Part</td>
+<td align="left">CIA</td>
+<td align="left">04/26/1963</td>
+<td align="left">PAPER - TEXTUAL DOCUMENT</td>
+</tr>
+<tr class="odd">
+<td align="left">104-10194-10006.pdf</td>
+<td align="left">104-10194-10006</td>
+<td align="left">2017-07-24T00:00:00Z</td>
+<td align="left">In Full</td>
+<td align="left">CIA</td>
+<td align="left">01/01/0000</td>
+<td align="left">PAPER - TEXTUAL DOCUMENT</td>
+</tr>
+</tbody>
+</table>
+<div id="built-in-functions-for-delimited-file" class="section level5 unnumbered">
+<h5>Built-In Functions for Delimited File</h5>
+<p>R has a number of built-in functions for data in character-separated values. The most generalizable are <code>read.table()</code> for import and <code>write.table()</code> for export. Below, <code>read.table()</code> is applied to each .csv and .tsv, importing a new data frame object and assigning it to a data frame named <code>df</code>. Without assigning the data frame, the imported data simply is printed to console (e.g. output on a screen, not saved). The first parameter is the path and file to be imported and the <code>sep</code> parameter indicates the type of delimiter.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.csv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;,&quot;</span>)
+df &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</code></pre></div>
+<p>In the case that the header is not in the first row, the <code>skip</code> parameter can be included to indicate how many lines should be skipped until the header is found. In other cases, headers are not available and <code>header = FALSE</code> should be specified.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#skip</span>
+  df &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">skip =</span> <span class="dv">2</span>)
+
+<span class="co">#no header</span>
+  df &lt;-<span class="st"> </span><span class="kw">read.table</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">header =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>In order to export a data frame to a delimited file, use the <code>write.table()</code> command. Be sure to specify the delimiter <code>sep</code> and <code>row.names = FALSE</code> as the row index number will otherwise be written to file.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">write.table</span>(df, <span class="st">&quot;jfk-2.tsv&quot;</span>, <span class="dt">sep =</span> <span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)
+  <span class="kw">write.table</span>(df, <span class="st">&quot;jfk-2.txt&quot;</span>, 
+              <span class="dt">sep =</span> <span class="st">&quot;[virtually anything can go here, but keep it short and unique]&quot;</span>, 
+              <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<p>CSV-specific functions are commonly used for import – <code>read.csv()</code> – and export – <code>write.csv()</code>. The difference is that the delimiter is automatically assumed to be a comma.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.csv&quot;</span>)
+  <span class="kw">write.csv</span>(df, <span class="st">&quot;jfk-2.csv&quot;</span>, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+
+</div>
+<div id="built-in-functions-for-reading-lines" class="section level5 unnumbered">
+<h5>Built-In Functions for Reading Lines</h5>
+<p>Not all data will be well-structured. In fact, when considering datasets of vast amounts of text, data often needs to be read line by line without assuming defined delimiters. In some cases, delimiters will be corrupted or misplaced, which may complicate importing data by requiring changes to the data in a raw form. In R, importing raw lines of data can be accomplished using <code>readLines()</code> and exporting lines via <code>writeLines()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df &lt;-<span class="st"> </span><span class="kw">readLines</span>(<span class="st">&quot;https://s3.amazonaws.com/dspp/jfk.csv&quot;</span>)
+  <span class="kw">writeLines</span>(df, <span class="st">&quot;jfk.txt&quot;</span>)</code></pre></div>
+<p>Upon importing data, any number of manipulations can be applied to the data. </p>
+</div>
+<div id="one-library-many-formats" class="section level5 unnumbered">
+<h5>One Library, Many Formats</h5>
+<p>As previously noted, there are many other formats that are commonly used beyond .csv and .tsv, such as .xml, .json, .xlsx, .dta, .fwf, .csv.gz, .mat, .yml, among others. In the past, to import any of the above-enumerated formats required knowledge of multiple libraries, but the process has been simplified for “flat” data sets where there is no hierarchy or nested relationships. We recommend <code>rio</code> – a R library designed for simplified I/O drawing from multiple popular libraries. Rather than learning the syntax specific to an <em>xml</em> library or <em>xls</em> library, <code>rio</code> boils I/O to two simple functions: <code>import()</code> and <code>export()</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># load library</span>
+  <span class="kw">library</span>(rio)
+
+<span class="co"># example import</span>
+  path &lt;-<span class="st"> &quot;https://s3.amazonaws.com/dspp/&quot;</span>
+  df &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="kw">paste0</span>(path,<span class="st">&quot;jfk.json&quot;</span>))
+  df &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="kw">paste0</span>(path,<span class="st">&quot;jfk.xml&quot;</span>))
+  df &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="kw">paste0</span>(path,<span class="st">&quot;jfk.csv&quot;</span>))
+  df &lt;-<span class="st"> </span><span class="kw">import</span>(<span class="kw">paste0</span>(path,<span class="st">&quot;jfk.xlsx&quot;</span>), <span class="dt">sheet =</span> <span class="dv">1</span>)
+  
+<span class="co"># example export</span>
+  <span class="kw">export</span>(df, <span class="kw">paste0</span>(path,<span class="st">&quot;jfk.json&quot;</span>))
+  <span class="kw">export</span>(df, <span class="kw">paste0</span>(path,<span class="st">&quot;jfk.xml&quot;</span>))
+  <span class="kw">export</span>(df, <span class="kw">paste0</span>(path,<span class="st">&quot;jfk.csv&quot;</span>))
+  <span class="kw">export</span>(df, <span class="kw">paste0</span>(path,<span class="st">&quot;jfk.xlsx&quot;</span>))</code></pre></div>
+<p>For some formats, additional arguments are required. For example, to import an .xlsx, the user will need to indicate the index number of a worksheet in a workbook (e.g. 1 for first worksheet, 10 for the tenth worksheet, etc.). Throughout the remainder of this book, we will use <code>read.table()</code>, <code>read.csv()</code> and <code>import()</code> interchangeably.</p>
+</div>
+</div>
+<div id="spatialgis" class="section level4 unnumbered">
+<h4>Spatial/GIS</h4>
+<p>The role of spatial data is growing in prominence, thus having some familiarity with spatial data will no doubt become commonplace whether to help transform and process data into a usable form or visualize geographic patterns. This will be covered more extensively later in this book, but here, we provide a cursory overview. Spatial data is generally divided into two types: <em>rasters</em> and <em>vectors</em>. Rasters are gridded data – like satellite image composite of the Earth – that have measurements taken at regular intervals that correspond to geographic coordinates. Often times, gridded data is commonly recorded in TIFF, JPEG, NetCDF, among other formats.</p>
+<div class="figure">
+<img src="https://gibs.earthdata.nasa.gov/image-download?TIME=2017305&amp;extent=-150.30653007188965,13.682349750055003,-58.800827509716925,58.75552614893602&amp;epsg=4326&amp;layers=VIIRS_CityLights_2012&amp;opacities=1&amp;worldfile=false&amp;format=image/jpeg&amp;width=1041&amp;height=513" alt="Raster image of the Earth at Night (2012) as seen from the Suomi NPP satellite" />
+<p class="caption">Raster image of the Earth at Night (2012) as seen from the Suomi NPP satellite</p>
+</div>
+<p>Vectors on the other hand are geometric representations of geography recorded in the form of points, lines, and polygons. How this information is stored is somewhat more complicated than rasters, stored across three files that work as one. Suppose that a town has a triangular town boundary that is represented using a set of three coordinates:</p>
+<ul>
+<li><em>.shp</em>: the geometric data – coordinates – are recorded as an observation in a geometry file;</li>
+<li><em>.shx</em>: the file that indexes the shape geometries – useful for sorting and storage;</li>
+<li><em>.dbf</em>: the file that contains all attributes associated with each geometry in the .shp file.</li>
+</ul>
+<div class="figure">
+<img src="https://gibs.earthdata.nasa.gov/image-download?TIME=2017305&amp;extent=-150.30653007188965,13.682349750055003,-58.800827509716925,58.75552614893602&amp;epsg=4326&amp;layers=Reference_Features,Coastlines&amp;opacities=0.5,0.5&amp;worldfile=false&amp;format=image/jpeg&amp;width=1041&amp;height=513" alt="Vector of North American states and provinces" />
+<p class="caption">Vector of North American states and provinces</p>
+</div>
+<p>For brevity, we demonstrate how to load a shapefile of US Congressional Districts as published by the US Census Bureau<a href="#fn23" class="footnoteRef" id="fnref23"><sup>23</sup></a>. To download the 115th Congress’ districts shapefile, use this link: <a href="http://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_cd115_500k.zip" class="uri">http://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_cd115_500k.zip</a> and unzip the file. Upon inspection of the folder contents, notice that all files have the same file name “cb_2016_us_cd115_20m”, but different extensions.</p>
+<div class="figure">
+<img src="assets/programming/img/shapefile.png" alt="Files that comprise a shapefile" />
+<p class="caption">Files that comprise a shapefile</p>
+</div>
+<p>Next, install and load the <code>rgdal</code> package, then use the <code>readOGR()</code> function to read in the shapefile. <code>readOGR()</code> requires two parameters: <code>dsn</code> is the path to the folder containing the shapefile, and <code>layer</code> is the shapefile name without extension.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(rgdal)
+shape &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="dt">dsn =</span> <span class="st">&quot;your/path/goes/here&quot;</span>, 
+                 <span class="dt">layer =</span> <span class="st">&quot;cb_2016_us_cd115_20m&quot;</span>)</code></pre></div>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/var/folders/sm/bx0lfjp93k357wbghyshyfy80000gp/T//RtmpI0wkp9&quot;, layer: &quot;cb_2016_us_cd115_20m&quot;
+## with 437 features
+## It has 8 fields
+## Integer64 fields read as strings:  ALAND AWATER</code></pre>
+<p>With the data loaded, we can easily view the geometries and begin to manipulate for analytical uses.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(shape)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<div id="an-efficient-r-specific-format" class="section level5 unnumbered">
+<h5>An Efficient R-Specific Format</h5>
+<p>As files grow large, reading and writing data from a file will consume more time and sometimes make workflows inefficient. Imagine writing a 10 GB file to disk – a relatively modest data file by data science standards – then re-reading it into memory each time it is required. The architects of R have developed a clever format that compresses any R objects, whether data frame or models or other, into a <code>.Rda</code> file. This is done using the <code>save()</code> function, specifying a series of R objects already in the R environment, then saving to a file. For example, if the current R environment contained a data frame object called <code>df</code> and a vector called <code>vec</code>, both objects can be saved together in a file named <code>example.Rda</code>. The resulting file compresses the data in order to reduce the storage footprint.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">save</span>(df, vec, <span class="dt">file =</span> <span class="st">&quot;example.Rda&quot;</span>)</code></pre></div>
+<p>To read the file back into memory, simply use the <code>load()</code> command:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">load</span>(<span class="st">&quot;example.Rda&quot;</span>)</code></pre></div>
+</div>
+<div id="download-and-unzip" class="section level5 unnumbered">
+<h5>Download and Unzip</h5>
+<p>Open data is often times available online and may be in a .zip compressed format. Imagine a scenario where there are hundreds of thousands of files to download. It would be quite tedious to click on each file and save to drive. To solve part of the problem, <code>R</code> is built with functions to facilitate downloading and unzipping of files, namely:</p>
+<ul>
+<li><code>download.files()</code> that downloads a file from the internet to a specified directory or temporary directory;</li>
+<li><code>tempfile()</code> that create temporary file placeholder in memory to which downloaded files can be saved;</li>
+<li><code>unzip()</code> to unzip files for loading;</li>
+<li><code>tempdir()</code> that create temporary directories in memory to which files can be decompressed and temporarily stored.</li>
+</ul>
+<p>A simple workflow for downloading, unzipping and loading a shapefile from the internet could be as follows. Notice that both <code>tempfile()</code> and <code>tempdir()</code> are used – <code>tempfile()</code> to hold one downloaded zipfile whereas <code>tempdir()</code> is used to hold multiple unzipped files.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#URL of file location (Census Congressional Districts shapefile)</span>
+  url &lt;-<span class="st"> &quot;http://www2.census.gov/geo/tiger/GENZ2016/shp/cb_2016_us_cd115_20m.zip&quot;</span>
+
+<span class="co">#Create a temporary file that will be used to hold downloaded file</span>
+  temp &lt;-<span class="st"> </span><span class="kw">tempfile</span>()
+  
+<span class="co">#Download zipped file to temp</span>
+  <span class="kw">download.file</span>(url, temp)
+  
+<span class="co">#Create temporary directory to hold decompressed files</span>
+  tempdir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()
+  
+<span class="co">#Unzip file into temp directory</span>
+  <span class="kw">unzip</span>(temp, <span class="dt">exdir =</span> tempdir)
+
+<span class="co">#Load RGDAL, then open file from temp dir</span>
+  <span class="kw">library</span>(rgdal)
+  shape &lt;-<span class="st"> </span><span class="kw">readOGR</span>(<span class="dt">dsn =</span> tempdir, 
+                   <span class="dt">layer =</span> <span class="st">&quot;cb_2016_us_cd115_20m&quot;</span>)</code></pre></div>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;/var/folders/sm/bx0lfjp93k357wbghyshyfy80000gp/T//RtmpI0wkp9&quot;, layer: &quot;cb_2016_us_cd115_20m&quot;
+## with 437 features
+## It has 8 fields
+## Integer64 fields read as strings:  ALAND AWATER</code></pre>
+<p>The process is much simpler for unzipped files in common formats. Using <code>rio</code>, we can directly use <code>import()</code> to pull and load data directly from a URL. The example below imports data the US Census Bureau’s 2014 population projections by sex, race, and Hispanic origin<a href="#fn24" class="footnoteRef" id="fnref24"><sup>24</sup></a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(rio)
+  url &lt;-<span class="st"> &quot;https://www2.census.gov/programs-surveys/popproj/datasets/2014/2014-popproj/np2014_d2.csv&quot;</span>
+  pop &lt;-<span class="st"> </span><span class="kw">import</span>(url)
+  <span class="kw">head</span>(pop, <span class="dv">5</span>)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-42">Table 2.2: </span>US Census Bureau’s 2014 population projections by sex, race, and Hispanic origin</caption>
+<thead>
+<tr class="header">
+<th align="right">RACE_HISP</th>
+<th align="right">SEX</th>
+<th align="right">YEAR</th>
+<th align="right">births</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2014</td>
+<td align="right">3969976</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2015</td>
+<td align="right">3998730</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2016</td>
+<td align="right">4026991</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2017</td>
+<td align="right">4054590</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2018</td>
+<td align="right">4080454</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="digit" class="section level5 unnumbered">
+<h5>DigIt</h5>
+<p>This book takes advantage of emerging data sources that exemplify the sort of data that one might expect to encounter in the wild. The data is available to the public, but for convenience, a simple R wrapper has been developed to make data more easily accessible and allow users dig into data more seamlessly. This wrapper is available via Github: <a href="https://github.com/SigmaMonstR/digIt" class="uri">https://github.com/SigmaMonstR/digIt</a>.</p>
+<p>To install the <code>digIt</code> wrapper tools, run the following code:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Install a special package to install packages from Github</span>
+  <span class="kw">install.packages</span>(<span class="st">&quot;devtools&quot;</span>)
+  <span class="kw">library</span>(devtools)
+
+<span class="co">#Install from the Github repository</span>
+  <span class="kw">install_github</span>(<span class="st">&quot;SigmaMonstR/digIt&quot;</span>) 
+  
+<span class="co">#Load library</span>
+  <span class="kw">library</span>(digIt)</code></pre></div>
+<p>The wrapper was built with two basic functions: <code>digList()</code> and <code>digIt()</code>. The former is used to obtain a list of available datasets. For more detail in an interactive table, specify <code>digList(detail = TRUE)</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Get list of datasets</span>
+  <span class="kw">digList</span>()</code></pre></div>
+<pre><code>##  [1] &quot;accel_exercise&quot;       &quot;acs_wages&quot;            &quot;acs_health&quot;          
+##  [4] &quot;bitcoin&quot;              &quot;cex_binary&quot;           &quot;cex_cost&quot;            
+##  [7] &quot;color_segment_kansas&quot; &quot;color_segment_milky&quot;  &quot;doe_gas_price&quot;       
+## [10] &quot;flu&quot;                  &quot;hail_201601&quot;          &quot;hail_201602&quot;         
+## [13] &quot;hail_201603&quot;          &quot;hail_201604&quot;          &quot;image_set_marine1&quot;   
+## [16] &quot;image_set_sky&quot;        &quot;image_set_snowboard&quot;  &quot;jfk_release&quot;         
+## [19] &quot;long_jump_olympics&quot;   &quot;long_jump_top25&quot;      &quot;ndvi&quot;                
+## [22] &quot;nyc311_gridded&quot;       &quot;speech_2009&quot;          &quot;speech_2010&quot;         
+## [25] &quot;speech_2011&quot;          &quot;speech_2012&quot;          &quot;speech_2013&quot;         
+## [28] &quot;speech_2014&quot;          &quot;speech_2015&quot;          &quot;speech_2016&quot;         
+## [31] &quot;speech_2017&quot;          &quot;stopwords&quot;            &quot;toll_model&quot;          
+## [34] &quot;toll_transactions&quot;    &quot;us_district&quot;          &quot;watch_list_eu&quot;       
+## [37] &quot;watch_list_uk&quot;        &quot;watch_list_un&quot;        &quot;watch_list_us&quot;       
+## [40] &quot;wmata&quot;</code></pre>
+<p>To obtain a specific dataset, use the <code>digIt()</code> function, specifying a minimum of the <code>dataset</code> name.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load actual datasets into environment</span>
+  data &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;long_jump_top25&quot;</span>)
+
+<span class="co">#Download dataset to working directory</span>
+  <span class="kw">digIt</span>(<span class="st">&quot;long_jump_top25&quot;</span>, <span class="dt">download =</span> <span class="ot">TRUE</span>)
+  
+<span class="co">#Load file and show read me file</span>
+  data &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;long_jump_top25&quot;</span>, <span class="dt">readme =</span> <span class="ot">TRUE</span>)</code></pre></div>
+<p>Throughout the book, the <code>digIt()</code> wrapper will be used alongside basic I/O commands.</p>
+</div>
+</div>
+</div>
+</div>
+<div id="diy" class="section level2">
+<h2><span class="header-section-number">2.6</span> DIY</h2>
+
+<div id="reading-a-csv-directly-from-the-web" class="section level3">
+<h3><span class="header-section-number">2.6.1</span> Reading a CSV directly from the web</h3>
+<p>For an initial demo, we will learn to load in a Comma Separated Values (CSV) file containing energy data from the <a href="https://pages.nist.gov/netzero">National Institute of Standards and Technology Net Zero Residential Test Facility</a> – a laboratory that produces as much energy as it uses and is a testbed for sustainable and efficient home technologies. The specific dataset that will be used is the hourly photovoltaic sensor dataset <a href="https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv" class="uri">https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv</a>, which contains hourly estimates of solar energy production and exposure on the Net Zero home’s solar panels. From a sustainability perspective, this data can eventually be used to inform home efficiency policies, solar panel siting, among other things. Our goal in this demonstration is to plot sun exposure by month to see the relative differences.</p>
+<p>To start, we’ll use the <code>read.csv()</code> function to import the object at the <code>url</code> destination that contains the the CSV dataset and assign the resulting dataframe to the object <code>df</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  url &lt;-<span class="st"> &quot;https://s3.amazonaws.com/nist-netzero/2015-data-files/PV-hour.csv&quot;</span>
+  df &lt;-<span class="st"> </span><span class="kw">read.csv</span>(url)</code></pre></div>
+<p>With the dataset imported, we will now check the data by using <code>head()</code> to print the first three lines of data, <code>colnames()</code> to see the names of all variables, and <code>str()</code> to look at the data structure.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">head</span>(df,<span class="dv">3</span>)</code></pre></div>
+<pre><code>##             Timestamp PV_AmpsAIA1 PV_AmpsAIA2 PV_AmpsBIB1 PV_AmpsBIB2
+## 1 2015-02-01 00:00:00   0.3384166   0.3360405   0.3319659   0.3359764
+## 2 2015-02-01 01:00:00   0.3368160   0.3343775   0.3303361   0.3343271
+## 3 2015-02-01 02:00:00   0.3368169   0.3343866   0.3302828   0.3343303
+##   PV_FrequencyF1 PV_FrequencyF2 PV_PVBacksideTemp2 PV_PVBacksideTemp3
+## 1       59.99723       59.98672          -9.643089          -9.956393
+## 2       60.01459       60.00429          -9.600891          -9.534459
+## 3       60.00885       59.99833          -8.754960          -8.652523
+##   PV_PVBacksideTemp4 PV_PVBacksideTemp7 PV_PVInsolationHArray
+## 1          -9.642983          -9.705920            0.05654048
+## 2          -9.495553          -9.584033            0.06022133
+## 3          -8.569632          -8.539179            0.05883229
+##   PV_PVSystem1ACEnergyOSEACPV1OS PV_PVSystem1ACPowerOSPACPV1OS
+## 1                              0                      1.248406
+## 2                              0                      1.246217
+## 3                              0                      1.238283
+##   PV_PVSystem2ACEnergyOSEACPV2OS PV_PVSystem2ACPowerOSPACPV2OS
+## 1                              0                      1.524752
+## 2                              0                      1.590054
+## 3                              0                      1.616503
+##   PV_PowerFactor3PhTotalPF3PhT1 PV_PowerFactor3PhTotalPF3PhT2
+## 1                     0.1203696                     0.1124940
+## 2                     0.1204470                     0.1127046
+## 3                     0.1208075                     0.1129438
+##   PV_StringCurrentIStr1 PV_StringCurrentIStr2 PV_StringCurrentIStr3
+## 1         -1.114236e-06         -1.510665e-05          9.009047e-05
+## 2         -6.056746e-06         -1.257590e-05          7.790865e-05
+## 3         -1.006405e-05         -1.519916e-05          8.973710e-05
+##   PV_StringCurrentIStr4 PV_StringVoltageUStr2 PV_StringVoltageUStr4
+## 1          3.243404e-05              1.335043              1.336095
+## 2          3.251752e-05              1.258958              1.244717
+## 3          2.790793e-05              1.154180              1.130783
+##   PV_VoltsANUAN1 PV_VoltsANUAN2 PV_VoltsBNUBN1 PV_VoltsBNUBN2
+## 1       118.3309       118.4064       118.3702       118.4032
+## 2       117.7462       117.8199       117.7857       117.8210
+## 3       117.7640       117.8384       117.8016       117.8368
+##   PV_WhoursDeliveredWhD1 PV_WhoursDeliveredWhD2 PV_Watts3PhTotalW3PhT1
+## 1                8826412                8796006               9.543909
+## 2                8826421                8796015               9.469552
+## 3                8826431                8796024               9.497611
+##   PV_Watts3PhTotalW3PhT2
+## 1               8.954687
+## 2               8.859995
+## 3               8.887298</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">str</span>(df)</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    8737 obs. of  32 variables:
+##  $ Timestamp                     : Factor w/ 8737 levels &quot;2015-02-01 00:00:00&quot;,..: 1 2 3 4 5 6 7 8 9 10 ...
+##  $ PV_AmpsAIA1                   : num  0.338 0.337 0.337 0.337 0.338 ...
+##  $ PV_AmpsAIA2                   : num  0.336 0.334 0.334 0.335 0.335 ...
+##  $ PV_AmpsBIB1                   : num  0.332 0.33 0.33 0.331 0.331 ...
+##  $ PV_AmpsBIB2                   : num  0.336 0.334 0.334 0.335 0.335 ...
+##  $ PV_FrequencyF1                : num  60 60 60 60 60 ...
+##  $ PV_FrequencyF2                : num  60 60 60 60 60 ...
+##  $ PV_PVBacksideTemp2            : num  -9.64 -9.6 -8.75 -7.59 -5.4 ...
+##  $ PV_PVBacksideTemp3            : num  -9.96 -9.53 -8.65 -7.46 -5.22 ...
+##  $ PV_PVBacksideTemp4            : num  -9.64 -9.5 -8.57 -7.51 -5.1 ...
+##  $ PV_PVBacksideTemp7            : num  -9.71 -9.58 -8.54 -7.31 -4.87 ...
+##  $ PV_PVInsolationHArray         : num  0.0565 0.0602 0.0588 0.0588 0.0593 ...
+##  $ PV_PVSystem1ACEnergyOSEACPV1OS: int  0 0 0 0 0 0 0 10 495 1179 ...
+##  $ PV_PVSystem1ACPowerOSPACPV1OS : num  1.25 1.25 1.24 1.26 1.25 ...
+##  $ PV_PVSystem2ACEnergyOSEACPV2OS: int  0 0 0 0 0 0 0 10 488 1167 ...
+##  $ PV_PVSystem2ACPowerOSPACPV2OS : num  1.52 1.59 1.62 1.64 1.61 ...
+##  $ PV_PowerFactor3PhTotalPF3PhT1 : num  0.12 0.12 0.121 0.121 0.121 ...
+##  $ PV_PowerFactor3PhTotalPF3PhT2 : num  0.112 0.113 0.113 0.113 0.113 ...
+##  $ PV_StringCurrentIStr1         : num  -1.11e-06 -6.06e-06 -1.01e-05 -8.98e-06 -2.16e-06 ...
+##  $ PV_StringCurrentIStr2         : num  -1.51e-05 -1.26e-05 -1.52e-05 -1.74e-05 -1.55e-05 ...
+##  $ PV_StringCurrentIStr3         : num  9.01e-05 7.79e-05 8.97e-05 8.99e-05 8.50e-05 ...
+##  $ PV_StringCurrentIStr4         : num  3.24e-05 3.25e-05 2.79e-05 2.47e-05 2.92e-05 ...
+##  $ PV_StringVoltageUStr2         : num  1.34 1.26 1.15 1.28 1.27 ...
+##  $ PV_StringVoltageUStr4         : num  1.34 1.24 1.13 1.26 1.28 ...
+##  $ PV_VoltsANUAN1                : num  118 118 118 118 118 ...
+##  $ PV_VoltsANUAN2                : num  118 118 118 118 118 ...
+##  $ PV_VoltsBNUBN1                : num  118 118 118 118 118 ...
+##  $ PV_VoltsBNUBN2                : num  118 118 118 118 118 ...
+##  $ PV_WhoursDeliveredWhD1        : int  8826412 8826421 8826431 8826440 8826450 8826459 8826469 8826489 8826984 8827679 ...
+##  $ PV_WhoursDeliveredWhD2        : int  8796006 8796015 8796024 8796033 8796041 8796050 8796059 8796079 8796570 8797263 ...
+##  $ PV_Watts3PhTotalW3PhT1        : num  9.54 9.47 9.5 9.55 9.56 ...
+##  $ PV_Watts3PhTotalW3PhT2        : num  8.95 8.86 8.89 8.95 8.96 ...</code></pre>
+<p>Based on initial examination, the dataset contains 34 variables with over 8,000 observations where <em>Timestamp</em> is the only date variable. However, while the variable contains information on dates, R treats the <em>Timestamp</em> as a factor. In order to accomplish the goal of this demo, we would need to: - (1) convert the <em>Timestamp</em> variable into a date-time object using <code>strptime()</code>, which requires the user to identify the date pattern so that R can extract the right information. In the case of the PV data, the format is in “%Y-%m-%d %H:%M:%S” or “Year-Month-Day Hour:Minute:Second”. - (2) extract the month from the date object using <code>format()</code>, which only requires the date object and the desired output format. In this case, the output format is “%m”</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df$Timestamp &lt;-<span class="st"> </span><span class="kw">strptime</span>(df$Timestamp, <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)
+  df$month &lt;-<span class="st"> </span><span class="kw">format</span>(df$Timestamp, <span class="st">&quot;%m&quot;</span>)</code></pre></div>
+<p>Upon doing so, we can now graph the data. Of particular relevance to our analysis is the <em>PV_PVInsolationHArray</em> variable that contains an estimate of amount of sunlight that impacting the solar array during the last hour. R has a number of rudimentary graphing capabilities such as <code>plot()</code>, which accepts two vectors of data and renders a scatter plot. Below, <code>plot()</code> outputs a scatter plot where <em>month</em> is the x or horizontal axis variable and <em>PV_PVInsolationHArray</em> as the y or vertical axis variable.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">plot</span>(df$month,df$PV_PVInsolationHArray)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<p>The result is not particularly compelling or meaningful as the points are too many and too dense to discern a pattern. The graph could use use style enhancements. Perhaps boxplot would be more suitable to summarize the shape of the PV distribution for each month.</p>
+<p>Enter <em>ggplot2</em>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(ggplot2)</code></pre></div>
+<p>Upon loading the <em>ggplot2</em> library, we can quickly get to work. The bare minimum syntax to render a stylized boxplot:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>([dataframe goes here], <span class="kw">aes</span>([x value here], [y value here])) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">colour =</span> <span class="st">&quot;[colour]&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;[colour]&quot;</span>)  </code></pre></div>
+<p>Putting this into action yields the following:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="kw">factor</span>(month),PV_PVInsolationHArray)) +<span class="st"> </span>
+<span class="st">  </span><span class="kw">geom_boxplot</span>(<span class="dt">colour =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>)  </code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-52-1.png" width="672" /></p>
+<p>From this graph, we can see the peak sunlight months are between May and August where May and August. The third quartile (the upper end of each box) is protracted in May and August, indicating that there are hourly periods where the light is more intense during those months.</p>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="23">
+<li id="fn23"><p><a href="https://www.census.gov/geo/maps-data/data/cbf/cbf_cds.html" class="uri">https://www.census.gov/geo/maps-data/data/cbf/cbf_cds.html</a><a href="a-light-introduction-to-programming.html#fnref23">↩</a></p></li>
+<li id="fn24"><p><a href="https://www.census.gov/data/datasets/2014/demo/popproj/2014-popproj.html" class="uri">https://www.census.gov/data/datasets/2014/demo/popproj/2014-popproj.html</a><a href="a-light-introduction-to-programming.html#fnref24">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-and-its-many-contexts.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="data-manipulation-wrangling-processing.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

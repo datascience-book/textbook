@@ -1,0 +1,34 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 11
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+## Six Common Techniques 
+In the context of healthcare coverage, we will use KNNs to illustrate the process of training a classifier. With the practical aspects in mind, we will explore two types of tree-based learning, namely decision trees and random forests. Then wrap up with logistic regression and a comparison of the performance of each of the four classifiers. 
+
+To start, we will need to import data from the healthcare coverage example. The data was obtained from the 2015  American Community Survey (ACS), which is available from [US Census Bureau website](https://www2.census.gov/programs-surveys/acs/data/pums/2015/1-Year/csv_pga.zip). So that this chapter can focus more on classification methods, data has been pre-processed, and any data wrangling that is shown herein is specific to each method. Note that the sample has been balanced such that people who have and do not have health insurance are represented in equal proportions.
+
+The file can be imported using the `digIt` library. Upon loading the data set, five string variables will be converted into factors.
+
+```{r, message = FALSE, warning = FALSE}
+#Import
+  library(digIt)
+  health <- digIt("acs_health")
+  
+#Factors
+  factor_vars <- c("cit", "mar", "schl", "esr")
+  for(i in factor_vars){
+    health[,i] <- as.factor(health[,i])
+  }
+  str(health)
+```

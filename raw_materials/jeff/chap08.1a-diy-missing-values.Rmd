@@ -1,0 +1,204 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 10
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+
+### What's a good way to fill-in missing data? 
+In practice in `R`, KNNs can be trained using the `knn()` function in the `class` library. However, this function is best suited for discrete target variables. To illustrate KNN regressions, we will write a function from scratch and illustrate using remote sensed data. Remote sensing is data obtained through scanning the Earth from aircrafts or satellites. Remote sensed earth observations yield information about weather, oceans, atmospheric composition, human development among other things -- all are fundamental for understanding the environment. As of Jan 2017, the National Aeronautics and Atmospheric Administration (NASA) maintains two low-earth orbiting (LEO) satellites named Terra and Aqua, each of which takes images of the Earth using the Moderate Resolution Imaging Spectroradiometer (MODIS) instrument. Among the many practical scientific applications of MODIS imagery is the ability to sense vegetation growth patterns using the Normalized Difference Vegetation Index (NDVI) -- a measure ranging from -1 to +1 that indicates that amount of live green on the Earth's surface. Imagery data is a $n \times m$ gridded matrix where each cell represents the NDVI value for a given latitude-longitude pair.
+
+NASA's Goddard Space Flight Center (GSFC) publishes monthly [MODIS NDVI composites](https://neo.sci.gsfc.nasa.gov/view.php?datasetId=MOD13A2_M_NDVI). For ease of use, the data has been reprocessed such that data are represented as three columns:  latitude, longitude, and NDVI. In this example, we randomly select a proportion of the data (~30%), then use KNNs to interpolate the remaining 70% to see how close we can get to replicating the original dataset. In application, scientific data that is collected _in situ_ on the Earth's surface may take on a similar format -- represembling randomly selected points that can be used to generalize the measures on a grid, even where measures were not taken. This process of interpolation and gridding of point data is the basis for inferring natural and manmind phenomena beyond where data was sampled, whether relating to the atmosphee, environment, infrastructure, among other domains.
+
+To start, we'll use the `digIt()` library to import the NASA extract.
+
+```{r, message = FALSE, warning=FALSE}
+  library(digIt)
+  df <- digIt("ndvi")
+```
+
+
+To view the data, we can use the `geom_raster()` option in the `ggplot2` library. Notice the color gradations between arrid and lush areas of vegetation.
+```{r, fig.height = 3, fig.cap = "Rendering of NDVI for October 2016"}
+  library(ggplot2)
+  ggplot(df, aes(x=lon, y=lat)) +
+              geom_raster(aes(fill = ndvi)) +
+              ggtitle("NDVI: October 2016") + 
+              scale_fill_gradientn(limits = c(-1,1), colours = rev(terrain.colors(10)))
+```
+
+The NDVI data does not provide values on water. As can be seen below, cells that do not contain data are represented as 99999 and are otherwise values between -1 and +1.
+```{r, echo=FALSE}
+  temp <- df[df$ndvi==99999,]
+  temp1 <- df[df$ndvi<=1,]
+  print(rbind(temp[1:3,], temp1[1:3,]))
+```
+
+For this example, we will focus on an area in the Western US and extract only a 30% sample.
+```{r}
+  #Subset image to Western US near the Rocky Mountains
+    us.west <- df[df$lat < 45 & df$lat > 35 &  df$lon > -119 & df$lon < -107,]
+  
+  #Randomly selection a 30% sample
+    set.seed(32)
+    sampled <- us.west[runif(nrow(us.west)) < 0.3 & us.west$ndvi != 99999,]
+```
+
+A KNN algorithm is fairly simple to build when the scoring or voting function is a simple mean. All that is required is to write a series of a loops to calculate the nearest neighbors for any value of $k$. The ``knnMean`` function should take a training set (input features - ``x.train`` and target - ``y.train``), and a test set (input features - ``x.test``).
+
+
+```{r}
+  knnMean <- function(x.train, y.train, x.test, k){
+      #
+      # Calculates the mean of k-nearest neighbors 
+      #
+      # Args:
+      #  x.train and y.train are the input features and target feature for the training set
+      #  x.test is the test set to be scored
+      #  k is the number of neighbors 
+      #
+      # Return:
+      #  Vector of kNN-based means
+      
+    
+    #Set vector of length of test set
+      output <-  vector(length = nrow(x.test))
+    
+    #Loop through each row of the test set
+      for(i in 1:nrow(x.test)){
+        
+        #extract coords for the ith row
+          cent <- x.test[i,]
+        
+        #Set vector length
+          dist <- vector(length = nrow(x.train))
+        
+        #Calculate distance by looping through inputs
+          for(j in 1:ncol(x.train)){
+            dist <- dist + (x.train[, j] - cent[j])^2
+          }
+          dist <- sqrt(dist)
+        
+        #Calculate rank on ascending distance, sort by rank
+          df <- data.frame(id = 1:nrow(x.train),rank = rank(dist))
+          df <- df[order(df$rank),]
+        
+        #Calculate mean of obs in positions 1:k, store as i-th value in output
+          output[i] <- mean(y.train[df[1:k,1]], na.rm=T)
+      }
+    return(output)
+  }
+
+```
+
+The hyperparameter $k$ needs to be tuned. We thus also should write a function to find the optimal value of $k$ that minimizes the loss function, which is the Root Mean Squared Error ($\text{RMSE} = \sigma =  \sqrt{\frac{\sum_{i=1}^n(\hat{y_i}-y_i)^2}{n}}$.).
+
+```{r}
+  knnOpt <- function(x.train, y.train, x.test, y.test, max, step){
+      #
+      # Conducts a grid search for KNN and returns RMSE for values of k
+      #
+      # Args:
+      #  x.train and y.train = the input features and target feature for the training set
+      #  x.test = the test set to be scored
+      #  max = the maximum number of neighbors to be considered
+      #  step = number of steps between 1 and max k
+      #
+      # Return:
+      #  data frame of RMSE by k
+      
+    #create log placehodler
+    log <- data.frame()
+    
+    for(i in seq(1, max, step)){
+      #Run KNN for value i
+        yhat <- knnMean(x.train, y.train, x.test, i)
+      
+      #Calculate RMSE
+        rmse <- round(sqrt(mean((yhat  - y.test)^2, na.rm=T)), 3)
+        
+      #Add result to log
+        log <- rbind(log, data.frame(k = i, rmse = rmse))
+    }
+    
+    #sort log
+    log <- log[order(log$rmse),]
+    
+    #return log
+    return(log)
+  }
+```
+
+Normally, the input features (e.g. latitude and longitude) should be normalized, but as the data are in the same coordinate system and scale, no additional manipulation is required. From the 30% sampled data, a training set is subsetted containing 70% of sampled records and the remaining is reserved for testing. 
+
+```{r}
+  #Set up data
+    set.seed(123)
+    rand <- runif(nrow(sampled))
+  
+  #training set
+    xtrain <- as.matrix(sampled[rand < 0.7, c(1,2)])
+    ytrain <- sampled[rand < 0.7, 3]
+    
+  #test set
+    xtest <- as.matrix(sampled[rand >= 0.7, c(1,2)]) 
+    ytest <- sampled[rand >= 0.7, 3]
+
+```
+
+The algorithm can now be placed into testing, searching for the optimal value of $k$ along at increments of $1$ from $k = 1$ to $ k = \text{n}$. Based on the grid search, the optimal value is $k = 4$.
+```{r, fig.height = 3, fig.cap = "RMSE for various tested values of k"}
+  #opt
+    logs <- knnOpt(xtrain, ytrain, xtest, ytest, nrow(xtest), 1)
+
+  #Plot results
+    ggplot(logs, aes(x = k, y = rmse)) +
+            geom_line() + geom_point() + ggtitle("RMSE vs. K-Nearest Neighbors")
+```
+
+With this value, we can now put this finding to the test by plotting the interpolated data as a raster. Using the `ggplot` library, we will produce six graphs to illustrate the tolerances of the methods: the original and sampled images as well as a sampling of rasters for various values of $k$.
+```{r, fig.height=6, fig.cap = "Comparison of Predicted NDVI vs. Actual."}
+#Original
+  full <- ggplot(us.west, aes(x=lon, y=lat)) +
+            geom_raster(aes(fill = ndvi)) +
+            ggtitle("Original NASA Tile") +
+            scale_fill_gradientn(limits = c(-1,1), colours = rev(terrain.colors(10)))
+
+#30% sample
+  sampled <- ggplot(sampled, aes(x=lon, y=lat)) +
+            geom_raster(aes(fill = ndvi)) +
+            ggtitle("Sample: 30%") +
+            scale_fill_gradientn(limits = c(-1,1), colours = rev(terrain.colors(10)))   
+  
+#Set new test set
+  xtest <- as.matrix(us.west[, c(1,2)]) 
+  
+#Test k for four different values
+  for(k in c(1, 4, 10, 100)){
+    yhat <- knnMean(xtrain,ytrain,xtest, k)
+    pred <- data.frame(xtest, ndvi = yhat)
+    rmse <- round(sqrt(mean((yhat  - us.west$ndvi)^2, na.rm=T)), 3)
+    
+    g <- ggplot(pred, aes(x=lon, y=lat)) +
+      geom_raster(aes(fill = ndvi)) +
+      ggtitle(paste0("kNN (k =",k,", RMSE = ", rmse,")")) +
+      scale_fill_gradientn(limits = c(-1,1), colours = rev(terrain.colors(10)))
+    
+    assign(paste0("k",k), g)
+  }
+ 
+  #Graphs plotted
+    library(gridExtra) 
+    grid.arrange(full, sampled, k1, k4, k10, k100, ncol=2)
+```
+
+

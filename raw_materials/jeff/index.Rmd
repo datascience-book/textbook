@@ -1,0 +1,21 @@
+--- 
+title: " "
+author: ""
+date: ''
+output: pdf_document
+description: Introduction
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+# Data Science: A Practical Strategy (v0.2) {-}
+##### _Jeff Chen ([contact@jeffchen.org](mailto:contact@jeffchen.org))_ {-}
+##### _Dan Hammer  {-}
+##### Version as of January 2018 {-}
+
+© 2018 Jeff Chen and Dan Hammer. All Rights Reserved.
+

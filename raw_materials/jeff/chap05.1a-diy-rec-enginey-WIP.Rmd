@@ -1,0 +1,249 @@
+--- 
+title: "Data Analytics as Strategy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 12 - Rec engines
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+subtitle: A Handbook for Launching a Data Analytics Practice
+biblio-style: apalike
+---
+
+### Given product [A], which other products [X, Y, Z] should I recommend?
+
+__Motivation__
+
+
+__Principles__ 
+
+Two types of 
+Item-to-Item collaborative filtering 
+ 
+
+__A Worked Example__
+
+Consumer-level purchasing behavior is mostly collected on e-commerce proprietary systems or available for purchase from data aggregators. However, there is an anonymized, publically available, person-level data set that is published by the U.S. Bureua of Labor Statistics (BLS). The BLS Consumer Expenditure Survey ([CEX](https://www.bls.gov/cex/)) provides an in-depth view into Americans' purchasing patterns. The survey is divided into two parts. The first is an interview for larger purchases and the second is a diary survey focuses on frequently purchased items. These surveys are primarily aimed at informing the market basket of the Consumer Price Index (CPI). From an applied perspective, this data can be used to illustrate the mechanics of producing an item-to-item matrix through collaborative filtering (CF). 
+
+Data for 2010 through 2016 has been aggregated and processed into a convenient format where each row represents a consumption unit (essentially a household) and each column represents a different type of item. Each household collects data on two separate weeks in the same year, but for the purpose of this exercise, the two weeks' purchases are collapsed into one. 
+
+To kick off this exercise, we will first load the data using the `digIt()` function. The data is also avalable at [https://s3.amazonaws.com/dspp/cex_binary_matrix.Rda](https://s3.amazonaws.com/dspp/cex_binary_matrix.Rda).
+
+\vspace{12pt}
+```{r, message = FALSE, warning = FALSE}
+library(digIt)
+purchased <- digIt("cex_binary")
+```
+\vspace{12pt}
+
+In total, the dataset contains $n = 82809$ records with $k = 548$ purchase items plus a household ID.  Each feature provides a highly detail description with a broad range of products such as candy, bicycles, and wine.
+
+\vspace{12pt}
+```{r, message = FALSE, echo = FALSE}
+examples <- colnames(purchased)[2:549]
+examples <- gsub("\\s{2,10}","",examples)
+examples <- gsub("(\\.{1,10})"," ",examples)
+examples <- gsub(" and ", " & ", examples)
+set.seed(331)
+examples <- examples[order(runif(length(examples)))]
+examples <- examples[1:40]
+examples[nchar(examples) >= 17] <- paste0(substr(examples[nchar(examples) >= 17],1,17), "...")
+knitr::kable(matrix(examples, ncol = 4, nrow = 10), booktab =TRUE, caption = "40 types of purchase items from the BLS CEX data set")
+```
+
+Each feature is a binary indicator of whether a given household had purchased a given item during the data collection period. It becomes easy to see that overlaps between households may serve as the basis of finding items that may be purchased together. For example, an examination of the overlap between items would indicate the apples and citrus are more related than biscuits. Empirically, we find that the cosine similarity $cos(X,Y) = \frac{\sum{(X Y)}}{\sqrt{\sum{X^2}}\sqrt{\sum{Y^2}}}$ of apples and biscuits is `0.58` and apples and citrus is `0.77`, confirming our initial observation. 
+
+```{r, message = FALSE, warning = FALSE, echo = FALSE}
+knitr::kable(purchased[c(1,100,9000,30000,20000, 80089),c(1,10,33,99)], booktab =TRUE, 
+             caption = "View of six random observations and three randomly selected items", 
+             col.names = c("unit id","apples", "biscuit & rolls", "citrus fruits excl. oranges"),
+             row.names = FALSE)
+```
+
+Imagine the pain of manually calculating and modifying a formula to calculate the cosine similarity. For a matrix of 500+ items, the calculation will need to be performed up to 250,000 times. To streamline the process, we write two functions to facilitate computation. The first `cosSim()` calculates the cosine similarity for two vectors. The second `cosSimMat()` produces an item-item recommendation list.
+
+\vspace{12pt}
+```{r, message = FALSE, warning = FALSE}
+cosSim <- function(a, b){
+  # Desc.
+  #   Returns cosine similarity for two vectors
+  # 
+  # Args.
+  #   Two numeric vectors
+  #
+  # Returns.
+  #   A numeric value between 0 and 1
+  #
+    complete <- !is.na(a) & !is.na(b)
+    a <- a[complete]
+    b <- b[complete]
+    z <- sum(a * b) / (sqrt(sum(a^2)) * sqrt(sum(b^2)))
+    return(z)
+}
+```
+
+To test out the function, we correlate "sirloin.steak" and "sauces.and.gravies".
+```{r, message = FALSE, warning = FALSE}
+cosSim(purchased$sirloin.steak, purchased$sauces.and.gravies)
+```
+
+As a next step, we whittle down the data set to items that were purchased more than 3000 times across all households. This is done for convenience as calculating all pairs of cosine similarity values is computationally costly.
+
+Reduce the sample just for illustrative purposes
+```{r, message = FALSE, warning = FALSE}
+#Items
+  items <- purchased[,2:ncol(purchased)]
+
+#Calculate the number of times an item was purchased (sum by column)
+  column.sums <- apply(items, 2, sum)
+
+#Keep items that were purchased at least 3000 times
+  items <- items[, column.sums > 3000]
+  
+```
+
+With the item list cut down to a manageable set, a new function `cosSimMat()` is written to populate the similarity matrix in long form. While there are far faster methods of calculating the similarity matrix such as the `cosine()` function in the `coop` package, there is no better way of gaining an expert understanding of such problems than through writing the functions from the ground up. 
+
+
+```{r, message = FALSE, warning = FALSE}
+
+cosSimMat <- function(items){
+   #
+  # Desc:
+  #   Constructs item-to-item similarity matrix 
+  # 
+  # Args:
+  #   items = matrix of items purchased by consumer
+  #
+  # Returns:
+  #   A data frame with the similarity score for each item-item pair
+  #
+  
+  ##Find all unique item-item combinations
+  ##as data frame of column index pairs
+  combos <- expand.grid(x = 1:ncol(items), y = 1:ncol(items))
+  index <- !duplicated(t(apply(combos, 1, sort)))
+  combos <- combos[index, ]
+  
+  #Loop through each combination based on combo index
+  out <- lapply(1:nrow(combos), function(i){
+        left <- combos[i, "x"]
+        right <- combos[i, "y"]
+        score <- cosSim(items[, left], items[, right])
+        return(data.frame(x = left, y = right, score = score))
+      })
+  
+  #Populate item names
+  df <- do.call(rbind, out)
+  df$x <- colnames(items)[df$x]
+  df$y <- colnames(items)[df$y]
+  return(df)
+}
+```
+
+With the function fully built, run `cosSimMat()` on the items matrix, then examine the first six items as a check. Notice that the output may be challenging to navigate. 
+
+```{r, eval = FALSE}
+recs <- cosSimMat(items)
+head(recs, 6)
+```
+```{r, echo = FALSE, message=FALSE, warning=FALSE}
+recs <- cosSimMat(items)
+knitr::kable(head(recs, 6), caption = "Example recommendations")
+```
+
+Thus, to make navigating the matrix an accessible task, we create a simple utility function. 
+```{r}
+
+findItem <- function(recs, item.name){
+  #
+  # Desc:
+  #   Conducts keywords search for item names
+  # 
+  # Args:
+  #   recs = data frame output from cosSimMat
+  #   item.name = string containing part of item name to be searched
+  #
+  # Returns:
+  #   String vector of matched names
+  #
+  itemList <- unique(c(grep(item.name, recs[["x"]], value = TRUE), grep(item.name, recs[["y"]], value = TRUE)))
+  return(itemList)
+}
+```
+
+We now test the `findItem()` function with the term "veg".
+```{r}
+findItem(recs, "veg")
+```
+
+
+To retrieve the top 10 results from the recommendations, the `getRec()` function is developed and returns results in a readable format.
+
+```{r}
+
+getRec <- function(recs, item.id, len = 10){
+  #
+  # Desc:
+  #   Returns top recommended items
+  # 
+  # Args:
+  #   recs = data frame output from cosSimMat
+  #   item.id = matched series name (use getItem to find items)
+  #   len = number of results. Default = 10
+  #
+  # Returns:
+  #   Data frame of most associated items from recs file
+  #
+  
+  ##Get matching records
+  index <- unique(c(grep(item.id, recs$x), grep(item.id, recs$y)))
+  results <- recs[index, ]
+  
+  ##Clean up output
+  results <- results[results$x != results$y, ]
+  results$x[results$x == item.id] <- results$y[results$x == item.id]
+  results <- results[order(-results$score),]
+  
+  #
+  results$x <- gsub("\\.", " ", results$x)
+  results$x <- substr(results$x, 1, 40)
+  results <- results[1:len, c("x","score")]
+  colnames(results) <- c("item","score")
+  
+  return(results)
+}
+
+```
+
+
+The value of the retrieval function is clear -- if a consumer has purchased _fresh and canned vegetable juices_, then perhaps there is an opportunity to canned and bottled fruit juice and milk to a lesser degree. 
+
+```{r, eval = FALSE}
+getRec(recs, "fresh.and.canned.vegetable.juices")
+```
+```{r, echo = FALSE}
+res <- cbind(getRec(recs, "beer.and.ale"), getRec(recs, "frozen.vegetables"))
+knitr::kable(res, booktab = TRUE, row.names = FALSE, digits = 3,
+caption = "Recommendations for (1) Beer \\& Ale and (2) Frozen Vegetables",
+col.names = c("Matches: Beer & Ale", "Score","Matches: Frozen Vegetables", "Score"))
+```
+
+This example is straight-forward from an technical perspective, but there are moving pieces and conditions that effect the ultimate success of a recommendation engine. In an item-item recommender, _data is needed_ -- an obvious necessity. Thus, an item-item strategy is only possible when a system has been collecting data for some time. If a recommender is absolutely required, the _cold start_ problem will force one to make certain assumptions on how to recommend information in the absence of observed human behavior. 
+An alternative strategy is content-based, which requires that the qualities of products. in an inventory (e.g. type of product, price, characteristics) are articulated as generalizable features and users are asked to provide their preferences, which in turn map to the product features. Then, the features for each product and customer preferences are compared using a Jaccard Similarity Coefficient -- essentially looking for the overlap of qualities. 
+
+There is much more that goes into a recommendation engine than just the calculation. How the recommendations are surfaced to consumer is a matter of user experience and interface design, which may have a large effect on whether the recommendations are acceepted by users. More often than not, the construction of a recommender system is a team effort, requiring data scientists, web developers, data engineers and product managers to create a cohesive, user-friendly but technically sound product.
+
+
+
+__Exercises__
+
+Write a new function `jaccardSim()` to calculate the Jaccard Similarity Coefficient: 
+
+$$J(X,Y) = \frac{|X \cap Y|}{|X \cup Y|} = \frac{|X \cap Y|}{|X| + |Y| - |X \cap Y|}$$
+
+Then reconstruct the similarity matrix using the same steps as shown in the DIY. Compare the matches from each cosine similarity and Jaccard similarity results for each *Beer & Ale* and *Frozen Vegetables*.

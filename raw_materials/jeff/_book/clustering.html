@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="similarity.html">
+<link rel="next" href="model-validation-how-do-we-know-what-we-know.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="clustering" class="section level1">
+<h1><span class="header-section-number">Chapter 6</span> Clustering</h1>
+<div id="everything-is-related-to-everything-else" class="section level2">
+<h2><span class="header-section-number">6.1</span> Everything is related to everything else</h2>
+<p>In a 1970 article, Geographer Waldo Tobler wrote “Everything is related to everything else, but near things are more related than distant things.”<a href="#fn42" class="footnoteRef" id="fnref42"><sup>42</sup></a> Tobler was getting at the idea that people and phenomena tend to <em>cluster</em> together – things that are clustered have short distances from one another relative to other things. Perhaps the easiest way to see the effect of spatial dependence is in night time satellite imagery. Across the US’ 35 largest cities, the urban landscape takes shape with lights clustered along streets and in certain parts of town, sometimes clustering in the main thoroughfares and other cases in residential areas and major roadways. We can see the clusters, but how does one measure it?</p>
+<div class="figure">
+<img src="assets/clustering/img/satellite_imagery.png" alt="Night time imagery from the NOAA-NASA Suomi NPP Satellite’s Visible Infrared Imaging Radiometer Suite (VIIRS)" />
+<p class="caption">Night time imagery from the NOAA-NASA Suomi NPP Satellite’s Visible Infrared Imaging Radiometer Suite (VIIRS)</p>
+</div>
+<p>The idea of clustering can extend beyond just time and space. In marketing, consumers are regularly grouped into clusters that represent distinct behaviors and preferences. For example, hotel-goers of high end resorts will be more likely part of a specific affluent customer segment than those who choose to stay at a budget motel, which in turn form the basis of characterizing demand segments. In looking at markets, certain industries may be viewed as a cluster of economic activity as they rise and fall together due to their dependence on one another or their products are complements in the market. In epidemiology, outbreaks of a disease tend to be physically clustered together. In some law firms, data scientists may develop topic modeling algorithms to automatically tag and cluster hundreds of thousands of documents for improved search. <em>Unsupervised learning</em> can help. It is a branch of machine learning that deals with unlabeled data to identify statistically-occurring patterns – let the data fall where they may.</p>
+<p>Building upon measures of similarity and distance, this chapter provides a short survey of types of unsupervised learning and its uses.</p>
+</div>
+<div id="technical-foundations" class="section level2">
+<h2><span class="header-section-number">6.2</span> Technical Foundations</h2>
+<p>The fundamental idea of clustering methods is to express a set of attributes in two or more discrete groups. A visual inspection of the probability distribution of a data series often will give clues as to what natural clusters may lie within. For example, the bi-modal and quad-modal distributions below can be easily grouped into clear groups. Visually, the goal is to find the center of mass of sub-distributions, then assign values that are closest to a proposed center.</p>
+<div class="figure"><span id="fig:unnamed-chunk-247"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-247-1.png" alt="A multi-modal distribution naturally yield two clusters" width="672" />
+<p class="caption">
+Figure 6.1: A multi-modal distribution naturally yield two clusters
+</p>
+</div>
+<p>The same visual process can easily guide clustering in two and three dimensions. Generally, greater distance between the masses – or separability – allows for less ambiguous cut offs between two groups.</p>
+<div class="figure"><span id="fig:unnamed-chunk-248"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-248-1.png" alt="Two- and three- dimensional clusters." width="672" />
+<p class="caption">
+Figure 6.2: Two- and three- dimensional clusters.
+</p>
+</div>
+<p>The task of clustering becomes complicated when subdistributions overlap in space – how to tell one from another? Imagine attempting to find clusters in four-dimensional space let alone n-dimensional space; the visual approach is no longer an option.</p>
+<div class="figure"><span id="fig:unnamed-chunk-249"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-249-1.png" alt="Case of mixed distributions" width="672" />
+<p class="caption">
+Figure 6.3: Case of mixed distributions
+</p>
+</div>
+<p>Clustering algorithms are designed to explore underlying patterns when labeled data are not available. The number of strategies used to cluster data points is as numerous as the approaches used to characterize similarity. Some methods such as <em>k-means</em> are focused on finding a fixed number of centroids, or finding center masses of clusters. More agglomerative approaches like <em>hierarchical clustering</em> examine pairwise distances between all points and group points together first in order to capture a hierarchy of relationships. While there are many other techniques, we focus on these two methods given their ease of use and versatility.</p>
+<div id="k-means" class="section level3">
+<h3><span class="header-section-number">6.2.1</span> K-Means</h3>
+<p>The <em>k-means</em> clustering is a technique to identify clusters of observations by treating features as coordinates in n-dimensional space. The <em>k</em> in k-means is specified by the analyst – it is the number of clusters that will be returned upon running the algorithm. <em>k</em> is not a known quantity and will need to be optimized by the analyst.</p>
+<p>The technique is fairly straight forward to optimize and is one that is iterative as shown in the pseudocode below:</p>
+<pre><code>  Initialize k centroids 
+  Repeat following until convergence:
+    Calculate distance between each record n and centroid k
+    Assign points to nearest centroid 
+    Update centroid coordinates as average of each feature per cluster</code></pre>
+<p>The first step involves selecting <span class="math inline">\(k\)</span>-number of random centroids from the feature space and giving each centroid a label. For each observation in the data, calculate the Euclidean distance ($ d(x_1,x_2) = $) to all initial centroids, then assign each point to the closest centroid. This is known as the <em>assignment</em> step – all points take the label of its closest centroid. It is unlikely that this initial assignment is likely suboptimal, thus the algorithm will <em>update</em> the centroid coordinates by calculating the mean value of each feature within each cluster. Upon doing so, this assignment-update procedure is iteratively repeated until the centroid coordinates no longer change between iterations (see illustration below).</p>
+<div class="figure"><span id="fig:unnamed-chunk-250"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-250-1.png" alt="Illustration of k-means algorithm from initialization to convergence" width="672" />
+<p class="caption">
+Figure 6.4: Illustration of k-means algorithm from initialization to convergence
+</p>
+</div>
+<p>Central to algorithm is goal to find some set of <span class="math inline">\(k\)</span> coordinates that minimize the within-cluster sum of squares (WSS):</p>
+<p><span class="math display">\[arg min \sum_{j=1}^k\sum_{i=1}^n ||x_{i,j} - \mu_j||^2\]</span></p>
+<p>where the sum of the distance <span class="math inline">\(x\)</span> of each point <span class="math inline">\(i\)</span> in cluster <span class="math inline">\(j\)</span> to its corresponding centroid of <span class="math inline">\(j\)</span>. Distance is calculated in terms of all input features <span class="math inline">\(x\)</span> and the <span class="math inline">\(j^{th}\)</span> cluster centroid <span class="math inline">\(\mu\)</span>.</p>
+<div id="assumptions" class="section level4 unnumbered">
+<h4>Assumptions</h4>
+<p>While k-means is a simple algorithm, its performance and effectiveness is guided by a number of key assumptions at each step of computation.</p>
+<ul>
+<li><p><em>Scale</em>. As k-means treats features as coordinates, each feature is assumed to have equal importance, which in turn means that results may be inadvertently biased simply by the scale and variances of underlying features. To remedy this problem, input features should be mean-centered standardized (<span class="math inline">\(\frac{x_i-\mu}{\sigma}\)</span>) or otherwise transformed to reduce scaling effects. Note, however, that the influence of scaling may not always be removed. For example, a data set containing both continuous and binary features would likely perform quite poorly as Euclidean distances are not well-suited for binary. Thus, where possible, apply k-means when the formats are homogeneous, doing so using Euclidean L2-distances for continuous and binary distances for matrices of discrete features.</p></li>
+<li><p><em>Missing Values</em>. K-Means do not handle missing values as each data point is essentially a coordinate. Thus, often times k-means models are usually reserved for complete data sets.</p></li>
+<li><p><em>Stability of Clusters</em>. The initialization step of the algorithm chooses <span class="math inline">\(k\)</span> initial centroids at random. The initial random selection is known to lead to suboptimal and unstable clusters. The instability in the results can be observed when running the algorithm for some value of <span class="math inline">\(k\)</span> multiple times, sometimes leading to different cluster composition: holding <span class="math inline">\(k\)</span> constant between model runs, a record <span class="math inline">\(i = 1\)</span> may be in the same cluster as <span class="math inline">\(i = 10, 23, 40\)</span> in one set of results, but only with <span class="math inline">\(i = 23\)</span> in another model run. The stability of clusters may be due to a number of things, such as a suboptimal choice of <span class="math inline">\(k\)</span>, a high number features that add noise to the optimization process, among others.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-251"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-251-1.png" alt="Comparison of a suboptimal result and optimal result" width="672" />
+<p class="caption">
+Figure 6.5: Comparison of a suboptimal result and optimal result
+</p>
+</div>
+<ul>
+<li><em>Choice of K</em>. Selecting the best value of <span class="math inline">\(k\)</span> is arguably a subjective affair: there is a lack of consensus regarding how to identify <span class="math inline">\(k\)</span>. One method known as the <em>Elbow method</em> chooses <span class="math inline">\(k\)</span> at the inflection point where an additional cluster does not significantly reduce the variance explained or reduction of error. The simplest method of identifying the inflection point can be seen by plotting the percent WSS over all values of <span class="math inline">\(k\)</span> that were tested. This approach is deceptively simple as the inflection point might not manifest itself in some data sets.</li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-252"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-252-1.png" alt="Elbow method: Choose k at the inflection point" width="672" />
+<p class="caption">
+Figure 6.6: Elbow method: Choose k at the inflection point
+</p>
+</div>
+<p>An alternative, but far more computationally intensive approach involves calculating the <em>silhouette</em>, which is compares estimates the similarity of a given observation <span class="math inline">\(i\)</span> as compared to observations within and outside the cluster. The silhouette <span class="math inline">\(s(i)\)</span> is defined as:</p>
+<p><span class="math display">\[s(i) = \frac{b_i-a_i}{max(a_i,b_i)}\]</span></p>
+<p>where <span class="math inline">\(a_i\)</span> is the Euclidean distance between a point <span class="math inline">\(i\)</span> to other points in the same cluster, <span class="math inline">\(b_i\)</span> is the minimum distance between <span class="math inline">\(i\)</span> and any other cluster the sample. The values of <span class="math inline">\(s(i)\)</span> fall between -1 and 1, where 1 indicates that an observation is well-matched with its cluster and -1 indicates that fewer or more clusters may be required to achieve a better match. Note that silhouettes do not scale well with very large data sets as a <span class="math inline">\(n \times n\)</span> similarity matrix (e.g. distance between all points to all points). Often times, a smaller sample should be used to enable the use of this method.</p>
+<p>For a step-by-step walkthrough of the application of the k-means algorithm, see <em>How much of the ground is covered in [vegetation/buildings/economic activity]?</em> in the DIY section of this chapter.</p>
+</div>
+</div>
+<div id="hierarchical-clustering" class="section level3">
+<h3><span class="header-section-number">6.2.2</span> Hierarchical clustering</h3>
+<p>Whereas k-means initializes on random centroids, hierarchical clustering take a more computationally costly ground-up approach:</p>
+<pre><code>Calculate distance d between all points
+
+All points are start as their own clusters (singletons)
+Do until there is only one cluster:
+  Find the closest pair of clusters in terms of linkage distance
+  Merge into a single cluster 
+  Recalculate distances from new cluster to all other clusters
+Stop when all points are in one cluster
+</code></pre>
+<p>For a step-by-step walkthrough of the application of the hierarchical clustering algorithm, see <em>How do I characterize the demand for [products/services]? </em> in the DIY section of this chapter.</p>
+</div>
+</div>
+<div id="diy-4" class="section level2">
+<h2><span class="header-section-number">6.3</span> DIY</h2>
+
+<div id="how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> How much of the ground is covered in [vegetation/buildings/economic activity]?</h3>
+<p>Photographs contain data. Some are more structured than others. Satellite imagery, for example, can be directly used to infer patterns on the ground, especially relating to natural phenomena like agriculture. Free imagery is readily available from various satellite instruments such as Aqua/Terra MODIS (NASA), ASTER (NASA/Japan), VIIRS (NASA/NOAA), Landsat Operational Land Imager (NASA/USGS), among others. Private firms such as Digital Globe and Planet also operate their own satellites and provide commercial data services.</p>
+<p>Suppose there is a need to know how much healthy vegetation is present in farm lands in the US heartland. Satellite imagery can easily be used to support this task. A U.S.-Japan team used the Advanced Spaceborne Thermal Emission and Reflection Radiometer (ASTER) instrument on the Terra satellite to capture images of crop fields in Kansas. The image below captures a 37.2-km x 38.8-km area where green areas indicate healthy vegetation.<a href="#fn43" class="footnoteRef" id="fnref43"><sup>43</sup></a></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Library</span>
+  <span class="kw">library</span>(raster)
+  <span class="kw">library</span>(digIt)
+
+  img &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;color_segment_kansas&quot;</span>)
+  <span class="kw">plotRGB</span>(img)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-253"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-253-1.png" alt="Crops in Finney County KS. Via NASA/GSFC/METI/Japan Space Systems, and U.S./Japan ASTER Science Team" width="672" />
+<p class="caption">
+Figure 6.7: Crops in Finney County KS. Via NASA/GSFC/METI/Japan Space Systems, and U.S./Japan ASTER Science Team
+</p>
+</div>
+<p>Suppose the following question were asked:</p>
+<blockquote>
+<p>How much of the crop field is covered in healthy vegetation?</p>
+</blockquote>
+<p>In earth science, satellite imagery can be converted into vegetation indices, then cutoffs can be applied. The choice of a cutoff runs the risk of subjective biases. The alternative is to use k-means clustering to conduct <em>color quantization</em>, which is a process that reduces the number of colors in an image into fewer distinct colors.</p>
+<p>Photographs are comprised of a three-dimensional array that essentially resembles three matrices sandwiched together. Each matrix is an <span class="math inline">\(n \times m\)</span> matrix for each red-green-blue (RGB). The goal is to cluster on the colors, which requires the each of the <span class="math inline">\(n \times m\)</span> matrices to be transformed into a two dimensional matrix with 3 columns (one for each color) and of length <span class="math inline">\(nm\)</span>. K-means is applied to this matrix to obtain color groups.</p>
+<p><strong>Getting Started</strong></p>
+<p>In the wild, the <code>digIt()</code> function is not available. An image would normally need to be downloaded and loaded as a <code>brick()</code> using the <code>raster</code> package. For simplicity, we use the <code>digIt</code> library to download and load the ASTER data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Library</span>
+  <span class="kw">library</span>(raster)
+  <span class="kw">library</span>(digIt)
+
+  img &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;color_segment_kansas&quot;</span>)</code></pre></div>
+<p>The image is converted into a matrix containing three vectors of equal length: one for each RGB value.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Dimensions</span>
+  <span class="kw">dim</span>(img)</code></pre></div>
+<pre><code>## [1] 2481 2589    3</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Convert image into columns</span>
+  data &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">as.vector</span>(img[[<span class="dv">1</span>]]), 
+                <span class="kw">as.vector</span>(img[[<span class="dv">2</span>]]), 
+                <span class="kw">as.vector</span>(img[[<span class="dv">3</span>]]))</code></pre></div>
+<p>With the data in the right shape, k-means can be applied. In this example, we use the <code>kmeans()</code> function that is built into R:</p>
+<p><code>kmeans(x, k)</code></p>
+<p>where:</p>
+<ul>
+<li><code>x</code> is a data frame or matrix of numerical values</li>
+<li><code>k</code> is the number of clusters</li>
+</ul>
+<p>The result of the <code>kmeans()</code> function contains a number of attributes such as the cluster assignment of each observation. To evaluate the fitness of the cluster, a silhouette statistic can be calculated using the <code>silhouette()</code> function in the <code>cluster</code> library:</p>
+<p><code>silhouette(cluster, distance)</code></p>
+<p>where:</p>
+<ul>
+<li><code>cluster</code> is the cluster assignment.</li>
+<li><code>distance</code> is a dissimilarity matrix of input features produced by <code>dist()</code>.</li>
+</ul>
+<p>Given the size of the input matrix (<span class="math inline">\(n = 2481 \times 2589 = 6423309\)</span>), the dissimilarity matrix is produced on a sample of <span class="math inline">\(n = 20000\)</span>.</p>
+<p>Below, k-means is tested for values of <span class="math inline">\(k = 2\)</span> to <span class="math inline">\(k = 10\)</span> using a random sample of <span class="math inline">\(n = 20000\)</span>. Before the loop, the sample is taken, then the dissimilarity matrix is calculated using the <code>dist()</code> function. Within the loop, k-means results are assigned to the object <code>res</code> from which the cluster assignments are extracted. The silhouette is then calculated and assigned to the <code>sil</code> object, from which the mean silhouette is estimated from observation level silhouettes (third column).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load cluster library</span>
+  <span class="kw">library</span>(cluster)
+  
+<span class="co">#Calculate distance object using sample of n = 10000</span>
+  <span class="kw">set.seed</span>(<span class="dv">10</span>)
+  subdata &lt;-<span class="st"> </span>data[<span class="kw">sample</span>(data, <span class="dv">20000</span>),]
+  d &lt;-<span class="st"> </span><span class="kw">dist</span>(subdata)
+  
+<span class="co">#Set up placeholder for silhouette values</span>
+  sil.out &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+  
+<span class="co">#Loop through values of k</span>
+  for(k in <span class="dv">2</span>:<span class="dv">10</span>){
+
+    <span class="kw">set.seed</span>(<span class="dv">20</span>)
+    
+    <span class="co">#Run k-means, save to o</span>
+    res &lt;-<span class="st"> </span><span class="kw">kmeans</span>(subdata, k)
+    
+    <span class="co">#Get silhouette</span>
+    sil &lt;-<span class="st"> </span><span class="kw">silhouette</span>(res$cluster, d)
+    
+    <span class="co">#Get summary values of silhouette</span>
+    temp &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">k.level =</span> k,
+                       <span class="dt">avg =</span> <span class="kw">mean</span>(sil[,<span class="dv">3</span>]))
+    sil.out &lt;-<span class="st"> </span><span class="kw">rbind</span>(sil.out, temp)
+  }</code></pre></div>
+<p>In color quantization exercises, lower values of <span class="math inline">\(k\)</span> should be used. In the case below, the grid search suggests that <span class="math inline">\(k = 2\)</span> provides the most favorable cluster results.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Plot result</span>
+  <span class="kw">plot</span>(sil.out[, <span class="kw">c</span>(<span class="st">&quot;k.level&quot;</span>, <span class="st">&quot;avg&quot;</span>)], <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, 
+       <span class="dt">ylab =</span> <span class="st">&quot;Mean Silhouette&quot;</span>, <span class="dt">xlab =</span> <span class="st">&quot;k&quot;</span>)
+  <span class="kw">points</span>(sil.out[, <span class="kw">c</span>(<span class="st">&quot;k.level&quot;</span>, <span class="st">&quot;avg&quot;</span>)], <span class="dt">pch =</span> <span class="dv">19</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-257"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-257-1.png" alt="Mean silhouette by k" width="672" />
+<p class="caption">
+Figure 6.8: Mean silhouette by k
+</p>
+</div>
+<p>The k-means model is then estimated on the entire data set for <span class="math inline">\(k = 2\)</span>. To visually check our results, we need to convert the vector of cluster assignments to a matrix with the same dimensions as the original image <code>img</code>. The matrix contains all the same information as an image, but is not in the right data class. Using <code>raster()</code>, the matrix can be converted into an raster image format containing cluster assignments.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#K values</span>
+  <span class="kw">set.seed</span>(<span class="dv">123</span>)
+  res &lt;-<span class="st"> </span><span class="kw">kmeans</span>(data, <span class="dv">2</span>)
+
+<span class="co">#Convert cluster labels into matrix</span>
+  mat &lt;-<span class="st"> </span><span class="kw">matrix</span>(res$cluster, 
+                <span class="dt">ncol =</span> <span class="kw">ncol</span>(img), 
+                <span class="dt">nrow =</span> <span class="kw">nrow</span>(img), 
+                <span class="dt">byrow =</span> <span class="ot">TRUE</span>)
+  img2 &lt;-<span class="st"> </span><span class="kw">raster</span>(mat)</code></pre></div>
+<p>With the data in the right form, the cluster assignments are rendered as an image. Notice that the healthy green areas are coded in green, which corresponds with cluster #2.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(img2, <span class="dt">box=</span><span class="ot">FALSE</span>, <span class="dt">yaxt =</span> <span class="st">&quot;n&quot;</span>,  <span class="dt">xaxt =</span> <span class="st">&quot;n&quot;</span>, 
+     <span class="dt">frame.plot =</span> <span class="ot">FALSE</span>, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;green&quot;</span>))</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-259"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-259-1.png" alt="Color quantization for k = 3" width="672" />
+<p class="caption">
+Figure 6.9: Color quantization for k = 3
+</p>
+</div>
+<p>To calculate the proportion of the land that is covered in healthy vegetation as well as approximate land area, we can use the following calculation:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">prop &lt;-<span class="st"> </span><span class="kw">mean</span>(mat ==<span class="st"> </span><span class="dv">2</span>)
+<span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;%Area = &quot;</span>, prop))</code></pre></div>
+<pre><code>## [1] &quot;%Area = 0.482713349147612&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;km2 = &quot;</span>, <span class="fl">37.2</span> *<span class="st"> </span><span class="fl">38.8</span> *<span class="st"> </span>prop))</code></pre></div>
+<pre><code>## [1] &quot;km2 = 696.729139625697&quot;</code></pre>
+
+</div>
+<div id="how-do-i-characterize-the-demand-for-productsservices" class="section level3">
+<h3><span class="header-section-number">6.3.2</span> How do I characterize the demand for [products/services]?</h3>
+<p>Clustering algorithms are useful for more exploratory purposes, especially for characterizing types of demand for services. In private industry, data on product consumption can be used to group types of customers and their preferences together, which in turn form the basis of customer segments. In the public sector, this is not the norm, but just because it is uncommon does not prevent it from being the norm in the future.</p>
+<p>311 Call Centers have become common place in US cities. These citizen-facing centers triage requests for local government services and dispatch resources to address needs. 311 also has become a rich source of data on what constituents need. In New York City, millions of calls and hundreds of types of requests are logged and made public via the open data platform.</p>
+<p>Suppose the following question were asked:</p>
+<blockquote>
+<p>How do I characterize the demand for [products/services]?</p>
+</blockquote>
+<p>or otherwise stated:</p>
+<blockquote>
+<p>Which constituents share similar concerns?</p>
+</blockquote>
+<p>Using NYC’s data, the millions of 311 requests were reprocessed into grid points in Lat/Lon with precision to three places (e.g. lat = 40.552, lon = -74.212). The data are available using the <code>digIt</code> library:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(digIt)
+nyc311 &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;nyc311_gridded&quot;</span>)</code></pre></div>
+<p>Overall, the data set contains n = 57337 and k = 139 with features such as “general.construction/plumbing” and “sweeping/inadequate”</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">dim</span>(nyc311)</code></pre></div>
+<pre><code>## [1] 57337   139</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">colnames</span>(nyc311)[<span class="dv">1</span>:<span class="dv">20</span>]</code></pre></div>
+<pre><code>##  [1] &quot;lat&quot;                            &quot;lon&quot;                           
+##  [3] &quot;adopt-a-basket&quot;                 &quot;air.quality&quot;                   
+##  [5] &quot;animal.abuse&quot;                   &quot;animal.in.a.park&quot;              
+##  [7] &quot;appliance&quot;                      &quot;asbestos&quot;                      
+##  [9] &quot;beach/pool/sauna.complaint&quot;     &quot;best/site.safety&quot;              
+## [11] &quot;bike.rack.condition&quot;            &quot;bike/roller/skate.chronic&quot;     
+## [13] &quot;blocked.driveway&quot;               &quot;boilers&quot;                       
+## [15] &quot;bridge.condition&quot;               &quot;broken.muni.meter&quot;             
+## [17] &quot;broken.parking.meter&quot;           &quot;building/use&quot;                  
+## [19] &quot;bus.stop.shelter.placement&quot;     &quot;city.vehicle.placard.complaint&quot;</code></pre>
+<p>Although the sample size is modest, dissimilarity matrix would yield 3.3 billion data elements (57337<span class="math inline">\(^2\)</span>). For simplicity, we sample only <span class="math inline">\(n = 15000\)</span> records.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  nyc311.short &lt;-<span class="st"> </span>nyc311[<span class="kw">sample</span>(<span class="dv">1</span>:<span class="kw">nrow</span>(nyc311), <span class="dv">15000</span>), ]</code></pre></div>
+<p>The data should be on the same scale with the same mean (0) and unit variance. We can use the <code>scale()</code> function to scale all features, then use the <code>dist()</code> function to produce a dissimilarity matrix:</p>
+<p><code>dist(x, method)</code></p>
+<p>where:</p>
+<ul>
+<li><code>x</code> is a matrix of continuous values.</li>
+<li><code>method</code> is a string value that indicates the type of dissimilarity used, which can include “binary”, “minkowski”, “euclidean” among others where the latter is the default.</li>
+</ul>
+<p>For cases where the data are all binary or discrete, a binary distance may be more appropriate. For continuous values, Euclidean is the best bet.</p>
+<p>For the 311 data, the dissimilarity matrix is based on Euclidean distance, then assigned to the object <code>dis.mat</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Scale columns</span>
+  nyc.short &lt;-<span class="st"> </span><span class="kw">scale</span>(nyc311.short[,<span class="dv">3</span>:<span class="kw">ncol</span>(nyc311.short)])
+
+<span class="co">#Create dissimilarity matrix using Euclidean distances</span>
+  dis.mat &lt;-<span class="st"> </span><span class="kw">dist</span>(<span class="kw">as.matrix</span>(nyc.short), <span class="dt">method =</span> <span class="st">&quot;euclidean&quot;</span>)  </code></pre></div>
+<p>Finally, the hierarchical clustering algorithm can be run using the <code>hclust()</code> command:</p>
+<p><code>hclust(d, method)</code></p>
+<p>where</p>
+<ul>
+<li><code>d</code> is a dissimilarity matrix from <code>dist()</code></li>
+<li><code>method</code> is a string value specifying the agglomeration method, such as “single”, “complete”, “average”, “centroid”, “ward.D” among others. Note that the time to processing a data set is dependent on the complexity of the method.</li>
+</ul>
+<p>Below, we pass the <code>dis.mat</code> object to the <code>hclust()</code> function is choose Ward’s D to guide agglomeration.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Run hierarchical clustering</span>
+  hc &lt;-<span class="st"> </span><span class="kw">hclust</span>(dis.mat, <span class="dt">method =</span> <span class="st">&quot;ward.D&quot;</span>)     </code></pre></div>
+<p>The results can be easily plotted as a <em>dendrogram</em>, which shows the hierarchical relationships within the data. The graph below is rendered by plotting the <code>hc</code> object using <code>plot()</code>. At the bottom of the dendrogram are all observations in the sample. Given the number of observations included, it is challenging to clearly identify each observation. As we move from the bottom to the top, vertical lines emerge and come together, representing observations and subclusters that were clustered together. Eventually, all subclusters are linked at the top. A given height in the graph indicates the cumulative number of linkages that are contained in the dendrogram up to that point.</p>
+<p>Given all the possible clusters, the number of clusters could be determined purely based on the height. Fewer the clusters, greater the height.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))
+<span class="co"># Draw dendrogram</span>
+  <span class="kw">plot</span>(hc, <span class="dt">cex =</span> <span class="fl">0.001</span>, <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;Dendrogram&quot;</span>) 
+  
+<span class="co"># Cut at k = 3</span>
+  <span class="kw">plot</span>(hc, <span class="dt">cex =</span> <span class="fl">0.001</span>, <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;k = 2&quot;</span>) 
+  <span class="kw">rect.hclust</span>(hc, <span class="dt">k =</span> <span class="dv">2</span>, <span class="dt">border=</span><span class="st">&quot;red&quot;</span>)
+  
+<span class="co"># Cut at k = 10</span>
+  <span class="kw">plot</span>(hc, <span class="dt">cex =</span> <span class="fl">0.001</span>, <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">main =</span> <span class="st">&quot;k = 10&quot;</span>) 
+  <span class="kw">rect.hclust</span>(hc, <span class="dt">k =</span> <span class="dv">10</span>, <span class="dt">border=</span><span class="st">&quot;red&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-266"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-266-1.png" alt="Dendrogram of hierarchical clustering on gridded NYC 311 data" width="672" />
+<p class="caption">
+Figure 6.10: Dendrogram of hierarchical clustering on gridded NYC 311 data
+</p>
+</div>
+<p>The sample generally appears to be cleaner cut at <span class="math inline">\(k=2\)</span> than at higher values, thus we cut the sample into two groups using the <code>cutree()</code> function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">    groups &lt;-<span class="st"> </span><span class="kw">cutree</span>(hc, <span class="dt">k =</span> <span class="dv">2</span>)</code></pre></div>
+<p>While it is easy to separate the observations into their respective clusters, the process leaves much to be desired when it comes to interpretation. Ideally, the most common characteristics could be surfaced to characterize the cluster. To do so, a custom function (<code>clustSum</code>) is required to calculate the mean share of each service request for each cluster and return the top X most frequent requests.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">clustSum &lt;-<span class="st"> </span>function(data, clusters, <span class="dt">depth =</span> <span class="dv">3</span>, <span class="dt">horizontal =</span> <span class="ot">FALSE</span>){
+    <span class="co"># Summarize cluster variables by most frequently occurring</span>
+    <span class="co">#</span>
+    <span class="co"># Args:</span>
+    <span class="co">#       data: input data</span>
+    <span class="co">#       clusters: vector of cluster labels</span>
+    <span class="co">#       depth: top X most frequent variables (depth = 3 as default)</span>
+    <span class="co">#       horizontal: control format of results. FALSE means one cluster per row.</span>
+    <span class="co">#</span>
+    <span class="co"># Returns:</span>
+    <span class="co">#       A data frame of k-number of centroids</span>
+    <span class="co">#</span>
+    
+    <span class="co">#Calculate means, rotate such that features = rows</span>
+      overview &lt;-<span class="st"> </span><span class="kw">aggregate</span>(data, <span class="kw">list</span>(clusters), <span class="dt">FUN =</span> mean)
+      
+    <span class="co">#Transpose data so that each row contains the mean frequency of a complaint type</span>
+      overview &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">cbind</span>(<span class="kw">colnames</span>(overview)[<span class="dv">2</span>:<span class="kw">ncol</span>(overview)], 
+                                      <span class="kw">t</span>(overview[,<span class="dv">2</span>:<span class="kw">ncol</span>(overview)])))
+      
+    <span class="co">#Clean up table</span>
+      <span class="kw">row.names</span>(overview) &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">nrow</span>(overview)
+      overview[,<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="kw">gsub</span>(<span class="st">&quot;count.&quot;</span>,<span class="st">&quot;&quot;</span>,<span class="kw">as.character</span>(overview[,<span class="dv">1</span>]))
+      
+    <span class="co">#Clean up values as numerics</span>
+      for(i in <span class="dv">2</span>:<span class="kw">ncol</span>(overview)){
+        overview[,i] &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">as.numeric</span>(<span class="kw">as.character</span>(overview[,i])),<span class="dv">2</span>)
+      }
+      
+    <span class="co">#Get top X features</span>
+      depth.temp &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+      for(i in <span class="dv">2</span>:<span class="kw">ncol</span>(overview)){
+        temp &lt;-<span class="st"> </span>overview[<span class="kw">order</span>(-overview[,i]), ]
+        temp &lt;-<span class="st"> </span><span class="kw">paste</span>(<span class="st">&quot;(&quot;</span>,temp[,i], <span class="st">&quot;): &quot;</span>, temp[,<span class="dv">1</span>], <span class="dt">sep =</span> <span class="st">&quot;&quot;</span>)
+        temp &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(<span class="kw">matrix</span>(temp[<span class="dv">1</span>:depth], 
+                                     <span class="dt">nrow =</span> <span class="dv">1</span>, 
+                                     <span class="dt">ncol =</span> depth))
+        <span class="kw">colnames</span>(temp) &lt;-<span class="st"> </span><span class="kw">paste0</span>(<span class="st">&quot;Rank.&quot;</span>, <span class="dv">1</span>:depth)
+        depth.temp &lt;-<span class="st"> </span><span class="kw">rbind</span>(depth.temp, temp)
+      }
+      depth.temp &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">data.frame</span>(<span class="kw">table</span>(clusters)), depth.temp)
+      
+    <span class="co">#Rotate?</span>
+      if(horizontal ==<span class="st"> </span><span class="ot">TRUE</span>){
+        depth.temp &lt;-<span class="st"> </span><span class="kw">t</span>(depth.temp)
+      }
+      
+    <span class="kw">return</span>(depth.temp)
+  }</code></pre></div>
+<p>The result indicates that one cluster is associated with road-way conditions and the other cluster is associated with residential problems. Note that the value in parentheses indicates what proportion of a given type of service request will appear in the average grid cell in a cluster.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">clustSum</span>(nyc311.short[,<span class="dv">3</span>:<span class="kw">ncol</span>(nyc311.short)], groups, <span class="dt">depth =</span> <span class="dv">3</span>)</code></pre></div>
+<pre><code>##   clusters Freq                  Rank.1                      Rank.2
+## 1        1 7047  (0.07): heat/hot.water (0.06): noise.-.residential
+## 2        2 7953 (0.1): street.condition     (0.09): illegal.parking
+##                     Rank.3
+## 1 (0.05): blocked.driveway
+## 2 (0.08): blocked.driveway</code></pre>
+<p>As public housing tends to be clustered in New York City, one might expect to see spatial patterns in the data. The clusters are mapped back to the original grid cells and indicate that there is some degree of spatial clustering of service requests. From an operational perspective, clustering could be an analytical strategy to help field operations to employ preventive maintenance. For example, a housing unit may have heating issues and may also be suceptible to santitation issues. Knowing which requests tend to cluster together could give way to more coordinated visits, thereby reducing the amount of scheduling burden placed on customers.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#Set color palette</span>
+  <span class="kw">palette</span>(<span class="kw">colorRampPalette</span>(<span class="kw">c</span>(<span class="st">&#39;#a6cee3&#39;</span>,<span class="st">&#39;#6a3d9a&#39;</span>))(<span class="dv">2</span>))
+  
+  <span class="co">#Graph lat-lons with color coding by cluster</span>
+  <span class="kw">plot</span>(nyc311.short$lon, nyc311.short$lat, <span class="dt">col =</span> <span class="kw">factor</span>(groups), 
+       <span class="dt">pch =</span> <span class="dv">15</span>, <span class="dt">cex =</span> <span class="fl">0.3</span>, <span class="dt">frame.plot =</span> <span class="ot">FALSE</span>, <span class="dt">yaxt =</span> <span class="st">&#39;n&#39;</span>, <span class="dt">ann =</span> <span class="ot">FALSE</span>, <span class="dt">xaxt =</span> <span class="st">&#39;n&#39;</span>)
+      <span class="kw">legend</span>(<span class="dt">x =</span> <span class="st">&quot;topleft&quot;</span>, <span class="dt">bty =</span> <span class="st">&quot;n&quot;</span>, <span class="dt">legend =</span> <span class="kw">levels</span>(<span class="kw">factor</span>(groups)), 
+         <span class="dt">cex =</span> <span class="dv">1</span>,  <span class="dt">x.intersp =</span> <span class="dv">0</span>, <span class="dt">xjust =</span> <span class="dv">0</span>, <span class="dt">yjust =</span> <span class="dv">0</span>, <span class="dt">text.col=</span><span class="kw">seq_along</span>(<span class="kw">levels</span>(<span class="kw">factor</span>(groups))))</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-270-1.png" width="672" /></p>
+
+</div>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol start="42">
+<li id="fn42"><p>Tobler W., (1970) “A computer movie simulating urban growth in the Detroit region”. Economic Geography, 46(Supplement): 234-240.<a href="clustering.html#fnref42">↩</a></p></li>
+<li id="fn43"><p><a href="https://www.nasa.gov/topics/earth/earthmonth/earthmonth_2013_01.html" class="uri">https://www.nasa.gov/topics/earth/earthmonth/earthmonth_2013_01.html</a><a href="clustering.html#fnref43">↩</a></p></li>
+</ol>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="similarity.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="model-validation-how-do-we-know-what-we-know.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

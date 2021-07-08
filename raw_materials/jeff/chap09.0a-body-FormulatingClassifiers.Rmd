@@ -1,0 +1,109 @@
+--- 
+title: "Data Science + Public Policy"
+author: "Jeff Chen"
+date: '`r Sys.Date()`'
+output: pdf_document
+description: Chapter 11
+documentclass: book
+link-citations: yes
+bibliography:
+- book.bib
+- packages.bib
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+## What goes into a classifier?
+Classifiers predict discrete targets, otherwise known as classes. Using the health insurance example, the classes are _with insurance_ and _without insurance_. Being part of Generations X, Y, and Z would be three classes. Being a Red Sox or Yankees fan would be two classes.  
+
+For classifiers to work, classes need to _separable_ -- the input features used to describe the target can be used to distinguish one group from another with some degree of accuracy.  A low separability scenario, for example,  would be one where the distributions of two classes substantially overlap, whereas a high separability case would have little overlap. The output of a classification algorithm is a probability that indicates how likely a given record belongs to a target class given the input features.
+
+
+```{r, fig.height=2, warning=FALSE, message=FALSE, echo = FALSE, fig.cap = "Separability of two classes given a continuous feature."}
+library(ggplot2)
+a <- rnorm(1000,10,10)
+b <- rnorm(1000,12,10)
+c <- rnorm(1000,50,10)
+sep.df <- data.frame(a, b, c)
+
+lowsep <- ggplot(sep.df) + geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+                      geom_density(aes(b), fill = "orange", alpha = 0.3) + ggtitle("Low Separability" ) + 
+              theme(plot.title = element_text(size = 10,hjust = 0.5), axis.line=element_blank(),axis.text.x=element_blank(),
+              axis.text.y=element_blank(),axis.ticks=element_blank(),
+              axis.title.x=element_blank(),
+              axis.title.y=element_blank(),legend.position="none",
+              panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+              panel.grid.minor=element_blank(),plot.background=element_blank())
+
+highsep <- ggplot(sep.df) + geom_density(aes(a), fill = "navy", alpha = 0.3)  +
+                  geom_density(aes(c), fill = "orange", alpha = 0.3) +  ggtitle("High Separability" ) + 
+              theme(plot.title = element_text(size = 10,hjust = 0.5), axis.line=element_blank(),axis.text.x=element_blank(),
+              axis.text.y=element_blank(),axis.ticks=element_blank(),
+              axis.title.x=element_blank(),
+              axis.title.y=element_blank(),legend.position="none",
+              panel.background=element_blank(),panel.border=element_blank(),panel.grid.major=element_blank(),
+              panel.grid.minor=element_blank(),plot.background=element_blank())
+library(gridExtra)
+grid.arrange(lowsep, highsep, ncol = 2)
+```
+
+The output probability is the key to evaluating the accuracy of a model. Unlike regression, classifiers rely on entirely different measures of accuracy given the nature of the labeled data. All measures, however, rely on metrics that can be derived from a confusion matrix, or a $2 \times 2$ table where the rows typically represent actual classes and columns represent predicted classes.
+
+
+|      | Predicted (+) | Predicted (-) |
+|-----+----------------+---------------|
+|Actual (+)| True Positive (TP) | False Negative (FN) |
+|Actual (-)| False Positive (FP) | True Negative (TN) |
+
+
+Each of the cells contains the building blocks of accuracy measures:
+
+- The True Positive (TP) is the count of all cases where the actual positive ($Y = 1$) case is accurately predicted.
+- The True Negative (TN) is the count of all cases where the actual positive ($Y = 0$) case is accurately predicted.
+- The False Positive (FP) is count of all cases where the actual label was $Y = 0$, but the model classified a record as $\hat{Y} = 1$. This is also known as Type I error.
+- The False Negative (FN) is count of all cases where the actual label was $Y = 1$, but the model classified a record as $\hat{Y} = 0$. This is also known as Type II error.
+
+
+_Accuracy_. Overall accuracy is measured as the sum of the main diagonal divided by the population (below).
+
+$$TPR = \frac{TP + TN}{TP + FN + FP + TN}$$
+
+_True Negative Rate_. By combining TN and FP, we can calculate the True Negative Rate (TPR), which is proportion of $Y=0$ cases that are accurately predicted. TNR is also referred to as the "specificity".
+
+$$TNR = \frac{TN}{TN + FP} = \frac{TN}{Actual (-)} $$
+
+_True Positive Rate_. By combining TP and FN, we can calculate the True Positive Rate (TPR), which is proportion of $Y=1$ cases that are accurately predicted. TPR is also referred to as the "sensitivity" or "recall".
+
+$$TPR = \frac{TP}{TP + FN} = \frac{TP}{Actual (+)} $$
+
+_Positive Predicted Value_. By combining TP and FP, we can calculate the Positive Predicted Value (PPV), which is proportion of predicted $Y=1$ cases that actually are of tht class. PPV is also referred to as "precision".
+
+$$PPV = \frac{TP}{TP + FP}$$
+
+
+_What does accuracy look like?_ To illustrate this, the next series of tables provides simulated results of a classifer. Let's assume that a health insurance classifier was tested on a sample of $n = 100$ with actual labels perfectly split between $Y = 1$ and $Y = 0$. A perfect performing model would resemble the following table, where TP = 50 and FP = 50. With perfect predictions with  $Accuracy = \frac{50+50}{100} = 100$, the $TPR = \frac{50}{50 + 0} = 100$ and $PPV = \frac{50}{50 + 0} = 100$ indicate that model is perfectly balanced and precise.
+
+
+|      | Predicted (+) | Predicted (-) |
+|-----+----------------+---------------|
+|Actual (+)| 50 | 0 |
+|Actual (-)| 0 | 50 |
+
+A model with little discriminant power or ability to distinguish between classes would look like the following. While the $TPR = \frac{35}{35 + 5} = 87.5$ is high, overall $Accuracy = \frac{35+0}{100} = 45$, which is largely driven by low precision $PPV = \frac{35}{35 + 60} = 36.8$. 
+
+|      | Predicted (+) | Predicted (-) |
+|-----+----------------+---------------|
+|Actual (+)| 35 | 5 |
+|Actual (-)| 60 | 0 |
+
+
+While these calculations are simple and understandable, determining the predicted label is not as simple.  In a simple case, given an outcome $Y = 1$, a voting rule would classify a probability of greater than 50% as $Y = 1$. However, it is fairly common that a trained classifier with strong performance may never produce a probability of more than 50%. In order to generalize accuracy, we can rely on one or a combination of the following measures.
+
+
+| Measure | Description | Interpretation |
+|----------------+-------------------------------+----------------------------|
+|Receiving Operating Characteristic (ROC) Curve| ROC curves plotpairs of TPRs and FPRs that correspond to varied discriminant thresholds between 0 and 1. By systematically testing thresholds. For example, TPRs and FPRs are calculated and plotted given probability thresholds $p = 0.2$, $p = 0.5$, and $p=0.8$.  | Once plotting the curve with TPR as Y and FPR as X, the area under the curve (AUC) represents robustness of the model, ranging from 0.5 (model is as good as a coin toss) to 1.0 (perfectly robust model). In the social sciences, an acceptable AUC is over 0.8.The AUC statistic is sometimes referred to as the "concordance". |
+|<br> $F_1$ Score| <br> The score is formulated as $F_1 = 2 \times \frac{precision \times recall}{precision + recall}= 2 \times \frac{PPV \times TPR}{PPV + TPR}$ where $\text{precision or PPV} = \frac{TP}{TP + FP}$ and $\text{recall or TPR} = \frac{TP}{TP + FN}$|<br>  The measure is bound between 0 and 1, where 1 is the top score indicating a better model. |
+
+
+

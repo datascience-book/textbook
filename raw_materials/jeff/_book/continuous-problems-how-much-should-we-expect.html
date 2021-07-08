@@ -1,0 +1,1412 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <meta name="description" content="Introduction">
+  <meta name="generator" content="bookdown 0.4 and GitBook 2.6.7">
+
+  <meta property="og:title" content="" />
+  <meta property="og:type" content="book" />
+  
+  
+  <meta property="og:description" content="Introduction" />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="" />
+  
+  <meta name="twitter:description" content="Introduction" />
+  
+
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="model-validation-how-do-we-know-what-we-know.html">
+<link rel="next" href="classification.html">
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Data Science: A Practical Strategy (v0.2)</a></li>
+<li class="chapter" data-level="1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html"><i class="fa fa-check"></i><b>1</b> Data And Its Many Contexts</a><ul>
+<li class="chapter" data-level="1.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#fires-and-data"><i class="fa fa-check"></i><b>1.1</b> Fires and Data</a></li>
+<li class="chapter" data-level="1.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-answer-is-42.-well-maybe."><i class="fa fa-check"></i><b>1.2</b> The Answer is 42. Well, Maybe.</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#benchmarking"><i class="fa fa-check"></i><b>1.2.1</b> Benchmarking</a></li>
+<li class="chapter" data-level="1.2.2" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#explaining"><i class="fa fa-check"></i><b>1.2.2</b> Explaining</a></li>
+<li class="chapter" data-level="1.2.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#predicting"><i class="fa fa-check"></i><b>1.2.3</b> Predicting</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#the-buzz-and-the-buzzworthy"><i class="fa fa-check"></i><b>1.3</b> The Buzz and the Buzzworthy</a></li>
+<li class="chapter" data-level="1.4" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#whats-the-value-proposition"><i class="fa fa-check"></i><b>1.4</b> What’s The Value Proposition?</a></li>
+<li class="chapter" data-level="1.5" data-path="data-and-its-many-contexts.html"><a href="data-and-its-many-contexts.html#structure"><i class="fa fa-check"></i><b>1.5</b> Structure</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html"><i class="fa fa-check"></i><b>2</b> A Light Introduction To Programming</a><ul>
+<li class="chapter" data-level="2.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#doing-visual-analytics-since-1780s"><i class="fa fa-check"></i><b>2.1</b> Doing visual analytics since 1780’s</a></li>
+<li class="chapter" data-level="2.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#programming-to-democratizing-skills"><i class="fa fa-check"></i><b>2.2</b> Programming to democratizing skills</a></li>
+<li class="chapter" data-level="2.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#how-programming-languages-work"><i class="fa fa-check"></i><b>2.3</b> How programming languages work</a></li>
+<li class="chapter" data-level="2.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#setting-up-r"><i class="fa fa-check"></i><b>2.4</b> Setting up R</a><ul>
+<li class="chapter" data-level="2.4.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#installation"><i class="fa fa-check"></i><b>2.4.1</b> Installation</a></li>
+<li class="chapter" data-level="2.4.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#justifying-open-source-software"><i class="fa fa-check"></i><b>2.4.2</b> Justifying open source software</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#a-gentle-introduction-to-r"><i class="fa fa-check"></i><b>2.5</b> A Gentle Introduction to R</a><ul>
+<li class="chapter" data-level="2.5.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#operators"><i class="fa fa-check"></i><b>2.5.1</b> Operators</a></li>
+<li class="chapter" data-level="2.5.2" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#data-classes"><i class="fa fa-check"></i><b>2.5.2</b> Data classes</a></li>
+<li class="chapter" data-level="2.5.3" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#libraries-expanded-functionality"><i class="fa fa-check"></i><b>2.5.3</b> Libraries: Expanded functionality</a></li>
+<li class="chapter" data-level="2.5.4" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#inputoutput-io"><i class="fa fa-check"></i><b>2.5.4</b> Input/Output (I/O)</a></li>
+</ul></li>
+<li class="chapter" data-level="2.6" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#diy"><i class="fa fa-check"></i><b>2.6</b> DIY</a><ul>
+<li class="chapter" data-level="2.6.1" data-path="a-light-introduction-to-programming.html"><a href="a-light-introduction-to-programming.html#reading-a-csv-directly-from-the-web"><i class="fa fa-check"></i><b>2.6.1</b> Reading a CSV directly from the web</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html"><i class="fa fa-check"></i><b>3</b> Data Manipulation / Wrangling / Processing</a><ul>
+<li class="chapter" data-level="3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#motivation"><i class="fa fa-check"></i><b>3.1</b> Motivation</a></li>
+<li class="chapter" data-level="3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#cell-level-operations"><i class="fa fa-check"></i><b>3.2</b> Cell-Level Operations</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#text-manipulation-functions"><i class="fa fa-check"></i><b>3.2.1</b> Text manipulation functions</a></li>
+<li class="chapter" data-level="3.2.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#regular-expressions"><i class="fa fa-check"></i><b>3.2.2</b> Regular Expressions</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#matrix-and-data-frames"><i class="fa fa-check"></i><b>3.3</b> Matrix and Data Frames</a><ul>
+<li class="chapter" data-level="3.3.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#indices-and-subsetting"><i class="fa fa-check"></i><b>3.3.1</b> Indices and Subsetting</a></li>
+<li class="chapter" data-level="3.3.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#reshape"><i class="fa fa-check"></i><b>3.3.2</b> Reshape</a></li>
+<li class="chapter" data-level="3.3.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#collapse"><i class="fa fa-check"></i><b>3.3.3</b> Collapse</a></li>
+<li class="chapter" data-level="3.3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#join"><i class="fa fa-check"></i><b>3.3.4</b> Join</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#control-structures"><i class="fa fa-check"></i><b>3.4</b> Control Structures</a><ul>
+<li class="chapter" data-level="3.4.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#if-and-ifelse-statement"><i class="fa fa-check"></i><b>3.4.1</b> If and If…Else Statement</a></li>
+<li class="chapter" data-level="3.4.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#for-loops"><i class="fa fa-check"></i><b>3.4.2</b> For-loops</a></li>
+<li class="chapter" data-level="3.4.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#while"><i class="fa fa-check"></i><b>3.4.3</b> While</a></li>
+</ul></li>
+<li class="chapter" data-level="3.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#functions"><i class="fa fa-check"></i><b>3.5</b> Functions</a></li>
+<li class="chapter" data-level="3.6" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#etiquette"><i class="fa fa-check"></i><b>3.6</b> Etiquette</a><ul>
+<li class="chapter" data-level="3.6.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-can-you-do-with-control-structures"><i class="fa fa-check"></i><b>3.6.1</b> What can you do with control structures?</a></li>
+</ul></li>
+<li class="chapter" data-level="3.7" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#getting-into-the-mentality"><i class="fa fa-check"></i><b>3.7</b> Getting into the mentality</a></li>
+<li class="chapter" data-level="3.8" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#diy-1"><i class="fa fa-check"></i><b>3.8</b> DIY</a><ul>
+<li class="chapter" data-level="3.8.1" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#how-do-i-auto-populate-text-and-stences-pro-forma"><i class="fa fa-check"></i><b>3.8.1</b> How do I auto-populate text and stences pro forma?</a></li>
+<li class="chapter" data-level="3.8.2" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-is-the-overlap-between-these-two-lists"><i class="fa fa-check"></i><b>3.8.2</b> What is the overlap between these two lists?</a></li>
+<li class="chapter" data-level="3.8.3" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#what-do-i-do-find-trends-in-transactional-or-event-level-data"><i class="fa fa-check"></i><b>3.8.3</b> What do I do find trends in transactional or event-level data?</a></li>
+<li class="chapter" data-level="3.8.4" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#i-have-a-lot-of-text.-how-do-extract-basic-keywords"><i class="fa fa-check"></i><b>3.8.4</b> I have a lot of text. How do extract basic keywords?</a></li>
+<li class="chapter" data-level="3.8.5" data-path="data-manipulation-wrangling-processing.html"><a href="data-manipulation-wrangling-processing.html#edge-detection-of-images"><i class="fa fa-check"></i><b>3.8.5</b> Edge detection of images?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html"><i class="fa fa-check"></i><b>4</b> Exploratory Data Analysis</a><ul>
+<li class="chapter" data-level="4.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#visually-detecting-patterns"><i class="fa fa-check"></i><b>4.1</b> Visually Detecting Patterns</a></li>
+<li class="chapter" data-level="4.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#how-does-this-work"><i class="fa fa-check"></i><b>4.2</b> How does this work?</a></li>
+<li class="chapter" data-level="4.3" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#univariate-data-analysis"><i class="fa fa-check"></i><b>4.3</b> Univariate data analysis</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#statistics-for-continuous-variables"><i class="fa fa-check"></i><b>4.3.1</b> Statistics for continuous variables</a></li>
+<li class="chapter" data-level="4.3.2" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#graphical-approaches"><i class="fa fa-check"></i><b>4.3.2</b> Graphical Approaches</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#multivariate-data"><i class="fa fa-check"></i><b>4.4</b> Multivariate Data</a></li>
+<li class="chapter" data-level="4.5" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#diy-2"><i class="fa fa-check"></i><b>4.5</b> DIY</a><ul>
+<li class="chapter" data-level="4.5.1" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#whats-a-common-exploratory-data-analysis-workflow"><i class="fa fa-check"></i><b>4.5.1</b> What’s a common exploratory data analysis workflow?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.6" data-path="exploratory-data-analysis.html"><a href="exploratory-data-analysis.html#exercises-8"><i class="fa fa-check"></i><b>4.6</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="similarity.html"><a href="similarity.html"><i class="fa fa-check"></i><b>5</b> Similarity</a><ul>
+<li class="chapter" data-level="5.1" data-path="similarity.html"><a href="similarity.html#distances"><i class="fa fa-check"></i><b>5.1</b> Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="similarity.html"><a href="similarity.html#correlation"><i class="fa fa-check"></i><b>5.2</b> Correlation</a></li>
+<li class="chapter" data-level="5.3" data-path="similarity.html"><a href="similarity.html#linguistic-distances"><i class="fa fa-check"></i><b>5.3</b> Linguistic Distances</a><ul>
+<li class="chapter" data-level="" data-path="similarity.html"><a href="similarity.html#exercise-1"><i class="fa fa-check"></i>Exercise</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="similarity.html"><a href="similarity.html#entropy"><i class="fa fa-check"></i><b>5.4</b> Entropy</a></li>
+<li class="chapter" data-level="5.5" data-path="similarity.html"><a href="similarity.html#diy-3"><i class="fa fa-check"></i><b>5.5</b> DIY</a><ul>
+<li class="chapter" data-level="5.5.1" data-path="similarity.html"><a href="similarity.html#given-product-a-which-other-products-x-y-z-should-i-recommend"><i class="fa fa-check"></i><b>5.5.1</b> Given product [A], which other products [X, Y, Z] should I recommend?</a></li>
+<li class="chapter" data-level="5.5.2" data-path="similarity.html"><a href="similarity.html#which-texts-are-saying-similar-things"><i class="fa fa-check"></i><b>5.5.2</b> Which texts are saying similar things?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="clustering.html"><a href="clustering.html"><i class="fa fa-check"></i><b>6</b> Clustering</a><ul>
+<li class="chapter" data-level="6.1" data-path="clustering.html"><a href="clustering.html#everything-is-related-to-everything-else"><i class="fa fa-check"></i><b>6.1</b> Everything is related to everything else</a></li>
+<li class="chapter" data-level="6.2" data-path="clustering.html"><a href="clustering.html#technical-foundations"><i class="fa fa-check"></i><b>6.2</b> Technical Foundations</a><ul>
+<li class="chapter" data-level="6.2.1" data-path="clustering.html"><a href="clustering.html#k-means"><i class="fa fa-check"></i><b>6.2.1</b> K-Means</a></li>
+<li class="chapter" data-level="6.2.2" data-path="clustering.html"><a href="clustering.html#hierarchical-clustering"><i class="fa fa-check"></i><b>6.2.2</b> Hierarchical clustering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="clustering.html"><a href="clustering.html#diy-4"><i class="fa fa-check"></i><b>6.3</b> DIY</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="clustering.html"><a href="clustering.html#how-much-of-the-ground-is-covered-in-vegetationbuildingseconomic-activity"><i class="fa fa-check"></i><b>6.3.1</b> How much of the ground is covered in [vegetation/buildings/economic activity]?</a></li>
+<li class="chapter" data-level="6.3.2" data-path="clustering.html"><a href="clustering.html#how-do-i-characterize-the-demand-for-productsservices"><i class="fa fa-check"></i><b>6.3.2</b> How do I characterize the demand for [products/services]?</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html"><i class="fa fa-check"></i><b>7</b> Model validation: How do we know what we know?</a><ul>
+<li class="chapter" data-level="7.1" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#when-knowing-the-answer-is-not-enough"><i class="fa fa-check"></i><b>7.1</b> When knowing the answer is not enough</a></li>
+<li class="chapter" data-level="7.2" data-path="model-validation-how-do-we-know-what-we-know.html"><a href="model-validation-how-do-we-know-what-we-know.html#converting-a-farcical-scenario-into-practical-knowledge"><i class="fa fa-check"></i><b>7.2</b> Converting a farcical scenario into practical knowledge</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html"><i class="fa fa-check"></i><b>8</b> Continuous Problems: How much should we expect…?</a><ul>
+<li class="chapter" data-level="8.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#an-ordinary-case-of-regression"><i class="fa fa-check"></i><b>8.1</b> An Ordinary Case of Regression</a><ul>
+<li class="chapter" data-level="8.1.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#interpretation"><i class="fa fa-check"></i><b>8.1.1</b> Interpretation</a></li>
+<li class="chapter" data-level="8.1.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#assumptions-matter"><i class="fa fa-check"></i><b>8.1.2</b> Assumptions matter</a></li>
+<li class="chapter" data-level="8.1.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#in-the-code"><i class="fa fa-check"></i><b>8.1.3</b> In the code</a></li>
+</ul></li>
+<li class="chapter" data-level="8.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#more-than-plain-vanilla-regression"><i class="fa fa-check"></i><b>8.2</b> More Than Plain Vanilla Regression</a><ul>
+<li class="chapter" data-level="8.2.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#the-ridge-and-the-lasso"><i class="fa fa-check"></i><b>8.2.1</b> The Ridge and the LASSO</a></li>
+<li class="chapter" data-level="8.2.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#why-regularized-methods-matter"><i class="fa fa-check"></i><b>8.2.2</b> Why regularized methods matter</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#k-nearest-neighbors"><i class="fa fa-check"></i><b>8.3</b> K-Nearest Neighbors</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#formulation"><i class="fa fa-check"></i><b>8.3.1</b> Formulation</a></li>
+<li class="chapter" data-level="8.3.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#which-k-is-the-right-k"><i class="fa fa-check"></i><b>8.3.2</b> Which K is the right K?</a></li>
+<li class="chapter" data-level="8.3.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#usage"><i class="fa fa-check"></i><b>8.3.3</b> Usage</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#diy-5"><i class="fa fa-check"></i><b>8.4</b> DIY</a><ul>
+<li class="chapter" data-level="8.4.1" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#whats-a-good-way-to-fill-in-missing-data"><i class="fa fa-check"></i><b>8.4.1</b> What’s a good way to fill-in missing data?</a></li>
+<li class="chapter" data-level="8.4.2" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-do-i-do-when-there-are-too-many-features"><i class="fa fa-check"></i><b>8.4.2</b> What do I do when there are too many features?</a></li>
+<li class="chapter" data-level="8.4.3" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#what-level-of-demandstaff-should-i-expect"><i class="fa fa-check"></i><b>8.4.3</b> What level of [demand/staff] should I expect?</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="continuous-problems-how-much-should-we-expect.html"><a href="continuous-problems-how-much-should-we-expect.html#exercises-9"><i class="fa fa-check"></i><b>8.5</b> Exercises</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="classification.html"><a href="classification.html"><i class="fa fa-check"></i><b>9</b> Classification</a><ul>
+<li class="chapter" data-level="9.1" data-path="classification.html"><a href="classification.html#healthcare-sans-the-politics"><i class="fa fa-check"></i><b>9.1</b> Healthcare sans the politics</a></li>
+<li class="chapter" data-level="9.2" data-path="classification.html"><a href="classification.html#what-goes-into-a-classifier"><i class="fa fa-check"></i><b>9.2</b> What goes into a classifier?</a></li>
+<li class="chapter" data-level="9.3" data-path="classification.html"><a href="classification.html#six-common-techniques"><i class="fa fa-check"></i><b>9.3</b> Six Common Techniques</a><ul>
+<li class="chapter" data-level="9.3.1" data-path="classification.html"><a href="classification.html#knn"><i class="fa fa-check"></i><b>9.3.1</b> KNN</a></li>
+<li class="chapter" data-level="9.3.2" data-path="classification.html"><a href="classification.html#logistic-regression"><i class="fa fa-check"></i><b>9.3.2</b> Logistic Regression</a></li>
+<li class="chapter" data-level="9.3.3" data-path="classification.html"><a href="classification.html#decision-trees"><i class="fa fa-check"></i><b>9.3.3</b> Decision trees</a></li>
+<li class="chapter" data-level="9.3.4" data-path="classification.html"><a href="classification.html#random-forests"><i class="fa fa-check"></i><b>9.3.4</b> Random Forests</a></li>
+<li class="chapter" data-level="9.3.5" data-path="classification.html"><a href="classification.html#support-vector-machines"><i class="fa fa-check"></i><b>9.3.5</b> Support Vector Machines</a></li>
+</ul></li>
+<li class="chapter" data-level="9.4" data-path="classification.html"><a href="classification.html#diy-6"><i class="fa fa-check"></i><b>9.4</b> DIY</a></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./"></a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="continuous-problems-how-much-should-we-expect" class="section level1">
+<h1><span class="header-section-number">Chapter 8</span> Continuous Problems: How much should we expect…?</h1>
+<div id="an-ordinary-case-of-regression" class="section level2">
+<h2><span class="header-section-number">8.1</span> An Ordinary Case of Regression</h2>
+<p>Every year, cities and states across the United States publish measures on the performance and effectiveness of operations and policies. Performance management practitioners typically would like to know the direction and magnitude, as illustrated by a linear trend line. Is crime up? How are medical emergency response times? Are we still on budget? Which voting blocks are drifting?</p>
+<p>For example, the monthly number of highway toll transactions in the State of Maryland is plotted over time from 2012 to early 2016. The amount is growing with a degree of seasonality. But to concisely summarize the prevailing direction of toll transactions, we can use a trend line. That trend line is an elegant solution that shows the shape and direction of a linear relationship, taking into account all values of the vertical and horizontal axes to find a line that weaves through and divides point in a symmetric fashion.</p>
+<pre><code>## toll_transactions has been loaded into memory.</code></pre>
+<pre><code>## Dimensions: n = 368, k = 7</code></pre>
+<div class="figure"><span id="fig:unnamed-chunk-272"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-272-1.png" alt="Total Toll Transactions, Maryland 2012 to 2016" width="672" />
+<p class="caption">
+Figure 8.1: Total Toll Transactions, Maryland 2012 to 2016
+</p>
+</div>
+<p>This trend line can be simply described in using the following formula:</p>
+<p><span class="math display">\[\text{transactions} = 10.501 + 0.036 \times \text{months}\]</span></p>
+<p>and every point plays a role. We can infer that the trend grows at approximately 36,000 transactions per month. Using the observed response <span class="math inline">\(y\)</span> and the independent variable <span class="math inline">\(x\)</span>, calculating the intercept and slope is a fairly simple task:</p>
+<p><span class="math display">\[\text{slope = } \hat{w_1} = \frac{\sum_{i=1}^{n}{(x_i - \bar{x})(y_i-\bar{y})}}{\sum_{i=1}^{n}(x_i-\bar{x})^2}\]</span> and</p>
+<p><span class="math display">\[\text{intercept = } \hat{w_0} = \bar{y}-\hat{w_1}\bar{x}\]</span> In a bivariate case such as this one, it’s easy to see the interplay. In the slope, the covariance of <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> (<span class="math inline">\(\sum_{i=1}^{n}{(x_i - \bar{x})(y_i-\bar{y})}\)</span>) is tempered by the variance of <span class="math inline">\(x\)</span> (<span class="math inline">\(\sum_{i=1}^{n}(x_i-\bar{x})^2\)</span>). If the covariance is greater than the variance, then the absolute value of the slope will be greater than one. The direction of the slope (positive or negative) is determined by the y7 between <span class="math inline">\(x\)</span> and <span class="math inline">\(y\)</span> alone.</p>
+<p>Trend lines are one of many uses of a class of supervised learning algorithms called regression – in this case <em>Ordinary Least Squares</em> or <em>Regression to the mean</em> – a method that is specifically formulated for continuous variables. There are quite a few other types of regression, such as quantile regression, non-linear least squares, partial least squares among others – each of which handles continuous values with a different spin, some focused on estimating relationships at various points of an empirical distribution and others capture relationships that simply do not fit into a linear trend line.</p>
+<p>OLS regression is the quantitative workhorse in most fields. The technique is a statistical method that estimates unknown parameters by minimizing the sum of squared differences between the observed values and predicted values of the target variable. To better understand arguably the most commonly used supervised learning method, we can start by defining a regression formula:</p>
+<p><span class="math display">\[y_i = w_0 x_{i,0} + w_{1} x_{i,1} + ... + w_{k} x_{i,k} + \epsilon_{i}\]</span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(y_i\)</span> is the target variable or “observed response”</li>
+<li><span class="math inline">\(w_{k}\)</span> are coefficients associated with each <span class="math inline">\(x_k\)</span>. Each coefficient can be obtained by solving <span class="math inline">\(\hat{w} = (X&#39;X)^{-1}X&#39;Y\)</span>. Note that <span class="math inline">\(w\)</span> may be substituted with <span class="math inline">\(\beta\)</span> in some cases.</li>
+<li><span class="math inline">\(x_{i,k}\)</span> are input or independent variables</li>
+<li>subscript <span class="math inline">\(i\)</span> indicates the index of individual observations in the data set</li>
+<li><span class="math inline">\(k\)</span> is an index of position of a variable in a matrix of <span class="math inline">\(x\)</span></li>
+<li><span class="math inline">\(\epsilon_{i}\)</span> is an error term that is assumed to have a normal distribution of <span class="math inline">\(\mu = 0\)</span> and constant variance <span class="math inline">\(\sigma^2\)</span></li>
+</ul>
+<p>Note that <span class="math inline">\(x_{i,0} = 1\)</span>, thus <span class="math inline">\(w_0\)</span> is often times represented on its own. For parsimony, this formula can be rewritten in matrix notation as follows:</p>
+<p><span class="math display">\[y = XW + \epsilon\]</span> such that <span class="math inline">\(y\)</span> is a vector of dimensions <span class="math inline">\(n \times 1\)</span>, <span class="math inline">\(X\)</span> is a matrix with dimensions <span class="math inline">\(n \times k\)</span> regressors, and <span class="math inline">\(W\)</span> is a vector of coefficients of length <span class="math inline">\(k\)</span>, containing an intercept and a coefficient corresponding to each of <span class="math inline">\(k\)</span> features. <span class="math inline">\(W\)</span> is oftem times represented with <span class="math inline">\(\beta\)</span>.</p>
+<p><span class="math display">\[TSS = argmin (\sum^n_{i=1}(y_i - \sum^k_{j=1} x_{ij}w_j)^2\]</span></p>
+<p>Given this formula, the objective is to minimize the Total Sum of Squares (also known as Sum of Squared Errors):</p>
+<p><span class="math display">\[TSS = \sum_{i=0}^{n}{(y_i - \hat{y}_i)^2} \]</span> Which can also be written by substituting the prediction formula that yields <span class="math inline">\(\hat{y}\)</span>:</p>
+<p><span class="math display">\[TSS = \sum^n_{i=1}(y_i - \sum^k_{j=1} x_{ij}w_j)^2\]</span></p>
+<p>where <span class="math inline">\(k\)</span> is the total number of variables and <span class="math inline">\(j \in k\)</span>. More commonly, TSS is better contextualized as the Mean Squared Error <span class="math display">\[MSE = \frac{1}{n}\sum_{i}^{n}{(y_i - \hat{y_i})^2}\]</span>. The SSE and MSE are measures of uncertainty relative to the observed response. Minimization of least squares can be achieved through a a method known as <em>gradient descent</em>.</p>
+<div id="interpretation" class="section level3">
+<h3><span class="header-section-number">8.1.1</span> Interpretation</h3>
+<p>There are a number of attributes of a linear squares regression model that are examined, namely the specification, coefficients, R-squared, and error.</p>
+<p><strong>Specification and coefficients</strong> The specification is the formulation of a model, comprised of the target feature and the input features. It is often times represented loosely as:</p>
+<p><span class="math inline">\(Y = f(x_1, x_2,...,x_n)\)</span></p>
+<p>Each of the <span class="math inline">\(w\)</span> values is a coefficient that describes the marginal relationship between each <span class="math inline">\(x\)</span> and the target <span class="math inline">\(y\)</span>. Recall the toll road example.</p>
+<p><span class="math display">\[\text{transactions} = 10.501 + 0.036 \times \text{months}\]</span></p>
+<p>The <span class="math inline">\(w_0\)</span> (or y-intercept) is equal to 10.501, meaning when months = 0, the expected traffic was 10.5 million (without accounting for seasonality). The <span class="math inline">\(w_1\)</span> or coefficient for month is 36,000, meaning that for each additional month forward, we would expect an average 36,000 traffic increase. As we will see in the the following elaborated example, these coefficients will offer robust insights into the inner quantitative workings of the modeled relationship. As we will see in the practical example at the end of this section, there are countless ways of representing relationships.</p>
+<p><strong>R-squared</strong> <em>R-squared</em> or <span class="math inline">\(R^2\)</span> is a measure of the proportion of variance of the target variable that can be explained by a estimated regression equation. A few key bits of information are required to calculate the <span class="math inline">\(R^2\)</span>, namely:</p>
+<ul>
+<li><span class="math inline">\(\bar{y}\)</span>: the sample mean of <span class="math inline">\(y\)</span>;</li>
+<li><span class="math inline">\(\hat{y_i}\)</span>: the predicted value of <span class="math inline">\(y\)</span> for each observation <span class="math inline">\(i\)</span> as produced by the regression equation; and</li>
+<li><span class="math inline">\(y_i\)</span>: the observed value of <span class="math inline">\(y\)</span> for each observation <span class="math inline">\(i\)</span>.</li>
+</ul>
+<p>Putting these values together is fairly simple:</p>
+<ul>
+<li><p>Total Sum of Squares or TSS is the variance of <span class="math inline">\(y\)</span>: <span class="math display">\[\text{TSS} = \sigma^2(y) = \sum_{i=1}^{n}(y_i - \hat{y})^2\]</span></p></li>
+<li><p>Sum of Squared Errors is the squared difference between each observed value of <span class="math inline">\(y\)</span> and its predicted value <span class="math inline">\(\hat{y_i}\)</span>: <span class="math display">\[\text{SSE}  = \sum_{i=1}^{n}(y_i - \hat{y_i})^2\]</span></p></li>
+<li><p>Regression Sum of Squares or RSS is the difference between each predicted value <span class="math inline">\(\hat{y_i}\)</span> and the sample mean <span class="math inline">\(\bar{y}\)</span>.</p></li>
+</ul>
+<p>Together, <span class="math inline">\(R^2 = 1 - \frac{SSE}{TSS}\)</span>. As TSS will always be the largest value, <span class="math inline">\(R^2\)</span> will always be bound between 0 and 1 where a value of <span class="math inline">\(R^2 = 0\)</span> indicates a regression line in which <span class="math inline">\(x\)</span> does not account for variation in the target whereas <span class="math inline">\(R^2 = 1\)</span> indicates a perfect regression model where <span class="math inline">\(x\)</span> accounts for all variation in <span class="math inline">\(y\)</span>.</p>
+<p><strong>Error</strong></p>
+<p>Error can be measured in a number of ways in the OLS context. The most common is the Root Mean Square Error (RMSE), which is essentially the standard error between predictions <span class="math inline">\(\hat{y_i}\)</span> and <span class="math inline">\(y_i\)</span>. RMSE is defined as <span class="math inline">\(\text{RMSE} = \sigma = \sqrt{\frac{\sum_{i=1}^n(\hat{y_i}-y_i)^2}{n}}\)</span>. Note that RMSE is interpreted in terms of levels of <span class="math inline">\(y\)</span>, which may not necessarily facilitate easy communication of model accuracy. For example, a <span class="math inline">\(\text{RMSE = 0.05}\)</span> in one model might appear to be small relative to a <span class="math inline">\(RMSE = 164\)</span>. However, when contextualized, the former may be a larger proportion of its respective sample mean than the latter’s, indicating a less accurate fit.</p>
+<p>There are other methods of representing error. In time series forecasts, Mean Absolute Percentage Error (MAPE) is used to contextualize prediction accuracy as a percentage of <span class="math inline">\(y\)</span>. This measure is defined as <span class="math inline">\(\text{MAPE} = \frac{100}{n}\sum_{i=1}^n|\frac{\hat{y_i}-y_i}{y_i}|\)</span> and can be easily interpretted and communicated. For example, MAPE = 1.1% from one model can be compared against the MAPE = 13.5% of another model.</p>
+</div>
+<div id="assumptions-matter" class="section level3">
+<h3><span class="header-section-number">8.1.2</span> Assumptions matter</h3>
+<p>All models have properties and assumptions that guide their use, but also help determine which use cases are appropriate. OLS is bound by four basic assumptions that, in general, jive with how most people like to view math problems: in a linear, additive frame of mind where each factor has a distinct and perceivably consistent influence on the outcome. In other words:</p>
+<blockquote>
+<p><em>Giovanni</em>: How do you think those entrepreneurs made all that money (dependent variable)?</p>
+</blockquote>
+<blockquote>
+<p><em>Giorgio</em>: Well, I think it may be due to …[independent variables go here]…</p>
+</blockquote>
+<p>First, OLS assumes that the target feature’s relationship with input features is <em>linear</em> and <em>additive</em>. The equation <span class="math inline">\(y_i = w_0 x_{i,0} + w_{1} x_{i,1} + ... + w_{k} x_{i,k} + \epsilon_{i}\)</span> is another way of saying that each of the factors can be weighed and summed up to equate to the outcome. If we think about the above conversation, it is assumed that earnings can be described by a set of independent factors to which a weight can be definitively assigned to describe its role in earnings. This weighted average of factors is then added together. While this seems reasonable, it also is a strong assumption that two or more quantities have a linear relationship. If there is not a strong correlationship between the target <span class="math inline">\(y\)</span> and inputs <span class="math inline">\(X\)</span>, apply transformations such as the natural logarithm (<code>log()</code>). In time series models (data captured over equal intervals), data may be non-stationary (e.g. unstable) and may benefit from differencing (e.g. <span class="math inline">\(\Delta(y_t) = y_t -y_{t-1}\)</span> – try the <code>diff()</code> function). If worse comes to worse, a non-linear or tree-based technique, as will be described later in the book, may be better at capturing the patterns.</p>
+<div class="figure"><span id="fig:unnamed-chunk-273"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-273-1.png" alt="Ways of transforming data to [hopefully] make them appropriate for linear models." width="768" />
+<p class="caption">
+Figure 8.2: Ways of transforming data to [hopefully] make them appropriate for linear models.
+</p>
+</div>
+<p>Second, all observations are randomly sampled such that the features <span class="math inline">\(X\)</span> for a given observation <span class="math inline">\(i = 1\)</span> are not dependent on observation <span class="math inline">\(i = 2\)</span>. This assumption has many implications across observations and across features. To be able to estimate the specification below, Giovanni and Giorgio would need to first define a universe of entrepreneurs and identify a target that is dependent on input features, but the inputs are not dependent on the target. From that universe of entrepreneurs, obtain a list of people, then randomly select a subset for data collection.</p>
+<p><span class="math display">\[\text{Y(Earnings) = f(Education, Age, Socioeconomic Status, Industry, ...)}\]</span></p>
+<p>The survey needs to frame questions in a way that can roll into input features that are not correlated with one another. For example, education should not perfectly correlate with age, but should correlate with earnings. This matters as the linear specification needs to be able to attribute a part of earnings to each input feature, but has trouble doing in the presence of <em>multicollinearity</em> or when two or more variables are highly correlated. As the number of input features <span class="math inline">\(k\)</span> grows, the chance of multicollinearity grows. The implications</p>
+<p>The regression equation has an error term <span class="math inline">\(\epsilon\)</span> that captures <em>everything else</em> that is not predicted by a model. This error term carries tremendous information that can be used to make a model more reliable. A number of assumptions are also thus built upon errors:</p>
+<ul>
+<li><p>The conditional mean should be zero <span class="math inline">\(E(\epsilon|X) = 0\)</span>, meaning that the error should not have any relationship to the input features <span class="math inline">\(X\)</span>.</p></li>
+<li><p>Errors should have constant variance or be homoscedastic. Given the variance of the error <span class="math inline">\(Var(\epsilon|X) = \sigma^2\)</span>, the spread should be constant (middle). Heterscedastic errors may be an indication that the underlying relationship between the target and input features may not be consistent or there are systematic errors with how the data was collected, both of which have an effect on the reliability of predictions. For reliability of estimates, heteroscedastic errors would lead to inaccurate confidence intervals.</p></li>
+</ul>
+<div class="figure"><span id="fig:unnamed-chunk-274"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-274-1.png" alt="Homoscedasticity vs. Heterscedasticity" width="768" />
+<p class="caption">
+Figure 8.3: Homoscedasticity vs. Heterscedasticity
+</p>
+</div>
+<ul>
+<li><p>Errors should be autocorrelated, or correlated amongst each other. Under the ideal scenario, the covariance should be <span class="math inline">\(cov(\epsilon_i\epsilon_j|x) = 0\)</span> where i and j are index values of observations and are not equal to one another. Any data that involves a trend and cyclicality or seasonality will likely suffer from autocorrelation, thus the weather yesterday may be correlated with weather today. Generally, autocorrelation can appear in any context that is spatial (e.g. German cities are likely to have more autocorrelation within country than with outside the country with the US) or more commonly temporal (e.g. yesterday is associated with today).</p></li>
+<li><p>The errors should be normally distributed. This assumption is not necessary when evaluating the validity of a model, but provides a clue as to how well the model operates.</p></li>
+</ul>
+</div>
+<div id="in-the-code" class="section level3">
+<h3><span class="header-section-number">8.1.3</span> In the code</h3>
+<p>To understand how a function works means to build it from scratch. Below, we illustrate how OLS is constructed using time series data about online searches relating to _human rights&quot; as found on <a href="https://trends.google.com">Google Trends</a>, then compare our model coefficients against the pre-built <code>lm()</code> function. Starting off, be sure to install the <code>gtrendsR</code>, then execute a request for “Human rights” for the period of January 2011 through January 2017. Note that the number of hits is an index value to the maximum number of searches for the requested topic during the period of interest.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Load library</span>
+  <span class="kw">library</span>(gtrendsR)
+  <span class="kw">library</span>(ggplot2)
+
+<span class="co">#Download human rights for </span>
+  out =<span class="st"> </span><span class="kw">gtrends</span>(<span class="kw">c</span>(<span class="st">&quot;Human rights&quot;</span>), <span class="dt">gprop =</span> <span class="st">&quot;web&quot;</span>, <span class="dt">time =</span>  <span class="st">&quot;2011-01-01 2017-01-01&quot;</span>)[[<span class="dv">1</span>]]
+  
+<span class="co">#Monthly line plot</span>
+  <span class="kw">ggplot</span>(out, <span class="kw">aes</span>(date, hits)) +<span class="st"> </span><span class="kw">geom_line</span>()</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-275"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-275-1.png" alt="Google trends monthly time series for Human Rights searches, Jan. 2011 through Jan. 2017" width="768" />
+<p class="caption">
+Figure 8.4: Google trends monthly time series for Human Rights searches, Jan. 2011 through Jan. 2017
+</p>
+</div>
+<p>The resulting data series exhibits some degree of regularity – perhaps a combination of monthly seasonality and a slight downward trend. A specification can be represented as:</p>
+<p><span class="math display">\[\text{Hits Index} = w_0 + w_1(\text{date index}) + w_2(January) + ... + w_{13}(November) + \epsilon\]</span></p>
+<p>where the <em>date index</em> is a sequential identifier for each month and each month is a represented as a dummy, leaving one month in reserve to avoid collinearity traps. The goal of the regression model is to estimate a weight for each input feature and the intercept. Thus, a matrix <code>X</code> needs to include a value for each input <span class="math inline">\(x_k\)</span> including a placeholder for the intercept. Using <code>model.matrix()</code>, we can convert a vector of months into a matrix of dummies with the first column representing the y-intercept.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Monthly dummies</span>
+month =<span class="st"> </span><span class="kw">format</span>(out$date, <span class="st">&quot;%m&quot;</span>)
+dummies =<span class="st"> </span><span class="kw">model.matrix</span>(~<span class="st"> </span>month)
+<span class="kw">colnames</span>(dummies)</code></pre></div>
+<pre><code>##  [1] &quot;(Intercept)&quot; &quot;month01&quot;     &quot;month02&quot;     &quot;month03&quot;     &quot;month04&quot;    
+##  [6] &quot;month05&quot;     &quot;month06&quot;     &quot;month07&quot;     &quot;month08&quot;     &quot;month09&quot;    
+## [11] &quot;month10&quot;     &quot;month11&quot;     &quot;month12&quot;</code></pre>
+<p>Next, we create a simple sequential date index and add it to the dummies matrix to create <code>X</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Date Index</span>
+date.index &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="kw">nrow</span>(out)
+
+<span class="co">#Create matrix</span>
+X &lt;-<span class="st"> </span><span class="kw">cbind</span>(dummies[, -<span class="dv">13</span>], date.index)
+<span class="kw">head</span>(X)</code></pre></div>
+<pre><code>##   (Intercept) month01 month02 month03 month04 month05 month06 month07
+## 1           1       1       0       0       0       0       0       0
+## 2           1       0       1       0       0       0       0       0
+## 3           1       0       0       1       0       0       0       0
+## 4           1       0       0       0       1       0       0       0
+## 5           1       0       0       0       0       1       0       0
+## 6           1       0       0       0       0       0       1       0
+##   month08 month09 month10 month11 date.index
+## 1       0       0       0       0          1
+## 2       0       0       0       0          2
+## 3       0       0       0       0          3
+## 4       0       0       0       0          4
+## 5       0       0       0       0          5
+## 6       0       0       0       0          6</code></pre>
+<p>Lastly, extract the <code>hits</code> feature from the trends data as a standalone vector <span class="math inline">\(y\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span>out$hits</code></pre></div>
+<p>With the vector <span class="math inline">\(y\)</span> and matrix <span class="math inline">\(X\)</span>, we can now estimate each coefficient <span class="math inline">\(w_i\)</span> by solving for the following equation: <span class="math inline">\(W = (X^TX)^{-1}X^Ty\)</span>. As R is well-adapted to statisticians’ needs, the <code>%*%</code> operator is an easy way to conduct matrix multiplication between two matrices. The <code>solve()</code> function is used to solve for a system of equations. In this case, <code>solve()</code> inverts the result of <span class="math inline">\(X^TX\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>X
+w &lt;-<span class="st"> </span><span class="kw">solve</span>(a) %*%<span class="st"> </span><span class="kw">t</span>(X) %*%<span class="st"> </span>y</code></pre></div>
+<p>Likewise, we can estimate the same regression using the <code>lm()</code> function and extract the coefficients to illustrate that the calculation steps yield identifical results. While the <code>lm()</code> function makes the process far simpler and is designed to facilitate analysis with ease, there is something to be said for being able to engineer the underlying steps as it may come in handy when building new classes of algorithms.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Run lm()</span>
+  lm.obj &lt;-<span class="st"> </span><span class="kw">lm</span>(y ~<span class="st"> </span>X[,-<span class="dv">1</span>])
+
+<span class="co">#Consolidate and compare model coefficients</span>
+  comparison &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="st">`</span><span class="dt">From Scratch</span><span class="st">`</span> =<span class="st"> </span>w, 
+                           <span class="st">`</span><span class="dt">lm Function</span><span class="st">`</span> =<span class="st"> </span><span class="kw">coef</span>(lm.obj))
+  
+<span class="co">#Print</span>
+  <span class="kw">print</span>(comparison)</code></pre></div>
+<table>
+<caption><span id="tab:unnamed-chunk-281">Table 8.1: </span>Comparison of model built from scratch versus pre-built function</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">From.Scratch</th>
+<th align="right">lm.Function</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="right">75.4206349</td>
+<td align="right">75.4206349</td>
+</tr>
+<tr class="even">
+<td>month01</td>
+<td align="right">0.6562736</td>
+<td align="right">0.6562736</td>
+</tr>
+<tr class="odd">
+<td>month02</td>
+<td align="right">10.0506425</td>
+<td align="right">10.0506425</td>
+</tr>
+<tr class="even">
+<td>month03</td>
+<td align="right">17.3622449</td>
+<td align="right">17.3622449</td>
+</tr>
+<tr class="odd">
+<td>month04</td>
+<td align="right">11.3405140</td>
+<td align="right">11.3405140</td>
+</tr>
+<tr class="even">
+<td>month05</td>
+<td align="right">14.6521164</td>
+<td align="right">14.6521164</td>
+</tr>
+<tr class="odd">
+<td>month06</td>
+<td align="right">-4.5362812</td>
+<td align="right">-4.5362812</td>
+</tr>
+<tr class="even">
+<td>month07</td>
+<td align="right">-14.7246788</td>
+<td align="right">-14.7246788</td>
+</tr>
+<tr class="odd">
+<td>month08</td>
+<td align="right">-12.7464097</td>
+<td align="right">-12.7464097</td>
+</tr>
+<tr class="even">
+<td>month09</td>
+<td align="right">1.2318594</td>
+<td align="right">1.2318594</td>
+</tr>
+<tr class="odd">
+<td>month10</td>
+<td align="right">8.8767952</td>
+<td align="right">8.8767952</td>
+</tr>
+<tr class="even">
+<td>month11</td>
+<td align="right">10.3550642</td>
+<td align="right">10.3550642</td>
+</tr>
+<tr class="odd">
+<td>date.index</td>
+<td align="right">-0.1449358</td>
+<td align="right">-0.1449358</td>
+</tr>
+</tbody>
+</table>
+<p>For more in-depth discussion on the derivation of linear models, refer to <a href="http://www-bcf.usc.edu/~gareth/ISL/ISLR%20First%20Printing.pdf">Chapter 3 of Introduction to Statistical Learning</a>.</p>
+</div>
+</div>
+<div id="more-than-plain-vanilla-regression" class="section level2">
+<h2><span class="header-section-number">8.2</span> More Than Plain Vanilla Regression</h2>
+<div id="the-ridge-and-the-lasso" class="section level3">
+<h3><span class="header-section-number">8.2.1</span> The Ridge and the LASSO</h3>
+<p>More often than not, the qualities that bound a data set are not ideal. Imagine a scenario in which <span class="math inline">\(n = 1000\)</span>, but the number of features <span class="math inline">\(k = 5000\)</span>. In an increasingly data-rich world, this is becoming more common. This leads to a number of methodological problems. Generally, analysts and policy makers want a parsimonious explanation as fewer driving factors are easier to interpret. An analyst may be tempted to use his or her intuition to guide her variable choices using tests such as AIC, BIC, F-Test among others. However, when <span class="math inline">\(k\)</span> is large, a manual strategy may not necessarily be scalable and the strongest predictors may simply be overlooked, whether due to overriding theoretical assumptions (e.g. economic theory, policy theories) or inability to screen and test all variable combinations. From a purely statistical perspective, least squares is dependent on being able to solve for <span class="math inline">\((X&#39;X)^{-1}\)</span> – or inverting the matrix in order to calculate each of the coefficients <span class="math inline">\(w\)</span>, which is not possible if the matrix were singular (not invertible).</p>
+<p>Enter regularized regression methods.</p>
+<p>As we know with linear regression, the goal is to estimate <span class="math inline">\(\w\)</span> by minimizing the Total Sum of Squares (TSS):</p>
+<p><span class="math display">\[\hat{w} = (X&#39;X)^{-1}X&#39;Y\]</span></p>
+<p>where each <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span> is standardized (mean 0 with unit variance). If we assume that there is a limited amount of TSS, then we can force linear regression to make trade offs between coefficients by introducing a <em>bias</em> term – a constraint <span class="math inline">\(\lambda I_k\)</span> can be added to the diagonals of <span class="math inline">\(X&#39;X\)</span>:</p>
+<p><span class="math display">\[\hat{w} = (X&#39;X + \lambda I_k)^{-1}X&#39;Y\]</span>.</p>
+<p><span class="math inline">\(\lambda\)</span> is a tuning parameter – a value that cannot be solved for and must be uncovered through cross-validation. Depending on how much bias is added into the model determines how much “wiggle room” coefficients have to move. Expanding upon the typical TSS, <span class="math inline">\(\lambda\)</span> is tacked onto the end of the formula as a scalar of the sum of squared coefficients (an <em>L2-norm</em>):</p>
+<p><span class="math display">\[TSS_{penalized} = \sum^n_{i=1}(y_i - \sum^k_{j=1} x_{ij}w_j)^2 + \lambda \sum^k_{j=1}|w_j|^2\]</span></p>
+<p>The second part of the penalized TSS can be viewed as a constraint. Given the standard TSS <span class="math inline">\(\sum^n_{i=1}(y_i - \sum^k_{j=1} x_{ij}w_j)^2\)</span>, we place a constraint such that <span class="math display">\[\sum^k_{j=1}|w_j|^2 &lt; c \]</span></p>
+<p>where <span class="math inline">\(c &gt; 0\)</span>. Taken together, the interpretation of <span class="math inline">\(\lambda\)</span> is that it regulates the size of coefficients <span class="math inline">\(w\)</span>: As the size <span class="math inline">\(\lambda\)</span> is increased, the magnitude of coefficients are reduced. The value of <span class="math inline">\(\lambda\)</span> is determined through a <em>grid search</em> in which values of <span class="math inline">\(\lambda\)</span> are tested at equal intervals to identify the value that minimizes some error measure such as MSE. This specific formulation of a regularization is known as a <em>ridge regression</em> and helps to bound coefficients to a “reasonable” range, but does not zero out coefficient values.</p>
+<p>In order to surface the most “influential” features, we may rely on a close cousin of ridge regression known as <em>Least Absolute Shrinkage and Selection Operator</em> or <em>LASSO</em>, which relies on an <em>L1-norm</em>: <span class="math display">\[\sum^k_{j=1}|w_j| &lt; c\]</span>. By swapping a L2-quadratic constraint with a L1, least squares will behave differently.</p>
+<p>To understand the effects on how least squares model behave under regularization, we can use a geometric interpretation. Constraints force the possible OLS esimates to fall along the edge of a constraint region. In the diagram below, the blue are the L1/L2 norm constraints, the concentric ellipses are various possibilities of the Residual Sum of Squares, and two coefficients are considered. The tangent at which a RSS ellipse and a constraint region meets jointly determines the magnitude of a coefficient – there is a trade off imposed due to the constraints. In the case of Ridge regression, the L2-norm constraint region is circular, meaning that a large coefficient <span class="math inline">\(w_1\)</span> for a feature <span class="math inline">\(x_1\)</span> is possible when minimizing the magnitude of coefficient <span class="math inline">\(w_2\)</span>. In LASSO regression, the L1-norm results in a constraint region with “corners”. If the RSS ellipse lands on acorner, a coefficient <span class="math inline">\(w_2\)</span> can be forced to exactly zero while allowing <span class="math inline">\(w1\)</span> take a non-zero value. The significance of this is far reaching: <em>LASSO regression can conduct variable selection</em>.</p>
+<div class="figure"><span id="fig:unnamed-chunk-282"></span>
+<img src="assets/continuous/img/lasso_v_ridge.jpg" alt="Ridge and LASSO constraint regions and their effect on OLS estimates." width="1011" />
+<p class="caption">
+Figure 8.5: Ridge and LASSO constraint regions and their effect on OLS estimates.
+</p>
+</div>
+<p>There are hurdles in using these methods, however.</p>
+<ul>
+<li><p>Uncertainty in the form of standard errors is a mainstay of statistical methods. While standard errors can be derived for Ridge regression as the estimator is linear, the same property is not shared by LASSO due to the L1-constraint.</p></li>
+<li><p>One would expect that collinearity should be a concern, in particular the number of input features exceeds the number of observations. As it turns out, Ridge regression is robust to collinearity, but LASSO is not.</p></li>
+</ul>
+</div>
+<div id="why-regularized-methods-matter" class="section level3">
+<h3><span class="header-section-number">8.2.2</span> Why regularized methods matter</h3>
+<p>In situations where priors are not known and the features are too numerous to individually test, regularized regression methods facilitates analysis and prediction at scale. Perhaps this class of techniques goes against time-honored scientific traditions of starting from a well-defined hypothesis, then systematically proving and disproving arguments for and against the hypothesis. But alternatively, regularized methods may take on the roles of as both an exploratory method and a predictive method. LASSO regression, in particular, can serve as a methodological gut check and surface features that contain predictive value.</p>
+<p>Cases where regularization is commonly used:</p>
+<ul>
+<li>If users of a service provide ratings and written comments that are not in a structured form, the words can be treated as n-gram features on which the ratings can be regressed upon. Using a LASSO, the most important phrases will be surface</li>
+<li>Geneticists often use DNA microarrays to capture thousands of genes and how they are expressed. LASSO can be used to surface which genes are most associated with a given gene expression.</li>
+<li>In marketing, a common task is to target advertisements and product offers to customers who wil buy the product. With the plethora of customer-level data from demographic characteristics to purchasing patterns, a data analyst may have hundreds if not thousands of measures on a given person and thus may be challenged with high dimensionality. Regularized regression can be useful in surfacing important factors and predict a customer’s propensity to buy a product.</li>
+</ul>
+<p>For a step-by-step walkthrough of regularized methods, see <em>What do I do when there are too many features?</em> in the DIY section of this chapter.</p>
+</div>
+</div>
+<div id="k-nearest-neighbors" class="section level2">
+<h2><span class="header-section-number">8.3</span> K-Nearest Neighbors</h2>
+<div id="formulation" class="section level3">
+<h3><span class="header-section-number">8.3.1</span> Formulation</h3>
+<p>Continuous values can also be handed using non-parametric means. K-nearest neighbors (KNN) is a pattern recognition algorithm that is based on a simple idea: observations that are more similar will likely also be located in the same neighborhood. Given a class label <span class="math inline">\(y\)</span> associated with input features <span class="math inline">\(x\)</span>, a given record <span class="math inline">\(i\)</span> in a dataset can be related to all other records using Euclidean distances in terms of <span class="math inline">\(x\)</span>:</p>
+<p><span class="math display">\[ \text{distance} = \sqrt{\sum(x_{ij} - x_{0j})^{2} }\]</span></p>
+<p>where <span class="math inline">\(j\)</span> is an index of features in <span class="math inline">\(x\)</span> and <span class="math inline">\(i\)</span> is an index of records (observations). For each <span class="math inline">\(i\)</span>, a neighborhood of taking the <span class="math inline">\(k\)</span> records with the shortest distance to that point <span class="math inline">\(i\)</span>. From that neighborhood, the value of <span class="math inline">\(y\)</span> can be approximated. Given a discrete target variables, <span class="math inline">\(y_i\)</span> is determined using a procedure called <em>majority voting</em> where the most prevalent value in the neighborhood around <span class="math inline">\(i\)</span> is assigned. For example, the ten closests points relative to a given point <span class="math inline">\(i\)</span> are provided:</p>
+<p>Choosing a value of <span class="math inline">\(k = 4\)</span> would mean that the subsample is made up of three <em>a’s</em> and one <em>b</em>. As <em>a</em> makes up the majority, we can approximate <span class="math inline">\(y_i\)</span> as <em>a</em>, assuming points that are closer together are more related. For continuous variables, the mean of neighboring records is used to approximate <span class="math inline">\(y_i\)</span>.</p>
+<p>How does one implement this exactly? To show this process, we will write some pseudocode. It’s an informal language to articulate and plan the steps of an algorithm or program, principally using words and text as opposed to formulae. There are different styles of pseudocode, but the general rules are simple: indentation is used to denote a dependency (e.g. control structures). For all techniques, we will provide pseudocode, starting with kNN:</p>
+<p><strong>Pseudocode</strong></p>
+<pre><code>kNN( k, set, y, x){
+  Pre-Process (optional):
+    &gt; Transform or standardize all input features
+    
+  Loop through each `item` in `set`{
+    &gt; Calculate vector of distances in terms of x from `item` to all other items in `set` 
+    &gt; Rank distance in ascending order 
+    
+    if target `y` is continuous:
+      &gt; Calculate mean of `y` for items ranked 1 through k
+    else if target is discrete:
+      &gt; Calculate share of each discrete level for items ranked 1 through k
+      &gt; Use majority voting to derive expected value 
+  }
+}</code></pre>
+<p>The procedure described above yields the results for just one value of <span class="math inline">\(k\)</span>. However, kNNs, like many other algorithms, are an iterative procedure, requiring tuning of <em>hyperparameters</em> – or values that are starting and guiding assumptions of a model. In the case of kNNs, <span class="math inline">\(k\)</span> is a hyperparameter and we do not precisely know the best value of <span class="math inline">\(k\)</span>. Often times, tuning of hyperparameters involves a <em>grid search</em>, a process whereby a range of possible hyperparameters is determined and the algorithm is tested at equal intervals from the minimum to maximum of that tuning range.</p>
+<p>To illustrate this, a two-dimensional dataset with a target <span class="math inline">\(y\)</span> that takes of values <span class="math inline">\(0\)</span> and <span class="math inline">\(1\)</span> has been plotted below. Graph (1) plots the points, color-coded by their labels. Graph (2), (3), and (4) show the results of a grid search along intervals of a <span class="math inline">\(log_{10}\)</span> scale, where the background is color-coded as the predicted label for the corresponding value of <span class="math inline">\(k\)</span>. In addition to <span class="math inline">\(k\)</span>, two measures are provided above each graph to help contextualize predictions: the True Positive Rate or <span class="math inline">\(TPR\)</span> and the True Negative Rate or <span class="math inline">\(TNR\)</span>.</p>
+<p>The <span class="math inline">\(TPR\)</span> is defined as #<span class="math inline">\(TPR = \frac{\text{Number of values that were correctly predicted}}{\text{Number of actual cases values}}\)</span>#. The <span class="math inline">\(TNR\)</span> is similarly defined as #<span class="math inline">\(TNR = \frac{\text{Number negative values that were correctly predicted}}{\text{Number of actual negative values}}\)</span>#. Both are measures bound between 0 and 1, where higher values indicate a higher degree of accuracy. A high <span class="math inline">\(TPR\)</span> and low <span class="math inline">\(TNR\)</span> indicates that the algorithm is ineffective in distinguishing between positive and negative cases. The same is true with a low <span class="math inline">\(TPR\)</span> and high <span class="math inline">\(TNR\)</span>. This is exactly the case in Graph (4) where all points are classified as <span class="math inline">\(Y = 1\)</span>, which is empirically characterized by <span class="math inline">\(TNR = 0.02\)</span> and <span class="math inline">\(TPR = 1\)</span>.</p>
+<div class="figure"><span id="fig:unnamed-chunk-284"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-284-1.png" alt="Comparison of prediction accuracies for various values of k." width="672" />
+<p class="caption">
+Figure 8.6: Comparison of prediction accuracies for various values of k.
+</p>
+</div>
+</div>
+<div id="which-k-is-the-right-k" class="section level3">
+<h3><span class="header-section-number">8.3.2</span> Which K is the right K?</h3>
+<p>The accuracy of a KNN model is principally dependent on finding the right value of <span class="math inline">\(k\)</span> directly determines what enters the calculation used to predict the target variable. Thus, to optimize for accuracy, try multiple values of <span class="math inline">\(k\)</span> and compare the resulting accuracy values. It is helpful to first see that when <span class="math inline">\(k = n\)</span>, kNNs are simply the sample statistic (e.g. mean or mode) for the whole dataset. Below, the True Positive Rate (TPR, blue) and True Negative Rate (TNR, green) have been plotted for values of <span class="math inline">\(k\)</span> from 1 to <span class="math inline">\(n\)</span>. The objective is to ensure that there is a balance between TPR and TNR such that predictions are accurate. Where <span class="math inline">\(k &gt; 20\)</span>, the TPR is near perfect. For values of <span class="math inline">\(k &lt; 10\)</span>, TPR and TNR are more balanced, thereby yielding more reliable and accurate results.</p>
+<div class="figure"><span id="fig:unnamed-chunk-285"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-285-1.png" alt="True Positive Rate (TPR = blue) and True Negative Rate (TNR = green) performance for varying values of k" width="672" />
+<p class="caption">
+Figure 8.7: True Positive Rate (TPR = blue) and True Negative Rate (TNR = green) performance for varying values of k
+</p>
+</div>
+<p>There are other factors that influence the selection of <span class="math inline">\(k\)</span>:</p>
+<ul>
+<li><em>Scale</em>. kNNs are strongly influenced by the scale and unit of values of <span class="math inline">\(x\)</span> as ranks are dependent on straight Euclidean distances. For example, if a dataset contained measurements of age in years and wealth in dollars, the units will over emphasize income as the range varies from 0 to billions whereas age is on a range of 0 to 100+. To ensure equal weights, it is common to transform variables into standardized scales such as:
+<ul>
+<li>Range scaled or <span class="math display">\[\frac{x - \min(x)}{\max(x)-\min(x)} \]</span> yields scaled units between 0 and 1, where 1 is the maximum value</li>
+<li>Mean-centered or <span class="math display">\[ \frac{x - \mu}{\sigma}\]</span> yield units that are in terms of standard deviations</li>
+</ul></li>
+<li><em>Grids</em>. Similar to the scale issue, KNNs are particularly effective in data that are distributed on a grid – measurements along a continuous scale at equal incremenets, but may be a poor choice when the data are mixed data formats such as integers and binary.</li>
+<li><em>Symmetry</em>. It’s key to remember that neighbors around each point will not likely be uniformly distributed. While kNN does not have any probabilistic assumptions, the position and distance of neighboring points may have a skewing effect.</li>
+</ul>
+</div>
+<div id="usage" class="section level3">
+<h3><span class="header-section-number">8.3.3</span> Usage</h3>
+<p>KNNs are efficient and effective under certain conditions:</p>
+<ul>
+<li>KNNs can handle target values that are either discrete or continuous, making the approach relatively flexible. However, best performance is achieved when the input features should are in the same scale (e.g. color values in a grid).</li>
+<li>They are best used when there are relatively few features as distances to neighbors need to be calculated for each and every record and need to be optimized by searching for the value of <span class="math inline">\(k\)</span> that optimizes for accuracy. In cases where data is randomly or uniformly distributed in fewer dimensions, a trained KNN is an effective solution to filling gaps in data, especially in spatial data.</li>
+<li>KNNs are not interpretable as it is a nonparametric approach – it does not produce results that have a causal relationship or illustrate. Furthermore, kNNs are not well-equipped to handle missing values.</li>
+</ul>
+<p>For a step-by-step walkthrough of regularized methods, see <em>What’s a good way to fill-in missing data? </em> in the DIY section.</p>
+</div>
+</div>
+<div id="diy-5" class="section level2">
+<h2><span class="header-section-number">8.4</span> DIY</h2>
+
+<div id="whats-a-good-way-to-fill-in-missing-data" class="section level3">
+<h3><span class="header-section-number">8.4.1</span> What’s a good way to fill-in missing data?</h3>
+<p>In practice in <code>R</code>, KNNs can be trained using the <code>knn()</code> function in the <code>class</code> library. However, this function is best suited for discrete target variables. To illustrate KNN regressions, we will write a function from scratch and illustrate using remote sensed data. Remote sensing is data obtained through scanning the Earth from aircrafts or satellites. Remote sensed earth observations yield information about weather, oceans, atmospheric composition, human development among other things – all are fundamental for understanding the environment. As of Jan 2017, the National Aeronautics and Atmospheric Administration (NASA) maintains two low-earth orbiting (LEO) satellites named Terra and Aqua, each of which takes images of the Earth using the Moderate Resolution Imaging Spectroradiometer (MODIS) instrument. Among the many practical scientific applications of MODIS imagery is the ability to sense vegetation growth patterns using the Normalized Difference Vegetation Index (NDVI) – a measure ranging from -1 to +1 that indicates that amount of live green on the Earth’s surface. Imagery data is a <span class="math inline">\(n \times m\)</span> gridded matrix where each cell represents the NDVI value for a given latitude-longitude pair.</p>
+<p>NASA’s Goddard Space Flight Center (GSFC) publishes monthly <a href="https://neo.sci.gsfc.nasa.gov/view.php?datasetId=MOD13A2_M_NDVI">MODIS NDVI composites</a>. For ease of use, the data has been reprocessed such that data are represented as three columns: latitude, longitude, and NDVI. In this example, we randomly select a proportion of the data (~30%), then use KNNs to interpolate the remaining 70% to see how close we can get to replicating the original dataset. In application, scientific data that is collected <em>in situ</em> on the Earth’s surface may take on a similar format – represembling randomly selected points that can be used to generalize the measures on a grid, even where measures were not taken. This process of interpolation and gridding of point data is the basis for inferring natural and manmind phenomena beyond where data was sampled, whether relating to the atmosphee, environment, infrastructure, among other domains.</p>
+<p>To start, we’ll use the <code>digIt()</code> library to import the NASA extract.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(digIt)
+  df &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;ndvi&quot;</span>)</code></pre></div>
+<p>To view the data, we can use the <code>geom_raster()</code> option in the <code>ggplot2</code> library. Notice the color gradations between arrid and lush areas of vegetation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(ggplot2)
+  <span class="kw">ggplot</span>(df, <span class="kw">aes</span>(<span class="dt">x=</span>lon, <span class="dt">y=</span>lat)) +
+<span class="st">              </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> ndvi)) +
+<span class="st">              </span><span class="kw">ggtitle</span>(<span class="st">&quot;NDVI: October 2016&quot;</span>) +<span class="st"> </span>
+<span class="st">              </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">limits =</span> <span class="kw">c</span>(-<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">colours =</span> <span class="kw">rev</span>(<span class="kw">terrain.colors</span>(<span class="dv">10</span>)))</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-287"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-287-1.png" alt="Rendering of NDVI for October 2016" width="672" />
+<p class="caption">
+Figure 8.8: Rendering of NDVI for October 2016
+</p>
+</div>
+<p>The NDVI data does not provide values on water. As can be seen below, cells that do not contain data are represented as 99999 and are otherwise values between -1 and +1.</p>
+<pre><code>##       lat      lon      ndvi
+## 1  89.875 -179.875 99999.000
+## 2  89.625 -179.875 99999.000
+## 3  89.375 -179.875 99999.000
+## 74 71.625 -179.875     0.105
+## 75 71.375 -179.875     0.447
+## 76 71.125 -179.875     0.376</code></pre>
+<p>For this example, we will focus on an area in the Western US and extract only a 30% sample.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#Subset image to Western US near the Rocky Mountains</span>
+    us.west &lt;-<span class="st"> </span>df[df$lat &lt;<span class="st"> </span><span class="dv">45</span> &amp;<span class="st"> </span>df$lat &gt;<span class="st"> </span><span class="dv">35</span> &amp;<span class="st">  </span>df$lon &gt;<span class="st"> </span>-<span class="dv">119</span> &amp;<span class="st"> </span>df$lon &lt;<span class="st"> </span>-<span class="dv">107</span>,]
+  
+  <span class="co">#Randomly selection a 30% sample</span>
+    <span class="kw">set.seed</span>(<span class="dv">32</span>)
+    sampled &lt;-<span class="st"> </span>us.west[<span class="kw">runif</span>(<span class="kw">nrow</span>(us.west)) &lt;<span class="st"> </span><span class="fl">0.3</span> &amp;<span class="st"> </span>us.west$ndvi !=<span class="st"> </span><span class="dv">99999</span>,]</code></pre></div>
+<p>A KNN algorithm is fairly simple to build when the scoring or voting function is a simple mean. All that is required is to write a series of a loops to calculate the nearest neighbors for any value of <span class="math inline">\(k\)</span>. The <code>knnMean</code> function should take a training set (input features - <code>x.train</code> and target - <code>y.train</code>), and a test set (input features - <code>x.test</code>).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  knnMean &lt;-<span class="st"> </span>function(x.train, y.train, x.test, k){
+      <span class="co">#</span>
+      <span class="co"># Calculates the mean of k-nearest neighbors </span>
+      <span class="co">#</span>
+      <span class="co"># Args:</span>
+      <span class="co">#  x.train and y.train are the input features and target feature for the training set</span>
+      <span class="co">#  x.test is the test set to be scored</span>
+      <span class="co">#  k is the number of neighbors </span>
+      <span class="co">#</span>
+      <span class="co"># Return:</span>
+      <span class="co">#  Vector of kNN-based means</span>
+      
+    
+    <span class="co">#Set vector of length of test set</span>
+      output &lt;-<span class="st">  </span><span class="kw">vector</span>(<span class="dt">length =</span> <span class="kw">nrow</span>(x.test))
+    
+    <span class="co">#Loop through each row of the test set</span>
+      for(i in <span class="dv">1</span>:<span class="kw">nrow</span>(x.test)){
+        
+        <span class="co">#extract coords for the ith row</span>
+          cent &lt;-<span class="st"> </span>x.test[i,]
+        
+        <span class="co">#Set vector length</span>
+          dist &lt;-<span class="st"> </span><span class="kw">vector</span>(<span class="dt">length =</span> <span class="kw">nrow</span>(x.train))
+        
+        <span class="co">#Calculate distance by looping through inputs</span>
+          for(j in <span class="dv">1</span>:<span class="kw">ncol</span>(x.train)){
+            dist &lt;-<span class="st"> </span>dist +<span class="st"> </span>(x.train[, j] -<span class="st"> </span>cent[j])^<span class="dv">2</span>
+          }
+          dist &lt;-<span class="st"> </span><span class="kw">sqrt</span>(dist)
+        
+        <span class="co">#Calculate rank on ascending distance, sort by rank</span>
+          df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="dv">1</span>:<span class="kw">nrow</span>(x.train),<span class="dt">rank =</span> <span class="kw">rank</span>(dist))
+          df &lt;-<span class="st"> </span>df[<span class="kw">order</span>(df$rank),]
+        
+        <span class="co">#Calculate mean of obs in positions 1:k, store as i-th value in output</span>
+          output[i] &lt;-<span class="st"> </span><span class="kw">mean</span>(y.train[df[<span class="dv">1</span>:k,<span class="dv">1</span>]], <span class="dt">na.rm=</span>T)
+      }
+    <span class="kw">return</span>(output)
+  }</code></pre></div>
+<p>The hyperparameter <span class="math inline">\(k\)</span> needs to be tuned. We thus also should write a function to find the optimal value of <span class="math inline">\(k\)</span> that minimizes the loss function, which is the Root Mean Squared Error (<span class="math inline">\(\text{RMSE} = \sigma = \sqrt{\frac{\sum_{i=1}^n(\hat{y_i}-y_i)^2}{n}}\)</span>.).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  knnOpt &lt;-<span class="st"> </span>function(x.train, y.train, x.test, y.test, max, step){
+      <span class="co">#</span>
+      <span class="co"># Conducts a grid search for KNN and returns RMSE for values of k</span>
+      <span class="co">#</span>
+      <span class="co"># Args:</span>
+      <span class="co">#  x.train and y.train = the input features and target feature for the training set</span>
+      <span class="co">#  x.test = the test set to be scored</span>
+      <span class="co">#  max = the maximum number of neighbors to be considered</span>
+      <span class="co">#  step = number of steps between 1 and max k</span>
+      <span class="co">#</span>
+      <span class="co"># Return:</span>
+      <span class="co">#  data frame of RMSE by k</span>
+      
+    <span class="co">#create log placehodler</span>
+    log &lt;-<span class="st"> </span><span class="kw">data.frame</span>()
+    
+    for(i in <span class="kw">seq</span>(<span class="dv">1</span>, max, step)){
+      <span class="co">#Run KNN for value i</span>
+        yhat &lt;-<span class="st"> </span><span class="kw">knnMean</span>(x.train, y.train, x.test, i)
+      
+      <span class="co">#Calculate RMSE</span>
+        rmse &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">sqrt</span>(<span class="kw">mean</span>((yhat  -<span class="st"> </span>y.test)^<span class="dv">2</span>, <span class="dt">na.rm=</span>T)), <span class="dv">3</span>)
+        
+      <span class="co">#Add result to log</span>
+        log &lt;-<span class="st"> </span><span class="kw">rbind</span>(log, <span class="kw">data.frame</span>(<span class="dt">k =</span> i, <span class="dt">rmse =</span> rmse))
+    }
+    
+    <span class="co">#sort log</span>
+    log &lt;-<span class="st"> </span>log[<span class="kw">order</span>(log$rmse),]
+    
+    <span class="co">#return log</span>
+    <span class="kw">return</span>(log)
+  }</code></pre></div>
+<p>Normally, the input features (e.g. latitude and longitude) should be normalized, but as the data are in the same coordinate system and scale, no additional manipulation is required. From the 30% sampled data, a training set is subsetted containing 70% of sampled records and the remaining is reserved for testing.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#Set up data</span>
+    <span class="kw">set.seed</span>(<span class="dv">123</span>)
+    rand &lt;-<span class="st"> </span><span class="kw">runif</span>(<span class="kw">nrow</span>(sampled))
+  
+  <span class="co">#training set</span>
+    xtrain &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(sampled[rand &lt;<span class="st"> </span><span class="fl">0.7</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)])
+    ytrain &lt;-<span class="st"> </span>sampled[rand &lt;<span class="st"> </span><span class="fl">0.7</span>, <span class="dv">3</span>]
+    
+  <span class="co">#test set</span>
+    xtest &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(sampled[rand &gt;=<span class="st"> </span><span class="fl">0.7</span>, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)]) 
+    ytest &lt;-<span class="st"> </span>sampled[rand &gt;=<span class="st"> </span><span class="fl">0.7</span>, <span class="dv">3</span>]</code></pre></div>
+<p>The algorithm can now be placed into testing, searching for the optimal value of <span class="math inline">\(k\)</span> along at increments of <span class="math inline">\(1\)</span> from <span class="math inline">\(k = 1\)</span> to $ k = $. Based on the grid search, the optimal value is <span class="math inline">\(k = 4\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#opt</span>
+    logs &lt;-<span class="st"> </span><span class="kw">knnOpt</span>(xtrain, ytrain, xtest, ytest, <span class="kw">nrow</span>(xtest), <span class="dv">1</span>)
+
+  <span class="co">#Plot results</span>
+    <span class="kw">ggplot</span>(logs, <span class="kw">aes</span>(<span class="dt">x =</span> k, <span class="dt">y =</span> rmse)) +
+<span class="st">            </span><span class="kw">geom_line</span>() +<span class="st"> </span><span class="kw">geom_point</span>() +<span class="st"> </span><span class="kw">ggtitle</span>(<span class="st">&quot;RMSE vs. K-Nearest Neighbors&quot;</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-293"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-293-1.png" alt="RMSE for various tested values of k" width="672" />
+<p class="caption">
+Figure 8.9: RMSE for various tested values of k
+</p>
+</div>
+<p>With this value, we can now put this finding to the test by plotting the interpolated data as a raster. Using the <code>ggplot</code> library, we will produce six graphs to illustrate the tolerances of the methods: the original and sampled images as well as a sampling of rasters for various values of <span class="math inline">\(k\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Original</span>
+  full &lt;-<span class="st"> </span><span class="kw">ggplot</span>(us.west, <span class="kw">aes</span>(<span class="dt">x=</span>lon, <span class="dt">y=</span>lat)) +
+<span class="st">            </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> ndvi)) +
+<span class="st">            </span><span class="kw">ggtitle</span>(<span class="st">&quot;Original NASA Tile&quot;</span>) +
+<span class="st">            </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">limits =</span> <span class="kw">c</span>(-<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">colours =</span> <span class="kw">rev</span>(<span class="kw">terrain.colors</span>(<span class="dv">10</span>)))
+
+<span class="co">#30% sample</span>
+  sampled &lt;-<span class="st"> </span><span class="kw">ggplot</span>(sampled, <span class="kw">aes</span>(<span class="dt">x=</span>lon, <span class="dt">y=</span>lat)) +
+<span class="st">            </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> ndvi)) +
+<span class="st">            </span><span class="kw">ggtitle</span>(<span class="st">&quot;Sample: 30%&quot;</span>) +
+<span class="st">            </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">limits =</span> <span class="kw">c</span>(-<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">colours =</span> <span class="kw">rev</span>(<span class="kw">terrain.colors</span>(<span class="dv">10</span>)))   
+  
+<span class="co">#Set new test set</span>
+  xtest &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(us.west[, <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)]) 
+  
+<span class="co">#Test k for four different values</span>
+  for(k in <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">10</span>, <span class="dv">100</span>)){
+    yhat &lt;-<span class="st"> </span><span class="kw">knnMean</span>(xtrain,ytrain,xtest, k)
+    pred &lt;-<span class="st"> </span><span class="kw">data.frame</span>(xtest, <span class="dt">ndvi =</span> yhat)
+    rmse &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">sqrt</span>(<span class="kw">mean</span>((yhat  -<span class="st"> </span>us.west$ndvi)^<span class="dv">2</span>, <span class="dt">na.rm=</span>T)), <span class="dv">3</span>)
+    
+    g &lt;-<span class="st"> </span><span class="kw">ggplot</span>(pred, <span class="kw">aes</span>(<span class="dt">x=</span>lon, <span class="dt">y=</span>lat)) +
+<span class="st">      </span><span class="kw">geom_raster</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> ndvi)) +
+<span class="st">      </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;kNN (k =&quot;</span>,k,<span class="st">&quot;, RMSE = &quot;</span>, rmse,<span class="st">&quot;)&quot;</span>)) +
+<span class="st">      </span><span class="kw">scale_fill_gradientn</span>(<span class="dt">limits =</span> <span class="kw">c</span>(-<span class="dv">1</span>,<span class="dv">1</span>), <span class="dt">colours =</span> <span class="kw">rev</span>(<span class="kw">terrain.colors</span>(<span class="dv">10</span>)))
+    
+    <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;k&quot;</span>,k), g)
+  }
+ 
+  <span class="co">#Graphs plotted</span>
+    <span class="kw">library</span>(gridExtra) 
+    <span class="kw">grid.arrange</span>(full, sampled, k1, k4, k10, k100, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-294"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-294-1.png" alt="Comparison of Predicted NDVI vs. Actual." width="672" />
+<p class="caption">
+Figure 8.10: Comparison of Predicted NDVI vs. Actual.
+</p>
+</div>
+
+</div>
+<div id="what-do-i-do-when-there-are-too-many-features" class="section level3">
+<h3><span class="header-section-number">8.4.2</span> What do I do when there are too many features?</h3>
+<p>Too many features? Regularization methods can do the trick.</p>
+<p>To illustrate regularization in action, we’ll use an example that is inspired by Google Flu Trends (read more: <a href="http://static.googleusercontent.com/media/research.google.com/en/us/archive/papers/detecting-influenza-epidemics.pdf">Detecting influenza epidemics using search engine query data</a>). The research endeavor led by Google scientists sought to predict influenza in near real-time using search engine query data, but became controversial and widely criticized for its pure reliance on correlations. It is a pioneering and iconic nowcasting project and is an early example of how alternative data could be put into action.</p>
+<p>The basic idea of Google’s research is that some combination of search queries can be combined to predict the CDC’s influenza-like illness (ILI) estimates. In the below example, we do not profess to develop a predict the flu, but rather take advantage of the data made available through <a href="https://trends.google.com/trends/">Google Trends</a>. As one may imagine, Google’s search engine receives an unfathomable amount of queries. When combined with ILI data, we can easily yield a data set with <span class="math inline">\(k &gt; n\)</span>.</p>
+<p>To start, We’ll use the digIt library to pull the “flu” data. For simplicity, the example presented below contains <span class="math inline">\(n = 85\)</span> and <span class="math inline">\(k = 85\)</span> including target and date variables. Each <span class="math inline">\(k\)</span> is a monthly-level index of the search volume for a specific search query, standardized to the maximum value observed in the period (100 = max). The queries include search terms such as “kleenex”, “cold remedy”, “cough”, and “cvspharmacy” among others.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(digIt)
+flu &lt;-<span class="st"> </span><span class="kw">digIt</span>(<span class="st">&quot;flu&quot;</span>)
+<span class="kw">sample</span>(<span class="kw">colnames</span>(flu), <span class="dv">20</span>, <span class="dt">replace =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>##  [1] &quot;hits.cvspharmacy&quot;               &quot;hits.shortnessofbreath&quot;        
+##  [3] &quot;hits.cough&quot;                     &quot;hits.whoopingcough&quot;            
+##  [5] &quot;hits.fluseason&quot;                 &quot;hits.flusymptoms&quot;              
+##  [7] &quot;hits.medicalclinic&quot;             &quot;hits.bluishskin&quot;               
+##  [9] &quot;hits.911&quot;                       &quot;hits.typeafluvirus&quot;            
+## [11] &quot;hits.individualmandate&quot;         &quot;hits.opioidaddiction&quot;          
+## [13] &quot;hits.runnynose&quot;                 &quot;hits.nationalinstituteofhealth&quot;
+## [15] &quot;hits.sneeze&quot;                    &quot;hits.ambulance&quot;                
+## [17] &quot;hits.physician&quot;                 &quot;hits.outbreak&quot;                 
+## [19] &quot;hits.medicalschool&quot;             &quot;hits.fever&quot;</code></pre>
+<p>The most correlated queries with ILI are conceptually related – all are focused on symptoms of the flu.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Calculate correlation matrix</span>
+mat &lt;-<span class="st"> </span><span class="kw">cor</span>(flu[,<span class="kw">ncol</span>(flu):<span class="dv">2</span>])
+
+<span class="co">#Extract correlates with ILI</span>
+top &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">query =</span> <span class="kw">row.names</span>(mat), 
+                  <span class="dt">rho =</span> mat[,<span class="dv">1</span>])
+top &lt;-<span class="st"> </span>top[<span class="kw">order</span>(-top$rho),]
+
+<span class="co">#Show top ten</span>
+<span class="kw">head</span>(top, <span class="dv">10</span>)</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">query</th>
+<th align="right">rho</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">ili.rate</td>
+<td align="right">1.0000000</td>
+</tr>
+<tr class="even">
+<td align="left">hits.flusymptoms</td>
+<td align="right">0.8574463</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.tylenolcold</td>
+<td align="right">0.8424577</td>
+</tr>
+<tr class="even">
+<td align="left">hits.influenza</td>
+<td align="right">0.8226647</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.typeafluvirus</td>
+<td align="right">0.7920574</td>
+</tr>
+<tr class="even">
+<td align="left">hits.flu</td>
+<td align="right">0.7727208</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.nasalcongestion</td>
+<td align="right">0.7668754</td>
+</tr>
+<tr class="even">
+<td align="left">hits.coldremedy</td>
+<td align="right">0.7639114</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.pneumonia</td>
+<td align="right">0.7302167</td>
+</tr>
+<tr class="even">
+<td align="left">hits.coughdrops</td>
+<td align="right">0.7225903</td>
+</tr>
+</tbody>
+</table>
+<p>To apply a regularized regression, we will rely on the <code>glmnet</code> library that facilitates the application of an elastic net regression – which allows for a combination of a L1- and L2- constraint to be applied. Given the TSS <span class="math inline">\(\sum^n_{i=1}(y_i - \sum^k_{j=1} x_{ij}w_j)^2\)</span>, elastic net applies the following constraint:</p>
+<p><span class="math display">\[(1-\alpha)\sum^k_{j=1}|w_j|_1 + \alpha\sum^k_{j=1}|w_j|^2_2&lt; c \]</span> which is comprised of an L1-norm (<span class="math inline">\(|w_j|_1\)</span>) scaled by <span class="math inline">\((1-\alpha)\)</span> and a L2-norm scaled by <span class="math inline">\(\alpha\)</span>. When <span class="math inline">\(\alpha = 1\)</span>, then elastic net is effectively a LASSO regression. When <span class="math inline">\(\alpha = 0\)</span>, then elastic net is a ridge regression. This constraint structure provides the flexibility to apply hybrid L1/L2 regularization by selecting values of <span class="math inline">\(0 &lt; \alpha &lt; 1\)</span>. For more details on elastic net, read <a href="http://www.stat.washington.edu/courses/stat527/s13/readings/zouhastie05.pdf">Zou and Hastie (2005)</a>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(glmnet)</code></pre></div>
+<p>The <code>glmnet</code> library requires all data to be in vector and matrix form – data frames are not allowed. Following proper prediction methodology, we will split the sample into a 75-25 train-test samples.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Set sample partition parameters</span>
+  train.prop &lt;-<span class="st"> </span><span class="fl">0.75</span>
+  train.max &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">nrow</span>(flu) *<span class="st"> </span>train.prop)
+  test.min &lt;-<span class="st"> </span>train.max +<span class="st"> </span><span class="dv">1</span>
+
+<span class="co">#Train</span>
+  y.train &lt;-<span class="st"> </span>flu$ili.rate[<span class="dv">1</span>:train.max]
+  x.train &lt;-<span class="st"> </span>flu[<span class="dv">1</span>:train.max,]
+  x.train$date &lt;-<span class="st"> </span>x.train$ili.rate &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  x.train &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(x.train)
+
+<span class="co">#Test</span>
+  y.test &lt;-<span class="st"> </span>flu$ili.rate[test.min:<span class="kw">nrow</span>(flu)]
+  x.test &lt;-<span class="st"> </span>flu[test.min:<span class="kw">nrow</span>(flu), ]
+  x.test$date &lt;-<span class="st"> </span>x.test$ili.rate &lt;-<span class="st"> </span><span class="ot">NULL</span>
+  x.test &lt;-<span class="st"> </span><span class="kw">as.matrix</span>(x.test)</code></pre></div>
+<p>The library provides a couple of functions to estimate a regularized regression, but the following uses cross validation to find the optimal value of <span class="math inline">\(\lambda\)</span> that minimizes error:</p>
+<p><code>cv.glmnet(x, y, alpha, type.measure, family, nfolds)</code></p>
+<p>where:</p>
+<ul>
+<li><code>x</code> is a <span class="math inline">\(n \times k\)</span> matrix of input features;</li>
+<li><code>y</code> is a <span class="math inline">\(n \times 1\)</span> target vector;</li>
+<li><code>alpha</code> is the parameter to choose between LASSO and ridge (LASSO = 1);</li>
+<li><code>type.measure</code> indicates the optimization measure, which can be <em>mean squared error</em> (“mse”) or <em>mean absolute error</em> (“mae”) for regression problems;</li>
+<li><code>family</code> indicates the response type. This is assumed to be “gaussian” for quantitative targets.</li>
+<li><code>nfolds</code> is the number of cross validation folds. Default is 10-folds CV.</li>
+</ul>
+<p>In this example, we will choose <code>nfolds = 20</code> and a LASSO model (<code>alpha = 1</code>), then assign the model object ot <code>mod.lasso</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod.lasso &lt;-<span class="st"> </span><span class="kw">cv.glmnet</span>(x.train, y.train, <span class="dt">nfolds =</span> <span class="dv">20</span>,
+               <span class="dt">alpha =</span> <span class="dv">1</span>, <span class="dt">type.measure =</span> <span class="st">&quot;mse&quot;</span>)</code></pre></div>
+<p>The <code>mod.lasso</code> model object contains a rich amount of diagnostics and model outputs. For example, the MSE can be analyzed along a search grid of <span class="math inline">\(\lambda\)</span> and identify the value of <span class="math inline">\(\lambda\)</span> that minimizes error (<span class="math inline">\(-3 &lt; log(\lambda) &lt; -2\)</span>). Notice that each grid point contains a standard deviation on the error as estimated through cross-validation.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(mod.lasso)</code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-301"></span>
+<img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-301-1.png" alt="MSE vs. Log(Lambda) for ILI model where alpha = 1" width="672" />
+<p class="caption">
+Figure 8.11: MSE vs. Log(Lambda) for ILI model where alpha = 1
+</p>
+</div>
+<p>Next, we can examine the coefficients that are non-zero for the value of <span class="math inline">\(\lambda\)</span> that yields the lowest error (“lambda.min”) as well as a set of arbitrarily selected lambda values. Notice that only a handful of the <span class="math inline">\(k =83\)</span> input features remain, all of which are sympotom-related search queries. A couple notes about the coefficients:</p>
+<ul>
+<li>The <code>cv.glmnet()</code> function automatically mean-centers and standardizes (mean = 0, unit variance) the target and inputs, but returns coefficients in the original scale.</li>
+<li>Due to the properties of the LASSO method, coefficients are without standard errors.</li>
+<li>The <span class="math inline">\(\lambda\)</span> parameter represented as <em>s</em> in the library is calculated along a grid (equal intervals between a minimum and maximum value). This means if coefficients for a specific value of <span class="math inline">\(\lambda\)</span> is requested, but is not in search grid, then the glmnet library will either need to interpolate the value (<code>exact = FALSE</code>) or refit the model at a specified lambda value (<code>exact = TRUE</code>).</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">coef</span>(mod.lasso,  <span class="dt">s =</span> <span class="kw">c</span>(<span class="st">&quot;lambda.min&quot;</span>) )
+<span class="kw">coef</span>(mod.lasso,  <span class="dt">s =</span> <span class="kw">c</span>( <span class="fl">0.01</span>, <span class="fl">0.5</span>), <span class="dt">exact =</span> <span class="ot">TRUE</span> )</code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Feature</th>
+<th align="left">Lambda Min = 0.07</th>
+<th align="left">Lambda = 0.05</th>
+<th align="left">Lambda = 0.5</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="left">1.98557</td>
+<td align="left">2.02873</td>
+<td align="left">0.95649</td>
+</tr>
+<tr class="even">
+<td align="left">hits.typeafluvirus</td>
+<td align="left">0.01086</td>
+<td align="left">0.01072</td>
+<td align="left">0.00155</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.pneumonia</td>
+<td align="left">0.00659</td>
+<td align="left">0.00908</td>
+<td align="left">0.00355</td>
+</tr>
+<tr class="even">
+<td align="left">hits.influenza</td>
+<td align="left">0.00811</td>
+<td align="left">0.00854</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.flusymptoms</td>
+<td align="left">0.00738</td>
+<td align="left">0.00815</td>
+<td align="left">0.01211</td>
+</tr>
+<tr class="even">
+<td align="left">hits.tylenolcold</td>
+<td align="left">0.01021</td>
+<td align="left">0.00798</td>
+<td align="left">0.00548</td>
+</tr>
+<tr class="odd">
+<td align="left">hits.coldremedy</td>
+<td align="left">0.00583</td>
+<td align="left">0.00592</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.fluspike</td>
+<td align="left">0.00555</td>
+<td align="left">0.00527</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.fever</td>
+<td align="left"></td>
+<td align="left">0.00377</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.nasalcongestion</td>
+<td align="left"></td>
+<td align="left">0.00218</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.diarrhrea</td>
+<td align="left"></td>
+<td align="left">-0.00021</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.fluvaccine</td>
+<td align="left"></td>
+<td align="left">-0.00023</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.washhands</td>
+<td align="left"></td>
+<td align="left">-0.0012</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.bluishskin</td>
+<td align="left">-0.00111</td>
+<td align="left">-0.00186</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.fatigue</td>
+<td align="left"></td>
+<td align="left">-0.0031</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.vaccines</td>
+<td align="left"></td>
+<td align="left">-0.00317</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">hits.flushing</td>
+<td align="left">-0.00453</td>
+<td align="left">-0.00379</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">hits.medicine</td>
+<td align="left">-0.02348</td>
+<td align="left">-0.02427</td>
+<td align="left"></td>
+</tr>
+</tbody>
+</table>
+<p>Lastly, we can predict ILI in the test sample using the LASSO model where <span class="math inline">\(\lambda\)</span> is minimized.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Predict y</span>
+  yhat.train &lt;-<span class="st"> </span><span class="kw">predict</span>(mod.lasso, x.train, <span class="dt">s =</span> <span class="st">&quot;lambda.min&quot;</span>)
+
+<span class="co">#Calculate out of sample error</span>
+  rmse &lt;-<span class="st"> </span>function(y, x){
+    <span class="kw">return</span>(<span class="kw">sqrt</span>(<span class="kw">mean</span>((y -<span class="st"> </span>x)^<span class="dv">2</span>)))
+  }
+  err1 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rmse</span>(yhat, y.test),<span class="dv">2</span>)
+  <span class="kw">print</span>(err1)</code></pre></div>
+<pre><code>## [1] 1.58</code></pre>
+<p>This result appears to be strong, but is unsatisfying without a set of benchmarks to compare against. Below, plain vanilla OLS is estimated based on the top most correlated features in sets of 1, 2, 3, 5, and 10, where 10 is selected as the optimal model contains 10 correlates. Across the board, LASSO out-performs OLS.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Calculate correlation matrix using training data</span>
+  rhos &lt;-<span class="st"> </span><span class="kw">as.vector</span>(<span class="kw">cor</span>(y.train, x.train))
+  rhos &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">id =</span> <span class="dv">1</span>:<span class="kw">length</span>(rhos), rhos)
+  rhos &lt;-<span class="st"> </span>rhos[<span class="kw">order</span>(-rhos$rhos),]
+
+<span class="co">#Set up a juxtaposed plot area for six graphs</span>
+  <span class="kw">par</span>(<span class="dt">mfrow=</span><span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">3</span>), 
+      <span class="dt">oma =</span> <span class="kw">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">0</span>,<span class="dv">0</span>) +<span class="st"> </span><span class="fl">0.5</span>,
+      <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">1</span>) +<span class="st"> </span><span class="fl">0.5</span>)
+  
+<span class="co">#Plot the LASSO</span>
+  <span class="kw">plot</span>(y.test, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">main =</span> <span class="kw">paste0</span>(<span class="st">&quot;LASSO: RMSE = &quot;</span>, err1), 
+       <span class="dt">cex.main =</span> <span class="fl">1.2</span>, <span class="dt">ylab =</span> <span class="st">&quot;outcome&quot;</span>, <span class="dt">xaxt=</span><span class="st">&#39;n&#39;</span>, <span class="dt">yaxt =</span> <span class="st">&#39;n&#39;</span>)
+  <span class="kw">lines</span>(yhat, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+
+<span class="co">#Loop through and plot top X correlates using OLS</span>
+for(i in <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">5</span>, <span class="dv">10</span>)){
+  <span class="co">#Set up data</span>
+  df.train &lt;-<span class="st"> </span><span class="kw">data.frame</span>(y.train, x.train[,rhos$id[<span class="dv">1</span>:i]])
+  df.test &lt;-<span class="st"> </span><span class="kw">data.frame</span>(y.test, x.test[,rhos$id[<span class="dv">1</span>:i]])
+  <span class="kw">colnames</span>(df.train) &lt;-<span class="st"> </span><span class="kw">colnames</span>(df.test) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;y&quot;</span>, <span class="kw">paste0</span>(<span class="st">&quot;x&quot;</span>,<span class="dv">1</span>:i))
+  
+  <span class="co">#Model</span>
+  lm.obj &lt;-<span class="st"> </span><span class="kw">lm</span>(y~., <span class="dt">data =</span> df.train)
+  yhat2 &lt;-<span class="st"> </span><span class="kw">predict</span>(lm.obj, <span class="dt">newdata =</span> df.test)
+  
+  <span class="co">#Plot y</span>
+  err2 &lt;-<span class="st"> </span><span class="kw">round</span>(<span class="kw">rmse</span>(yhat2, y.test),<span class="dv">2</span>)
+  <span class="kw">plot</span>(y.test, <span class="dt">type =</span> <span class="st">&quot;l&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="dt">main =</span> <span class="kw">paste0</span>(<span class="st">&quot;Top &quot;</span>, i,<span class="st">&quot; Only: RMSE = &quot;</span>, err2), 
+       <span class="dt">ylab =</span> <span class="st">&quot;outcome&quot;</span>, <span class="dt">cex.main =</span> <span class="fl">1.2</span>, <span class="dt">xaxt=</span><span class="st">&#39;n&#39;</span>, <span class="dt">yaxt =</span> <span class="st">&#39;n&#39;</span>)
+  <span class="kw">lines</span>(yhat2, <span class="dt">col =</span> <span class="st">&quot;red&quot;</span>)
+}</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-305-1.png" width="672" /></p>
+
+</div>
+<div id="what-level-of-demandstaff-should-i-expect" class="section level3">
+<h3><span class="header-section-number">8.4.3</span> What level of [demand/staff] should I expect?</h3>
+<p>To put regression into perspective, we will predict <a href="https://data.maryland.gov/Transportation/Toll-Transactions/hrir-ejvj">Maryland tollroad transactions</a> using an assortment of US county-level data. The dataset is comprised of monthly totals of tollroad transactions by county, joined with US Bureau of Labor Statistics’ <a href="https://www.bls.gov/cew/datatoc.htm">monthly employment estimates</a>, US Census Bureau <a href="https://www.census.gov/construction/bps/">building permit estimates</a>, and the Energy Information Agency’s <a href="http://www.eia.gov/dnav/pet/pet_pri_spt_s1_d.htm">West Texas Crude Fuel Prices</a>.</p>
+<p>To get started, first we need to import the data set using <code>digIt</code>.</p>
+<p><strong>Explore data</strong></p>
+<p>The dataset is provided in long form, where data from multiple geographic areas are stacked. The dataset contains eight fields:</p>
+<ul>
+<li><code>date</code> in <code>MM/DD/YY</code> format.</li>
+<li><code>year</code> of record.</li>
+<li><code>fips</code> is the Federal Information Processing System (FIPS) code for a given county.</li>
+<li><code>transactions</code> is total monthly toll transactions in a county.</li>
+<li><code>transponders</code> is the total monthly toll transactions conducted using a radio frequency transponder.</li>
+<li><code>emp</code> is the employment in a given month in given county.</li>
+<li><code>bldgs</code> is the number of new building permits issued in a given county.</li>
+<li><code>wti_eia</code> is the West Texas Intermediate spot crude price. This is the only measure that will have the same value across all geographies in a given time period.</li>
+</ul>
+<p>To get a feel for the data, we use the <code>str()</code> method. All fields should be in numerical or integer form except for <code>date</code> and <code>fips</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">str</span>(df[<span class="dv">1</span>:<span class="dv">3</span>,])</code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    3 obs. of  8 variables:
+##  $ date        : chr  &quot;7/1/12&quot; &quot;7/1/12&quot; &quot;7/1/12&quot;
+##  $ year        : int  2012 2012 2012
+##  $ fips        : int  24003 24017 24510
+##  $ transactions: int  1309632 312519 2868274
+##  $ transponders: int  758737 142914 1951551
+##  $ emp         : int  241401 40184 329251
+##  $ bldgs       : int  84 67 8
+##  $ wti_eia     : num  87.9 87.9 87.9</code></pre>
+<p>Reformatting is simple. <code>date</code> can be converted into a date object using <code>as.Date()</code> and <code>fips</code> can be converted into a factor.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df$date &lt;-<span class="st"> </span><span class="kw">as.Date</span>(df$date, <span class="st">&quot;%m/%d/%y&quot;</span>)
+  df$fips &lt;-<span class="st"> </span><span class="kw">factor</span>(df$fips)</code></pre></div>
+<p>Upon doing so, we can run some cursory exploratory checks ahead of formulating any models. First is to produce correlation matrix. We will beautify the text outputs using a library called <code>sjPlot</code> that formats quantitative outputs in an easier to read fashion.</p>
+<p>The correlation matrix on the pooled data indicates finds that employment is positively associated with both transactions and transponder transactions.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(sjPlot)
+  tab &lt;-<span class="st"> </span><span class="kw">cor</span>(df[,<span class="kw">c</span>(<span class="dv">4</span>:<span class="dv">8</span>)], <span class="dt">use =</span> <span class="st">&quot;complete&quot;</span>)
+  <span class="kw">sjp.corr</span>(tab)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-309-1.png" width="672" /></p>
+<p>For ease of interpretation, we will use a <code>log-log</code> specification, meaning that continuous variables that enter the regression specification are transformed using a natural log. This changes the interpretation of coefficients and in may improve model fit in certain situations.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  tab &lt;-<span class="st"> </span><span class="kw">cor</span>(<span class="kw">log</span>(df[,<span class="kw">c</span>(<span class="dv">4</span>:<span class="dv">8</span>)]), <span class="dt">use =</span> <span class="st">&quot;complete&quot;</span>)
+  <span class="kw">sjp.corr</span>(tab)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-310-1.png" width="672" /></p>
+<p>In addition, we can run an ANOVA (Analysis Of Variance) to understand if using FIPS county codes help explain the variation in transactions by looking at if the mean of transactions for each county are the same. The null hypothesis that county means are equivalent is rejected as the p-value of the F-test below is asymptotically small (&lt; 0.01).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fit &lt;-<span class="st"> </span><span class="kw">aov</span>(transactions ~<span class="st"> </span>fips, <span class="dt">data =</span> df)
+  <span class="kw">summary</span>(fit) </code></pre></div>
+<pre><code>##              Df    Sum Sq   Mean Sq F value Pr(&gt;F)    
+## fips          5 3.381e+14 6.762e+13   526.8 &lt;2e-16 ***
+## Residuals   268 3.440e+13 1.284e+11                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>The same test using <span class="math inline">\(log(transactions)\)</span> yields a better fit when comparing, indicating that we may want to consider to use log-transformed target feature.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fit &lt;-<span class="st"> </span><span class="kw">aov</span>(<span class="kw">log</span>(transactions) ~<span class="st"> </span>fips, <span class="dt">data =</span> df)
+  <span class="kw">summary</span>(fit) </code></pre></div>
+<pre><code>##              Df Sum Sq Mean Sq F value Pr(&gt;F)    
+## fips          5 184.84   36.97   768.9 &lt;2e-16 ***
+## Residuals   268  12.88    0.05                   
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<p>Graphically, it is also important to develop a visual understand of how the data are distributed. Using <code>ggplot2</code>, we plot the toll transactions over time, finding a degree of seasonality and clear differences in the levels at which traffic flows through each county.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(ggplot2)
+  <span class="kw">ggplot</span>(df, 
+         <span class="kw">aes</span>(<span class="dt">x =</span> date, <span class="dt">y =</span> transactions, <span class="dt">group =</span> fips, <span class="dt">colour =</span> fips)) +
+<span class="st">        </span><span class="kw">geom_line</span>() +<span class="st">  </span><span class="kw">geom_point</span>()</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-313-1.png" width="672" /></p>
+<p>Recognizing that each county experiences different levels of traffic and economic activity, it is prudent to break apart the data into histograms for each county to expose skewedness and determine if the fundamental Gaussian assumptions of OLS are met. The histograms below indicate that there most measures can be characterized by a central tendency, but there are some measures in some counties that are significantly right skewed.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fips &lt;-<span class="st"> </span><span class="kw">unique</span>(df$fips)
+  for(k in <span class="dv">1</span>:<span class="kw">length</span>(fips)){
+    temp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> df[df$fips==fips[k],], <span class="kw">aes</span>(transactions)) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;orange&quot;</span>) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">9</span>), <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),
+            <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>())
+    <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;trans&quot;</span>,k), temp)
+    
+    temp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> df[df$fips==fips[k],], <span class="kw">aes</span>(emp)) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;red&quot;</span>) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">9</span>), <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),
+            <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>())
+    <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;emp&quot;</span>,k), temp)
+        
+    temp &lt;-<span class="st"> </span><span class="kw">ggplot</span>(<span class="dt">data =</span> df[df$fips==fips[k],], <span class="kw">aes</span>(bldgs)) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>) +<span class="st"> </span>
+<span class="st">            </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">9</span>), <span class="dt">axis.text.x=</span><span class="kw">element_blank</span>(),
+            <span class="dt">axis.text.y=</span><span class="kw">element_blank</span>())
+    <span class="kw">assign</span>(<span class="kw">paste0</span>(<span class="st">&quot;bldgs&quot;</span>,k), temp) 
+
+  }
+
+  <span class="kw">library</span>(gridExtra)
+  <span class="kw">grid.arrange</span>(trans1, trans2, trans3, trans4, trans5, trans6,
+               emp1, emp2, emp3, emp4, emp5, emp6,
+               bldgs1, bldgs2, bldgs3, bldgs4, bldgs5, bldgs6, <span class="dt">ncol =</span> <span class="dv">6</span>)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-314-1.png" width="672" /></p>
+<p>This skewness can be improved by applying mathematical transformations such as <span class="math inline">\(log_{10}\)</span> or natural logarithm.</p>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-315-1.png" width="672" /></p>
+<p><strong>Set train/test samples</strong> With a basic understanding of the patterns in the underlying data, we can partition the data for training and testing. Given the small sample of points, we will partition the data into a 60-30 split, which is approximately 2012 through 2014 and 2015 through 2016, respectively. This partition is captured in a new variable <code>flag</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df$flag &lt;-<span class="st"> </span><span class="dv">0</span>
+  df$flag[df$year &gt;<span class="st"> </span><span class="dv">2014</span>] &lt;-<span class="st"> </span><span class="dv">1</span></code></pre></div>
+<p><strong>Regression</strong> Running a linear regression is a fairly simple task when using the <code>lm()</code> method. The basic syntax involves specifying the <span class="math inline">\(y\)</span>, <span class="math inline">\(x\)</span> and the dataframe or matrix.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">lm</span>(&lt;yvar&gt;<span class="st"> </span><span class="er">~</span><span class="st"> </span><span class="er">&lt;</span>xvars&gt;<span class="st"> </span>, <span class="dt">data =</span> &lt;data&gt;)</code></pre></div>
+<p>When evoked, the <code>lm()</code> method produces an class object that contains all the outputs of a regression model, including coefficients, fitness tests, residuals, predictions among other things.As a simple example, we will fit the specification: <span class="math inline">\(\log\text{(transactions)} = \beta_0 + \beta_1 \text{log(employment)} + \epsilon\)</span> using only the training set (<code>flag == 0</code>). We can assign the output to <code>fit</code>. To see all attributes of the <code>fit</code> object, use the <code>str()</code> method. For a high-level summary, use the <code>summary()</code> method.</p>
+<p>The bivariate regression yielded statistically significant results for employment, indicating that a 100% increase in employment is associated with a 43% increase in highway toll transactions. The amount of variance explained is modest with an <span class="math inline">\(R^2 = 0.321\)</span> with a relatively large <span class="math inline">\(RMSE = 0.6904\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fit &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(transactions) ~<span class="st"> </span><span class="kw">log</span>(emp), <span class="dt">data =</span> df[df$flag ==<span class="st"> </span><span class="dv">0</span>,])
+  <span class="kw">summary</span>(fit)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(transactions) ~ log(emp), data = df[df$flag == 
+##     0, ])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -1.3887 -0.5482  0.1730  0.5631  1.0330 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  8.92253    0.57238  15.588   &lt;2e-16 ***
+## log(emp)     0.43759    0.04755   9.202   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.6904 on 176 degrees of freedom
+## Multiple R-squared:  0.3248, Adjusted R-squared:  0.321 
+## F-statistic: 84.68 on 1 and 176 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>The <code>fit</code> object contains other rich information about attributes of a regression model, such as the coefficients, residuals, among other features. The full detail coefficients, for instance, can be easily viewed by using the following command:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">summary</span>(fit)$coef</code></pre></div>
+<pre><code>##              Estimate Std. Error  t value     Pr(&gt;|t|)
+## (Intercept) 8.9225327 0.57238137 15.58844 5.564812e-35
+## log(emp)    0.4375895 0.04755384  9.20198 1.013823e-16</code></pre>
+<p>To view the full list of attributes contained in the regression object, use the structure method <code>str()</code>.</p>
+<p>A common step in assessing model fitness regressions is to check if the normality assumptions are met as this will influence reliability and accuracy of the model. The residuals, for example, should be normally distributed; however, the kernel density graph below shows that the residuals (in blue) are bimodally distributed, which is not normally distributed as compared with the simulated normal distribution (yellow). This indicates provides an indication that the regression needs to be refined in order to account for other parameters.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">resid =</span> fit$residuals)
+  <span class="kw">set.seed</span>(<span class="dv">50</span>)
+  x$norm &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(x), <span class="kw">mean</span>(x$resid), <span class="kw">sd</span>(x$resid))
+  <span class="kw">ggplot</span>(x, <span class="kw">aes</span>(resid)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(norm), <span class="dt">alpha =</span> <span class="fl">0.4</span>, <span class="dt">fill =</span> <span class="st">&quot;yellow&quot;</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) </code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-320-1.png" width="672" /></p>
+<p>Thinking back to the earlier results of the ANOVA test, it makes sense to incorporate the <code>fips</code> feature and try a few other features. The results are far more promising, with an R-squared above 0.9 and a RMSE that is roughly one-third the size. The employment feature is statistically significant with a p-value under 0.05 with a coefficient that indicates that essentially every one-person (or 100%) increase in employment is associated with a two fold increase in trips – this makes sense as people may be commuting for work. Additional building permits (<code>log(bldgs)</code>) appear to have a modest effect as may be expected as their effect is likely lagged. The <code>FIPS</code> counties, while not fully significant, seem to help explain much of the variability.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  fit &lt;-<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log</span>(transactions) ~<span class="st"> </span><span class="kw">log</span>(emp) +<span class="st"> </span><span class="kw">log</span>(bldgs) +<span class="st"> </span><span class="kw">log</span>(wti_eia) +<span class="st"> </span>fips, 
+              <span class="dt">data =</span> df[df$flag ==<span class="st"> </span><span class="dv">0</span>,])
+  <span class="kw">summary</span>(fit)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = log(transactions) ~ log(emp) + log(bldgs) + log(wti_eia) + 
+##     fips, data = df[df$flag == 0, ])
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.02680 -0.07561 -0.00165  0.08227  1.89656 
+## 
+## Coefficients: (1 not defined because of singularities)
+##               Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -18.99154   12.47438  -1.522   0.1298    
+## log(emp)       2.57132    0.96714   2.659   0.0086 ** 
+## log(bldgs)     0.08442    0.04349   1.941   0.0539 .  
+## log(wti_eia)   0.20735    0.14657   1.415   0.1590    
+## fips24003     -0.45659    0.30409  -1.502   0.1351    
+## fips24005     -0.11387    0.11006  -1.035   0.3023    
+## fips24015      5.59326    2.31513   2.416   0.0168 *  
+## fips24017      2.98459    2.03639   1.466   0.1446    
+## fips24031     -1.60048    0.30429  -5.260 4.32e-07 ***
+## fips24510           NA         NA      NA       NA    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2103 on 169 degrees of freedom
+## Multiple R-squared:  0.9398, Adjusted R-squared:  0.937 
+## F-statistic:   330 on 8 and 169 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>A cursory look at the residuals finds a much more normally distributed set of residuals, indicating that incorporating the <code>FIPS</code> codes enables better a more proper model.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  x &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">resid =</span> fit$residuals)
+  <span class="kw">set.seed</span>(<span class="dv">50</span>)
+  x$norm &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="kw">nrow</span>(x), <span class="kw">mean</span>(x$resid), <span class="kw">sd</span>(x$resid))
+  <span class="kw">ggplot</span>(x, <span class="kw">aes</span>(resid)) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_density</span>(<span class="kw">aes</span>(norm), <span class="dt">alpha =</span> <span class="fl">0.4</span>, <span class="dt">fill =</span> <span class="st">&quot;yellow&quot;</span>) +<span class="st"> </span>
+<span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">fill =</span> <span class="st">&quot;navy&quot;</span>, <span class="dt">alpha =</span> <span class="fl">0.6</span>) </code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-322-1.png" width="672" /></p>
+<p><strong>Prediction</strong> The critical step is the prediction step, using the trained regression model to score the test set. In this example, both train and test sets are contained in data frame <code>df</code>. Generating predicted values <span class="math inline">\(\hat{y}\)</span> using the input features is a simple task that relies on the <code>predict()</code> method. The method accepts the regression object and a new dataset. In our example, we input use <code>fit</code> and <code>df</code>. The output is a vector of predictions for each line of <code>df</code>. We assign this vector as a new column as <code>df</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  df$yhat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit, <span class="dt">newdata =</span> df) </code></pre></div>
+<p>With the prediction available, a Mean Absolute Percentage Error (MAPE) can be used to quantify the model fit in terms that are interpretable. To do so, we first need to write a MAPE function.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  mape &lt;-<span class="st"> </span>function(y_hat, y){
+    <span class="kw">return</span>(<span class="kw">mean</span>(<span class="kw">abs</span>(y_hat/y<span class="dv">-1</span>), <span class="dt">na.rm=</span>T))
+  }</code></pre></div>
+<p>Upon doing so, we can compare the performance of the model in the training phase and the test phase. The error rate of the training set was 0.8% and grows to 1.4% in the test set, indicating some degree of overfitting. However, in absolute terms, the errors are relatively small.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#train error</span>
+    train_error &lt;-<span class="st"> </span><span class="kw">mape</span>(df[df$flag ==<span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;yhat&quot;</span>], <span class="kw">log</span>(df[df$flag ==<span class="st"> </span><span class="dv">0</span>, <span class="st">&quot;transactions&quot;</span>]))
+    <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;MAPE-train = &quot;</span>, train_error))</code></pre></div>
+<pre><code>## [1] &quot;MAPE-train = 0.00804538836067337&quot;</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="co">#test error</span>
+    test_error &lt;-<span class="st"> </span><span class="kw">mape</span>(df[df$flag ==<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;yhat&quot;</span>], <span class="kw">log</span>(df[df$flag ==<span class="st"> </span><span class="dv">1</span>, <span class="st">&quot;transactions&quot;</span>]))
+    <span class="kw">print</span>(<span class="kw">paste0</span>(<span class="st">&quot;MAPE-test = &quot;</span>, test_error))</code></pre></div>
+<pre><code>## [1] &quot;MAPE-test = 0.0143640376554185&quot;</code></pre>
+<p>The predictions can be compared against the actual transactional volumes using an ordinary scatter plot. To contextualize the predictions, we also add a 45-degree line that indicates how accurate predictions are relative to actual. Deviations below the line suggest that predictions are underestimation and above the line indicates overestimation. The effects of overfitting are clear in the models when comparing training results to test results. The training sample (left graph) predictions are spot on with predictions landing on the diagonal, whereas some of the test sample (right graph) stray below the line.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">library</span>(gridExtra) 
+    
+  g1 &lt;-<span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">data =</span> df[df$flag ==<span class="st"> </span><span class="dv">0</span>, ], 
+                <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">log</span>(transactions), <span class="dt">y =</span> <span class="kw">log</span>(transactions))) +
+<span class="st">          </span><span class="kw">geom_line</span>() +<span class="st">  </span><span class="kw">geom_point</span>()  +<span class="st">  </span>
+<span class="st">          </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;Train set (MAPE = &quot;</span>,<span class="kw">round</span>(<span class="dv">100</span>*train_error,<span class="dv">2</span>),<span class="st">&quot;%)&quot;</span>)) +
+<span class="st">          </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">log</span>(transactions), <span class="dt">y =</span> yhat, <span class="dt">colour =</span> fips)) +
+<span class="st">          </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>), )
+  
+  g2 &lt;-<span class="st">  </span><span class="kw">ggplot</span>(<span class="dt">data =</span> df[df$flag ==<span class="st"> </span><span class="dv">1</span>, ], 
+                <span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">log</span>(transactions), <span class="dt">y =</span> <span class="kw">log</span>(transactions))) +
+<span class="st">          </span><span class="kw">geom_line</span>() +<span class="st">  </span><span class="kw">geom_point</span>()  +<span class="st">  </span>
+<span class="st">          </span><span class="kw">ggtitle</span>(<span class="kw">paste0</span>(<span class="st">&quot;Test set (MAPE = &quot;</span>,<span class="kw">round</span>(<span class="dv">100</span>*test_error,<span class="dv">2</span>),<span class="st">&quot;%)&quot;</span>)) +
+<span class="st">          </span><span class="kw">geom_point</span>(<span class="kw">aes</span>(<span class="dt">x =</span> <span class="kw">log</span>(transactions), <span class="dt">y =</span> yhat, <span class="dt">colour =</span> fips)) +
+<span class="st">          </span><span class="kw">theme</span>(<span class="dt">plot.title =</span> <span class="kw">element_text</span>(<span class="dt">size =</span> <span class="dv">10</span>))
+    
+  <span class="kw">grid.arrange</span>(g1, g2, <span class="dt">ncol=</span><span class="dv">2</span>)</code></pre></div>
+<p><img src="Data_Science__A_Practical_Strategy_files/figure-html/unnamed-chunk-326-1.png" width="672" /></p>
+
+</div>
+</div>
+<div id="exercises-9" class="section level2">
+<h2><span class="header-section-number">8.5</span> Exercises</h2>
+<div id="prediction" class="section level4 unnumbered">
+<h4>Prediction</h4>
+<p>Using the Maryland Toll Road data, try the following:</p>
+<ol style="list-style-type: decimal">
+<li>Run a regression for <code>FIPS = 24015</code> where <span class="math inline">\(Y\)</span> is <span class="math inline">\(log(transactions)\)</span> and <span class="math inline">\(X\)</span> are log(emp), log(bldgs), and log(wti_eia).</li>
+<li>Obtain the training and testing MAPEs for <code>FIPS = 24015</code>. How does this compare to the MAPE for <code>FIPS = 24015</code> from the example pooled model?</li>
+</ol>
+</div>
+<div id="calculating-distance" class="section level4 unnumbered">
+<h4>Calculating Distance</h4>
+<ol style="list-style-type: decimal">
+<li>Write a function <code>dist()</code> that calculates the distance between all records of a two variable data frame <code>df</code> and a given reference coordinate. The reference coordinate will be an index <span class="math inline">\(i\)</span> of a row in the data frame (e.g. calculate the distance between row <span class="math inline">\(i\)</span> and all other points).</li>
+<li>Expand that distance function to accept one or more variables. Use the example data to test your function.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  <span class="kw">set.seed</span>(<span class="dv">150</span>)
+  data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">10</span>, <span class="dv">5</span>), 
+                     <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">20</span>, <span class="dv">35</span>), 
+                     <span class="dt">x3 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">14</span>, <span class="dv">1</span>), 
+                     <span class="dt">x4 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">100</span>, <span class="dv">200</span>))</code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>For the following values, write a function to retrieve the value of <span class="math inline">\(y\)</span> where <span class="math inline">\(k = 1\)</span> for each record <span class="math inline">\(i\)</span>.</li>
+<li>Modify the function to handle <span class="math inline">\(k = 2\)</span>.</li>
+</ol>
+</div>
+<div id="nearest-neighbors" class="section level4 unnumbered">
+<h4>Nearest Neighbors</h4>
+<ol style="list-style-type: decimal">
+<li>Write a function <code>dist()</code> that calculates the distance between all records of a two variable data frame <code>df</code> and a given reference coordinate. The reference coordinate will be an index <code>i</code> of a row in the data frame (e.g. calculate the distance between row <code>i</code> and all other points).</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">  dist &lt;-<span class="st"> </span>function(df, i){
+    temp &lt;-<span class="st"> </span>df[i,]
+    dist &lt;-<span class="st"> </span><span class="kw">sqrt</span>(df[,<span class="dv">1</span>]^<span class="dv">2</span> +<span class="st"> </span>df[,<span class="dv">1</span>]^<span class="dv">2</span>)
+    <span class="kw">return</span>(dist)
+  }</code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Expand that distance function to accept one or more variables.</li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Modify the function</span>
+  dist &lt;-<span class="st"> </span>function(df, i){
+    temp &lt;-<span class="st"> </span>df[i,]
+    col &lt;-<span class="st"> </span><span class="kw">ncol</span>(df)
+    dist &lt;-<span class="st"> </span><span class="dv">0</span>
+    for(k in <span class="dv">1</span>:col){
+      dist &lt;-<span class="st"> </span>dist +<span class="st"> </span>(df[,k] -<span class="st"> </span>temp[,k])^<span class="dv">2</span>
+    }
+    <span class="kw">return</span>(<span class="kw">sqrt</span>(dist))
+  }
+
+<span class="co">#Test it</span>
+  <span class="kw">set.seed</span>(<span class="dv">150</span>)
+  data &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">10</span>, <span class="dv">5</span>), 
+                     <span class="dt">x2 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">20</span>, <span class="dv">35</span>), 
+                     <span class="dt">x3 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">14</span>, <span class="dv">1</span>), 
+                     <span class="dt">x4 =</span> <span class="kw">rnorm</span>(<span class="dv">1000</span>, <span class="dv">100</span>, <span class="dv">200</span>))
+  out &lt;-<span class="st"> </span><span class="kw">dist</span>(data, <span class="dv">1</span>)
+  <span class="kw">head</span>(out)</code></pre></div>
+<pre><code>## [1]   0.0000 131.7022 122.2110 336.8763 263.7995 322.0519</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Write a function to retrieve the value of <span class="math inline">\(y\)</span> where <span class="math inline">\(k = 1\)</span> for each record <span class="math inline">\(i\)</span>.</li>
+<li>Modify the function to handle <span class="math inline">\(k = 2\)</span>.</li>
+</ol>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="model-validation-how-do-we-know-what-we-know.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="classification.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.bootcss.com/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
